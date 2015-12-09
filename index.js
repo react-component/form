@@ -1,3 +1,3 @@
 // export this package's api
-import Form from './src/';
-export default Form;
+import * as form from './src/';
+export default form;

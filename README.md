@@ -1,7 +1,9 @@
 # rc-form
 ---
 
-React High Order Form Component
+React High Order Form Component.
+
+Note: This is unstable, under development now.
 
 
 [![NPM version][npm-image]][npm-url]
@@ -24,14 +26,6 @@ React High Order Form Component
 [download-image]: https://img.shields.io/npm/dm/rc-form.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-form
 
-
-## Browser Support
-
-|![IE](https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_48x48.png) | ![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/opera/opera_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/safari/safari_48x48.png)|
-| --- | --- | --- | --- | --- |
-| IE 8+ ✔ | Chrome 31.0+ ✔ | Firefox 31.0+ ✔ | Opera 30.0+ ✔ | Safari 7.0+ ✔ |
-
-
 ## Development
 
 ```
@@ -51,8 +45,6 @@ online example: http://react-component.github.io/form/examples/
 
 * support ie8,ie8+,chrome,firefox,safari
 
-### Keyboard
-
 
 ## install
 
@@ -63,11 +55,53 @@ online example: http://react-component.github.io/form/examples/
 ## Usage
 
 ```js
+import form from 'rc-form';
+@form()
+class Form  extends React.Component {
+  render() {
+    let errors;
+    const {getFieldProps, getFieldError, isFieldValidating} = props.form;
+    return (<div>
+    <input {...getFieldProps('normal')}/>
+    <input {...getFieldProps('required',{
+      rules:[{required:true}]
+    })}/>
+    {(errors = getFieldError('required')) ? errors.join(',') : null}
+    </div>)
+  }
+}
 ```
 
 ## API
 
+call form() will return another function:
 
+### React.Component: function(WrappedComponent:React.Component)
+
+will pass the following props to WrappedComponent
+
+
+### Object:getFieldProps(name, option)
+
+Will create props which can be set on a input/InputComponent which support value and onChange interface.
+
+After set, this will create a binding with this input.
+
+#### name
+
+this input's unique name
+
+#### option.rules
+
+validator rules. see: https://github.com/yiminghe/async-validator
+
+### Error[]: getFieldError(name)
+
+get input's validate errors
+
+### Bool: isFieldValidating(name)
+
+whether this input is validating
 
 ## Test Case
 
