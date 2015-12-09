@@ -1,7 +1,7 @@
 {
   "name": "rc-form",
   "version": "0.1.0",
-  "description": "form ui component for react",
+  "description": "React High Order Form Component",
   "keywords": [
     "react",
     "react-component",
