@@ -1,10 +1,8 @@
 # rc-form
----
 
 React High Order Form Component.
 
 Note: This is unstable, under development now.
-
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
@@ -37,20 +35,15 @@ npm start
 
 http://localhost:8000/examples/
 
-
 online example: http://react-component.github.io/form/examples/
-
 
 ## Feature
 
 * support ie8,ie8+,chrome,firefox,safari
 
-
 ## install
 
-
 [![rc-form](https://nodei.co/npm/rc-form.png)](https://npmjs.org/package/rc-form)
-
 
 ## Usage
 
@@ -74,14 +67,13 @@ class Form  extends React.Component {
 
 ## API
 
-call form() will return another function:
+Call form() will return another function:
 
 ### React.Component: function(WrappedComponent:React.Component)
 
-will pass the following props to WrappedComponent
+Will pass a object as prop form with the following memebers to WrappedComponent:
 
-
-### Object:getFieldProps(name, option)
+### Object: getFieldProps(name, option)
 
 Will create props which can be set on a input/InputComponent which support value and onChange interface.
 
@@ -89,19 +81,31 @@ After set, this will create a binding with this input.
 
 #### name
 
-this input's unique name
+type: String. this input's unique name
+
+#### option.validateTrigger
+
+type: String. event which is listened to validate. Default to 'onChange', set to false to only validate when call props.validateFields.
 
 #### option.rules
 
-validator rules. see: https://github.com/yiminghe/async-validator
+type: Object[]. validator rules. see: https://github.com/yiminghe/async-validator
 
-### Error[]: getFieldError(name)
+### getFieldsValue([fieldNames: String[]])
 
-get input's validate errors
+Get fields value by fieldNames.
+
+### validateFields([fieldNames: String[]], callback: Function(errors, values))
+
+Validate and get fields value by fieldNames.
+
+### String[]: getFieldError(name)
+
+Get input's validate errors
 
 ### Bool: isFieldValidating(name)
 
-whether this input is validating
+Whether this input is validating
 
 ## Test Case
 

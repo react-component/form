@@ -113,6 +113,7 @@ class App extends React.Component {
   render() {
     return (<Provider store={store}>
       <div>
+        <h2>integrate with redux</h2>
         <Form />
         <Out />
       </div>

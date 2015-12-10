@@ -22,7 +22,7 @@ function createForm(option = {}) {
         const bindMethods = [
           'getFieldProps', 'isFieldValidating',
           'getFieldError', 'removeField',
-          'validateFieldsByName',
+          'validateFieldsByName', 'getFieldsValue',
         ];
         bindMethods.forEach((m)=> {
           this[m] = this[m].bind(this);
@@ -45,8 +45,9 @@ function createForm(option = {}) {
           fieldMeta.actionId = ++actionId;
         }
         const value = getValueFromEvent(event);
+        const field = this.getField(name, true);
         this.setField(name, {
-          name,
+          ...field,
           value,
           dirty: !!rules,
         });
@@ -140,6 +141,7 @@ function createForm(option = {}) {
 
       getForm() {
         return {
+          getFieldsValue: this.getFieldsValue,
           getFieldProps: this.getFieldProps,
           getFieldError: this.getFieldError,
           isFieldValidating: this.isFieldValidating,
@@ -167,10 +169,14 @@ function createForm(option = {}) {
         const allRules = {};
         const allValues = {};
         const allFields = {};
+        const alreadyErrors = {};
 
         fields.forEach((field)=> {
           const name = field.name;
           if (field.dirty === false) {
+            if (field.errors) {
+              alreadyErrors[name] = field.errors;
+            }
             return;
           }
           const fieldMeta = this.getFieldMeta(name);
@@ -186,12 +192,12 @@ function createForm(option = {}) {
         this.setField(allFields);
 
         if (callback && isEmptyObject(allFields)) {
-          callback(null, this.getFieldsValue(fieldNames));
+          callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
           return;
         }
 
         new AsyncValidate(allRules).validate(allValues, (errors)=> {
-          const errorsGroup = {};
+          const errorsGroup = {...alreadyErrors};
           if (errors && errors.length) {
             errors.forEach((e) => {
               const fieldName = e.field;
