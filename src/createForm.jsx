@@ -6,7 +6,7 @@ import AsyncValidate from 'async-validator';
 let actionId = 0;
 
 function createForm(option = {}) {
-  const {mapPropsToFields, onFieldsChange} = option;
+  const {mapPropsToFields, onFieldsChange, formPropName = 'form'} = option;
 
   function decorate(WrappedComponent) {
     class Form extends Component {
@@ -74,9 +74,12 @@ function createForm(option = {}) {
 
       getField(name, copy) {
         const ret = this.state[name];
+        if (ret) {
+          ret.name = name;
+        }
         if (copy) {
           if (ret) {
-            return {...ret, name};
+            return {...ret};
           }
           return {name};
         }
@@ -271,7 +274,10 @@ function createForm(option = {}) {
       }
 
       render() {
-        return <WrappedComponent form={this.getForm()} {...this.props}/>;
+        const formProps = {
+          [formPropName]: this.getForm(),
+        };
+        return <WrappedComponent {...formProps} {...this.props}/>;
       }
     }
 
