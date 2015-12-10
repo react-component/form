@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>overview.js - example - rc-form@0.2.0</title>
+  <title>validateTrigger.js - example - rc-form@0.2.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -251,7 +251,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <!--[if lt IE 9]>
   <script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js,es5-shim/4.0.5/es5-sham.js,html5shiv/3.7.2/src/html5shiv.js"></script>
   <![endif]-->
-  <link rel="stylesheet" href="overview.css" />
+  
 </head>
 
 <body>
@@ -263,14 +263,12 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="overview.js?nowrap"></script>
+  <script src="validateTrigger.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
 import {createForm} from <span class="hljs-string">'rc-form'</span>;
 import React, {Component, PropTypes} from <span class="hljs-string">'react'</span>;
 import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import Select, {Option} from <span class="hljs-string">'rc-select'</span>;
-import <span class="hljs-string">'rc-select/assets/index.css'</span>;
 
 <span class="hljs-keyword">const</span> region = {
   border: <span class="hljs-string">'1px solid red'</span>,
@@ -282,12 +280,13 @@ import <span class="hljs-string">'rc-select/assets/index.css'</span>;
   <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = props.form;
   <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'email'</span>);
   <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{region}</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email validate onBlur<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">email</span>', {
       <span class="hljs-attribute">rules:</span> [
         {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
         {<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>', <span class="hljs-attribute">message:</span> '错误的 <span class="hljs-attribute">email</span> 格式'},
       ],
+      <span class="hljs-attribute">validateTrigger:</span> '<span class="hljs-attribute">onBlur</span>',
     })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
       {errors ? errors.join(',') : null}
@@ -307,29 +306,17 @@ const User = React.createClass({
     form: PropTypes.object,
   },
 
-  userExists(rule, value, callback) {
-    setTimeout(() =&gt; {
-      if (value === '1') {
-        callback([new Error('are you kidding?')]);
-      } else if (value === 'yiminghe') {
-        callback([new Error('forbid yiminghe')]);
-      } else {
-        callback();
-      }
-    }, 300);
-  },
-
   render() {
     const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
     const errors = getFieldError('user');
     return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{region}</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>user async validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>user validate on submit<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">user</span>', {
-        <span class="hljs-attribute">initialValue:</span> '<span class="hljs-attribute">x</span>',
         <span class="hljs-attribute">rules:</span> [
           {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
-          {<span class="hljs-attribute">validator:</span> <span class="hljs-attribute">this.userExists</span>},
+          {<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">string</span>', <span class="hljs-attribute">min:</span> <span class="hljs-attribute">5</span>},
         ],
+        <span class="hljs-attribute">validateTrigger:</span> <span class="hljs-attribute">null</span>,
       })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
         {(errors) ? errors.join(',') : null}
@@ -340,32 +327,6 @@ const User = React.createClass({
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
   },
 });
-
-function CustomInput(props) {
-  const {getFieldProps, getFieldError, isFieldValidating} = props.form;
-  const errors = getFieldError('select');
-  return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{region}</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>rc-select sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}} {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">select</span>', {
-      <span class="hljs-attribute">rules:</span> [
-        {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
-      ],
-    })}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"1"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"2"</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">Select</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-      {(errors) ? errors.join(',') : null}
-    <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-      {isFieldValidating('select') ? 'validating' : null}
-    <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
-}
-
-CustomInput.propTypes = {
-  form: PropTypes.object,
-};
 
 @createForm()
 class Form extends Component {
@@ -391,22 +352,12 @@ class Form extends Component {
 
   render() {
     const {form} = this.props;
-    const {getFieldProps} = form;
     return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>overview<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>use validateTrigger config<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{region}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>normal input, no validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal</span>')}/&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-
         <span class="hljs-tag">&lt;<span class="hljs-title">User</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">Email</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
-
-        <span class="hljs-tag">&lt;<span class="hljs-title">CustomInput</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{region}</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">button</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
