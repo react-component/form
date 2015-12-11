@@ -21,8 +21,9 @@ function createForm(option = {}) {
         this.cachedBind = {};
         const bindMethods = [
           'getFieldProps', 'isFieldValidating',
-          'getFieldError', 'removeField',
+          'getFieldError', 'removeFields',
           'validateFieldsByName', 'getFieldsValue',
+          'setFieldsValue',
         ];
         bindMethods.forEach((m)=> {
           this[m] = this[m].bind(this);
@@ -46,10 +47,12 @@ function createForm(option = {}) {
         }
         const value = getValueFromEvent(event);
         const field = this.getField(name, true);
-        this.setField(name, {
-          ...field,
-          value,
-          dirty: !!rules,
+        this.setFields({
+          [name]: {
+            ...field,
+            value,
+            dirty: !!rules,
+          },
         });
       }
 
@@ -90,7 +93,7 @@ function createForm(option = {}) {
       getFieldProps(name, fieldOption = {}) {
         const {rules,
           trigger = 'onChange',
-          initialValue = '',
+          initialValue = undefined,
           validateTrigger = 'onChange'} = fieldOption;
         const inputProps = {
           value: initialValue,
@@ -121,8 +124,8 @@ function createForm(option = {}) {
         return this.getFieldMember(name, 'errors');
       }
 
-      getFieldsValue(fs) {
-        const fields = fs || Object.keys(this.state);
+      getFieldsValue(names) {
+        const fields = names || Object.keys(this.state);
         const allValues = {};
         fields.forEach((f)=> {
           allValues[f] = this.getFieldValue(f);
@@ -142,25 +145,33 @@ function createForm(option = {}) {
       getForm() {
         return {
           getFieldsValue: this.getFieldsValue,
+          setFieldsValue: this.setFieldsValue,
           getFieldProps: this.getFieldProps,
           getFieldError: this.getFieldError,
           isFieldValidating: this.isFieldValidating,
-          removeField: this.removeField,
+          removeFields: this.removeFields,
           validateFields: this.validateFieldsByName,
         };
       }
 
-      setField(name, field) {
-        let state = {
-          [name]: field,
-        };
-        if (typeof name === 'object') {
-          state = name;
-        }
-        this.setState(state);
+      setFields(fields) {
+        this.setState(fields);
         if (onFieldsChange) {
-          onFieldsChange(this.props, state);
+          onFieldsChange(this.props, fields);
         }
+      }
+
+      setFieldsValue(fieldsValue) {
+        const fields = {};
+        for (const name in fieldsValue) {
+          if (fieldsValue.hasOwnProperty(name)) {
+            fields[name] = {
+              name: name,
+              value: fieldsValue[name],
+            };
+          }
+        }
+        this.setFields(fields);
       }
 
       validateFields(fields, callback, fieldNames) {
@@ -189,7 +200,7 @@ function createForm(option = {}) {
           allFields[name] = field;
         });
 
-        this.setField(allFields);
+        this.setFields(allFields);
 
         if (callback && isEmptyObject(allFields)) {
           callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
@@ -231,7 +242,7 @@ function createForm(option = {}) {
             nowFieldStatus.value = allValues[name];
             nowAllFields[name] = nowFieldStatus;
           });
-          this.setField(nowAllFields);
+          this.setFields(nowAllFields);
           if (callback) {
             callback(isEmptyObject(errorsGroup) ? null : errorsGroup, this.getFieldsValue(fieldNames));
           }
@@ -272,11 +283,15 @@ function createForm(option = {}) {
         return this.getFieldMember(name, 'validating');
       }
 
-      removeField(name) {
-        if (this.fieldsMeta[name]) {
-          delete this.fieldsMeta[name];
-          this.setField(name, undefined);
-        }
+      removeFields(names) {
+        const fields = {};
+        names.forEach((name)=> {
+          if (this.fieldsMeta[name]) {
+            delete this.fieldsMeta[name];
+            fields[name] = undefined;
+          }
+        });
+        this.setFields(fields);
       }
 
       render() {

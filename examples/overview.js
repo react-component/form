@@ -5,17 +5,14 @@ import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import Select, {Option} from 'rc-select';
 import 'rc-select/assets/index.css';
-
-const region = {
-  border: '1px solid red',
-  marginTop: 10,
-  padding: 10,
-};
+import DatePicker from 'antd/lib/datepicker';
+import 'antd/lib/index.css';
+import {regionStyle, errorStyle} from './styles';
 
 function Email(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('email');
-  return (<div style={region}>
+  return (<div style={regionStyle}>
     <p>email sync validate</p>
     <p><input {...getFieldProps('email', {
       rules: [
@@ -23,10 +20,10 @@ function Email(props) {
         {type: 'email', message: '错误的 email 格式'},
       ],
     })}/></p>
-    <p>
+    <p style={errorStyle}>
       {errors ? errors.join(',') : null}
     </p>
-    <p>
+    <p style={errorStyle}>
       {isFieldValidating('email') ? 'validating' : null}
     </p>
   </div>);
@@ -56,7 +53,7 @@ const User = React.createClass({
   render() {
     const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
     const errors = getFieldError('user');
-    return (<div style={region}>
+    return (<div style={regionStyle}>
       <p>user async validate</p>
       <p><input {...getFieldProps('user', {
         initialValue: 'x',
@@ -65,10 +62,10 @@ const User = React.createClass({
           {validator: this.userExists},
         ],
       })}/></p>
-      <p>
+      <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
-      <p>
+      <p style={errorStyle}>
         {isFieldValidating('user') ? 'validating' : null}
       </p>
     </div>);
@@ -78,7 +75,7 @@ const User = React.createClass({
 function CustomInput(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('select');
-  return (<div style={region}>
+  return (<div style={regionStyle}>
     <p>rc-select sync validate</p>
     <p><Select placeholder="please select" style={{width: 200}} {...getFieldProps('select', {
       rules: [
@@ -88,16 +85,39 @@ function CustomInput(props) {
       <Option value="1">1</Option>
       <Option value="2">2</Option>
     </Select></p>
-    <p>
+    <p style={errorStyle}>
       {(errors) ? errors.join(',') : null}
     </p>
-    <p>
+    <p style={errorStyle}>
       {isFieldValidating('select') ? 'validating' : null}
     </p>
   </div>);
 }
 
 CustomInput.propTypes = {
+  form: PropTypes.object,
+};
+
+function DateInput(props) {
+  const {getFieldProps, getFieldError} = props.form;
+  const errors = getFieldError('date');
+  return (<div style={regionStyle}>
+    <p>DateInput sync validate</p>
+    <p style={{width: 200}}><DatePicker placeholder="please select" {...getFieldProps('date', {
+      rules: [
+        {required: true, type: 'date'},
+      ],
+    })}>
+      <Option value="1">1</Option>
+      <Option value="2">2</Option>
+    </DatePicker></p>
+    <p style={errorStyle}>
+      {(errors) ? errors.join(',') : null}
+    </p>
+  </div>);
+}
+
+DateInput.propTypes = {
   form: PropTypes.object,
 };
 
@@ -129,7 +149,7 @@ class Form extends Component {
     return (<div style={{margin: 20}}>
       <h2>overview</h2>
       <form onSubmit={this.onSubmit}>
-        <div style={region}>
+        <div style={regionStyle}>
           <p>normal input, no validate</p>
           <p>
             <input {...getFieldProps('normal')}/>
@@ -142,13 +162,14 @@ class Form extends Component {
 
         <CustomInput form={form}/>
 
-        <div style={region}>
+        <DateInput form={form}/>
+
+        <div style={regionStyle}>
           <button>submit</button>
         </div>
       </form>
     </div>);
   }
 }
-
 
 ReactDOM.render(<Form />, document.getElementById('__react-content'));

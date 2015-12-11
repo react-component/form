@@ -6,12 +6,7 @@ import { combineReducers } from 'redux';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import ReactDOM from 'react-dom';
-
-const region = {
-  border: '1px solid red',
-  marginTop: 10,
-  padding: 10,
-};
+import {regionStyle, errorStyle} from './styles';
 
 function form(state = {
   email: {
@@ -59,14 +54,14 @@ class Form extends Component {
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('email');
-    return (<div style={region}>
+    return (<div style={regionStyle}>
       <p>email:</p>
       <p><input {...getFieldProps('email', {
         rules: [{
           type: 'email',
         }],
       })}/></p>
-      <p>
+      <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
     </div>);
@@ -92,7 +87,7 @@ let Out = React.createClass({
 
   render() {
     const {email} = this.props;
-    return (<div style={region}>
+    return (<div style={regionStyle}>
       <p>
         email: {email && email.value}
       </p>

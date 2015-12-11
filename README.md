@@ -74,7 +74,7 @@ Called when field changed, you can dispatch fields to redux store.
 
 ### formOption.mapPropsToFields(props)
 
-convert value from props to fields.
+convert value from props to fields. used for read fields from redux store.
 
 createForm() will return another function:
 
@@ -103,6 +103,10 @@ type: Object[]. validator rules. see: https://github.com/yiminghe/async-validato
 ### getFieldsValue([fieldNames: String[]])
 
 Get fields value by fieldNames.
+
+### setFieldsValue(obj: Object)
+
+set fields value by kv object.
 
 ### validateFields([fieldNames: String[]], callback: Function(errors, values))
 

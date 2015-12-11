@@ -4,12 +4,7 @@ import { createForm } from 'rc-form';
 import React, {Component, PropTypes} from 'react';
 import {createRootContainer, createContainer} from 'react-data-binding';
 import ReactDOM from 'react-dom';
-
-const region = {
-  border: '1px solid red',
-  marginTop: 10,
-  padding: 10,
-};
+import {regionStyle, errorStyle} from './styles';
 
 @createContainer((state) => {
   return {
@@ -39,14 +34,14 @@ class Form extends Component {
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('email');
-    return (<div style={region}>
+    return (<div style={regionStyle}>
       <p>email:</p>
       <p><input {...getFieldProps('email', {
         rules: [{
           type: 'email',
         }],
       })}/></p>
-      <p>
+      <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
     </div>);
@@ -57,12 +52,13 @@ let Out = React.createClass({
   propTypes: {
     email: PropTypes.object,
     setStoreState: PropTypes.func,
+    getStoreState: PropTypes.func,
   },
 
   setEmail() {
     this.props.setStoreState({
       formState: {
-        ...this.props.setStoreState().formState,
+        ...this.props.getStoreState().formState,
         email: {
           value: 'yiminghe@gmail.com',
         },
@@ -72,7 +68,7 @@ let Out = React.createClass({
 
   render() {
     const {email} = this.props;
-    return (<div style={region}>
+    return (<div style={regionStyle}>
       <p>
         email: {email && email.value}
       </p>

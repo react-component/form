@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -38,6 +38,7 @@
     "browser-test-cover": "rc-tools run browser-test-cover"
   },
   "devDependencies": {
+    "antd": "^0.10.4",
     "expect.js": "0.3.x",
     "pre-commit": "1.x",
     "rc-select": "^5.4.0",

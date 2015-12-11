@@ -5,53 +5,48 @@ import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import {regionStyle, errorStyle} from './styles';
 
-function Email(props) {
-  const {getFieldProps, getFieldError, isFieldValidating} = props.form;
-  const errors = getFieldError('email');
-  return (<div style={regionStyle}>
-    <p>email validate onBlur</p>
-    <p><input {...getFieldProps('email', {
-      rules: [
-        {required: true},
-        {type: 'email', message: '错误的 email 格式'},
-      ],
-      validateTrigger: 'onBlur',
-    })}/></p>
-    <p style={errorStyle}>
-      {errors ? errors.join(',') : null}
-    </p>
-    <p style={errorStyle}>
-      {isFieldValidating('email') ? 'validating' : null}
-    </p>
-  </div>);
-}
-
-Email.propTypes = {
-  form: PropTypes.object,
-};
-
-const User = React.createClass({
+const Email = React.createClass({
   propTypes: {
     form: PropTypes.object,
   },
 
+  getInitialState() {
+    return {
+      initialValue: '',
+      loading: true,
+    };
+  },
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        initialValue: 'x@gmail.com',
+        loading: false,
+      });
+    }, 500);
+  },
+
   render() {
+    if (this.state.loading) {
+      return null;
+    }
     const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
-    const errors = getFieldError('user');
+    const errors = getFieldError('email');
     return (<div style={regionStyle}>
-      <p>user validate on submit</p>
-      <p><input {...getFieldProps('user', {
+      <p>email validate onBlur</p>
+      <p><input {...getFieldProps('email', {
         rules: [
           {required: true},
-          {type: 'string', min: 5},
+          {type: 'email', message: '错误的 email 格式'},
         ],
-        validateTrigger: null,
+        initialValue: this.state.initialValue,
+        validateTrigger: 'onBlur',
       })}/></p>
       <p style={errorStyle}>
-        {(errors) ? errors.join(',') : null}
+        {errors ? errors.join(',') : null}
       </p>
-      <p style={errorStyle}>
-        {isFieldValidating('user') ? 'validating' : null}
+      <p>
+        {isFieldValidating('email') ? 'validating' : null}
       </p>
     </div>);
   },
@@ -82,10 +77,8 @@ class Form extends Component {
   render() {
     const {form} = this.props;
     return (<div style={{margin: 20}}>
-      <h2>use validateTrigger config</h2>
+      <h2>async init field</h2>
       <form onSubmit={this.onSubmit}>
-        <User form={form}/>
-
         <Email form={form}/>
 
         <div style={regionStyle}>
