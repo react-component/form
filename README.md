@@ -48,8 +48,9 @@ online example: http://react-component.github.io/form/examples/
 ## Usage
 
 ```js
-import form from 'rc-form';
-@form()
+import { createForm } from 'rc-form';
+
+@createForm()
 class Form  extends React.Component {
   render() {
     let errors;
@@ -65,9 +66,17 @@ class Form  extends React.Component {
 }
 ```
 
-## API
+## Function: createForm(formOption)
 
-Call form() will return another function:
+### formOption.onFieldsChange(props, fields)
+
+Called when field changed, you can dispatch fields to redux store.
+
+### formOption.mapPropsToFields(props)
+
+convert value from props to fields.
+
+createForm() will return another function:
 
 ### React.Component: function(WrappedComponent:React.Component)
 
