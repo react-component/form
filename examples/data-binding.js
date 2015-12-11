@@ -1,14 +1,14 @@
-webpackJsonp([0],{
+webpackJsonp([1],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(1);
+	module.exports = __webpack_require__(190);
 
 
 /***/ },
 
-/***/ 1:
+/***/ 190:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -33,17 +33,13 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDataBinding = __webpack_require__(188);
+	var _reactDataBinding = __webpack_require__(191);
 	
-	var _reactDom = __webpack_require__(201);
+	var _reactDom = __webpack_require__(188);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var region = {
-	  border: '1px solid red',
-	  marginTop: 10,
-	  padding: 10
-	};
+	var _styles = __webpack_require__(189);
 	
 	var Form = (function (_Component) {
 	  _inherits(Form, _Component);
@@ -64,7 +60,7 @@ webpackJsonp([0],{
 	      var errors = getFieldError('email');
 	      return _react2['default'].createElement(
 	        'div',
-	        { style: region },
+	        { style: _styles.regionStyle },
 	        _react2['default'].createElement(
 	          'p',
 	          null,
@@ -81,7 +77,7 @@ webpackJsonp([0],{
 	        ),
 	        _react2['default'].createElement(
 	          'p',
-	          null,
+	          { style: _styles.errorStyle },
 	          errors ? errors.join(',') : null
 	        )
 	      );
@@ -120,12 +116,13 @@ webpackJsonp([0],{
 	
 	  propTypes: {
 	    email: _react.PropTypes.object,
-	    setStoreState: _react.PropTypes.func
+	    setStoreState: _react.PropTypes.func,
+	    getStoreState: _react.PropTypes.func
 	  },
 	
 	  setEmail: function setEmail() {
 	    this.props.setStoreState({
-	      formState: _extends({}, this.props.setStoreState().formState, {
+	      formState: _extends({}, this.props.getStoreState().formState, {
 	        email: {
 	          value: 'yiminghe@gmail.com'
 	        }
@@ -138,7 +135,7 @@ webpackJsonp([0],{
 	
 	    return _react2['default'].createElement(
 	      'div',
-	      { style: region },
+	      { style: _styles.regionStyle },
 	      _react2['default'].createElement(
 	        'p',
 	        null,
@@ -197,7 +194,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 188:
+/***/ 191:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -206,7 +203,7 @@ webpackJsonp([0],{
 	  value: true
 	});
 	
-	var _createContainer = __webpack_require__(189);
+	var _createContainer = __webpack_require__(192);
 	
 	Object.defineProperty(exports, 'createContainer', {
 	  enumerable: true,
@@ -215,7 +212,7 @@ webpackJsonp([0],{
 	  }
 	});
 	
-	var _createRootContainer = __webpack_require__(199);
+	var _createRootContainer = __webpack_require__(202);
 	
 	Object.defineProperty(exports, 'createRootContainer', {
 	  enumerable: true,
@@ -224,7 +221,7 @@ webpackJsonp([0],{
 	  }
 	});
 	
-	var _Store = __webpack_require__(200);
+	var _Store = __webpack_require__(203);
 	
 	Object.defineProperty(exports, 'Store', {
 	  enumerable: true,
@@ -235,7 +232,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 189:
+/***/ 192:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -258,7 +255,7 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _shallowequal = __webpack_require__(190);
+	var _shallowequal = __webpack_require__(193);
 	
 	var _shallowequal2 = _interopRequireDefault(_shallowequal);
 	
@@ -266,11 +263,11 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reselect = __webpack_require__(195);
+	var _reselect = __webpack_require__(198);
 	
-	var _utils = __webpack_require__(196);
+	var _utils = __webpack_require__(199);
 	
-	var _createEmptyContainer = __webpack_require__(198);
+	var _createEmptyContainer = __webpack_require__(201);
 	
 	function createSelectGetter(s) {
 	  return function (state) {
@@ -414,12 +411,12 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 190:
+/***/ 193:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var fetchKeys = __webpack_require__(191);
+	var fetchKeys = __webpack_require__(194);
 	
 	module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 	
@@ -468,7 +465,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 191:
+/***/ 194:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -479,9 +476,9 @@ webpackJsonp([0],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(192),
-	    isArguments = __webpack_require__(193),
-	    isArray = __webpack_require__(194);
+	var getNative = __webpack_require__(195),
+	    isArguments = __webpack_require__(196),
+	    isArray = __webpack_require__(197);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -711,7 +708,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 192:
+/***/ 195:
 /***/ function(module, exports) {
 
 	/**
@@ -855,7 +852,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 193:
+/***/ 196:
 /***/ function(module, exports) {
 
 	/**
@@ -968,7 +965,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 194:
+/***/ 197:
 /***/ function(module, exports) {
 
 	/**
@@ -1155,7 +1152,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 195:
+/***/ 198:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1274,7 +1271,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 196:
+/***/ 199:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1292,7 +1289,7 @@ webpackJsonp([0],{
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _constants = __webpack_require__(197);
+	var _constants = __webpack_require__(200);
 	
 	function getDisplayName(WrappedComponent) {
 	  return WrappedComponent.displayName || WrappedComponent.name || 'WrappedComponent';
@@ -1308,7 +1305,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 197:
+/***/ 200:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1324,7 +1321,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 198:
+/***/ 201:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1351,7 +1348,7 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(196);
+	var _utils = __webpack_require__(199);
 	
 	function createEmptyContainer(mapStoreProps, storeName) {
 	  return function create(WrappedComponent) {
@@ -1381,7 +1378,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 199:
+/***/ 202:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1404,13 +1401,13 @@ webpackJsonp([0],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _Store = __webpack_require__(200);
+	var _Store = __webpack_require__(203);
 	
 	var _react = __webpack_require__(5);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _constants = __webpack_require__(197);
+	var _constants = __webpack_require__(200);
 	
 	function createRootContainerWrapper(WrappedComponent, store, storeName) {
 	  var RootContainer = (function (_Component) {
@@ -1456,7 +1453,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 200:
+/***/ 203:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1473,7 +1470,7 @@ webpackJsonp([0],{
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _reactDom = __webpack_require__(201);
+	var _reactDom = __webpack_require__(188);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>redux.js - example - rc-form@0.3.0</title>
+  <title>styles.js - example - rc-form@0.3.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,126 +263,18 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="redux.js?nowrap"></script>
-  <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
+  <script src="styles.js?nowrap"></script>
+  <div class="highlight"><pre><code language="js">export <span class="hljs-keyword">const</span> regionStyle = {
+  border: <span class="hljs-string">'1px solid red'</span>,
+  marginTop: <span class="hljs-number">10</span>,
+  padding: <span class="hljs-number">10</span>,
+};
 
-import { createForm } from 'rc-form';
-import React, {Component, PropTypes} from 'react';
-import { combineReducers } from 'redux';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
-import ReactDOM from 'react-dom';
-import {regionStyle, errorStyle} from './styles';
-
-function form(state = {
-  email: {
-    value: 'x@gmail.com',
-  },
-}, action) {
-  switch (action.type) {
-  case 'save_fields':
-    return {
-      ...state,
-      ...action.payload,
-    };
-  default:
-    return state;
-  }
-}
-
-@connect((state) =&gt; {
-  return {
-    formState: {
-      email: state.form.email,
-    },
-  };
-})
-@createForm({
-  mapPropsToFields(props) {
-    console.log('mapPropsToFields', props);
-    return {
-      email: props.formState.email,
-    };
-  },
-  onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
-    props.dispatch({
-      type: 'save_fields',
-      payload: fields,
-    });
-  },
-})
-class Form extends Component {
-  static propTypes = {
-    form: PropTypes.object,
-  }
-
-  render() {
-    const { getFieldProps, getFieldError } = this.props.form;
-    const errors = getFieldError('email');
-    return (&lt;div style={regionStyle}&gt;
-      &lt;p&gt;email:&lt;/p&gt;
-      &lt;p&gt;&lt;input {...getFieldProps('email', {
-        rules: [{
-          type: 'email',
-        }],
-      })}/&gt;&lt;/p&gt;
-      &lt;p style={errorStyle}&gt;
-        {(errors) ? errors.join(',') : null}
-      &lt;/p&gt;
-    &lt;/div&gt;);
-  }
-}
-
-let Out = React.createClass({
-  propTypes: {
-    email: PropTypes.object,
-    dispatch: PropTypes.func,
-  },
-
-  setEmail() {
-    this.props.dispatch({
-      type: 'save_fields',
-      payload: {
-        email: {
-          value: 'yiminghe@gmail.com',
-        },
-      },
-    });
-  },
-
-  render() {
-    const {email} = this.props;
-    return (&lt;div style={regionStyle}&gt;
-      &lt;p&gt;
-        email: {email &amp;&amp; email.value}
-      &lt;/p&gt;
-      &lt;button onClick={this.setEmail}&gt;set&lt;/button&gt;
-    &lt;/div&gt;);
-  },
-});
-
-Out = connect((state) =&gt; {
-  return {
-    email: state.form.email,
-  };
-})(Out);
-
-const store = createStore(combineReducers({form}));
-
-class App extends React.Component {
-  render() {
-    return (&lt;Provider store={store}&gt;
-      &lt;div&gt;
-        &lt;h2&gt;integrate with redux&lt;/h2&gt;
-        &lt;Form /&gt;
-        &lt;Out /&gt;
-      &lt;/div&gt;
-    &lt;/Provider&gt;);
-  }
-}
-
-ReactDOM.render(&lt;App /&gt;, document.getElementById('__react-content'));
+export <span class="hljs-keyword">const</span> errorStyle = {
+  color: <span class="hljs-string">'red'</span>,
+  marginTop: <span class="hljs-number">10</span>,
+  padding: <span class="hljs-number">10</span>,
+};
 </code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">

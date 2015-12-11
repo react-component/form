@@ -1,14 +1,12 @@
-webpackJsonp([5],{
-
-/***/ 0:
+webpackJsonp([0],[
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(326);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
-
-/***/ 326:
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -37,74 +35,56 @@ webpackJsonp([5],{
 	
 	var _styles = __webpack_require__(189);
 	
-	function Email(props) {
-	  var _props$form = props.form;
-	  var getFieldProps = _props$form.getFieldProps;
-	  var getFieldError = _props$form.getFieldError;
-	  var isFieldValidating = _props$form.isFieldValidating;
-	
-	  var errors = getFieldError('email');
-	  return _react2['default'].createElement(
-	    'div',
-	    { style: _styles.regionStyle },
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      'email validate onBlur'
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      null,
-	      _react2['default'].createElement('input', getFieldProps('email', {
-	        rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }],
-	        validateTrigger: 'onBlur'
-	      }))
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      { style: _styles.errorStyle },
-	      errors ? errors.join(',') : null
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      { style: _styles.errorStyle },
-	      isFieldValidating('email') ? 'validating' : null
-	    )
-	  );
-	}
-	
-	Email.propTypes = {
-	  form: _react.PropTypes.object
-	};
-	
-	var User = _react2['default'].createClass({
-	  displayName: 'User',
+	var Email = _react2['default'].createClass({
+	  displayName: 'Email',
 	
 	  propTypes: {
 	    form: _react.PropTypes.object
 	  },
 	
-	  render: function render() {
-	    var _props$form2 = this.props.form;
-	    var getFieldProps = _props$form2.getFieldProps;
-	    var getFieldError = _props$form2.getFieldError;
-	    var isFieldValidating = _props$form2.isFieldValidating;
+	  getInitialState: function getInitialState() {
+	    return {
+	      initialValue: '',
+	      loading: true
+	    };
+	  },
 	
-	    var errors = getFieldError('user');
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
+	    setTimeout(function () {
+	      _this.setState({
+	        initialValue: 'x@gmail.com',
+	        loading: false
+	      });
+	    }, 500);
+	  },
+	
+	  render: function render() {
+	    if (this.state.loading) {
+	      return null;
+	    }
+	    var _props$form = this.props.form;
+	    var getFieldProps = _props$form.getFieldProps;
+	    var getFieldError = _props$form.getFieldError;
+	    var isFieldValidating = _props$form.isFieldValidating;
+	
+	    var errors = getFieldError('email');
 	    return _react2['default'].createElement(
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2['default'].createElement(
 	        'p',
 	        null,
-	        'user validate on submit'
+	        'email validate onBlur'
 	      ),
 	      _react2['default'].createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement('input', getFieldProps('user', {
-	          rules: [{ required: true }, { type: 'string', min: 5 }],
-	          validateTrigger: null
+	        _react2['default'].createElement('input', getFieldProps('email', {
+	          rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }],
+	          initialValue: this.state.initialValue,
+	          validateTrigger: 'onBlur'
 	        }))
 	      ),
 	      _react2['default'].createElement(
@@ -114,8 +94,8 @@ webpackJsonp([5],{
 	      ),
 	      _react2['default'].createElement(
 	        'p',
-	        { style: _styles.errorStyle },
-	        isFieldValidating('user') ? 'validating' : null
+	        null,
+	        isFieldValidating('email') ? 'validating' : null
 	      )
 	    );
 	  }
@@ -162,12 +142,11 @@ webpackJsonp([5],{
 	        _react2['default'].createElement(
 	          'h2',
 	          null,
-	          'use validateTrigger config'
+	          'async init field'
 	        ),
 	        _react2['default'].createElement(
 	          'form',
 	          { onSubmit: this.onSubmit },
-	          _react2['default'].createElement(User, { form: form }),
 	          _react2['default'].createElement(Email, { form: form }),
 	          _react2['default'].createElement(
 	            'div',
@@ -191,6 +170,5 @@ webpackJsonp([5],{
 	_reactDom2['default'].render(_react2['default'].createElement(Form, null), document.getElementById('__react-content'));
 
 /***/ }
-
-});
-//# sourceMappingURL=validateTrigger.js.map
+]);
+//# sourceMappingURL=async-init.js.map

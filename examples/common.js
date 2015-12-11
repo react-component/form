@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		4:0
+/******/ 		6:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"data-binding","1":"overview","2":"redux","3":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"overview","3":"redux","4":"setFieldsValue","5":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -195,7 +195,7 @@
 	        this.state = state || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'removeField', 'validateFieldsByName', 'getFieldsValue'];
+	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'removeFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue'];
 	        bindMethods.forEach(function (m) {
 	          _this[m] = _this[m].bind(_this);
 	        });
@@ -221,10 +221,10 @@
 	          }
 	          var value = (0, _utils.getValueFromEvent)(event);
 	          var field = this.getField(name, true);
-	          this.setField(name, _extends({}, field, {
+	          this.setFields(_defineProperty({}, name, _extends({}, field, {
 	            value: value,
 	            dirty: !!rules
-	          }));
+	          })));
 	        }
 	      }, {
 	        key: 'onChangeValidate',
@@ -272,7 +272,7 @@
 	          var _fieldOption$trigger = fieldOption.trigger;
 	          var trigger = _fieldOption$trigger === undefined ? 'onChange' : _fieldOption$trigger;
 	          var _fieldOption$initialValue = fieldOption.initialValue;
-	          var initialValue = _fieldOption$initialValue === undefined ? '' : _fieldOption$initialValue;
+	          var initialValue = _fieldOption$initialValue === undefined ? undefined : _fieldOption$initialValue;
 	          var _fieldOption$validateTrigger = fieldOption.validateTrigger;
 	          var validateTrigger = _fieldOption$validateTrigger === undefined ? 'onChange' : _fieldOption$validateTrigger;
 	
@@ -308,10 +308,10 @@
 	        }
 	      }, {
 	        key: 'getFieldsValue',
-	        value: function getFieldsValue(fs) {
+	        value: function getFieldsValue(names) {
 	          var _this2 = this;
 	
-	          var fields = fs || Object.keys(this.state);
+	          var fields = names || Object.keys(this.state);
 	          var allValues = {};
 	          fields.forEach(function (f) {
 	            allValues[f] = _this2.getFieldValue(f);
@@ -335,24 +335,35 @@
 	        value: function getForm() {
 	          return {
 	            getFieldsValue: this.getFieldsValue,
+	            setFieldsValue: this.setFieldsValue,
 	            getFieldProps: this.getFieldProps,
 	            getFieldError: this.getFieldError,
 	            isFieldValidating: this.isFieldValidating,
-	            removeField: this.removeField,
+	            removeFields: this.removeFields,
 	            validateFields: this.validateFieldsByName
 	          };
 	        }
 	      }, {
-	        key: 'setField',
-	        value: function setField(name, field) {
-	          var state = _defineProperty({}, name, field);
-	          if (typeof name === 'object') {
-	            state = name;
-	          }
-	          this.setState(state);
+	        key: 'setFields',
+	        value: function setFields(fields) {
+	          this.setState(fields);
 	          if (onFieldsChange) {
-	            onFieldsChange(this.props, state);
+	            onFieldsChange(this.props, fields);
 	          }
+	        }
+	      }, {
+	        key: 'setFieldsValue',
+	        value: function setFieldsValue(fieldsValue) {
+	          var fields = {};
+	          for (var _name in fieldsValue) {
+	            if (fieldsValue.hasOwnProperty(_name)) {
+	              fields[_name] = {
+	                name: _name,
+	                value: fieldsValue[_name]
+	              };
+	            }
+	          }
+	          this.setFields(fields);
 	        }
 	      }, {
 	        key: 'validateFields',
@@ -384,7 +395,7 @@
 	            allFields[name] = field;
 	          });
 	
-	          this.setField(allFields);
+	          this.setFields(allFields);
 	
 	          if (callback && (0, _utils.isEmptyObject)(allFields)) {
 	            callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
@@ -426,7 +437,7 @@
 	              nowFieldStatus.value = allValues[name];
 	              nowAllFields[name] = nowFieldStatus;
 	            });
-	            _this3.setField(nowAllFields);
+	            _this3.setFields(nowAllFields);
 	            if (callback) {
 	              callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this3.getFieldsValue(fieldNames));
 	            }
@@ -471,12 +482,18 @@
 	          return this.getFieldMember(name, 'validating');
 	        }
 	      }, {
-	        key: 'removeField',
-	        value: function removeField(name) {
-	          if (this.fieldsMeta[name]) {
-	            delete this.fieldsMeta[name];
-	            this.setField(name, undefined);
-	          }
+	        key: 'removeFields',
+	        value: function removeFields(names) {
+	          var _this5 = this;
+	
+	          var fields = {};
+	          names.forEach(function (name) {
+	            if (_this5.fieldsMeta[name]) {
+	              delete _this5.fieldsMeta[name];
+	              fields[name] = undefined;
+	            }
+	          });
+	          this.setFields(fields);
 	        }
 	      }, {
 	        key: 'render',
@@ -21485,26 +21502,36 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	module.exports = __webpack_require__(7);
 
+
+/***/ },
+/* 189 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var regionStyle = {
+	  border: '1px solid red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	
+	exports.regionStyle = regionStyle;
+	var errorStyle = {
+	  color: 'red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	exports.errorStyle = errorStyle;
 
 /***/ }
 /******/ ]);

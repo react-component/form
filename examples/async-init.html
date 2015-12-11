@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>redux.js - example - rc-form@0.3.0</title>
+  <title>async-init.js - example - rc-form@0.3.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,127 +263,100 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="redux.js?nowrap"></script>
-  <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
+  <script src="async-init.js?nowrap"></script>
+  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-import { createForm } from 'rc-form';
-import React, {Component, PropTypes} from 'react';
-import { combineReducers } from 'redux';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
-import ReactDOM from 'react-dom';
-import {regionStyle, errorStyle} from './styles';
+import {createForm} from <span class="hljs-string">'rc-form'</span>;
+import React, {Component, PropTypes} from <span class="hljs-string">'react'</span>;
+import ReactDOM from <span class="hljs-string">'react-dom'</span>;
+import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span>;
 
-function form(state = {
-  email: {
-    value: 'x@gmail.com',
+<span class="hljs-keyword">const</span> Email = React.createClass({
+  propTypes: {
+    form: PropTypes.object,
   },
-}, action) {
-  switch (action.type) {
-  case 'save_fields':
-    return {
-      ...state,
-      ...action.payload,
-    };
-  default:
-    return state;
-  }
-}
 
-@connect((state) =&gt; {
-  return {
-    formState: {
-      email: state.form.email,
-    },
-  };
-})
-@createForm({
-  mapPropsToFields(props) {
-    console.log('mapPropsToFields', props);
-    return {
-      email: props.formState.email,
+  getInitialState() {
+    <span class="hljs-keyword">return</span> {
+      initialValue: <span class="hljs-string">''</span>,
+      loading: <span class="hljs-literal">true</span>,
     };
   },
-  onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
-    props.dispatch({
-      type: 'save_fields',
-      payload: fields,
-    });
+
+  componentDidMount() {
+    setTimeout(() =&gt; {
+      <span class="hljs-keyword">this</span>.setState({
+        initialValue: <span class="hljs-string">'x@gmail.com'</span>,
+        loading: <span class="hljs-literal">false</span>,
+      });
+    }, <span class="hljs-number">500</span>);
   },
-})
+
+  render() {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.loading) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'email'</span>);
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email validate onBlur<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">email</span>', {
+        <span class="hljs-attribute">rules:</span> [
+          {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
+          {<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>', <span class="hljs-attribute">message:</span> '错误的 <span class="hljs-attribute">email</span> 格式'},
+        ],
+        <span class="hljs-attribute">initialValue:</span> <span class="hljs-attribute">this.state.initialValue</span>,
+        <span class="hljs-attribute">validateTrigger:</span> '<span class="hljs-attribute">onBlur</span>',
+      })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
+        {errors ? errors.join(',') : null}
+      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+        {isFieldValidating('email') ? 'validating' : null}
+      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+  },
+});
+
+@createForm()
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
   }
 
-  render() {
-    const { getFieldProps, getFieldError } = this.props.form;
-    const errors = getFieldError('email');
-    return (&lt;div style={regionStyle}&gt;
-      &lt;p&gt;email:&lt;/p&gt;
-      &lt;p&gt;&lt;input {...getFieldProps('email', {
-        rules: [{
-          type: 'email',
-        }],
-      })}/&gt;&lt;/p&gt;
-      &lt;p style={errorStyle}&gt;
-        {(errors) ? errors.join(',') : null}
-      &lt;/p&gt;
-    &lt;/div&gt;);
+  constructor() {
+    super();
+    this.onSubmit = this.onSubmit.bind(this);
   }
-}
 
-let Out = React.createClass({
-  propTypes: {
-    email: PropTypes.object,
-    dispatch: PropTypes.func,
-  },
-
-  setEmail() {
-    this.props.dispatch({
-      type: 'save_fields',
-      payload: {
-        email: {
-          value: 'yiminghe@gmail.com',
-        },
-      },
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.form.validateFields((error, values)=&gt; {
+      if (!error) {
+        console.log('ok', values);
+      } else {
+        console.log('error', error, values);
+      }
     });
-  },
+  }
 
   render() {
-    const {email} = this.props;
-    return (&lt;div style={regionStyle}&gt;
-      &lt;p&gt;
-        email: {email &amp;&amp; email.value}
-      &lt;/p&gt;
-      &lt;button onClick={this.setEmail}&gt;set&lt;/button&gt;
-    &lt;/div&gt;);
-  },
-});
+    const {form} = this.props;
+    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>async init field<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Email</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
 
-Out = connect((state) =&gt; {
-  return {
-    email: state.form.email,
-  };
-})(Out);
-
-const store = createStore(combineReducers({form}));
-
-class App extends React.Component {
-  render() {
-    return (&lt;Provider store={store}&gt;
-      &lt;div&gt;
-        &lt;h2&gt;integrate with redux&lt;/h2&gt;
-        &lt;Form /&gt;
-        &lt;Out /&gt;
-      &lt;/div&gt;
-    &lt;/Provider&gt;);
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">button</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
   }
 }
 
-ReactDOM.render(&lt;App /&gt;, document.getElementById('__react-content'));
-</code></pre></div>
+ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>, document.getElementById('__react-content'));
+</span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">
   <img style="position: absolute; top: 0; right: 0; border: 0;"
