@@ -1626,7 +1626,7 @@ webpackJsonp([4],{
 	    return _react2['default'].createElement(
 	      'a',
 	      { href: '#', onClick: this.onClick },
-	      this.props.value || '请选择'
+	      this.props.value || 'please select'
 	    );
 	  }
 	});
