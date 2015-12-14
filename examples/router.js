@@ -88,7 +88,7 @@ const CityInput = React.createClass({
     history.pushState({}, '/city-selector');
   },
   render() {
-    return (<a href="#" onClick={this.onClick}>{this.props.value || '请选择'}</a>);
+    return (<a href="#" onClick={this.onClick}>{this.props.value || 'please select'}</a>);
   },
 });
 
