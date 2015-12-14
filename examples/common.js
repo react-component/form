@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		7:0
+/******/ 		8:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"overview","3":"redux","4":"router","5":"setFieldsValue","6":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"dynamic","3":"overview","4":"redux","5":"router","6":"setFieldsValue","7":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -165,7 +165,7 @@
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
 	
 	// avoid concurrency problems
-	var actionId = 0;
+	var gid = 0;
 	
 	function createForm() {
 	  var option = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -188,14 +188,14 @@
 	        }
 	
 	        _get(Object.getPrototypeOf(Form.prototype), 'constructor', this).apply(this, args);
-	        var state = undefined;
+	        var fields = undefined;
 	        if (mapPropsToFields) {
-	          state = mapPropsToFields(this.props);
+	          fields = mapPropsToFields(this.props);
 	        }
-	        this.state = state || {};
+	        this.fields = fields || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'removeFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
+	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
 	        bindMethods.forEach(function (m) {
 	          _this[m] = _this[m].bind(_this);
 	        });
@@ -205,25 +205,36 @@
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
 	          if (mapPropsToFields) {
-	            var state = mapPropsToFields(nextProps);
-	            if (state) {
-	              this.setState(state);
+	            var fields = mapPropsToFields(nextProps);
+	            if (fields) {
+	              this.fields = _extends({}, this.fields, fields);
 	            }
 	          }
+	        }
+	      }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	          var fields = this.fields;
+	          var fieldsMeta = this.fieldsMeta;
+	
+	          var fieldsKeys = Object.keys(fields);
+	          fieldsKeys.forEach(function (s) {
+	            if (!fieldsMeta[s]) {
+	              delete fields[s];
+	            }
+	          });
 	        }
 	      }, {
 	        key: 'onChange',
 	        value: function onChange(name, event) {
 	          var fieldMeta = this.getFieldMeta(name);
 	          var rules = fieldMeta.rules;
-	          if (rules) {
-	            fieldMeta.actionId = ++actionId;
-	          }
 	          var value = (0, _utils.getValueFromEvent)(event);
 	          var field = this.getField(name, true);
 	          this.setFields(_defineProperty({}, name, _extends({}, field, {
 	            value: value,
-	            dirty: !!rules
+	            dirty: !!rules,
+	            sid: ++gid
 	          })));
 	        }
 	      }, {
@@ -252,7 +263,7 @@
 	      }, {
 	        key: 'getField',
 	        value: function getField(name, copy) {
-	          var ret = this.state[name];
+	          var ret = this.fields[name];
 	          if (ret) {
 	            ret.name = name;
 	          }
@@ -271,28 +282,38 @@
 	          var rules = fieldOption.rules;
 	          var _fieldOption$trigger = fieldOption.trigger;
 	          var trigger = _fieldOption$trigger === undefined ? 'onChange' : _fieldOption$trigger;
-	          var _fieldOption$initialValue = fieldOption.initialValue;
-	          var initialValue = _fieldOption$initialValue === undefined ? undefined : _fieldOption$initialValue;
+	          var hidden = fieldOption.hidden;
+	          var initialValue = fieldOption.initialValue;
 	          var _fieldOption$validateTrigger = fieldOption.validateTrigger;
 	          var validateTrigger = _fieldOption$validateTrigger === undefined ? 'onChange' : _fieldOption$validateTrigger;
 	
 	          var inputProps = {
 	            value: initialValue
 	          };
+	          var originalTriggerFn = undefined;
 	          if (rules && validateTrigger) {
+	            originalTriggerFn = inputProps[validateTrigger];
 	            inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
+	            if (originalTriggerFn) {
+	              inputProps[validateTrigger] = (0, _utils.createChainedFunction)(originalTriggerFn, inputProps[validateTrigger]);
+	            }
 	          }
 	          if (trigger && (validateTrigger !== trigger || !rules)) {
+	            originalTriggerFn = inputProps[trigger];
 	            inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
+	            if (originalTriggerFn) {
+	              inputProps[trigger] = (0, _utils.createChainedFunction)(originalTriggerFn, inputProps[trigger]);
+	            }
 	          }
 	          var field = this.getField(name);
 	          if (field && 'value' in field) {
 	            inputProps.value = field.value;
 	          }
-	          var fieldMeta = this.fieldsMeta[name] || {};
-	          fieldMeta.rules = rules;
-	          fieldMeta.initialValue = initialValue;
-	          this.fieldsMeta[name] = fieldMeta;
+	          this.fieldsMeta[name] = {
+	            rules: rules,
+	            hidden: hidden,
+	            initialValue: initialValue
+	          };
 	          return inputProps;
 	        }
 	      }, {
@@ -307,11 +328,19 @@
 	          return this.getFieldMember(name, 'errors');
 	        }
 	      }, {
+	        key: 'getValidFieldsName',
+	        value: function getValidFieldsName() {
+	          var fieldsMeta = this.fieldsMeta;
+	          return Object.keys(this.fieldsMeta).filter(function (name) {
+	            return !fieldsMeta[name].hidden;
+	          });
+	        }
+	      }, {
 	        key: 'getFieldsValue',
 	        value: function getFieldsValue(names) {
 	          var _this2 = this;
 	
-	          var fields = names || Object.keys(this.state);
+	          var fields = names || this.getValidFieldsName();
 	          var allValues = {};
 	          fields.forEach(function (f) {
 	            allValues[f] = _this2.getFieldValue(f);
@@ -321,10 +350,10 @@
 	      }, {
 	        key: 'getFieldValue',
 	        value: function getFieldValue(name) {
-	          var state = this.state;
+	          var fields = this.fields;
 	          var fieldsMeta = this.fieldsMeta;
 	
-	          var field = state[name];
+	          var field = fields[name];
 	          if (field && 'value' in field) {
 	            return field.value;
 	          }
@@ -341,14 +370,14 @@
 	            getFieldProps: this.getFieldProps,
 	            getFieldError: this.getFieldError,
 	            isFieldValidating: this.isFieldValidating,
-	            removeFields: this.removeFields,
 	            validateFields: this.validateFieldsByName
 	          };
 	        }
 	      }, {
 	        key: 'setFields',
 	        value: function setFields(fields) {
-	          this.setState(fields);
+	          this.fields = _extends({}, this.fields, fields);
+	          this.forceUpdate();
 	          if (onFieldsChange) {
 	            onFieldsChange(this.props, fields);
 	          }
@@ -372,13 +401,12 @@
 	        value: function validateFields(fields, callback, fieldNames) {
 	          var _this3 = this;
 	
-	          var currentActionId = actionId;
-	          ++actionId;
+	          var currentGlobalId = gid;
+	          ++gid;
 	          var allRules = {};
 	          var allValues = {};
 	          var allFields = {};
 	          var alreadyErrors = {};
-	
 	          fields.forEach(function (field) {
 	            var name = field.name;
 	            if (field.dirty === false) {
@@ -391,19 +419,16 @@
 	            field.errors = undefined;
 	            field.validating = true;
 	            field.dirty = true;
-	            fieldMeta.actionId = currentActionId;
+	            field.sid = currentGlobalId;
 	            allRules[name] = fieldMeta.rules;
 	            allValues[name] = field.value;
 	            allFields[name] = field;
 	          });
-	
 	          this.setFields(allFields);
-	
 	          if (callback && (0, _utils.isEmptyObject)(allFields)) {
 	            callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
 	            return;
 	          }
-	
 	          new _asyncValidator2['default'](allRules).validate(allValues, function (errors) {
 	            var errorsGroup = _extends({}, alreadyErrors);
 	            if (errors && errors.length) {
@@ -415,32 +440,22 @@
 	              });
 	            }
 	            var expired = false;
-	
-	            Object.keys(allRules).forEach(function (name) {
-	              var nowFieldMeta = _this3.getFieldMeta(name);
-	              // prevent concurrency call
-	              if (nowFieldMeta && nowFieldMeta.actionId !== currentActionId) {
-	                expired = true;
-	              }
-	            });
-	
-	            if (expired) {
-	              return;
-	            }
-	
 	            var nowAllFields = {};
-	
 	            Object.keys(allRules).forEach(function (name) {
 	              var fieldErrors = errorsGroup[name];
-	              var nowFieldStatus = _this3.getField(name, true);
-	              nowFieldStatus.errors = fieldErrors && (0, _utils.getErrorStrs)(fieldErrors);
-	              nowFieldStatus.validating = false;
-	              nowFieldStatus.dirty = false;
-	              nowFieldStatus.value = allValues[name];
-	              nowAllFields[name] = nowFieldStatus;
+	              var nowField = _this3.getField(name, true);
+	              if (nowField.sid !== currentGlobalId) {
+	                expired = true;
+	              } else {
+	                nowField.errors = fieldErrors && (0, _utils.getErrorStrs)(fieldErrors);
+	                nowField.validating = false;
+	                nowField.dirty = false;
+	                nowField.value = allValues[name];
+	                nowAllFields[name] = nowField;
+	              }
 	            });
 	            _this3.setFields(nowAllFields);
-	            if (callback) {
+	            if (callback && !expired) {
 	              callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this3.getFieldsValue(fieldNames));
 	            }
 	          });
@@ -456,7 +471,7 @@
 	            callback = names;
 	            names = undefined;
 	          }
-	          var fieldNames = names || Object.keys(this.fieldsMeta);
+	          var fieldNames = names || this.getValidFieldsName();
 	          var fields = fieldNames.map(function (name) {
 	            var fieldMeta = _this4.getFieldMeta(name);
 	            if (!fieldMeta.rules) {
@@ -484,23 +499,10 @@
 	          return this.getFieldMember(name, 'validating');
 	        }
 	      }, {
-	        key: 'removeFields',
-	        value: function removeFields(names) {
-	          var _this5 = this;
-	
-	          var fields = {};
-	          names.forEach(function (name) {
-	            if (_this5.fieldsMeta[name]) {
-	              delete _this5.fieldsMeta[name];
-	              fields[name] = undefined;
-	            }
-	          });
-	          this.setFields(fields);
-	        }
-	      }, {
 	        key: 'render',
 	        value: function render() {
 	          var formProps = _defineProperty({}, formPropName, this.getForm());
+	          this.fieldsMeta = {};
 	          return _react2['default'].createElement(WrappedComponent, _extends({}, formProps, this.props));
 	        }
 	      }]);
@@ -20108,6 +20110,7 @@
 	exports.getValueFromEvent = getValueFromEvent;
 	exports.getErrorStrs = getErrorStrs;
 	exports.isEmptyObject = isEmptyObject;
+	exports.createChainedFunction = createChainedFunction;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -20127,7 +20130,12 @@
 	
 	function getValueFromEvent(e) {
 	  // support custom element
-	  return e && e.target ? e.target.value : e;
+	  if (!e || !e.target) {
+	    return e;
+	  }
+	  var target = e.target;
+	
+	  return target.type === 'checkbox' ? target.checked : target.value;
 	}
 	
 	function getErrorStrs(errors) {
@@ -20144,6 +20152,17 @@
 	
 	function isEmptyObject(obj) {
 	  return Object.keys(obj).length === 0;
+	}
+	
+	function createChainedFunction() {
+	  var args = arguments;
+	  return function chainedFunction() {
+	    for (var i = 0; i < args.length; i++) {
+	      if (args[i] && args[i].apply) {
+	        args[i].apply(this, arguments);
+	      }
+	    }
+	  };
 	}
 
 /***/ },
