@@ -23,7 +23,7 @@ function createForm(option = {}) {
           'getFieldProps', 'isFieldValidating',
           'getFieldError', 'removeFields',
           'validateFieldsByName', 'getFieldsValue',
-          'setFieldsValue',
+          'setFieldsValue', 'getFieldValue',
         ];
         bindMethods.forEach((m)=> {
           this[m] = this[m].bind(this);
@@ -101,7 +101,7 @@ function createForm(option = {}) {
         if (rules && validateTrigger) {
           inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
         }
-        if (validateTrigger !== trigger || !rules) {
+        if (trigger && (validateTrigger !== trigger || !rules)) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
         const field = this.getField(name);
@@ -139,12 +139,14 @@ function createForm(option = {}) {
         if (field && 'value' in field) {
           return field.value;
         }
-        return fieldsMeta[name].initialValue;
+        const fieldMeta = fieldsMeta[name];
+        return fieldMeta && fieldMeta.initialValue;
       }
 
       getForm() {
         return {
           getFieldsValue: this.getFieldsValue,
+          getFieldValue: this.getFieldValue,
           setFieldsValue: this.setFieldsValue,
           getFieldProps: this.getFieldProps,
           getFieldError: this.getFieldError,

@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "antd": "^0.10.4",
     "expect.js": "0.3.x",
+    "history": "^1.16.0",
     "pre-commit": "1.x",
     "rc-select": "^5.4.0",
     "rc-server": "3.x",
@@ -49,6 +50,7 @@
     "react-data-binding": "^0.4.0",
     "react-dom": "0.14.x",
     "react-redux": "^4.0.0",
+    "react-router": "^1.0.2",
     "redux": "^3.0.4"
   },
   "pre-commit": [
