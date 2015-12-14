@@ -80,7 +80,7 @@ createForm() will return another function:
 
 ### React.Component: function(WrappedComponent:React.Component)
 
-Will pass a object as prop form with the following memebers to WrappedComponent:
+Will pass a object as prop form with the following members to WrappedComponent:
 
 ### Object: getFieldProps(name, option)
 
@@ -95,6 +95,10 @@ type: String. this input's unique name
 #### option.validateTrigger
 
 type: String. event which is listened to validate. Default to 'onChange', set to false to only validate when call props.validateFields.
+
+#### option.trigger
+
+type: String. event which is listened to collect form data. Default to 'onChange', set to false to stop collect form data.
 
 #### option.rules
 
