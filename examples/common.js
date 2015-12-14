@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		6:0
+/******/ 		7:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"overview","3":"redux","4":"setFieldsValue","5":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"overview","3":"redux","4":"router","5":"setFieldsValue","6":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -195,7 +195,7 @@
 	        this.state = state || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'removeFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue'];
+	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'removeFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
 	        bindMethods.forEach(function (m) {
 	          _this[m] = _this[m].bind(_this);
 	        });
@@ -282,7 +282,7 @@
 	          if (rules && validateTrigger) {
 	            inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
 	          }
-	          if (validateTrigger !== trigger || !rules) {
+	          if (trigger && (validateTrigger !== trigger || !rules)) {
 	            inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
 	          }
 	          var field = this.getField(name);
@@ -328,13 +328,15 @@
 	          if (field && 'value' in field) {
 	            return field.value;
 	          }
-	          return fieldsMeta[name].initialValue;
+	          var fieldMeta = fieldsMeta[name];
+	          return fieldMeta && fieldMeta.initialValue;
 	        }
 	      }, {
 	        key: 'getForm',
 	        value: function getForm() {
 	          return {
 	            getFieldsValue: this.getFieldsValue,
+	            getFieldValue: this.getFieldValue,
 	            setFieldsValue: this.setFieldsValue,
 	            getFieldProps: this.getFieldProps,
 	            getFieldError: this.getFieldError,
@@ -21509,29 +21511,6 @@
 	
 	module.exports = __webpack_require__(7);
 
-
-/***/ },
-/* 189 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	var regionStyle = {
-	  border: '1px solid red',
-	  marginTop: 10,
-	  padding: 10
-	};
-	
-	exports.regionStyle = regionStyle;
-	var errorStyle = {
-	  color: 'red',
-	  marginTop: 10,
-	  padding: 10
-	};
-	exports.errorStyle = errorStyle;
 
 /***/ }
 /******/ ]);

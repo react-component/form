@@ -1,14 +1,38 @@
-webpackJsonp([4],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(325);
+	module.exports = __webpack_require__(376);
 
 
 /***/ },
 
-/***/ 325:
+/***/ 189:
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var regionStyle = {
+	  border: '1px solid red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	
+	exports.regionStyle = regionStyle;
+	var errorStyle = {
+	  color: 'red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	exports.errorStyle = errorStyle;
+
+/***/ },
+
+/***/ 376:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */

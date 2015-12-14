@@ -194,7 +194,29 @@ webpackJsonp([2],[
 /* 186 */,
 /* 187 */,
 /* 188 */,
-/* 189 */,
+/* 189 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var regionStyle = {
+	  border: '1px solid red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	
+	exports.regionStyle = regionStyle;
+	var errorStyle = {
+	  color: 'red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	exports.errorStyle = errorStyle;
+
+/***/ },
 /* 190 */,
 /* 191 */,
 /* 192 */,

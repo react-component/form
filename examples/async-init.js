@@ -1,12 +1,14 @@
-webpackJsonp([0],[
-/* 0 */
+webpackJsonp([0],{
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
 /***/ },
-/* 1 */
+
+/***/ 1:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -169,6 +171,31 @@ webpackJsonp([0],[
 	
 	_reactDom2['default'].render(_react2['default'].createElement(Form, null), document.getElementById('__react-content'));
 
+/***/ },
+
+/***/ 189:
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var regionStyle = {
+	  border: '1px solid red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	
+	exports.regionStyle = regionStyle;
+	var errorStyle = {
+	  color: 'red',
+	  marginTop: 10,
+	  padding: 10
+	};
+	exports.errorStyle = errorStyle;
+
 /***/ }
-]);
+
+});
 //# sourceMappingURL=async-init.js.map
