@@ -202,6 +202,11 @@
 	      }
 	
 	      _createClass(Form, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	          this.componentDidUpdate();
+	        }
+	      }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(nextProps) {
 	          if (mapPropsToFields) {
@@ -218,15 +223,26 @@
 	          var fieldsMeta = this.fieldsMeta;
 	
 	          var fieldsKeys = Object.keys(fields);
-	          var removeFields = {};
+	          var changedFields = {};
 	          fieldsKeys.forEach(function (s) {
 	            if (!fieldsMeta[s]) {
 	              delete fields[s];
-	              removeFields[s] = undefined;
+	              changedFields[s] = undefined;
 	            }
 	          });
-	          if (onFieldsChange && !(0, _utils.isEmptyObject)(removeFields)) {
-	            onFieldsChange(this.props, removeFields);
+	          if (onFieldsChange) {
+	            Object.keys(fieldsMeta).forEach(function (name) {
+	              var fieldMeta = fieldsMeta[name];
+	              var field = fields[name] || {};
+	              if ('initialValue' in fieldMeta && !('value' in field)) {
+	                changedFields[name] = {
+	                  value: fieldMeta.initialValue
+	                };
+	              }
+	            });
+	            if (!(0, _utils.isEmptyObject)(changedFields)) {
+	              onFieldsChange(this.props, changedFields);
+	            }
 	          }
 	        }
 	      }, {
@@ -336,9 +352,9 @@
 	        key: 'getValidFieldsName',
 	        value: function getValidFieldsName() {
 	          var fieldsMeta = this.fieldsMeta;
-	          return Object.keys(this.fieldsMeta).filter(function (name) {
+	          return fieldsMeta ? Object.keys(fieldsMeta).filter(function (name) {
 	            return !fieldsMeta[name].hidden;
-	          });
+	          }) : [];
 	        }
 	      }, {
 	        key: 'getFieldsValue',
@@ -483,9 +499,7 @@
 	              return null;
 	            }
 	            var field = _this4.getField(name, true);
-	            if (!('value' in field) && 'initialValue' in fieldMeta) {
-	              field.value = fieldMeta.initialValue;
-	            }
+	            field.value = _this4.getFieldValue(name);
 	            return field;
 	          }).filter(function (f) {
 	            return !!f;

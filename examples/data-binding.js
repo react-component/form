@@ -94,6 +94,7 @@ webpackJsonp([1],{
 	          'p',
 	          null,
 	          _react2['default'].createElement('input', getFieldProps('email', {
+	            initialValue: 'x',
 	            rules: [{
 	              type: 'email'
 	            }]
@@ -177,7 +178,7 @@ webpackJsonp([1],{
 	
 	Out = (0, _reactDataBinding.createContainer)(function (state) {
 	  return {
-	    email: state.formState.email
+	    email: (state.formState || {}).email
 	  };
 	})(Out);
 	
@@ -208,9 +209,7 @@ webpackJsonp([1],{
 	  }]);
 	
 	  var _App = App;
-	  App = (0, _reactDataBinding.createRootContainer)({
-	    formState: {}
-	  })(App) || App;
+	  App = (0, _reactDataBinding.createRootContainer)()(App) || App;
 	  return App;
 	})(_react2['default'].Component);
 	
