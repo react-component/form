@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		10:0
+/******/ 		11:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"data-binding-form","3":"dynamic","4":"overview","5":"redux","6":"router","7":"server-validate","8":"setFieldsValue","9":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"data-binding-form","3":"dynamic","4":"overview","5":"parallel-form","6":"redux","7":"router","8":"server-validate","9":"setFieldsValue","10":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
