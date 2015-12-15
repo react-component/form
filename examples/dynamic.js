@@ -1,9 +1,9 @@
-webpackJsonp([2],{
+webpackJsonp([3],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(204);
+	module.exports = __webpack_require__(227);
 
 
 /***/ },
@@ -32,7 +32,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 204:
+/***/ 227:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -201,7 +201,10 @@ webpackJsonp([2],{
 	                'label',
 	                null,
 	                'remove/add user: ',
-	                _react2['default'].createElement('input', _extends({ type: 'checkbox' }, getFieldProps('remove_user')))
+	                _react2['default'].createElement('input', _extends({ type: 'checkbox' }, getFieldProps('remove_user', {
+	                  // initialValue:true,
+	                  valuePropName: 'checked'
+	                })))
 	              )
 	            )
 	          ),
@@ -216,7 +219,10 @@ webpackJsonp([2],{
 	                'label',
 	                null,
 	                'hide/show email: ',
-	                _react2['default'].createElement('input', _extends({ type: 'checkbox' }, getFieldProps('hide_email')))
+	                _react2['default'].createElement('input', _extends({ type: 'checkbox' }, getFieldProps('hide_email', {
+	                  // initialValue:true,
+	                  valuePropName: 'checked'
+	                })))
 	              )
 	            )
 	          ),

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>redux.js - example - rc-form@0.5.0</title>
+  <title>data-binding-form.js - example - rc-form@0.5.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -251,7 +251,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <!--[if lt IE 9]>
   <script src="https://a.alipayobjects.com/??es5-shim/4.0.5/es5-shim.js,es5-shim/4.0.5/es5-sham.js,html5shiv/3.7.2/src/html5shiv.js"></script>
   <![endif]-->
-  
+  <link rel="stylesheet" href="data-binding-form.css" />
 </head>
 
 <body>
@@ -263,127 +263,116 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="redux.js?nowrap"></script>
-  <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
+  <script src="data-binding-form.js?nowrap"></script>
+  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-import { createForm } from 'rc-form';
-import React, {Component, PropTypes} from 'react';
-import { combineReducers } from 'redux';
-import { createStore } from 'redux';
-import { Provider, connect } from 'react-redux';
-import ReactDOM from 'react-dom';
-import {regionStyle, errorStyle} from './styles';
+import { createForm } from <span class="hljs-string">'rc-form'</span>;
+import React, {PropTypes} from <span class="hljs-string">'react'</span>;
+import {createRootContainer, createContainer} from <span class="hljs-string">'react-data-binding'</span>;
+import ReactDOM from <span class="hljs-string">'react-dom'</span>;
+import {regionStyle} from <span class="hljs-string">'./styles'</span>;
+import Switch from <span class="hljs-string">'antd/lib/switch'</span>;
+import <span class="hljs-string">'antd/lib/index.css'</span>;
 
-function form(state = {
-  email: {
-    value: 'x@gmail.com',
-  },
-}, action) {
-  switch (action.type) {
-  case 'save_fields':
-    return {
-      ...state,
-      ...action.payload,
-    };
-  default:
-    return state;
-  }
-}
-
-@connect((state) =&gt; {
-  return {
-    formState: {
-      email: state.form.email,
-    },
-  };
-})
-@createForm({
-  mapPropsToFields(props) {
-    console.log('mapPropsToFields', props);
-    return {
-      email: props.formState.email,
-    };
-  },
-  onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
-    props.dispatch({
-      type: 'save_fields',
-      payload: fields,
-    });
-  },
-})
-class Form extends Component {
-  static propTypes = {
-    form: PropTypes.object,
-  }
-
-  render() {
-    const { getFieldProps, getFieldError } = this.props.form;
-    const errors = getFieldError('email');
-    return (&lt;div style={regionStyle}&gt;
-      &lt;p&gt;email:&lt;/p&gt;
-      &lt;p&gt;&lt;input {...getFieldProps('email', {
-        rules: [{
-          type: 'email',
-        }],
-      })}/&gt;&lt;/p&gt;
-      &lt;p style={errorStyle}&gt;
-        {(errors) ? errors.join(',') : null}
-      &lt;/p&gt;
-    &lt;/div&gt;);
-  }
-}
-
-let Out = React.createClass({
+<span class="hljs-keyword">const</span> TopForm = React.createClass({
   propTypes: {
-    email: PropTypes.object,
-    dispatch: PropTypes.func,
-  },
-
-  setEmail() {
-    this.props.dispatch({
-      type: 'save_fields',
-      payload: {
-        email: {
-          value: 'yiminghe@gmail.com',
-        },
-      },
-    });
+    form: PropTypes.object,
   },
 
   render() {
-    const {email} = this.props;
-    return (&lt;div style={regionStyle}&gt;
-      &lt;p&gt;
-        email: {email &amp;&amp; email.value}
-      &lt;/p&gt;
-      &lt;button onClick={this.setEmail}&gt;set&lt;/button&gt;
-    &lt;/div&gt;);
+    <span class="hljs-keyword">const</span> { getFieldProps } = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>has email? <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Switch</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">on</span>', {
+        <span class="hljs-attribute">initialValue:</span> <span class="hljs-attribute">true</span>,
+        <span class="hljs-attribute">valuePropName:</span> '<span class="hljs-attribute">checked</span>',
+      })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
   },
 });
 
-Out = connect((state) =&gt; {
+let BottomForm = React.createClass({
+  propTypes: {
+    form: PropTypes.object,
+    on: PropTypes.bool,
+  },
+
+  render() {
+    const {form, on} = this.props;
+    const style = {
+      ...regionStyle,
+      display: on ? 'block' : 'none',
+    };
+    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{style}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email: <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...form.getFieldProps</span>('<span class="hljs-attribute">email</span>', {
+        <span class="hljs-attribute">rules:</span> [{<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>'}],
+        <span class="hljs-attribute">hidden:</span> !<span class="hljs-attribute">on</span>,
+      })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+  },
+});
+
+BottomForm = createContainer((state) =&gt; {
   return {
-    email: state.form.email,
+    on: ((state.formState || {}).on || {}).value || false,
   };
-})(Out);
+})(BottomForm);
 
-const store = createStore(combineReducers({form}));
+let Form = React.createClass({
+  propTypes: {
+    form: PropTypes.object,
+  },
+  onSubmit(e) {
+    e.preventDefault();
+    console.log(this.props.form.getFieldsValue());
+  },
+  render() {
+    const {form} = this.props;
+    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">TopForm</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">BottomForm</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+  },
+});
 
+Form = createForm({
+  mapPropsToFields(props) {
+    console.log('mapPropsToFields', props);
+    return props.formState;
+  },
+  onFieldsChange(props, fields) {
+    console.log('onFieldsChange', fields);
+    props.setStoreState({
+      formState: {
+        ...props.formState,
+        ...fields,
+      },
+    });
+  },
+})(Form);
+
+Form = createContainer((state) =&gt; {
+  return {
+    formState: state.formState,
+  };
+})(Form);
+
+@createRootContainer()
 class App extends React.Component {
   render() {
-    return (&lt;Provider store={store}&gt;
-      &lt;div&gt;
-        &lt;h2&gt;integrate with redux&lt;/h2&gt;
-        &lt;Form /&gt;
-        &lt;Out /&gt;
-      &lt;/div&gt;
-    &lt;/Provider&gt;);
+    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>integrate with react-data-binding<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
   }
 }
 
-ReactDOM.render(&lt;App /&gt;, document.getElementById('__react-content'));
-</code></pre></div>
+ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">App</span> /&gt;</span>, document.getElementById('__react-content'));
+</span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">
   <img style="position: absolute; top: 0; right: 0; border: 0;"

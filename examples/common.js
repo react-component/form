@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		8:0
+/******/ 		9:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"dynamic","3":"overview","4":"redux","5":"router","6":"setFieldsValue","7":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"data-binding-form","3":"dynamic","4":"overview","5":"redux","6":"router","7":"setFieldsValue","8":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -305,12 +305,12 @@
 	          var trigger = _fieldOption$trigger === undefined ? 'onChange' : _fieldOption$trigger;
 	          var hidden = fieldOption.hidden;
 	          var initialValue = fieldOption.initialValue;
+	          var _fieldOption$valuePropName = fieldOption.valuePropName;
+	          var valuePropName = _fieldOption$valuePropName === undefined ? 'value' : _fieldOption$valuePropName;
 	          var _fieldOption$validateTrigger = fieldOption.validateTrigger;
 	          var validateTrigger = _fieldOption$validateTrigger === undefined ? 'onChange' : _fieldOption$validateTrigger;
 	
-	          var inputProps = {
-	            value: initialValue
-	          };
+	          var inputProps = _defineProperty({}, valuePropName, initialValue);
 	          var originalTriggerFn = undefined;
 	          if (rules && validateTrigger) {
 	            originalTriggerFn = inputProps[validateTrigger];
@@ -328,7 +328,7 @@
 	          }
 	          var field = this.getField(name);
 	          if (field && 'value' in field) {
-	            inputProps.value = field.value;
+	            inputProps[valuePropName] = field.value;
 	          }
 	          this.fieldsMeta[name] = {
 	            rules: rules,
