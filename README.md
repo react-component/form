@@ -116,6 +116,10 @@ Get fields value by fieldNames.
 
 set fields value by kv object.
 
+### setFields(obj: Object)
+
+set fields by kv object. each field can contain errors and value member.
+
 ### validateFields([fieldNames: String[]], callback: Function(errors, values))
 
 Validate and get fields value by fieldNames.

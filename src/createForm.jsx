@@ -21,7 +21,7 @@ function createForm(option = {}) {
         this.cachedBind = {};
         const bindMethods = [
           'getFieldProps', 'isFieldValidating',
-          'getFieldError',
+          'getFieldError', 'setFields',
           'validateFieldsByName', 'getFieldsValue',
           'setFieldsValue', 'getFieldValue',
         ];
@@ -195,6 +195,7 @@ function createForm(option = {}) {
           getFieldsValue: this.getFieldsValue,
           getFieldValue: this.getFieldValue,
           setFieldsValue: this.setFieldsValue,
+          setFields: this.setFields,
           getFieldProps: this.getFieldProps,
           getFieldError: this.getFieldError,
           isFieldValidating: this.isFieldValidating,
