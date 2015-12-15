@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -9,7 +9,7 @@
     "form"
   ],
   "homepage": "https://github.com/react-component/form",
-  "author": "",
+  "author": "yiminghe@gmail.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/react-component/form.git"

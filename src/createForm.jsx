@@ -42,11 +42,16 @@ function createForm(option = {}) {
       componentDidUpdate() {
         const {fields, fieldsMeta} = this;
         const fieldsKeys = Object.keys(fields);
+        const removeFields = {};
         fieldsKeys.forEach((s)=> {
           if (!fieldsMeta[s]) {
             delete fields[s];
+            removeFields[s] = undefined;
           }
         });
+        if (onFieldsChange && !isEmptyObject(removeFields)) {
+          onFieldsChange(this.props, removeFields);
+        }
       }
 
       onChange(name, event) {
