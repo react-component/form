@@ -123,9 +123,10 @@ function createForm(option = {}) {
           trigger = 'onChange',
           hidden,
           initialValue,
+          valuePropName = 'value',
           validateTrigger = 'onChange'} = fieldOption;
         const inputProps = {
-          value: initialValue,
+          [valuePropName]: initialValue,
         };
         let originalTriggerFn;
         if (rules && validateTrigger) {
@@ -144,7 +145,7 @@ function createForm(option = {}) {
         }
         const field = this.getField(name);
         if (field && 'value' in field) {
-          inputProps.value = field.value;
+          inputProps[valuePropName] = field.value;
         }
         this.fieldsMeta[name] = {
           rules,

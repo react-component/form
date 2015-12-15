@@ -92,6 +92,10 @@ After set, this will create a binding with this input.
 
 type: String. this input's unique name
 
+#### option.valuePropName
+
+prop name of component's value field, eg: checkbox should set checked ... 
+
 #### option.validateTrigger
 
 type: String. event which is listened to validate. Default to 'onChange', set to false to only validate when call props.validateFields.

@@ -84,7 +84,10 @@ class Form extends Component {
       <form onSubmit={this.onSubmit}>
         <div style={regionStyle}>
           <p>
-            <label>remove/add user: <input type="checkbox" {...getFieldProps('remove_user')}/></label>
+            <label>remove/add user: <input type="checkbox" {...getFieldProps('remove_user', {
+              // initialValue:true,
+              valuePropName: 'checked',
+            })}/></label>
           </p>
         </div>
 
@@ -92,7 +95,10 @@ class Form extends Component {
 
         <div style={regionStyle}>
           <p>
-            <label>hide/show email: <input type="checkbox" {...getFieldProps('hide_email')}/></label>
+            <label>hide/show email: <input type="checkbox" {...getFieldProps('hide_email', {
+              // initialValue:true,
+              valuePropName: 'checked',
+            })}/></label>
           </p>
         </div>
 

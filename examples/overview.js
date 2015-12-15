@@ -3,8 +3,7 @@
 import {createForm} from 'rc-form';
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import Select, {Option} from 'rc-select';
-import 'rc-select/assets/index.css';
+import Select, {Option} from 'antd/lib/select';
 import DatePicker from 'antd/lib/datepicker';
 import 'antd/lib/index.css';
 import {regionStyle, errorStyle} from './styles';
@@ -76,7 +75,7 @@ function CustomInput(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('select');
   return (<div style={regionStyle}>
-    <p>rc-select sync validate</p>
+    <p>custom select sync validate</p>
     <p><Select placeholder="please select" style={{width: 200}} {...getFieldProps('select', {
       rules: [
         {required: true},
