@@ -30,6 +30,10 @@ function createForm(option = {}) {
         });
       }
 
+      componentDidMount() {
+        this.componentDidUpdate();
+      }
+
       componentWillReceiveProps(nextProps) {
         if (mapPropsToFields) {
           const fields = mapPropsToFields(nextProps);
@@ -42,15 +46,26 @@ function createForm(option = {}) {
       componentDidUpdate() {
         const {fields, fieldsMeta} = this;
         const fieldsKeys = Object.keys(fields);
-        const removeFields = {};
+        const changedFields = {};
         fieldsKeys.forEach((s)=> {
           if (!fieldsMeta[s]) {
             delete fields[s];
-            removeFields[s] = undefined;
+            changedFields[s] = undefined;
           }
         });
-        if (onFieldsChange && !isEmptyObject(removeFields)) {
-          onFieldsChange(this.props, removeFields);
+        if (onFieldsChange) {
+          Object.keys(fieldsMeta).forEach((name) => {
+            const fieldMeta = fieldsMeta[name];
+            const field = fields[name] || {};
+            if (('initialValue' in fieldMeta) && !('value' in field)) {
+              changedFields[name] = {
+                value: fieldMeta.initialValue,
+              };
+            }
+          });
+          if (!isEmptyObject(changedFields)) {
+            onFieldsChange(this.props, changedFields);
+          }
         }
       }
 
@@ -150,9 +165,9 @@ function createForm(option = {}) {
 
       getValidFieldsName() {
         const fieldsMeta = this.fieldsMeta;
-        return Object.keys(this.fieldsMeta).filter((name)=> {
+        return fieldsMeta ? Object.keys(fieldsMeta).filter((name)=> {
           return !fieldsMeta[name].hidden;
-        });
+        }) : [];
       }
 
       getFieldsValue(names) {
@@ -282,9 +297,7 @@ function createForm(option = {}) {
             return null;
           }
           const field = this.getField(name, true);
-          if (!('value' in field) && 'initialValue' in fieldMeta) {
-            field.value = fieldMeta.initialValue;
-          }
+          field.value = this.getFieldValue(name);
           return field;
         }).filter((f)=> {
           return !!f;

@@ -37,6 +37,7 @@ class Form extends Component {
     return (<div style={regionStyle}>
       <p>email:</p>
       <p><input {...getFieldProps('email', {
+        initialValue: 'x',
         rules: [{
           type: 'email',
         }],
@@ -79,13 +80,11 @@ let Out = React.createClass({
 
 Out = createContainer((state) => {
   return {
-    email: state.formState.email,
+    email: (state.formState || {}).email,
   };
 })(Out);
 
-@createRootContainer({
-  formState: {},
-})
+@createRootContainer()
 class App extends React.Component {
   render() {
     return (<div>
