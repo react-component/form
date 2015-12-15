@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@0.5.0 - React High Order Form Component</title>
+  <title>rc-form@0.5.1 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@0.5.0</h1>
+  <h1>rc-form@0.5.1</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -757,6 +757,8 @@
       <li><a href="examples/redux.html">redux</a></li>
       
       <li><a href="examples/router.html">router</a></li>
+      
+      <li><a href="examples/server-validate.html">server-validate</a></li>
       
       <li><a href="examples/setFieldsValue.html">setFieldsValue</a></li>
       
@@ -813,6 +815,7 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <h4>option.rules<a id="user-content-option.rules" name="option.rules" class="anchor" aria-hidden="true" href="#option.rules"><span class="octicon octicon-link"></span></a></h4><p>type: Object[]. validator rules. see: <a href="https://github.com/yiminghe/async-validator" title="null">https://github.com/yiminghe/async-validator</a></p>
 <h3>getFieldsValue([fieldNames: String[]])<a id="user-content-getfieldsvalue([fieldnames:-string[]])" name="getfieldsvalue([fieldnames:-string[]])" class="anchor" aria-hidden="true" href="#getfieldsvalue([fieldnames:-string[]])"><span class="octicon octicon-link"></span></a></h3><p>Get fields value by fieldNames.</p>
 <h3>setFieldsValue(obj: Object)<a id="user-content-setfieldsvalue(obj:-object)" name="setfieldsvalue(obj:-object)" class="anchor" aria-hidden="true" href="#setfieldsvalue(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>set fields value by kv object.</p>
+<h3>setFields(obj: Object)<a id="user-content-setfields(obj:-object)" name="setfields(obj:-object)" class="anchor" aria-hidden="true" href="#setfields(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>set fields by kv object. each field can contain errors and value member.</p>
 <h3>validateFields([fieldNames: String[]], callback: Function(errors, values))<a id="user-content-validatefields([fieldnames:-string[]],-callback:-function(errors,-values))" name="validatefields([fieldnames:-string[]],-callback:-function(errors,-values))" class="anchor" aria-hidden="true" href="#validatefields([fieldnames:-string[]],-callback:-function(errors,-values))"><span class="octicon octicon-link"></span></a></h3><p>Validate and get fields value by fieldNames.</p>
 <h3>String[]: getFieldError(name)<a id="user-content-string[]:-getfielderror(name)" name="string[]:-getfielderror(name)" class="anchor" aria-hidden="true" href="#string[]:-getfielderror(name)"><span class="octicon octicon-link"></span></a></h3><p>Get input&#39;s validate errors</p>
 <h3>Bool: isFieldValidating(name)<a id="user-content-bool:-isfieldvalidating(name)" name="bool:-isfieldvalidating(name)" class="anchor" aria-hidden="true" href="#bool:-isfieldvalidating(name)"><span class="octicon octicon-link"></span></a></h3><p>Whether this input is validating</p>

@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		9:0
+/******/ 		10:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"data-binding-form","3":"dynamic","4":"overview","5":"redux","6":"router","7":"setFieldsValue","8":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"async-init","1":"data-binding","2":"data-binding-form","3":"dynamic","4":"overview","5":"redux","6":"router","7":"server-validate","8":"setFieldsValue","9":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -195,7 +195,7 @@
 	        this.fields = fields || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
+	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'setFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
 	        bindMethods.forEach(function (m) {
 	          _this[m] = _this[m].bind(_this);
 	        });
@@ -388,6 +388,7 @@
 	            getFieldsValue: this.getFieldsValue,
 	            getFieldValue: this.getFieldValue,
 	            setFieldsValue: this.setFieldsValue,
+	            setFields: this.setFields,
 	            getFieldProps: this.getFieldProps,
 	            getFieldError: this.getFieldError,
 	            isFieldValidating: this.isFieldValidating,

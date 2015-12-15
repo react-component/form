@@ -1,9 +1,9 @@
-webpackJsonp([9],{
+webpackJsonp([7],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(395);
+	module.exports = __webpack_require__(393);
 
 
 /***/ },
@@ -32,7 +32,7 @@ webpackJsonp([9],{
 
 /***/ },
 
-/***/ 395:
+/***/ 393:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -65,7 +65,6 @@ webpackJsonp([9],{
 	  var _props$form = props.form;
 	  var getFieldProps = _props$form.getFieldProps;
 	  var getFieldError = _props$form.getFieldError;
-	  var isFieldValidating = _props$form.isFieldValidating;
 	
 	  var errors = getFieldError('email');
 	  return _react2['default'].createElement(
@@ -74,25 +73,19 @@ webpackJsonp([9],{
 	    _react2['default'].createElement(
 	      'p',
 	      null,
-	      'email validate onBlur'
+	      'email sync validate'
 	    ),
 	    _react2['default'].createElement(
 	      'p',
 	      null,
 	      _react2['default'].createElement('input', getFieldProps('email', {
-	        rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }],
-	        validateTrigger: 'onBlur'
+	        rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }]
 	      }))
 	    ),
 	    _react2['default'].createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
-	    ),
-	    _react2['default'].createElement(
-	      'p',
-	      { style: _styles.errorStyle },
-	      isFieldValidating('email') ? 'validating' : null
 	    )
 	  );
 	}
@@ -112,7 +105,6 @@ webpackJsonp([9],{
 	    var _props$form2 = this.props.form;
 	    var getFieldProps = _props$form2.getFieldProps;
 	    var getFieldError = _props$form2.getFieldError;
-	    var isFieldValidating = _props$form2.isFieldValidating;
 	
 	    var errors = getFieldError('user');
 	    return _react2['default'].createElement(
@@ -121,25 +113,19 @@ webpackJsonp([9],{
 	      _react2['default'].createElement(
 	        'p',
 	        null,
-	        'user validate on submit'
+	        'user async validate'
 	      ),
 	      _react2['default'].createElement(
 	        'p',
 	        null,
 	        _react2['default'].createElement('input', getFieldProps('user', {
-	          rules: [{ required: true }, { type: 'string', min: 5 }],
-	          validateTrigger: null
+	          rules: [{ required: true }]
 	        }))
 	      ),
 	      _react2['default'].createElement(
 	        'p',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
-	      ),
-	      _react2['default'].createElement(
-	        'p',
-	        { style: _styles.errorStyle },
-	        isFieldValidating('user') ? 'validating' : null
 	      )
 	    );
 	  }
@@ -166,10 +152,23 @@ webpackJsonp([9],{
 	  _createClass(Form, [{
 	    key: 'onSubmit',
 	    value: function onSubmit(e) {
+	      var _this = this;
+	
 	      e.preventDefault();
 	      this.props.form.validateFields(function (error, values) {
 	        if (!error) {
 	          console.log('ok', values);
+	          setTimeout(function () {
+	            // server validate
+	            if (values.user === 'yiminghe') {
+	              _this.props.form.setFields({
+	                user: {
+	                  value: values.user,
+	                  errors: ['forbid ha']
+	                }
+	              });
+	            }
+	          }, 500);
 	        } else {
 	          console.log('error', error, values);
 	        }
@@ -186,7 +185,7 @@ webpackJsonp([9],{
 	        _react2['default'].createElement(
 	          'h2',
 	          null,
-	          'use validateTrigger config'
+	          'setFields'
 	        ),
 	        _react2['default'].createElement(
 	          'form',
@@ -217,4 +216,4 @@ webpackJsonp([9],{
 /***/ }
 
 });
-//# sourceMappingURL=validateTrigger.js.map
+//# sourceMappingURL=server-validate.js.map
