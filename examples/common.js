@@ -218,11 +218,16 @@
 	          var fieldsMeta = this.fieldsMeta;
 	
 	          var fieldsKeys = Object.keys(fields);
+	          var removeFields = {};
 	          fieldsKeys.forEach(function (s) {
 	            if (!fieldsMeta[s]) {
 	              delete fields[s];
+	              removeFields[s] = undefined;
 	            }
 	          });
+	          if (onFieldsChange && !(0, _utils.isEmptyObject)(removeFields)) {
+	            onFieldsChange(this.props, removeFields);
+	          }
 	        }
 	      }, {
 	        key: 'onChange',
