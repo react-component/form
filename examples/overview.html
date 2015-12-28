@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>overview.js - example - rc-form@0.5.1</title>
+  <title>overview.js - example - rc-form@0.6.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.5.1</h1>
+    <h1>rc-form@0.6.0</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -368,14 +368,12 @@ function DateInput(props) {
   const errors = getFieldError('date');
   return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>DateInput sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">DatePicker</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">date</span>', {
-      <span class="hljs-attribute">rules:</span> [
-        {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">date</span>'},
-      ],
-    })}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"1"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"2"</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">DatePicker</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">DatePicker</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">date</span>', {
+        <span class="hljs-attribute">rules:</span> [
+          {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">date</span>'},
+        ],
+      })} /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
       {(errors) ? errors.join(',') : null}
     <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>

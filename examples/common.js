@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		12:0
+/******/ 		14:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"overview","6":"parallel-form","7":"redux","8":"router","9":"server-validate","10":"setFieldsValue","11":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"normalize","6":"overview","7":"parallel-form","8":"redux","9":"router","10":"server-validate","11":"setFieldsValue","12":"suggest","13":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19753,6 +19753,8 @@
 	
 	// avoid concurrency problems
 	var gid = 0;
+	var defaultValidateTrigger = 'onChange';
+	var defaultTrigger = defaultValidateTrigger;
 	
 	function createForm() {
 	  var option = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -19836,7 +19838,13 @@
 	        key: 'onChange',
 	        value: function onChange(name, event) {
 	          var fieldMeta = this.getFieldMeta(name);
+	          var _fieldMeta$trigger = fieldMeta.trigger;
+	          var trigger = _fieldMeta$trigger === undefined ? defaultTrigger : _fieldMeta$trigger;
 	          var rules = fieldMeta.rules;
+	
+	          if (fieldMeta[trigger]) {
+	            fieldMeta[trigger](event);
+	          }
 	          var value = (0, _utils.getValueFromEvent)(event);
 	          var field = this.getField(name, true);
 	          this.setFields(_defineProperty({}, name, _extends({}, field, {
@@ -19848,6 +19856,13 @@
 	      }, {
 	        key: 'onChangeValidate',
 	        value: function onChangeValidate(name, event) {
+	          var fieldMeta = this.getFieldMeta(name);
+	          var _fieldMeta$validateTrigger = fieldMeta.validateTrigger;
+	          var validateTrigger = _fieldMeta$validateTrigger === undefined ? defaultValidateTrigger : _fieldMeta$validateTrigger;
+	
+	          if (fieldMeta[validateTrigger]) {
+	            fieldMeta[validateTrigger](event);
+	          }
 	          var value = (0, _utils.getValueFromEvent)(event);
 	          var field = this.getField(name, true);
 	          field.value = value;
@@ -19889,39 +19904,24 @@
 	          var fieldOption = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	          var rules = fieldOption.rules;
 	          var _fieldOption$trigger = fieldOption.trigger;
-	          var trigger = _fieldOption$trigger === undefined ? 'onChange' : _fieldOption$trigger;
-	          var hidden = fieldOption.hidden;
-	          var initialValue = fieldOption.initialValue;
+	          var trigger = _fieldOption$trigger === undefined ? defaultTrigger : _fieldOption$trigger;
 	          var _fieldOption$valuePropName = fieldOption.valuePropName;
 	          var valuePropName = _fieldOption$valuePropName === undefined ? 'value' : _fieldOption$valuePropName;
 	          var _fieldOption$validateTrigger = fieldOption.validateTrigger;
-	          var validateTrigger = _fieldOption$validateTrigger === undefined ? 'onChange' : _fieldOption$validateTrigger;
+	          var validateTrigger = _fieldOption$validateTrigger === undefined ? defaultValidateTrigger : _fieldOption$validateTrigger;
 	
-	          var inputProps = _defineProperty({}, valuePropName, initialValue);
-	          var originalTriggerFn = undefined;
+	          var inputProps = _defineProperty({}, valuePropName, fieldOption.initialValue);
 	          if (rules && validateTrigger) {
-	            originalTriggerFn = inputProps[validateTrigger];
 	            inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
-	            if (originalTriggerFn) {
-	              inputProps[validateTrigger] = (0, _utils.createChainedFunction)(originalTriggerFn, inputProps[validateTrigger]);
-	            }
 	          }
 	          if (trigger && (validateTrigger !== trigger || !rules)) {
-	            originalTriggerFn = inputProps[trigger];
 	            inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
-	            if (originalTriggerFn) {
-	              inputProps[trigger] = (0, _utils.createChainedFunction)(originalTriggerFn, inputProps[trigger]);
-	            }
 	          }
 	          var field = this.getField(name);
 	          if (field && 'value' in field) {
 	            inputProps[valuePropName] = field.value;
 	          }
-	          this.fieldsMeta[name] = {
-	            rules: rules,
-	            hidden: hidden,
-	            initialValue: initialValue
-	          };
+	          this.fieldsMeta[name] = fieldOption;
 	          return inputProps;
 	        }
 	      }, {
@@ -19959,6 +19959,12 @@
 	        key: 'getFieldValue',
 	        value: function getFieldValue(name) {
 	          var fields = this.fields;
+	
+	          return this.getValueFromFields(name, fields);
+	        }
+	      }, {
+	        key: 'getValueFromFields',
+	        value: function getValueFromFields(name, fields) {
 	          var fieldsMeta = this.fieldsMeta;
 	
 	          var field = fields[name];
@@ -19985,11 +19991,40 @@
 	      }, {
 	        key: 'setFields',
 	        value: function setFields(fields) {
-	          this.fields = _extends({}, this.fields, fields);
-	          this.forceUpdate();
+	          var _this3 = this;
+	
+	          var originalFields = this.fields;
+	          var nowFields = _extends({}, originalFields, fields);
+	          var fieldsMeta = this.fieldsMeta;
+	          var nowValues = {};
+	          Object.keys(fieldsMeta).forEach(function (f) {
+	            nowValues[f] = _this3.getValueFromFields(f, nowFields);
+	          });
+	          var changedFieldsName = Object.keys(fields);
+	          Object.keys(nowValues).forEach(function (f) {
+	            var value = nowValues[f];
+	            var fieldMeta = fieldsMeta[f];
+	            if (fieldMeta && fieldMeta.normalize) {
+	              var nowValue = fieldMeta.normalize(value, _this3.getValueFromFields(f, originalFields), nowValues);
+	              if (nowValue !== value) {
+	                nowFields[f] = _extends({}, nowFields[f], { value: nowValue });
+	                if (changedFieldsName.indexOf(f) === -1) {
+	                  changedFieldsName.push(f);
+	                }
+	              }
+	            }
+	          });
+	          this.fields = nowFields;
 	          if (onFieldsChange) {
-	            onFieldsChange(this.props, fields);
+	            (function () {
+	              var changedFields = {};
+	              changedFieldsName.forEach(function (f) {
+	                changedFields[f] = nowFields[f];
+	              });
+	              onFieldsChange(_this3.props, changedFields);
+	            })();
 	          }
+	          this.forceUpdate();
 	        }
 	      }, {
 	        key: 'setFieldsValue',
@@ -20008,7 +20043,7 @@
 	      }, {
 	        key: 'validateFields',
 	        value: function validateFields(fields, callback, fieldNames) {
-	          var _this3 = this;
+	          var _this4 = this;
 	
 	          var currentGlobalId = gid;
 	          ++gid;
@@ -20024,7 +20059,7 @@
 	              }
 	              return;
 	            }
-	            var fieldMeta = _this3.getFieldMeta(name);
+	            var fieldMeta = _this4.getFieldMeta(name);
 	            field.errors = undefined;
 	            field.validating = true;
 	            field.dirty = true;
@@ -20034,6 +20069,11 @@
 	            allFields[name] = field;
 	          });
 	          this.setFields(allFields);
+	          var nowFields = this.fields;
+	          // incase normalize
+	          Object.keys(allValues).forEach(function (f) {
+	            allValues[f] = nowFields[f].value;
+	          });
 	          if (callback && (0, _utils.isEmptyObject)(allFields)) {
 	            callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
 	            return;
@@ -20052,7 +20092,7 @@
 	            var nowAllFields = {};
 	            Object.keys(allRules).forEach(function (name) {
 	              var fieldErrors = errorsGroup[name];
-	              var nowField = _this3.getField(name, true);
+	              var nowField = _this4.getField(name, true);
 	              if (nowField.sid !== currentGlobalId) {
 	                expired = true;
 	              } else {
@@ -20063,16 +20103,16 @@
 	                nowAllFields[name] = nowField;
 	              }
 	            });
-	            _this3.setFields(nowAllFields);
+	            _this4.setFields(nowAllFields);
 	            if (callback && !expired) {
-	              callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this3.getFieldsValue(fieldNames));
+	              callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this4.getFieldsValue(fieldNames));
 	            }
 	          });
 	        }
 	      }, {
 	        key: 'validateFieldsByName',
 	        value: function validateFieldsByName(ns, cb) {
-	          var _this4 = this;
+	          var _this5 = this;
 	
 	          var names = ns;
 	          var callback = cb;
@@ -20082,12 +20122,12 @@
 	          }
 	          var fieldNames = names || this.getValidFieldsName();
 	          var fields = fieldNames.map(function (name) {
-	            var fieldMeta = _this4.getFieldMeta(name);
+	            var fieldMeta = _this5.getFieldMeta(name);
 	            if (!fieldMeta.rules) {
 	              return null;
 	            }
-	            var field = _this4.getField(name, true);
-	            field.value = _this4.getFieldValue(name);
+	            var field = _this5.getField(name, true);
+	            field.value = _this5.getFieldValue(name);
 	            return field;
 	          }).filter(function (f) {
 	            return !!f;
@@ -20139,7 +20179,6 @@
 	exports.getValueFromEvent = getValueFromEvent;
 	exports.getErrorStrs = getErrorStrs;
 	exports.isEmptyObject = isEmptyObject;
-	exports.createChainedFunction = createChainedFunction;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -20181,17 +20220,6 @@
 	
 	function isEmptyObject(obj) {
 	  return Object.keys(obj).length === 0;
-	}
-	
-	function createChainedFunction() {
-	  var args = arguments;
-	  return function chainedFunction() {
-	    for (var i = 0; i < args.length; i++) {
-	      if (args[i] && args[i].apply) {
-	        args[i].apply(this, arguments);
-	      }
-	    }
-	  };
 	}
 
 /***/ },
