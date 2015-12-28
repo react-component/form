@@ -102,14 +102,12 @@ function DateInput(props) {
   const errors = getFieldError('date');
   return (<div style={regionStyle}>
     <p>DateInput sync validate</p>
-    <p style={{width: 200}}><DatePicker placeholder="please select" {...getFieldProps('date', {
-      rules: [
-        {required: true, type: 'date'},
-      ],
-    })}>
-      <Option value="1">1</Option>
-      <Option value="2">2</Option>
-    </DatePicker></p>
+    <p style={{width: 200}}>
+      <DatePicker placeholder="please select" {...getFieldProps('date', {
+        rules: [
+          {required: true, type: 'date'},
+        ],
+      })} /></p>
     <p style={errorStyle}>
       {(errors) ? errors.join(',') : null}
     </p>

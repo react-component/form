@@ -78,7 +78,7 @@ convert value from props to fields. used for read fields from redux store.
 
 createForm() will return another function:
 
-### React.Component: function(WrappedComponent:React.Component)
+### React.Component: function(WrappedComponent: React.Component)
 
 Will pass a object as prop form with the following members to WrappedComponent:
 
@@ -90,11 +90,19 @@ After set, this will create a binding with this input.
 
 #### name
 
-type: String. this input's unique name
+type: String. this input's unique name.
 
 #### option.valuePropName
 
 prop name of component's value field, eg: checkbox should set checked ... 
+
+#### option.initialValue
+
+the initial value of current component.
+
+#### option.normalize(value, prevValue, allValues)
+
+return normalized value 
 
 #### option.validateTrigger
 
@@ -126,11 +134,11 @@ Validate and get fields value by fieldNames.
 
 ### String[]: getFieldError(name)
 
-Get input's validate errors
+Get input's validate errors.
 
 ### Bool: isFieldValidating(name)
 
-Whether this input is validating
+Whether this input is validating.
 
 ## Test Case
 

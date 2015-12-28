@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import { argumentContainer, getValueFromEvent, getErrorStrs, isEmptyObject, createChainedFunction } from './utils';
+import { argumentContainer, getValueFromEvent, getErrorStrs, isEmptyObject } from './utils';
 import AsyncValidate from 'async-validator';
 
 // avoid concurrency problems
 let gid = 0;
+const defaultValidateTrigger = 'onChange';
+const defaultTrigger = defaultValidateTrigger;
 
 function createForm(option = {}) {
   const {mapPropsToFields, onFieldsChange, formPropName = 'form'} = option;
@@ -71,7 +73,10 @@ function createForm(option = {}) {
 
       onChange(name, event) {
         const fieldMeta = this.getFieldMeta(name);
-        const rules = fieldMeta.rules;
+        const {trigger = defaultTrigger, rules} = fieldMeta;
+        if (fieldMeta[trigger]) {
+          fieldMeta[trigger](event);
+        }
         const value = getValueFromEvent(event);
         const field = this.getField(name, true);
         this.setFields({
@@ -85,6 +90,11 @@ function createForm(option = {}) {
       }
 
       onChangeValidate(name, event) {
+        const fieldMeta = this.getFieldMeta(name);
+        const {validateTrigger = defaultValidateTrigger} = fieldMeta;
+        if (fieldMeta[validateTrigger]) {
+          fieldMeta[validateTrigger](event);
+        }
         const value = getValueFromEvent(event);
         const field = this.getField(name, true);
         field.value = value;
@@ -120,38 +130,23 @@ function createForm(option = {}) {
 
       getFieldProps(name, fieldOption = {}) {
         const {rules,
-          trigger = 'onChange',
-          hidden,
-          initialValue,
+          trigger = defaultTrigger,
           valuePropName = 'value',
-          validateTrigger = 'onChange'} = fieldOption;
+          validateTrigger = defaultValidateTrigger} = fieldOption;
         const inputProps = {
-          [valuePropName]: initialValue,
+          [valuePropName]: fieldOption.initialValue,
         };
-        let originalTriggerFn;
         if (rules && validateTrigger) {
-          originalTriggerFn = inputProps[validateTrigger];
           inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
-          if (originalTriggerFn) {
-            inputProps[validateTrigger] = createChainedFunction(originalTriggerFn, inputProps[validateTrigger]);
-          }
         }
         if (trigger && (validateTrigger !== trigger || !rules)) {
-          originalTriggerFn = inputProps[trigger];
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
-          if (originalTriggerFn) {
-            inputProps[trigger] = createChainedFunction(originalTriggerFn, inputProps[trigger]);
-          }
         }
         const field = this.getField(name);
         if (field && 'value' in field) {
           inputProps[valuePropName] = field.value;
         }
-        this.fieldsMeta[name] = {
-          rules,
-          hidden,
-          initialValue,
-        };
+        this.fieldsMeta[name] = fieldOption;
         return inputProps;
       }
 
@@ -181,7 +176,12 @@ function createForm(option = {}) {
       }
 
       getFieldValue(name) {
-        const {fields, fieldsMeta} = this;
+        const {fields} = this;
+        return this.getValueFromFields(name, fields);
+      }
+
+      getValueFromFields(name, fields) {
+        const {fieldsMeta} = this;
         const field = fields[name];
         if (field && 'value' in field) {
           return field.value;
@@ -204,11 +204,36 @@ function createForm(option = {}) {
       }
 
       setFields(fields) {
-        this.fields = {...this.fields, ...fields};
-        this.forceUpdate();
+        const originalFields = this.fields;
+        const nowFields = {...originalFields, ...fields};
+        const fieldsMeta = this.fieldsMeta;
+        const nowValues = {};
+        Object.keys(fieldsMeta).forEach((f)=> {
+          nowValues[f] = this.getValueFromFields(f, nowFields);
+        });
+        const changedFieldsName = Object.keys(fields);
+        Object.keys(nowValues).forEach((f)=> {
+          const value = nowValues[f];
+          const fieldMeta = fieldsMeta[f];
+          if (fieldMeta && fieldMeta.normalize) {
+            const nowValue = fieldMeta.normalize(value, this.getValueFromFields(f, originalFields), nowValues);
+            if (nowValue !== value) {
+              nowFields[f] = {...nowFields[f], value: nowValue};
+              if (changedFieldsName.indexOf(f) === -1) {
+                changedFieldsName.push(f);
+              }
+            }
+          }
+        });
+        this.fields = nowFields;
         if (onFieldsChange) {
-          onFieldsChange(this.props, fields);
+          const changedFields = {};
+          changedFieldsName.forEach((f)=> {
+            changedFields[f] = nowFields[f];
+          });
+          onFieldsChange(this.props, changedFields);
         }
+        this.forceUpdate();
       }
 
       setFieldsValue(fieldsValue) {
@@ -249,6 +274,11 @@ function createForm(option = {}) {
           allFields[name] = field;
         });
         this.setFields(allFields);
+        const nowFields = this.fields;
+        // incase normalize
+        Object.keys(allValues).forEach((f)=> {
+          allValues[f] = nowFields[f].value;
+        });
         if (callback && isEmptyObject(allFields)) {
           callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
           return;
