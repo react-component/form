@@ -148,34 +148,26 @@ webpackJsonp([13],{
 	var Form = (function (_Component) {
 	  _inherits(Form, _Component);
 	
-	  _createClass(Form, null, [{
-	    key: 'propTypes',
-	    value: {
-	      form: _react.PropTypes.object
-	    },
-	    enumerable: true
-	  }]);
-	
 	  function Form() {
+	    var _this = this;
+	
 	    _classCallCheck(this, _Form);
 	
-	    _get(Object.getPrototypeOf(_Form.prototype), 'constructor', this).call(this);
-	    this.onSubmit = this.onSubmit.bind(this);
-	  }
+	    _get(Object.getPrototypeOf(_Form.prototype), 'constructor', this).apply(this, arguments);
 	
-	  _createClass(Form, [{
-	    key: 'onSubmit',
-	    value: function onSubmit(e) {
+	    this.onSubmit = function (e) {
 	      e.preventDefault();
-	      this.props.form.validateFields(function (error, values) {
+	      _this.props.form.validateFields(function (error, values) {
 	        if (!error) {
 	          console.log('ok', values);
 	        } else {
 	          console.log('error', error, values);
 	        }
 	      });
-	    }
-	  }, {
+	    };
+	  }
+	
+	  _createClass(Form, [{
 	    key: 'render',
 	    value: function render() {
 	      var form = this.props.form;
@@ -205,6 +197,12 @@ webpackJsonp([13],{
 	        )
 	      );
 	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: {
+	      form: _react.PropTypes.object
+	    },
+	    enumerable: true
 	  }]);
 	
 	  var _Form = Form;

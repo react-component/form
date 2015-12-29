@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>overview.js - example - rc-form@0.6.0</title>
+  <title>overview.js - example - rc-form@0.7.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.6.0</h1>
+    <h1>rc-form@0.7.0</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -388,14 +388,10 @@ DateInput.propTypes = {
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-  }
+  };
 
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onSubmit(e) {
+  onSubmit = (e) =&gt; {
+    console.log('submit');
     e.preventDefault();
     this.props.form.validateFields((error, values)=&gt; {
       if (!error) {
@@ -404,7 +400,12 @@ class Form extends Component {
         console.log('error', error, values);
       }
     });
-  }
+  };
+
+  reset = (e) =&gt; {
+    e.preventDefault();
+    this.props.form.resetFields();
+  };
 
   render() {
     const {form} = this.props;
@@ -428,7 +429,9 @@ class Form extends Component {
         <span class="hljs-tag">&lt;<span class="hljs-title">DateInput</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.reset}</span>&gt;</span>reset<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+          &amp;nbsp;
+          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"submit"</span>/&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);

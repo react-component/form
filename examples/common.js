@@ -19784,7 +19784,7 @@
 	        this.fields = fields || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'setFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
+	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'setFields', 'resetFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
 	        bindMethods.forEach(function (m) {
 	          _this[m] = _this[m].bind(_this);
 	        });
@@ -19985,7 +19985,8 @@
 	            getFieldProps: this.getFieldProps,
 	            getFieldError: this.getFieldError,
 	            isFieldValidating: this.isFieldValidating,
-	            validateFields: this.validateFieldsByName
+	            validateFields: this.validateFieldsByName,
+	            resetFields: this.resetFields
 	          };
 	        }
 	      }, {
@@ -20144,6 +20145,25 @@
 	        key: 'isFieldValidating',
 	        value: function isFieldValidating(name) {
 	          return this.getFieldMember(name, 'validating');
+	        }
+	      }, {
+	        key: 'resetFields',
+	        value: function resetFields(ns) {
+	          var newFields = {};
+	          var fields = this.fields;
+	
+	          var changed = false;
+	          var names = ns || Object.keys(fields);
+	          names.forEach(function (name) {
+	            var field = fields[name];
+	            if (field && 'value' in field) {
+	              changed = true;
+	              newFields[name] = {};
+	            }
+	          });
+	          if (changed) {
+	            this.setFields(newFields);
+	          }
 	        }
 	      }, {
 	        key: 'render',

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>suggest.js - example - rc-form@0.6.0</title>
+  <title>suggest.js - example - rc-form@0.7.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.6.0</h1>
+    <h1>rc-form@0.7.0</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -328,14 +328,9 @@ import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-  }
+  };
 
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onSubmit(e) {
+  onSubmit = (e) =&gt; {
     e.preventDefault();
     this.props.form.validateFields((error, values)=&gt; {
       if (!error) {
@@ -344,7 +339,7 @@ class Form extends Component {
         console.log('error', error, values);
       }
     });
-  }
+  };
 
   render() {
     const {form} = this.props;
