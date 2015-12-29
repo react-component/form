@@ -122,14 +122,10 @@ DateInput.propTypes = {
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-  }
+  };
 
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onSubmit(e) {
+  onSubmit = (e) => {
+    console.log('submit');
     e.preventDefault();
     this.props.form.validateFields((error, values)=> {
       if (!error) {
@@ -138,7 +134,12 @@ class Form extends Component {
         console.log('error', error, values);
       }
     });
-  }
+  };
+
+  reset = (e) => {
+    e.preventDefault();
+    this.props.form.resetFields();
+  };
 
   render() {
     const {form} = this.props;
@@ -162,7 +163,9 @@ class Form extends Component {
         <DateInput form={form}/>
 
         <div style={regionStyle}>
-          <button>submit</button>
+          <button onClick={this.reset}>reset</button>
+          &nbsp;
+          <input type="submit" value="submit"/>
         </div>
       </form>
     </div>);

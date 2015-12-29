@@ -23,7 +23,7 @@ function createForm(option = {}) {
         this.cachedBind = {};
         const bindMethods = [
           'getFieldProps', 'isFieldValidating',
-          'getFieldError', 'setFields',
+          'getFieldError', 'setFields', 'resetFields',
           'validateFieldsByName', 'getFieldsValue',
           'setFieldsValue', 'getFieldValue',
         ];
@@ -200,6 +200,7 @@ function createForm(option = {}) {
           getFieldError: this.getFieldError,
           isFieldValidating: this.isFieldValidating,
           validateFields: this.validateFieldsByName,
+          resetFields: this.resetFields,
         };
       }
 
@@ -345,6 +346,23 @@ function createForm(option = {}) {
 
       isFieldValidating(name) {
         return this.getFieldMember(name, 'validating');
+      }
+
+      resetFields(ns) {
+        const newFields = {};
+        const {fields} = this;
+        let changed = false;
+        const names = ns || Object.keys(fields);
+        names.forEach((name)=> {
+          const field = fields[name];
+          if (field && 'value' in field) {
+            changed = true;
+            newFields[name] = {};
+          }
+        });
+        if (changed) {
+          this.setFields(newFields);
+        }
       }
 
       render() {

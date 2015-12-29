@@ -140,6 +140,10 @@ Get input's validate errors.
 
 Whether this input is validating.
 
+### resetFields([names: String[]])
+
+reset specified inputs. defaults to all.
+
 ## Test Case
 
 http://localhost:8000/tests/runner.html?coverage

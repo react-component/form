@@ -50,14 +50,9 @@ const User = React.createClass({
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-  }
+  };
 
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onSubmit(e) {
+  onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((error, values)=> {
       if (!error) {
@@ -77,7 +72,7 @@ class Form extends Component {
         console.log('error', error, values);
       }
     });
-  }
+  };
 
   render() {
     const {form} = this.props;
