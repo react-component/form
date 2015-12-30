@@ -9,6 +9,7 @@ import {regionStyle, errorStyle} from './styles';
 @createContainer((state) => {
   return {
     formState: state.formState,
+    formInitialState: state.formInitialState,
   };
 })
 @createForm({
@@ -29,21 +30,31 @@ import {regionStyle, errorStyle} from './styles';
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-  }
+    formInitialState: PropTypes.object,
+  };
+
+  reset = () => {
+    this.props.form.resetFields();
+  };
 
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
+    const { formInitialState } = this.props;
     const errors = getFieldError('email');
     return (<div style={regionStyle}>
       <p>email:</p>
       <p><input {...getFieldProps('email', {
-        initialValue: 'x',
+        initialValue: formInitialState.email.value,
         rules: [{
           type: 'email',
         }],
       })}/></p>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
+      </p>
+
+      <p>
+        <button onClick={this.reset}>reset</button>
       </p>
     </div>);
   }
@@ -84,7 +95,13 @@ Out = createContainer((state) => {
   };
 })(Out);
 
-@createRootContainer()
+@createRootContainer({
+  formInitialState: {
+    email: {
+      value: 'initial@gmail.com',
+    },
+  },
+})
 class App extends React.Component {
   render() {
     return (<div>
