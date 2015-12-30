@@ -69,9 +69,15 @@ webpackJsonp([2],{
 	  _inherits(Form, _Component);
 	
 	  function Form() {
+	    var _this = this;
+	
 	    _classCallCheck(this, _Form);
 	
 	    _get(Object.getPrototypeOf(_Form.prototype), 'constructor', this).apply(this, arguments);
+	
+	    this.reset = function () {
+	      _this.props.form.resetFields();
+	    };
 	  }
 	
 	  _createClass(Form, [{
@@ -80,6 +86,7 @@ webpackJsonp([2],{
 	      var _props$form = this.props.form;
 	      var getFieldProps = _props$form.getFieldProps;
 	      var getFieldError = _props$form.getFieldError;
+	      var formInitialState = this.props.formInitialState;
 	
 	      var errors = getFieldError('email');
 	      return _react2['default'].createElement(
@@ -94,7 +101,7 @@ webpackJsonp([2],{
 	          'p',
 	          null,
 	          _react2['default'].createElement('input', getFieldProps('email', {
-	            initialValue: 'x',
+	            initialValue: formInitialState.email.value,
 	            rules: [{
 	              type: 'email'
 	            }]
@@ -104,13 +111,23 @@ webpackJsonp([2],{
 	          'p',
 	          { style: _styles.errorStyle },
 	          errors ? errors.join(',') : null
+	        ),
+	        _react2['default'].createElement(
+	          'p',
+	          null,
+	          _react2['default'].createElement(
+	            'button',
+	            { onClick: this.reset },
+	            'reset'
+	          )
 	        )
 	      );
 	    }
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      form: _react.PropTypes.object
+	      form: _react.PropTypes.object,
+	      formInitialState: _react.PropTypes.object
 	    },
 	    enumerable: true
 	  }]);
@@ -130,7 +147,8 @@ webpackJsonp([2],{
 	  })(Form) || Form;
 	  Form = (0, _reactDataBinding.createContainer)(function (state) {
 	    return {
-	      formState: state.formState
+	      formState: state.formState,
+	      formInitialState: state.formInitialState
 	    };
 	  })(Form) || Form;
 	  return Form;
@@ -209,7 +227,13 @@ webpackJsonp([2],{
 	  }]);
 	
 	  var _App = App;
-	  App = (0, _reactDataBinding.createRootContainer)()(App) || App;
+	  App = (0, _reactDataBinding.createRootContainer)({
+	    formInitialState: {
+	      email: {
+	        value: 'initial@gmail.com'
+	      }
+	    }
+	  })(App) || App;
 	  return App;
 	})(_react2['default'].Component);
 	
