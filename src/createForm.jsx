@@ -48,27 +48,12 @@ function createForm(option = {}) {
       componentDidUpdate() {
         const {fields, fieldsMeta} = this;
         const fieldsKeys = Object.keys(fields);
-        const changedFields = {};
         fieldsKeys.forEach((s)=> {
           if (!fieldsMeta[s]) {
             delete fields[s];
-            changedFields[s] = undefined;
           }
         });
-        if (onFieldsChange) {
-          Object.keys(fieldsMeta).forEach((name) => {
-            const fieldMeta = fieldsMeta[name];
-            const field = fields[name] || {};
-            if (('initialValue' in fieldMeta) && !('value' in field)) {
-              changedFields[name] = {
-                value: fieldMeta.initialValue,
-              };
-            }
-          });
-          if (!isEmptyObject(changedFields)) {
-            onFieldsChange(this.props, changedFields);
-          }
-        }
+        // do not notify store
       }
 
       onChange(name, event) {
