@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		14:0
+/******/ 		15:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"normalize","6":"overview","7":"parallel-form","8":"redux","9":"router","10":"server-validate","11":"setFieldsValue","12":"suggest","13":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"input-array","6":"normalize","7":"overview","8":"parallel-form","9":"redux","10":"router","11":"server-validate","12":"setFieldsValue","13":"suggest","14":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19812,27 +19812,12 @@
 	          var fieldsMeta = this.fieldsMeta;
 	
 	          var fieldsKeys = Object.keys(fields);
-	          var changedFields = {};
 	          fieldsKeys.forEach(function (s) {
 	            if (!fieldsMeta[s]) {
 	              delete fields[s];
-	              changedFields[s] = undefined;
 	            }
 	          });
-	          if (onFieldsChange) {
-	            Object.keys(fieldsMeta).forEach(function (name) {
-	              var fieldMeta = fieldsMeta[name];
-	              var field = fields[name] || {};
-	              if ('initialValue' in fieldMeta && !('value' in field)) {
-	                changedFields[name] = {
-	                  value: fieldMeta.initialValue
-	                };
-	              }
-	            });
-	            if (!(0, _utils.isEmptyObject)(changedFields)) {
-	              onFieldsChange(this.props, changedFields);
-	            }
-	          }
+	          // do not notify store
 	        }
 	      }, {
 	        key: 'onChange',
