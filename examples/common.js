@@ -19892,10 +19892,14 @@
 	          var trigger = _fieldOption$trigger === undefined ? defaultTrigger : _fieldOption$trigger;
 	          var _fieldOption$valuePropName = fieldOption.valuePropName;
 	          var valuePropName = _fieldOption$valuePropName === undefined ? 'value' : _fieldOption$valuePropName;
+	          var initialValue = fieldOption.initialValue;
 	          var _fieldOption$validateTrigger = fieldOption.validateTrigger;
 	          var validateTrigger = _fieldOption$validateTrigger === undefined ? defaultValidateTrigger : _fieldOption$validateTrigger;
 	
-	          var inputProps = _defineProperty({}, valuePropName, fieldOption.initialValue);
+	          var inputProps = {};
+	          if ('initialValue' in fieldOption) {
+	            inputProps[valuePropName] = initialValue;
+	          }
 	          if (rules && validateTrigger) {
 	            inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
 	          }
