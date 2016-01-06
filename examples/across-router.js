@@ -2871,12 +2871,18 @@ webpackJsonp([0],[
 	    }
 	
 	    function createPath(location, query) {
-	      process.env.NODE_ENV !== 'production' ? _warning2['default'](query, 'the query argument to createPath is deprecated; use a location descriptor instead') : undefined;
+	      //warning(
+	      //  !query,
+	      //  'the query argument to createPath is deprecated; use a location descriptor instead'
+	      //)
 	      return history.createPath(appendQuery(location, query || location.query));
 	    }
 	
 	    function createHref(location, query) {
-	      process.env.NODE_ENV !== 'production' ? _warning2['default'](query, 'the query argument to createHref is deprecated; use a location descriptor instead') : undefined;
+	      //warning(
+	      //  !query,
+	      //  'the query argument to createHref is deprecated; use a location descriptor instead'
+	      //)
 	      return history.createHref(appendQuery(location, query || location.query));
 	    }
 	
@@ -4398,6 +4404,10 @@ webpackJsonp([0],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	var _warning = __webpack_require__(191);
+	
+	var _warning2 = _interopRequireDefault(_warning);
+	
 	var _invariant = __webpack_require__(193);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
@@ -4503,7 +4513,10 @@ webpackJsonp([0],[
 	
 	  function go(n) {
 	    if (n) {
-	      !canGo(n) ? process.env.NODE_ENV !== 'production' ? _invariant2['default'](false, 'Cannot go(%s) there is not enough history', n) : _invariant2['default'](false) : undefined;
+	      if (!canGo(n)) {
+	        process.env.NODE_ENV !== 'production' ? _warning2['default'](false, 'Cannot go(%s) there is not enough history', n) : undefined;
+	        return;
+	      }
 	
 	      current += n;
 	

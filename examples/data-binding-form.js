@@ -1436,7 +1436,7 @@ webpackJsonp([3],{
 	
 	var _antdLibSwitch2 = _interopRequireDefault(_antdLibSwitch);
 	
-	__webpack_require__(274);
+	__webpack_require__(273);
 	
 	var TopForm = _react2['default'].createClass({
 	  displayName: 'TopForm',
@@ -1599,11 +1599,11 @@ webpackJsonp([3],{
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _rcSwitch = __webpack_require__(254);
 	
@@ -1613,16 +1613,32 @@ webpackJsonp([3],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	exports['default'] = _react2['default'].createClass({
-	  displayName: 'index',
+	var _classnames = __webpack_require__(259);
 	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	exports.default = _react2.default.createClass({
+	  displayName: 'switch',
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      prefixCls: 'ant-switch'
+	      prefixCls: 'ant-switch',
+	      size: 'default'
 	    };
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(_rcSwitch2['default'], this.props);
+	    var _classNames;
+	
+	    var _props = this.props;
+	    var prefixCls = _props.prefixCls;
+	    var size = _props.size;
+	    var className = _props.className;
+	
+	    var cls = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, className, !!className), _defineProperty(_classNames, prefixCls + '-' + size, true), _classNames));
+	    return _react2.default.createElement(_rcSwitch2.default, _extends({ className: cls }, this.props));
 	  }
 	});
 	module.exports = exports['default'];
@@ -1725,18 +1741,18 @@ webpackJsonp([3],{
 	module.exports = {
 	  guid: __webpack_require__(257),
 	  classSet: __webpack_require__(258),
-	  joinClasses: __webpack_require__(261),
-	  KeyCode: __webpack_require__(262),
-	  PureRenderMixin: __webpack_require__(263),
-	  shallowEqual: __webpack_require__(264),
-	  createChainedFunction: __webpack_require__(265),
+	  joinClasses: __webpack_require__(260),
+	  KeyCode: __webpack_require__(261),
+	  PureRenderMixin: __webpack_require__(262),
+	  shallowEqual: __webpack_require__(263),
+	  createChainedFunction: __webpack_require__(264),
 	  Dom: {
-	    addEventListener: __webpack_require__(266),
-	    contains: __webpack_require__(271)
+	    addEventListener: __webpack_require__(265),
+	    contains: __webpack_require__(270)
 	  },
 	  Children: {
-	    toArray: __webpack_require__(272),
-	    mapSelf: __webpack_require__(273)
+	    toArray: __webpack_require__(271),
+	    mapSelf: __webpack_require__(272)
 	  }
 	};
 
@@ -1759,93 +1775,15 @@ webpackJsonp([3],{
 
 	'use strict';
 	
-	var deprecate = __webpack_require__(259);
-	var classNames = __webpack_require__(260);
-	
-	module.exports = deprecate(classNames, '`rcUtil.classSet()` is deprecated, use `classNames()` by `require(\'classnames\')` instead');
+	module.exports = __webpack_require__(259);
 
 /***/ },
 
 /***/ 259:
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {
-	/**
-	 * Module exports.
-	 */
-	
-	module.exports = deprecate;
-	
-	/**
-	 * Mark that a method should not be used.
-	 * Returns a modified function which warns once by default.
-	 *
-	 * If `localStorage.noDeprecation = true` is set, then it is a no-op.
-	 *
-	 * If `localStorage.throwDeprecation = true` is set, then deprecated functions
-	 * will throw an Error when invoked.
-	 *
-	 * If `localStorage.traceDeprecation = true` is set, then deprecated functions
-	 * will invoke `console.trace()` instead of `console.error()`.
-	 *
-	 * @param {Function} fn - the function to deprecate
-	 * @param {String} msg - the string to print to the console when `fn` is invoked
-	 * @returns {Function} a new "deprecated" version of `fn`
-	 * @api public
-	 */
-	
-	function deprecate (fn, msg) {
-	  if (config('noDeprecation')) {
-	    return fn;
-	  }
-	
-	  var warned = false;
-	  function deprecated() {
-	    if (!warned) {
-	      if (config('throwDeprecation')) {
-	        throw new Error(msg);
-	      } else if (config('traceDeprecation')) {
-	        console.trace(msg);
-	      } else {
-	        console.warn(msg);
-	      }
-	      warned = true;
-	    }
-	    return fn.apply(this, arguments);
-	  }
-	
-	  return deprecated;
-	}
-	
-	/**
-	 * Checks `localStorage` for boolean values for the given `name`.
-	 *
-	 * @param {String} name
-	 * @returns {Boolean}
-	 * @api private
-	 */
-	
-	function config (name) {
-	  // accessing global.localStorage can trigger a DOMException in sandboxed iframes
-	  try {
-	    if (!global.localStorage) return false;
-	  } catch (_) {
-	    return false;
-	  }
-	  var val = global.localStorage[name];
-	  if (null == val) return false;
-	  return String(val).toLowerCase() === 'true';
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-
-/***/ 260:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
+	  Copyright (c) 2016 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
@@ -1857,7 +1795,7 @@ webpackJsonp([3],{
 		var hasOwn = {}.hasOwnProperty;
 	
 		function classNames () {
-			var classes = '';
+			var classes = [];
 	
 			for (var i = 0; i < arguments.length; i++) {
 				var arg = arguments[i];
@@ -1866,19 +1804,19 @@ webpackJsonp([3],{
 				var argType = typeof arg;
 	
 				if (argType === 'string' || argType === 'number') {
-					classes += ' ' + arg;
+					classes.push(arg);
 				} else if (Array.isArray(arg)) {
-					classes += ' ' + classNames.apply(null, arg);
+					classes.push(classNames.apply(null, arg));
 				} else if (argType === 'object') {
 					for (var key in arg) {
 						if (hasOwn.call(arg, key) && arg[key]) {
-							classes += ' ' + key;
+							classes.push(key);
 						}
 					}
 				}
 			}
 	
-			return classes.substr(1);
+			return classes.join(' ');
 		}
 	
 		if (typeof module !== 'undefined' && module.exports) {
@@ -1896,19 +1834,42 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 261:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 260:
+/***/ function(module, exports) {
 
+	/**
+	 * Combines multiple className strings into one.
+	 * http://jsperf.com/joinclasses-args-vs-array
+	 *
+	 * @param {...?string} classes
+	 * @return {string}
+	 */
+	
 	'use strict';
 	
-	var deprecate = __webpack_require__(259);
-	var classNames = __webpack_require__(260);
+	function joinClasses(cn) {
+	  var className = cn;
+	  if (!className) {
+	    className = '';
+	  }
+	  var nextClass = undefined;
+	  var argLength = arguments.length;
+	  if (argLength > 1) {
+	    for (var ii = 1; ii < argLength; ii++) {
+	      nextClass = arguments[ii];
+	      if (nextClass) {
+	        className = (className ? className + ' ' : '') + nextClass;
+	      }
+	    }
+	  }
+	  return className;
+	}
 	
-	module.exports = deprecate(classNames, '`rcUtil.joinClasses()` is deprecated, use `classNames()` by `require(\'classnames\')` instead');
+	module.exports = joinClasses;
 
 /***/ },
 
-/***/ 262:
+/***/ 261:
 /***/ function(module, exports) {
 
 	/**
@@ -2434,12 +2395,12 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 263:
+/***/ 262:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var shallowEqual = __webpack_require__(264);
+	var shallowEqual = __webpack_require__(263);
 	
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
@@ -2475,18 +2436,36 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 264:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 263:
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 	
-	var shallowEqual = __webpack_require__(241);
+	function shallowEqual(objA, objB) {
+	  if (objA === objB) {
+	    return true;
+	  }
+	  var key = undefined;
+	  // Test for A's keys different from B.
+	  for (key in objA) {
+	    if (objA.hasOwnProperty(key) && (!objB.hasOwnProperty(key) || objA[key] !== objB[key])) {
+	      return false;
+	    }
+	  }
+	  // Test for B's keys missing from A.
+	  for (key in objB) {
+	    if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
 	
 	module.exports = shallowEqual;
 
 /***/ },
 
-/***/ 265:
+/***/ 264:
 /***/ function(module, exports) {
 
 	/**
@@ -2514,7 +2493,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 266:
+/***/ 265:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2526,7 +2505,7 @@ webpackJsonp([3],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _addDomEventListener = __webpack_require__(267);
+	var _addDomEventListener = __webpack_require__(266);
 	
 	var _addDomEventListener2 = _interopRequireDefault(_addDomEventListener);
 	
@@ -2546,7 +2525,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 267:
+/***/ 266:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2558,7 +2537,7 @@ webpackJsonp([3],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _EventObject = __webpack_require__(268);
+	var _EventObject = __webpack_require__(267);
 	
 	var _EventObject2 = _interopRequireDefault(_EventObject);
 	
@@ -2589,7 +2568,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 268:
+/***/ 267:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2606,11 +2585,11 @@ webpackJsonp([3],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _EventBaseObject = __webpack_require__(269);
+	var _EventBaseObject = __webpack_require__(268);
 	
 	var _EventBaseObject2 = _interopRequireDefault(_EventBaseObject);
 	
-	var _objectAssign = __webpack_require__(270);
+	var _objectAssign = __webpack_require__(269);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -2873,7 +2852,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 269:
+/***/ 268:
 /***/ function(module, exports) {
 
 	/**
@@ -2942,7 +2921,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 270:
+/***/ 269:
 /***/ function(module, exports) {
 
 	/* eslint-disable no-unused-vars */
@@ -2988,7 +2967,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 271:
+/***/ 270:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3007,7 +2986,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 272:
+/***/ 271:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3024,7 +3003,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 273:
+/***/ 272:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3042,7 +3021,7 @@ webpackJsonp([3],{
 
 /***/ },
 
-/***/ 274:
+/***/ 273:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

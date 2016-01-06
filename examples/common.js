@@ -1108,7 +1108,7 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	var invariant = function (condition, format, a, b, c, d, e, f) {
+	function invariant(condition, format, a, b, c, d, e, f) {
 	  if (process.env.NODE_ENV !== 'production') {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
@@ -1122,15 +1122,16 @@
 	    } else {
 	      var args = [a, b, c, d, e, f];
 	      var argIndex = 0;
-	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+	      error = new Error(format.replace(/%s/g, function () {
 	        return args[argIndex++];
 	      }));
+	      error.name = 'Invariant Violation';
 	    }
 	
 	    error.framesToPop = 1; // we don't care about invariant's own frame
 	    throw error;
 	  }
-	};
+	}
 	
 	module.exports = invariant;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
@@ -10557,8 +10558,8 @@
 	     */
 	    // autoCapitalize and autoCorrect are supported in Mobile Safari for
 	    // keyboard hints.
-	    autoCapitalize: null,
-	    autoCorrect: null,
+	    autoCapitalize: MUST_USE_ATTRIBUTE,
+	    autoCorrect: MUST_USE_ATTRIBUTE,
 	    // autoSave allows WebKit/Blink to persist values of input fields on page reloads
 	    autoSave: null,
 	    // color is for Safari mask-icon link
@@ -10589,9 +10590,7 @@
 	    httpEquiv: 'http-equiv'
 	  },
 	  DOMPropertyNames: {
-	    autoCapitalize: 'autocapitalize',
 	    autoComplete: 'autocomplete',
-	    autoCorrect: 'autocorrect',
 	    autoFocus: 'autofocus',
 	    autoPlay: 'autoplay',
 	    autoSave: 'autosave',
@@ -13670,7 +13669,7 @@
 	    var value = LinkedValueUtils.getValue(props);
 	
 	    if (value != null) {
-	      updateOptions(this, props, value);
+	      updateOptions(this, Boolean(props.multiple), value);
 	    }
 	  }
 	}
@@ -16709,15 +16708,11 @@
 	 * Same as document.activeElement but wraps in a try-catch block. In IE it is
 	 * not safe to call document.activeElement if there is nothing focused.
 	 *
-	 * The activeElement will be null only if the document or document body is not yet defined.
+	 * The activeElement will be null only if the document body is not yet defined.
 	 */
-	'use strict';
+	"use strict";
 	
 	function getActiveElement() /*?DOMElement*/{
-	  if (typeof document === 'undefined') {
-	    return null;
-	  }
-	
 	  try {
 	    return document.activeElement || document.body;
 	  } catch (e) {
@@ -18457,7 +18452,9 @@
 	  'setValueForProperty': 'update attribute',
 	  'setValueForAttribute': 'update attribute',
 	  'deleteValueForProperty': 'remove attribute',
-	  'dangerouslyReplaceNodeWithMarkupByID': 'replace'
+	  'setValueForStyles': 'update styles',
+	  'replaceNodeWithMarkup': 'replace',
+	  'updateTextContent': 'set textContent'
 	};
 	
 	function getTotalTime(measurements) {
@@ -18649,18 +18646,23 @@
 	'use strict';
 	
 	var performance = __webpack_require__(146);
-	var curPerformance = performance;
+	
+	var performanceNow;
 	
 	/**
 	 * Detect if we can use `window.performance.now()` and gracefully fallback to
 	 * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
 	 * because of Facebook's testing infrastructure.
 	 */
-	if (!curPerformance || !curPerformance.now) {
-	  curPerformance = Date;
+	if (performance.now) {
+	  performanceNow = function () {
+	    return performance.now();
+	  };
+	} else {
+	  performanceNow = function () {
+	    return Date.now();
+	  };
 	}
-	
-	var performanceNow = curPerformance.now.bind(curPerformance);
 	
 	module.exports = performanceNow;
 
@@ -18709,7 +18711,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.3';
+	module.exports = '0.14.5';
 
 /***/ },
 /* 148 */
@@ -20281,9 +20283,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
+	var util = _interopRequireWildcard(_util);
 	
 	var _validator = __webpack_require__(167);
 	
@@ -20461,7 +20465,7 @@
 	            if (rule.message) {
 	              errors = [].concat(rule.message).map(complementError(rule));
 	            } else {
-	              errors = [options.error(rule, _util2['default'].format(options.messages.required, rule.field))];
+	              errors = [options.error(rule, util.format(options.messages.required, rule.field))];
 	            }
 	            return doIt(null, errors);
 	          }
@@ -20494,7 +20498,7 @@
 	      rule.type = 'pattern';
 	    }
 	    if (typeof rule.validator !== 'function' && rule.type && !_validator2['default'].hasOwnProperty(rule.type)) {
-	      throw new Error(_util2['default'].format('Unknown rule type %s', rule.type));
+	      throw new Error(util.format('Unknown rule type %s', rule.type));
 	    }
 	    return rule.type || 'string';
 	  },
@@ -20527,60 +20531,59 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	exports.format = format;
+	exports.isEmptyValue = isEmptyValue;
 	var formatRegExp = /%[sdj%]/g;
 	
-	exports['default'] = {
-	  format: function format() {
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-	
-	    var i = 1;
-	    var f = args[0];
-	    var len = args.length;
-	    var str = String(f).replace(formatRegExp, function (x) {
-	      if (x === '%%') {
-	        return '%';
-	      }
-	      if (i >= len) {
-	        return x;
-	      }
-	      switch (x) {
-	        case '%s':
-	          return String(args[i++]);
-	        case '%d':
-	          return Number(args[i++]);
-	        case '%j':
-	          try {
-	            return JSON.stringify(args[i++]);
-	          } catch (_) {
-	            return '[Circular]';
-	          }
-	          break;
-	        default:
-	          return x;
-	      }
-	    });
-	    for (var arg = args[i]; i < len; arg = args[++i]) {
-	      str += ' ' + arg;
-	    }
-	    return str;
-	  },
-	
-	  isEmptyValue: function isEmptyValue(value, type) {
-	    if (value === undefined || value === null) {
-	      return true;
-	    }
-	    if (type === 'array' && Array.isArray(value) && !value.length) {
-	      return true;
-	    }
-	    if (type === 'string' && typeof value === 'string' && !value) {
-	      return true;
-	    }
-	    return false;
+	function format() {
+	  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	    args[_key] = arguments[_key];
 	  }
-	};
-	module.exports = exports['default'];
+	
+	  var i = 1;
+	  var f = args[0];
+	  var len = args.length;
+	  var str = String(f).replace(formatRegExp, function (x) {
+	    if (x === '%%') {
+	      return '%';
+	    }
+	    if (i >= len) {
+	      return x;
+	    }
+	    switch (x) {
+	      case '%s':
+	        return String(args[i++]);
+	      case '%d':
+	        return Number(args[i++]);
+	      case '%j':
+	        try {
+	          return JSON.stringify(args[i++]);
+	        } catch (_) {
+	          return '[Circular]';
+	        }
+	        break;
+	      default:
+	        return x;
+	    }
+	  });
+	  for (var arg = args[i]; i < len; arg = args[++i]) {
+	    str += ' ' + arg;
+	  }
+	  return str;
+	}
+	
+	function isEmptyValue(value, type) {
+	  if (value === undefined || value === null) {
+	    return true;
+	  }
+	  if (type === 'array' && Array.isArray(value) && !value.length) {
+	    return true;
+	  }
+	  if (type === 'string' && typeof value === 'string' && !value) {
+	    return true;
+	  }
+	  return false;
+	}
 
 /***/ },
 /* 167 */
@@ -20628,8 +20631,6 @@
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
-	
 	/**
 	 *  Performs validation for string types.
 	 *
@@ -20644,11 +20645,11 @@
 	  var errors = [];
 	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
 	  if (validate) {
-	    if (_util2['default'].isEmptyValue(value, 'string') && !rule.required) {
+	    if ((0, _util.isEmptyValue)(value, 'string') && !rule.required) {
 	      return callback();
 	    }
 	    _rule2['default'].required(rule, value, source, errors, options, 'string');
-	    if (!_util2['default'].isEmptyValue(value, 'string')) {
+	    if (!(0, _util.isEmptyValue)(value, 'string')) {
 	      _rule2['default'].type(rule, value, source, errors, options);
 	      _rule2['default'].range(rule, value, source, errors, options);
 	      _rule2['default'].pattern(rule, value, source, errors, options);
@@ -20692,11 +20693,11 @@
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
+	var util = _interopRequireWildcard(_util);
 	
 	/**
 	 *  Rule for validating required fields.
@@ -20710,8 +20711,8 @@
 	 *  @param options.messages The validation messages.
 	 */
 	function required(rule, value, source, errors, options, type) {
-	  if (rule.required && (!source.hasOwnProperty(rule.field) || _util2['default'].isEmptyValue(value, type))) {
-	    errors.push(_util2['default'].format(options.messages.required, rule.fullField));
+	  if (rule.required && (!source.hasOwnProperty(rule.field) || util.isEmptyValue(value, type))) {
+	    errors.push(util.format(options.messages.required, rule.fullField));
 	  }
 	}
 	
@@ -20728,11 +20729,11 @@
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
+	var util = _interopRequireWildcard(_util);
 	
 	/**
 	 *  Rule for validating whitespace.
@@ -20747,7 +20748,7 @@
 	 */
 	function whitespace(rule, value, source, errors, options) {
 	  if (/^\s+$/.test(value) || value === '') {
-	    errors.push(_util2['default'].format(options.messages.whitespace, rule.fullField));
+	    errors.push(util.format(options.messages.whitespace, rule.fullField));
 	  }
 	}
 	
@@ -20766,9 +20767,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
+	var util = _interopRequireWildcard(_util);
 	
 	var _required = __webpack_require__(170);
 	
@@ -20846,11 +20849,11 @@
 	  var ruleType = rule.type;
 	  if (custom.indexOf(ruleType) > -1) {
 	    if (!types[ruleType](value)) {
-	      errors.push(_util2['default'].format(options.messages.types[ruleType], rule.fullField, rule.type));
+	      errors.push(util.format(options.messages.types[ruleType], rule.fullField, rule.type));
 	    }
 	    // straight typeof check
 	  } else if (ruleType && typeof value !== rule.type) {
-	      errors.push(_util2['default'].format(options.messages.types[ruleType], rule.fullField, rule.type));
+	      errors.push(util.format(options.messages.types[ruleType], rule.fullField, rule.type));
 	    }
 	}
 	
@@ -20867,11 +20870,11 @@
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
+	var util = _interopRequireWildcard(_util);
 	
 	/**
 	 *  Rule for validating minimum and maximum allowed values.
@@ -20911,14 +20914,14 @@
 	  }
 	  if (len) {
 	    if (val !== rule.len) {
-	      errors.push(_util2['default'].format(options.messages[key].len, rule.fullField, rule.len));
+	      errors.push(util.format(options.messages[key].len, rule.fullField, rule.len));
 	    }
 	  } else if (min && !max && val < rule.min) {
-	    errors.push(_util2['default'].format(options.messages[key].min, rule.fullField, rule.min));
+	    errors.push(util.format(options.messages[key].min, rule.fullField, rule.min));
 	  } else if (max && !min && val > rule.max) {
-	    errors.push(_util2['default'].format(options.messages[key].max, rule.fullField, rule.max));
+	    errors.push(util.format(options.messages[key].max, rule.fullField, rule.max));
 	  } else if (min && max && (val < rule.min || val > rule.max)) {
-	    errors.push(_util2['default'].format(options.messages[key].range, rule.fullField, rule.min, rule.max));
+	    errors.push(util.format(options.messages[key].range, rule.fullField, rule.min, rule.max));
 	  }
 	}
 	
@@ -20935,11 +20938,11 @@
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
+	var util = _interopRequireWildcard(_util);
 	
 	var ENUM = 'enum';
 	
@@ -20957,7 +20960,7 @@
 	function enumerable(rule, value, source, errors, options) {
 	  rule[ENUM] = Array.isArray(rule[ENUM]) ? rule[ENUM] : [];
 	  if (rule[ENUM].indexOf(value) === -1) {
-	    errors.push(_util2['default'].format(options.messages[ENUM], rule.fullField, rule[ENUM].join(', ')));
+	    errors.push(util.format(options.messages[ENUM], rule.fullField, rule[ENUM].join(', ')));
 	  }
 	}
 	
@@ -20974,11 +20977,11 @@
 	  value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
+	var util = _interopRequireWildcard(_util);
 	
 	/**
 	 *  Rule for validating a regular expression pattern.
@@ -20994,7 +20997,7 @@
 	function pattern(rule, value, source, errors, options) {
 	  if (rule.pattern instanceof RegExp) {
 	    if (!rule.pattern.test(value)) {
-	      errors.push(_util2['default'].format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+	      errors.push(util.format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
 	    }
 	  }
 	}
@@ -21151,6 +21154,8 @@
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
+	var _util = __webpack_require__(166);
+	
 	/**
 	 *  Validates the regular expression type.
 	 *
@@ -21165,11 +21170,11 @@
 	  var errors = [];
 	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
 	  if (validate) {
-	    if (value === undefined && !rule.required) {
+	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
 	    _rule2['default'].required(rule, value, source, errors, options);
-	    if (value !== undefined) {
+	    if (!(0, _util.isEmptyValue)(value)) {
 	      _rule2['default'].type(rule, value, source, errors, options);
 	    }
 	  }
@@ -21287,8 +21292,6 @@
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
-	
 	/**
 	 *  Validates an array.
 	 *
@@ -21303,11 +21306,11 @@
 	  var errors = [];
 	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
 	  if (validate) {
-	    if (_util2['default'].isEmptyValue(value, 'array') && !rule.required) {
+	    if ((0, _util.isEmptyValue)(value, 'array') && !rule.required) {
 	      return callback();
 	    }
 	    _rule2['default'].required(rule, value, source, errors, options, 'array');
-	    if (!_util2['default'].isEmptyValue(value, 'array')) {
+	    if (!(0, _util.isEmptyValue)(value, 'array')) {
 	      _rule2['default'].type(rule, value, source, errors, options);
 	      _rule2['default'].range(rule, value, source, errors, options);
 	    }
@@ -21426,8 +21429,6 @@
 	
 	var _util = __webpack_require__(166);
 	
-	var _util2 = _interopRequireDefault(_util);
-	
 	/**
 	 *  Validates a regular expression pattern.
 	 *
@@ -21445,11 +21446,11 @@
 	  var errors = [];
 	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
 	  if (validate) {
-	    if (_util2['default'].isEmptyValue(value, 'string') && !rule.required) {
+	    if ((0, _util.isEmptyValue)(value, 'string') && !rule.required) {
 	      return callback();
 	    }
 	    _rule2['default'].required(rule, value, source, errors, options);
-	    if (!_util2['default'].isEmptyValue(value, 'string')) {
+	    if (!(0, _util.isEmptyValue)(value, 'string')) {
 	      _rule2['default'].pattern(rule, value, source, errors, options);
 	    }
 	  }
@@ -21500,19 +21501,23 @@
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
+	var _util = __webpack_require__(166);
+	
 	function date(rule, value, callback, source, options) {
 	  // console.log('integer rule called %j', rule);
 	  var errors = [];
 	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
 	  // console.log('validate on %s value', value);
 	  if (validate) {
-	    if (value === undefined && !rule.required) {
+	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
 	    _rule2['default'].required(rule, value, source, errors, options);
-	    if (value) {
+	    if (!(0, _util.isEmptyValue)(value)) {
 	      _rule2['default'].type(rule, value, source, errors, options);
-	      _rule2['default'].range(rule, value.getTime(), source, errors, options);
+	      if (value) {
+	        _rule2['default'].range(rule, value.getTime(), source, errors, options);
+	      }
 	    }
 	  }
 	  callback(errors);
@@ -21546,6 +21551,7 @@
 	    array: '%s is not an %s',
 	    object: '%s is not an %s',
 	    number: '%s is not a %s',
+	    date: '%s is not a %s',
 	    boolean: '%s is not a %s',
 	    integer: '%s is not an %s',
 	    float: '%s is not a %s',

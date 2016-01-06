@@ -3,7 +3,7 @@ webpackJsonp([10],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(391);
+	module.exports = __webpack_require__(390);
 
 
 /***/ },
@@ -2538,12 +2538,18 @@ webpackJsonp([10],{
 	    }
 	
 	    function createPath(location, query) {
-	      process.env.NODE_ENV !== 'production' ? _warning2['default'](query, 'the query argument to createPath is deprecated; use a location descriptor instead') : undefined;
+	      //warning(
+	      //  !query,
+	      //  'the query argument to createPath is deprecated; use a location descriptor instead'
+	      //)
 	      return history.createPath(appendQuery(location, query || location.query));
 	    }
 	
 	    function createHref(location, query) {
-	      process.env.NODE_ENV !== 'production' ? _warning2['default'](query, 'the query argument to createHref is deprecated; use a location descriptor instead') : undefined;
+	      //warning(
+	      //  !query,
+	      //  'the query argument to createHref is deprecated; use a location descriptor instead'
+	      //)
 	      return history.createHref(appendQuery(location, query || location.query));
 	    }
 	
@@ -4085,6 +4091,10 @@ webpackJsonp([10],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	var _warning = __webpack_require__(191);
+	
+	var _warning2 = _interopRequireDefault(_warning);
+	
 	var _invariant = __webpack_require__(193);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
@@ -4190,7 +4200,10 @@ webpackJsonp([10],{
 	
 	  function go(n) {
 	    if (n) {
-	      !canGo(n) ? process.env.NODE_ENV !== 'production' ? _invariant2['default'](false, 'Cannot go(%s) there is not enough history', n) : _invariant2['default'](false) : undefined;
+	      if (!canGo(n)) {
+	        process.env.NODE_ENV !== 'production' ? _warning2['default'](false, 'Cannot go(%s) there is not enough history', n) : undefined;
+	        return;
+	      }
 	
 	      current += n;
 	
@@ -5742,7 +5755,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 391:
+/***/ 390:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -5765,7 +5778,7 @@ webpackJsonp([10],{
 	
 	var _reactDataBinding = __webpack_require__(239);
 	
-	var _history = __webpack_require__(392);
+	var _history = __webpack_require__(391);
 	
 	var history = (0, _history.createHashHistory)();
 	
@@ -5987,7 +6000,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 392:
+/***/ 391:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6004,7 +6017,7 @@ webpackJsonp([10],{
 	
 	var _createLocation3 = _interopRequireDefault(_createLocation2);
 	
-	var _createBrowserHistory = __webpack_require__(393);
+	var _createBrowserHistory = __webpack_require__(392);
 	
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 	
@@ -6028,7 +6041,7 @@ webpackJsonp([10],{
 	
 	exports.useBasename = _useBasename3['default'];
 	
-	var _useBeforeUnload2 = __webpack_require__(394);
+	var _useBeforeUnload2 = __webpack_require__(393);
 	
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 	
@@ -6048,13 +6061,13 @@ webpackJsonp([10],{
 	
 	// deprecated
 	
-	var _enableBeforeUnload2 = __webpack_require__(395);
+	var _enableBeforeUnload2 = __webpack_require__(394);
 	
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 	
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 	
-	var _enableQueries2 = __webpack_require__(396);
+	var _enableQueries2 = __webpack_require__(395);
 	
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 	
@@ -6064,7 +6077,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 393:
+/***/ 392:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -6249,7 +6262,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 394:
+/***/ 393:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -6367,7 +6380,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 395:
+/***/ 394:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6380,7 +6393,7 @@ webpackJsonp([10],{
 	
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 	
-	var _useBeforeUnload = __webpack_require__(394);
+	var _useBeforeUnload = __webpack_require__(393);
 	
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 	
@@ -6389,7 +6402,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 396:
+/***/ 395:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
