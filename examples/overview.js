@@ -4,7 +4,7 @@ import {createForm} from 'rc-form';
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import Select, {Option} from 'antd/lib/select';
-import DatePicker from 'antd/lib/datepicker';
+import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/index.css';
 import {regionStyle, errorStyle} from './styles';
 

@@ -38,7 +38,7 @@
     "browser-test-cover": "rc-tools run browser-test-cover"
   },
   "devDependencies": {
-    "antd": "^0.10.4",
+    "antd": "^0.11.2",
     "expect.js": "0.3.x",
     "history": "^1.16.0",
     "pre-commit": "1.x",
