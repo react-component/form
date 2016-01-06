@@ -117,10 +117,12 @@ function createForm(option = {}) {
         const {rules,
           trigger = defaultTrigger,
           valuePropName = 'value',
+          initialValue,
           validateTrigger = defaultValidateTrigger} = fieldOption;
-        const inputProps = {
-          [valuePropName]: fieldOption.initialValue,
-        };
+        const inputProps = {};
+        if ('initialValue' in fieldOption) {
+          inputProps[valuePropName] = initialValue;
+        }
         if (rules && validateTrigger) {
           inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
         }
