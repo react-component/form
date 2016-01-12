@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { argumentContainer, getValueFromEvent, getErrorStrs, isEmptyObject } from './utils';
+import { argumentContainer, getValueFromEvent, getErrorStrs,
+         isEmptyObject, flattenArray } from './utils';
 import AsyncValidate from 'async-validator';
 
 // avoid concurrency problems
@@ -56,11 +57,11 @@ function createForm(option = {}) {
         // do not notify store
       }
 
-      onChange(name, event) {
+      onChange(name, action, event) {
         const fieldMeta = this.getFieldMeta(name);
-        const {trigger = defaultTrigger, rules} = fieldMeta;
-        if (fieldMeta[trigger]) {
-          fieldMeta[trigger](event);
+        const { validate } = fieldMeta;
+        if (fieldMeta[action]) {
+          fieldMeta[action](event);
         }
         const value = getValueFromEvent(event);
         const field = this.getField(name, true);
@@ -68,29 +69,28 @@ function createForm(option = {}) {
           [name]: {
             ...field,
             value,
-            dirty: !!rules,
+            dirty: this.hasRules(validate),
             sid: ++gid,
           },
         });
       }
 
-      onChangeValidate(name, event) {
+      onChangeValidate(name, action, event) {
         const fieldMeta = this.getFieldMeta(name);
-        const {validateTrigger = defaultValidateTrigger} = fieldMeta;
-        if (fieldMeta[validateTrigger]) {
-          fieldMeta[validateTrigger](event);
+        if (fieldMeta[action]) {
+          fieldMeta[action](event);
         }
         const value = getValueFromEvent(event);
         const field = this.getField(name, true);
         field.value = value;
         field.dirty = true;
-        this.validateFields([field]);
+        this.validateFields([field], undefined, undefined, action);
       }
 
       getCacheBind(name, action, fn) {
         const cache = this.cachedBind[name] = this.cachedBind[name] || {};
         if (!cache[action]) {
-          cache[action] = fn.bind(this, name);
+          cache[action] = fn.bind(this, name, action);
         }
         return cache[action];
       }
@@ -117,21 +117,48 @@ function createForm(option = {}) {
         const {rules,
           trigger = defaultTrigger,
           valuePropName = 'value',
-          validateTrigger = defaultValidateTrigger} = fieldOption;
+          validateTrigger = defaultValidateTrigger,
+          validate = []} = fieldOption;
         const inputProps = {
           [valuePropName]: fieldOption.initialValue,
         };
-        if (rules && validateTrigger) {
-          inputProps[validateTrigger] = this.getCacheBind(name, validateTrigger, this.onChangeValidate);
-        }
-        if (trigger && (validateTrigger !== trigger || !rules)) {
+
+        // For backward compatibility
+        const validateRules = validate.map((item)=> {
+          if (item.trigger === undefined) {
+            item.trigger = defaultValidateTrigger;
+          }
+          return item;
+        });
+        validateRules.push({
+          trigger: validateTrigger,
+          rules,
+        });
+
+        validateRules.filter((item)=> {
+          return item.rules && item.trigger;
+        }).map((item)=> {
+          return item.trigger.split(/\s+/);
+        }).reduce((pre, curr)=> {
+          return pre.concat(curr);
+        }, []).forEach((action)=> {
+          if (inputProps[action]) return;
+          inputProps[action] = this.getCacheBind(name, action, this.onChangeValidate);
+        });
+
+        if (trigger && validateRules.every((item) => {
+          return item.trigger !== trigger || !item.rules;
+        })) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
         const field = this.getField(name);
         if (field && 'value' in field) {
           inputProps[valuePropName] = field.value;
         }
-        this.fieldsMeta[name] = fieldOption;
+        this.fieldsMeta[name] = {
+          ...fieldOption,
+          validate: validateRules,
+        };
         return inputProps;
       }
 
@@ -173,6 +200,16 @@ function createForm(option = {}) {
         }
         const fieldMeta = fieldsMeta[name];
         return fieldMeta && fieldMeta.initialValue;
+      }
+
+      getRules(fieldMeta, action) {
+        const actionRules = fieldMeta.validate.filter((item)=> {
+          const trigger = item.trigger;
+          return !!item.rules &&
+            (trigger === null || trigger === false || trigger.indexOf(action) >= 0);
+        }).map((item)=> item.rules);
+
+        return flattenArray(actionRules);
       }
 
       getForm() {
@@ -235,7 +272,13 @@ function createForm(option = {}) {
         this.setFields(fields);
       }
 
-      validateFields(fields, callback, fieldNames) {
+      hasRules(validate) {
+        return validate.some((item)=> {
+          return !!item.rules;
+        });
+      }
+
+      validateFields(fields, callback, fieldNames, action) {
         const currentGlobalId = gid;
         ++gid;
         const allRules = {};
@@ -255,7 +298,7 @@ function createForm(option = {}) {
           field.validating = true;
           field.dirty = true;
           field.sid = currentGlobalId;
-          allRules[name] = fieldMeta.rules;
+          allRules[name] = this.getRules(fieldMeta, action);
           allValues[name] = field.value;
           allFields[name] = field;
         });
