@@ -120,6 +120,10 @@ type: Object[]. validator rules. see: https://github.com/yiminghe/async-validato
 
 Get fields value by fieldNames.
 
+### getFieldValue(fieldName: String)
+
+Get field value by fieldName.
+
 ### setFieldsValue(obj: Object)
 
 set fields value by kv object.
