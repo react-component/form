@@ -123,6 +123,22 @@ type: String. event which is listened to validate. Default to 'onChange', set to
 
 type: Object[]. validator rules. see: https://github.com/yiminghe/async-validator
 
+### option.validateTrigger && option.rules
+
+```js
+{
+  validateTrigger: 'onBlur',
+  rules: [{required: true}],
+}
+// is the shorthand of
+{
+  validate: [{
+    trigger: 'onBlur',
+    rules: [required: true],
+  }],
+}
+```
+
 ### getFieldsValue([fieldNames: String[]])
 
 Get fields value by fieldNames.
