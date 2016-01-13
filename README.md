@@ -54,7 +54,7 @@ import { createForm } from 'rc-form';
 class Form  extends React.Component {
   render() {
     let errors;
-    const {getFieldProps, getFieldError, isFieldValidating} = props.form;
+    const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
     return (<div>
     <input {...getFieldProps('normal')}/>
     <input {...getFieldProps('required',{
