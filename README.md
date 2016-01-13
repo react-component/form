@@ -58,7 +58,10 @@ class Form  extends React.Component {
     return (<div>
     <input {...getFieldProps('normal')}/>
     <input {...getFieldProps('required',{
-      rules:[{required:true}]
+      validate: [{
+        trigger: 'onBlur onChange',
+        rules:[{required:true}],
+      }],
     })}/>
     {(errors = getFieldError('required')) ? errors.join(',') : null}
     </div>)
@@ -104,17 +107,37 @@ the initial value of current component.
 
 return normalized value 
 
-#### option.validateTrigger
-
-type: String. event which is listened to validate. Default to 'onChange', set to false to only validate when call props.validateFields.
-
 #### option.trigger
 
 type: String. event which is listened to collect form data. Default to 'onChange', set to false to stop collect form data.
 
-#### option.rules
+#### option.validate
+
+type: Object[]
+
+##### option.validate[n].trigger
+
+type: String. event which is listened to validate. Default to 'onChange', set to `null` to only validate when call props.validateFields.
+
+##### option.validate[n].rules
 
 type: Object[]. validator rules. see: https://github.com/yiminghe/async-validator
+
+### option.validateTrigger && option.rules
+
+```js
+{
+  validateTrigger: 'onBlur',
+  rules: [{required: true}],
+}
+// is the shorthand of
+{
+  validate: [{
+    trigger: 'onBlur',
+    rules: [required: true],
+  }],
+}
+```
 
 ### getFieldsValue([fieldNames: String[]])
 

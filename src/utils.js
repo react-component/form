@@ -34,3 +34,7 @@ export function getErrorStrs(errors) {
 export function isEmptyObject(obj) {
   return Object.keys(obj).length === 0;
 }
+
+export function flattenArray(arr) {
+  return Array.prototype.concat.apply([], arr);
+}

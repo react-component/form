@@ -9,13 +9,15 @@ function Email(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('email');
   return (<div style={regionStyle}>
-    <p>email validate onBlur</p>
+    <p>email validate onBlur && onChange</p>
     <p><input {...getFieldProps('email', {
-      rules: [
-        {required: true},
-        {type: 'email', message: '错误的 email 格式'},
-      ],
-      validateTrigger: 'onBlur',
+      validate: [{
+        trigger: 'onBlur',
+        rules: [{required: true}],
+      }, {
+        trigger: 'onBlur onChange',
+        rules: [{type: 'email', message: '错误的 email 格式'}],
+      }],
     })}/></p>
     <p style={errorStyle}>
       {errors ? errors.join(',') : null}
