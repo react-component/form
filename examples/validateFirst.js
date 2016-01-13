@@ -1,9 +1,9 @@
-webpackJsonp([15],{
+webpackJsonp([14],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(400);
+	module.exports = __webpack_require__(399);
 
 
 /***/ },
@@ -32,7 +32,14 @@ webpackJsonp([15],{
 
 /***/ },
 
-/***/ 400:
+/***/ 273:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 399:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -59,6 +66,8 @@ webpackJsonp([15],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	__webpack_require__(273);
+	
 	var _styles = __webpack_require__(236);
 	
 	function Email(props) {
@@ -74,19 +83,14 @@ webpackJsonp([15],{
 	    _react2['default'].createElement(
 	      'p',
 	      null,
-	      'email validate onBlur && onChange'
+	      'email sync validate'
 	    ),
 	    _react2['default'].createElement(
 	      'p',
 	      null,
 	      _react2['default'].createElement('input', getFieldProps('email', {
-	        validate: [{
-	          trigger: 'onBlur',
-	          rules: [{ required: true }]
-	        }, {
-	          trigger: ['onBlur', 'onChange'],
-	          rules: [{ type: 'email', message: '错误的 email 格式' }]
-	        }]
+	        validateFirst: true,
+	        rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }]
 	      }))
 	    ),
 	    _react2['default'].createElement(
@@ -113,6 +117,18 @@ webpackJsonp([15],{
 	    form: _react.PropTypes.object
 	  },
 	
+	  userExists: function userExists(rule, value, callback) {
+	    setTimeout(function () {
+	      if (value === '1') {
+	        callback([new Error('are you kidding?')]);
+	      } else if (value === 'yiminghe') {
+	        callback([new Error('forbid yiminghe')]);
+	      } else {
+	        callback();
+	      }
+	    }, 300);
+	  },
+	
 	  render: function render() {
 	    var _props$form2 = this.props.form;
 	    var getFieldProps = _props$form2.getFieldProps;
@@ -126,14 +142,13 @@ webpackJsonp([15],{
 	      _react2['default'].createElement(
 	        'p',
 	        null,
-	        'user validate on submit'
+	        'user async validate'
 	      ),
 	      _react2['default'].createElement(
 	        'p',
 	        null,
 	        _react2['default'].createElement('input', getFieldProps('user', {
-	          rules: [{ required: true }, { type: 'string', min: 5 }],
-	          validateTrigger: null
+	          rules: [{ required: true, min: 2 }, { validator: this.userExists }]
 	        }))
 	      ),
 	      _react2['default'].createElement(
@@ -161,14 +176,22 @@ webpackJsonp([15],{
 	    _get(Object.getPrototypeOf(_Form.prototype), 'constructor', this).apply(this, arguments);
 	
 	    this.onSubmit = function (e) {
+	      console.log('submit');
 	      e.preventDefault();
-	      _this.props.form.validateFields(function (error, values) {
+	      _this.props.form.validateFields({
+	        // firstFields: false,
+	      }, function (error, values) {
 	        if (!error) {
 	          console.log('ok', values);
 	        } else {
 	          console.log('error', error, values);
 	        }
 	      });
+	    };
+	
+	    this.reset = function (e) {
+	      e.preventDefault();
+	      _this.props.form.resetFields();
 	    };
 	  }
 	
@@ -183,7 +206,7 @@ webpackJsonp([15],{
 	        _react2['default'].createElement(
 	          'h2',
 	          null,
-	          'use validateTrigger config'
+	          'validateFirst'
 	        ),
 	        _react2['default'].createElement(
 	          'form',
@@ -195,9 +218,11 @@ webpackJsonp([15],{
 	            { style: _styles.regionStyle },
 	            _react2['default'].createElement(
 	              'button',
-	              null,
-	              'submit'
-	            )
+	              { onClick: this.reset },
+	              'reset'
+	            ),
+	            ' ',
+	            _react2['default'].createElement('input', { type: 'submit', value: 'submit' })
 	          )
 	        )
 	      );
@@ -220,4 +245,4 @@ webpackJsonp([15],{
 /***/ }
 
 });
-//# sourceMappingURL=validateTrigger.js.map
+//# sourceMappingURL=validateFirst.js.map
