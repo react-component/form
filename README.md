@@ -60,7 +60,7 @@ class Form extends React.Component {
 
   render() {
     let errors;
-    const {getFieldProps, getFieldError} = props.form;
+    const {getFieldProps, getFieldError} = this.props.form;
     return (<div>
       <input {...getFieldProps('normal')}/>
       <input {...getFieldProps('required', {
