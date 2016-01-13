@@ -39,7 +39,7 @@ online example: http://react-component.github.io/form/examples/
 
 ## Feature
 
-* support ie8,ie8+,chrome,firefox,safari
+* support reactjs and even react-native
 
 ## install
 
@@ -69,7 +69,7 @@ class Form  extends React.Component {
 }
 ```
 
-## Function: createForm(formOption)
+## createForm(formOption): Function
 
 ### formOption.onFieldsChange(props, fields)
 
@@ -81,47 +81,46 @@ convert value from props to fields. used for read fields from redux store.
 
 createForm() will return another function:
 
-### React.Component: function(WrappedComponent: React.Component)
+### function(WrappedComponent: React.Component): React.Component
 
 Will pass a object as prop form with the following members to WrappedComponent:
 
-### Object: getFieldProps(name, option)
+### getFieldProps(name, option): Object
 
 Will create props which can be set on a input/InputComponent which support value and onChange interface.
 
 After set, this will create a binding with this input.
 
-#### name
+#### name: String
 
-type: String. this input's unique name.
+This input's unique name.
 
-#### option.valuePropName
+#### option.valuePropName: String
 
-prop name of component's value field, eg: checkbox should set checked ... 
+Prop name of component's value field, eg: checkbox should be set ti `checked` ... 
 
 #### option.initialValue
 
-the initial value of current component.
+Initial value of current component.
 
 #### option.normalize(value, prevValue, allValues)
 
-return normalized value 
+Return normalized value 
 
-#### option.trigger
+#### option.trigger: String
 
-type: String. event which is listened to collect form data. Default to 'onChange', set to false to stop collect form data.
+Event which is listened to collect form data. Defaults to `onChange`.
 
-#### option.validate
+#### option.validate: Object[]
 
-type: Object[]
+##### option.validate[n].trigger: String|String[]
 
-##### option.validate[n].trigger
+Event which is listened to validate. 
+Defaults to `onChange`, set to falsy to only validate when call props.validateFields.
 
-type: String. event which is listened to validate. Default to 'onChange', set to `null` to only validate when call props.validateFields.
+##### option.validate[n].rules: Object[]
 
-##### option.validate[n].rules
-
-type: Object[]. validator rules. see: https://github.com/yiminghe/async-validator
+Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator)
 
 ### option.validateTrigger && option.rules
 
@@ -139,6 +138,10 @@ type: Object[]. validator rules. see: https://github.com/yiminghe/async-validato
 }
 ```
 
+#### option.validateFirst: Boolean
+
+Defaults to false. whether stop validate on first rule of error for this field.
+
 ### getFieldsValue([fieldNames: String[]])
 
 Get fields value by fieldNames.
@@ -149,27 +152,27 @@ Get field value by fieldName.
 
 ### setFieldsValue(obj: Object)
 
-set fields value by kv object.
+Set fields value by kv object.
 
 ### setFields(obj: Object)
 
-set fields by kv object. each field can contain errors and value member.
+Set fields by kv object. each field can contain errors and value member.
 
-### validateFields([fieldNames: String[]], callback: Function(errors, values))
+### validateFields([fieldNames: String[]], [options: Object], callback: Function(errors, values))
 
-Validate and get fields value by fieldNames.
+Validate and get fields value by fieldNames. options is the same as validate method of [async-validator](https://github.com/yiminghe/async-validator).
 
-### String[]: getFieldError(name)
+### getFieldError(name): String[]
 
 Get input's validate errors.
 
-### Bool: isFieldValidating(name)
+### isFieldValidating(name): Bool
 
 Whether this input is validating.
 
 ### resetFields([names: String[]])
 
-reset specified inputs. defaults to all.
+Reset specified inputs. Defaults to all.
 
 ## Test Case
 
@@ -177,7 +180,7 @@ http://localhost:8000/tests/runner.html?coverage
 
 ## Coverage
 
-http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage
+http://localhost:8000/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage
 
 ## License
 

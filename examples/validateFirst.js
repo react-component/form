@@ -3,21 +3,20 @@
 import {createForm} from 'rc-form';
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
+import 'antd/lib/index.css';
 import {regionStyle, errorStyle} from './styles';
 
 function Email(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('email');
   return (<div style={regionStyle}>
-    <p>email validate onBlur && onChange</p>
+    <p>email sync validate</p>
     <p><input {...getFieldProps('email', {
-      validate: [{
-        trigger: 'onBlur',
-        rules: [{required: true}],
-      }, {
-        trigger: ['onBlur', 'onChange'],
-        rules: [{type: 'email', message: '错误的 email 格式'}],
-      }],
+      validateFirst: true,
+      rules: [
+        {required: true},
+        {type: 'email', message: '错误的 email 格式'},
+      ],
     })}/></p>
     <p style={errorStyle}>
       {errors ? errors.join(',') : null}
@@ -37,17 +36,28 @@ const User = React.createClass({
     form: PropTypes.object,
   },
 
+  userExists(rule, value, callback) {
+    setTimeout(() => {
+      if (value === '1') {
+        callback([new Error('are you kidding?')]);
+      } else if (value === 'yiminghe') {
+        callback([new Error('forbid yiminghe')]);
+      } else {
+        callback();
+      }
+    }, 300);
+  },
+
   render() {
     const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
     const errors = getFieldError('user');
     return (<div style={regionStyle}>
-      <p>user validate on submit</p>
+      <p>user async validate</p>
       <p><input {...getFieldProps('user', {
         rules: [
-          {required: true},
-          {type: 'string', min: 5},
+          {required: true, min: 2},
+          {validator: this.userExists},
         ],
-        validateTrigger: null,
       })}/></p>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
@@ -66,8 +76,11 @@ class Form extends Component {
   };
 
   onSubmit = (e) => {
+    console.log('submit');
     e.preventDefault();
-    this.props.form.validateFields((error, values)=> {
+    this.props.form.validateFields({
+      // firstFields: false,
+    }, (error, values)=> {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -76,17 +89,24 @@ class Form extends Component {
     });
   };
 
+  reset = (e) => {
+    e.preventDefault();
+    this.props.form.resetFields();
+  };
+
   render() {
     const {form} = this.props;
     return (<div style={{margin: 20}}>
-      <h2>use validateTrigger config</h2>
+      <h2>validateFirst</h2>
       <form onSubmit={this.onSubmit}>
         <User form={form}/>
 
         <Email form={form}/>
 
         <div style={regionStyle}>
-          <button>submit</button>
+          <button onClick={this.reset}>reset</button>
+          &nbsp;
+          <input type="submit" value="submit"/>
         </div>
       </form>
     </div>);

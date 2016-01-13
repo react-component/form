@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { argumentContainer, getValueFromEvent, getErrorStrs,
-         isEmptyObject, flattenArray } from './utils';
+import { argumentContainer,
+  getValueFromEvent, getErrorStrs,
+  isEmptyObject, flattenArray } from './utils';
 import AsyncValidate from 'async-validator';
 
 // avoid concurrency problems
@@ -84,7 +85,12 @@ function createForm(option = {}) {
         const field = this.getField(name, true);
         field.value = value;
         field.dirty = true;
-        this.validateFields([field], undefined, undefined, action);
+        this.validateFields([field], {
+          action,
+          options: {
+            firstFields: !!fieldMeta.validateFirst,
+          },
+        });
       }
 
       getCacheBind(name, action, fn) {
@@ -119,36 +125,35 @@ function createForm(option = {}) {
           valuePropName = 'value',
           validateTrigger = defaultValidateTrigger,
           validate = []} = fieldOption;
+
         const inputProps = {
           [valuePropName]: fieldOption.initialValue,
         };
 
-        // For backward compatibility
         const validateRules = validate.map((item)=> {
-          if (item.trigger === undefined) {
-            item.trigger = defaultValidateTrigger;
+          item.trigger = item.trigger || [];
+          if (typeof item.trigger === 'string') {
+            item.trigger = [item.trigger];
           }
           return item;
         });
-        validateRules.push({
-          trigger: validateTrigger,
-          rules,
-        });
 
-        validateRules.filter((item)=> {
-          return item.rules && item.trigger;
-        }).map((item)=> {
-          return item.trigger.split(/\s+/);
+        if (rules) {
+          validateRules.push({
+            trigger: validateTrigger ? [].concat(validateTrigger) : [],
+            rules,
+          });
+        }
+
+        validateRules.map((item)=> {
+          return item.trigger;
         }).reduce((pre, curr)=> {
           return pre.concat(curr);
         }, []).forEach((action)=> {
-          if (inputProps[action]) return;
           inputProps[action] = this.getCacheBind(name, action, this.onChangeValidate);
         });
 
-        if (trigger && validateRules.every((item) => {
-          return item.trigger !== trigger || !item.rules;
-        })) {
+        if (trigger && validateRules.every((item) => item.trigger.indexOf(trigger) === -1 || !item.rules)) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
         const field = this.getField(name);
@@ -204,11 +209,8 @@ function createForm(option = {}) {
 
       getRules(fieldMeta, action) {
         const actionRules = fieldMeta.validate.filter((item)=> {
-          const trigger = item.trigger;
-          return !!item.rules &&
-            (trigger === null || trigger === false || trigger.indexOf(action) >= 0);
-        }).map((item)=> item.rules);
-
+          return !action || item.trigger.indexOf(action) >= 0;
+        }).map((item) => item.rules);
         return flattenArray(actionRules);
       }
 
@@ -278,7 +280,7 @@ function createForm(option = {}) {
         });
       }
 
-      validateFields(fields, callback, fieldNames, action) {
+      validateFields(fields, {fieldNames, action, options = {}}, callback) {
         const currentGlobalId = gid;
         ++gid;
         const allRules = {};
@@ -304,7 +306,7 @@ function createForm(option = {}) {
         });
         this.setFields(allFields);
         const nowFields = this.fields;
-        // incase normalize
+        // in case normalize
         Object.keys(allValues).forEach((f)=> {
           allValues[f] = nowFields[f].value;
         });
@@ -312,7 +314,7 @@ function createForm(option = {}) {
           callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
           return;
         }
-        new AsyncValidate(allRules).validate(allValues, (errors)=> {
+        new AsyncValidate(allRules).validate(allValues, options, (errors)=> {
           const errorsGroup = {...alreadyErrors};
           if (errors && errors.length) {
             errors.forEach((e) => {
@@ -344,15 +346,26 @@ function createForm(option = {}) {
         });
       }
 
-      validateFieldsByName(ns, cb) {
+      validateFieldsByName(ns, opt, cb) {
         let names = ns;
         let callback = cb;
+        let options = opt;
         if (typeof names === 'function') {
           callback = names;
+          options = {};
+          names = undefined;
+        } else if (Array.isArray(ns)) {
+          if (typeof options === 'function') {
+            callback = options;
+            options = {};
+          }
+        } else {
+          callback = options;
+          options = names || {};
           names = undefined;
         }
         const fieldNames = names || this.getValidFieldsName();
-        const fields = fieldNames.map((name)=> {
+        const fields = fieldNames.map((name) => {
           const fieldMeta = this.getFieldMeta(name);
           if (!fieldMeta.rules) {
             return null;
@@ -360,7 +373,7 @@ function createForm(option = {}) {
           const field = this.getField(name, true);
           field.value = this.getFieldValue(name);
           return field;
-        }).filter((f)=> {
+        }).filter((f) => {
           return !!f;
         });
         if (!fields.length) {
@@ -369,7 +382,13 @@ function createForm(option = {}) {
           }
           return;
         }
-        this.validateFields(fields, callback, fieldNames);
+        if (!('firstFields' in options)) {
+          options.firstFields = fieldNames.filter((name)=> {
+            const fieldMeta = this.getFieldMeta(name);
+            return !!fieldMeta.validateFirst;
+          });
+        }
+        this.validateFields(fields, {fieldNames, options}, callback);
       }
 
       isFieldValidating(name) {
