@@ -51,19 +51,23 @@ online example: http://react-component.github.io/form/examples/
 import { createForm } from 'rc-form';
 
 @createForm()
-class Form  extends React.Component {
+class Form extends React.Component {
+  submit = () => {
+    this.props.form.validateFields((error, value) => {
+      console.log(error, value);
+    });
+  }
+
   render() {
     let errors;
-    const {getFieldProps, getFieldError, isFieldValidating} = props.form;
+    const {getFieldProps, getFieldError} = props.form;
     return (<div>
-    <input {...getFieldProps('normal')}/>
-    <input {...getFieldProps('required',{
-      validate: [{
-        trigger: 'onBlur onChange',
-        rules:[{required:true}],
-      }],
-    })}/>
-    {(errors = getFieldError('required')) ? errors.join(',') : null}
+      <input {...getFieldProps('normal')}/>
+      <input {...getFieldProps('required', {
+        rules: [{required: true}],
+      })}/>
+      {(errors = getFieldError('required')) ? errors.join(',') : null}
+      <button onClick={this.submit}>submit</button>
     </div>)
   }
 }
