@@ -289,7 +289,7 @@ function createForm(option = {}) {
         const alreadyErrors = {};
         fields.forEach((field)=> {
           const name = field.name;
-          if (field.dirty === false) {
+          if (options.force !== true && field.dirty === false) {
             if (field.errors) {
               alreadyErrors[name] = field.errors;
             }
@@ -358,6 +358,8 @@ function createForm(option = {}) {
           if (typeof options === 'function') {
             callback = options;
             options = {};
+          } else {
+            options = options || {};
           }
         } else {
           callback = options;
