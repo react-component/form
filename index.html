@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@0.8.0 - React High Order Form Component</title>
+  <title>rc-form@0.9.0 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@0.8.0</h1>
+  <h1>rc-form@0.9.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -769,6 +769,8 @@
       <li><a href="examples/server-validate.html">server-validate</a></li>
       
       <li><a href="examples/setFieldsValue.html">setFieldsValue</a></li>
+      
+      <li><a href="examples/start-end-date.html">start-end-date</a></li>
       
       <li><a href="examples/styles.html">styles</a></li>
       
@@ -802,19 +804,23 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <h2>Usage<a id="user-content-usage" name="usage" class="anchor" aria-hidden="true" href="#usage"><span class="octicon octicon-link"></span></a></h2><div class="highlight"><pre><code language="js">import { createForm } from <span class="hljs-string">'rc-form'</span>;
 
 @createForm()
-<span class="hljs-keyword">class</span> Form  extends React.Component {
+<span class="hljs-keyword">class</span> Form extends React.Component {
+  submit = () =&gt; {
+    <span class="hljs-keyword">this</span>.props.form.validateFields((error, value) =&gt; {
+      <span class="hljs-built_in">console</span>.log(error, value);
+    });
+  }
+
   render() {
     <span class="hljs-keyword">let</span> errors;
-    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = props.form;
+    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError} = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal</span>')}/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">required</span>',{
-      <span class="hljs-attribute">validate:</span> [{
-        <span class="hljs-attribute">trigger:</span> '<span class="hljs-attribute">onBlur</span> <span class="hljs-attribute">onChange</span>',
-        <span class="hljs-attribute">rules:</span>[{<span class="hljs-attribute">required:true</span>}],
-      }],
-    })}/&gt;</span>
-    {(errors = getFieldError('required')) ? errors.join(',') : null}
+      <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal</span>')}/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">required</span>', {
+        <span class="hljs-attribute">rules:</span> [{<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>}],
+      })}/&gt;</span>
+      {(errors = getFieldError('required')) ? errors.join(',') : null}
+      <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.submit}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)
   }
 }</span></code></pre></div><h2>createForm(formOption): Function<a id="user-content-createform(formoption):-function" name="createform(formoption):-function" class="anchor" aria-hidden="true" href="#createform(formoption):-function"><span class="octicon octicon-link"></span></a></h2><h3>formOption.onFieldsChange(props, fields)<a id="user-content-formoption.onfieldschange(props,-fields)" name="formoption.onfieldschange(props,-fields)" class="anchor" aria-hidden="true" href="#formoption.onfieldschange(props,-fields)"><span class="octicon octicon-link"></span></a></h3><p>Called when field changed, you can dispatch fields to redux store.</p>

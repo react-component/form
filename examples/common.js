@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		16:0
+/******/ 		17:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"input-array","6":"normalize","7":"overview","8":"parallel-form","9":"redux","10":"router","11":"server-validate","12":"setFieldsValue","13":"suggest","14":"validateFirst","15":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"input-array","6":"normalize","7":"overview","8":"parallel-form","9":"redux","10":"router","11":"server-validate","12":"setFieldsValue","13":"start-end-date","14":"suggest","15":"validateFirst","16":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -20092,7 +20092,7 @@
 	          var alreadyErrors = {};
 	          fields.forEach(function (field) {
 	            var name = field.name;
-	            if (field.dirty === false) {
+	            if (options.force !== true && field.dirty === false) {
 	              if (field.errors) {
 	                alreadyErrors[name] = field.errors;
 	              }
@@ -20164,6 +20164,8 @@
 	            if (typeof options === 'function') {
 	              callback = options;
 	              options = {};
+	            } else {
+	              options = options || {};
 	            }
 	          } else {
 	            callback = options;
