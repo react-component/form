@@ -113,7 +113,7 @@ Return normalized value
 
 #### option.trigger: String
 
-Event which is listened to collect form data. Defaults to `onChange`.
+Defaults to `onChange`. Event which is listened to collect form data.
 
 #### option.validate: Object[]
 
@@ -164,7 +164,14 @@ Set fields by kv object. each field can contain errors and value member.
 
 ### validateFields([fieldNames: String[]], [options: Object], callback: Function(errors, values))
 
-Validate and get fields value by fieldNames. options is the same as validate method of [async-validator](https://github.com/yiminghe/async-validator).
+Validate and get fields value by fieldNames.
+
+options is the same as validate method of [async-validator](https://github.com/yiminghe/async-validator).
+add a new force member.
+
+#### options.force: Boolean
+
+Defaults to false. Whether to validate fields which have been validated(caused by validateTrigger).
 
 ### getFieldError(name): String[]
 
