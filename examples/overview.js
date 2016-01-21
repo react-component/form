@@ -71,6 +71,7 @@ const User = React.createClass({
   },
 });
 
+
 function CustomInput(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('select');
@@ -118,6 +119,36 @@ DateInput.propTypes = {
   form: PropTypes.object,
 };
 
+function toNumber(v) {
+  if (v === '') {
+    return undefined;
+  }
+  if (v.trim() === '') {
+    return NaN;
+  }
+  return Number(v);
+}
+
+function NumberInput(props) {
+  const {getFieldProps, getFieldError} = props.form;
+  const errors = getFieldError('number');
+  return (<div style={regionStyle}>
+    <p>number input</p>
+    <p>
+      <input {...getFieldProps('number', {
+        rules: [{transform: toNumber, type: 'number', required: false}],
+      })}/>
+    </p>
+    <p style={errorStyle}>
+      {(errors) ? errors.join(',') : null}
+    </p>
+  </div>);
+}
+
+NumberInput.propTypes = {
+  form: PropTypes.object,
+};
+
 @createForm()
 class Form extends Component {
   static propTypes = {
@@ -153,6 +184,8 @@ class Form extends Component {
             <input {...getFieldProps('normal')}/>
           </p>
         </div>
+
+        <NumberInput form={form}/>
 
         <User form={form}/>
 
