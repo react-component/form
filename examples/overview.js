@@ -1741,7 +1741,12 @@ webpackJsonp([7],[
 	      _react2['default'].createElement(
 	        'p',
 	        null,
-	        'user async validate'
+	        _react2['default'].createElement(
+	          'span',
+	          { style: { color: 'red' } },
+	          '*'
+	        ),
+	        ' user async validate'
 	      ),
 	      _react2['default'].createElement(
 	        'p',
@@ -1778,7 +1783,12 @@ webpackJsonp([7],[
 	    _react2['default'].createElement(
 	      'p',
 	      null,
-	      'custom select sync validate'
+	      _react2['default'].createElement(
+	        'span',
+	        { style: { color: 'red' } },
+	        '*'
+	      ),
+	      ' custom select sync validate'
 	    ),
 	    _react2['default'].createElement(
 	      'p',
@@ -1829,7 +1839,12 @@ webpackJsonp([7],[
 	    _react2['default'].createElement(
 	      'p',
 	      null,
-	      'DateInput sync validate'
+	      _react2['default'].createElement(
+	        'span',
+	        { style: { color: 'red' } },
+	        '*'
+	      ),
+	      ' DateInput sync validate'
 	    ),
 	    _react2['default'].createElement(
 	      'p',
@@ -1851,6 +1866,9 @@ webpackJsonp([7],[
 	};
 	
 	function toNumber(v) {
+	  if (v === undefined) {
+	    return v;
+	  }
 	  if (v === '') {
 	    return undefined;
 	  }
@@ -1878,7 +1896,7 @@ webpackJsonp([7],[
 	      'p',
 	      null,
 	      _react2['default'].createElement('input', getFieldProps('number', {
-	        rules: [{ transform: toNumber, type: 'number', required: false }]
+	        rules: [{ transform: toNumber, type: 'number' }]
 	      }))
 	    ),
 	    _react2['default'].createElement(

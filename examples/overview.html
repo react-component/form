@@ -318,7 +318,7 @@ const User = React.createClass({
     const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
     const errors = getFieldError('user');
     return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>user async validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">red</span>'}}&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span> user async validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">user</span>', {
         <span class="hljs-attribute">initialValue:</span> '<span class="hljs-attribute">x</span>',
         <span class="hljs-attribute">rules:</span> [
@@ -341,7 +341,7 @@ function CustomInput(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('select');
   return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>custom select sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">red</span>'}}&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span> custom select sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}} {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">select</span>', {
       <span class="hljs-attribute">rules:</span> [
         {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
@@ -367,7 +367,7 @@ function DateInput(props) {
   const {getFieldProps, getFieldError} = props.form;
   const errors = getFieldError('date');
   return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>DateInput sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{color:</span> '<span class="hljs-attribute">red</span>'}}&gt;</span>*<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span> DateInput sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">DatePicker</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">date</span>', {
         <span class="hljs-attribute">rules:</span> [
@@ -385,6 +385,9 @@ DateInput.propTypes = {
 };
 
 function toNumber(v) {
+  if (v === undefined) {
+    return v;
+  }
   if (v === '') {
     return undefined;
   }
@@ -401,7 +404,7 @@ function NumberInput(props) {
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>number input<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">number</span>', {
-        <span class="hljs-attribute">rules:</span> [{<span class="hljs-attribute">transform:</span> <span class="hljs-attribute">toNumber</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">number</span>', <span class="hljs-attribute">required:</span> <span class="hljs-attribute">false</span>}],
+        <span class="hljs-attribute">rules:</span> [{<span class="hljs-attribute">transform:</span> <span class="hljs-attribute">toNumber</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">number</span>'}],
       })}/&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
