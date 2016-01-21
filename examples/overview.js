@@ -15,7 +15,6 @@ function Email(props) {
     <p>email sync validate</p>
     <p><input {...getFieldProps('email', {
       rules: [
-        {required: true},
         {type: 'email', message: '错误的 email 格式'},
       ],
     })}/></p>
@@ -123,7 +122,7 @@ function toNumber(v) {
   if (v === '') {
     return undefined;
   }
-  if (v.trim() === '') {
+  if (v && v.trim() === '') {
     return NaN;
   }
   return Number(v);
