@@ -369,7 +369,7 @@ function createForm(option = {}) {
         const fieldNames = names || this.getValidFieldsName();
         const fields = fieldNames.map((name) => {
           const fieldMeta = this.getFieldMeta(name);
-          if (!fieldMeta.rules) {
+          if (!this.hasRules(fieldMeta.validate)) {
             return null;
           }
           const field = this.getField(name, true);
