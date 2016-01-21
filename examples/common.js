@@ -20175,7 +20175,7 @@
 	          var fieldNames = names || this.getValidFieldsName();
 	          var fields = fieldNames.map(function (name) {
 	            var fieldMeta = _this6.getFieldMeta(name);
-	            if (!fieldMeta.rules) {
+	            if (!_this6.hasRules(fieldMeta.validate)) {
 	              return null;
 	            }
 	            var field = _this6.getField(name, true);
