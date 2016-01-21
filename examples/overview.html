@@ -337,6 +337,7 @@ const User = React.createClass({
   },
 });
 
+
 function CustomInput(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('select');
@@ -384,6 +385,36 @@ DateInput.propTypes = {
   form: PropTypes.object,
 };
 
+function toNumber(v) {
+  if (v === '') {
+    return undefined;
+  }
+  if (v.trim() === '') {
+    return NaN;
+  }
+  return Number(v);
+}
+
+function NumberInput(props) {
+  const {getFieldProps, getFieldError} = props.form;
+  const errors = getFieldError('number');
+  return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>number input<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">number</span>', {
+        <span class="hljs-attribute">rules:</span> [{<span class="hljs-attribute">transform:</span> <span class="hljs-attribute">toNumber</span>, <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">number</span>', <span class="hljs-attribute">required:</span> <span class="hljs-attribute">false</span>}],
+      })}/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
+      {(errors) ? errors.join(',') : null}
+    <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+}
+
+NumberInput.propTypes = {
+  form: PropTypes.object,
+};
+
 @createForm()
 class Form extends Component {
   static propTypes = {
@@ -419,6 +450,8 @@ class Form extends Component {
             <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal</span>')}/&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-title">NumberInput</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">User</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
 

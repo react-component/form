@@ -20408,11 +20408,12 @@
 	      }
 	    }
 	  },
-	  validate: function validate(source, o, oc) {
+	  validate: function validate(source_, o, oc) {
 	    var _this = this;
 	
 	    if (o === undefined) o = {};
 	
+	    var source = source_;
 	    var options = o;
 	    if (!this.rules) {
 	      throw new Error('Cannot validate with no rules.');
@@ -20464,6 +20465,9 @@
 	      arr.forEach(function (r) {
 	        var rule = r;
 	        if (typeof rule.transform === 'function') {
+	          if (source === source_) {
+	            source = _extends({}, source);
+	          }
 	          value = source[z] = rule.transform(value);
 	        }
 	        if (typeof rule === 'function') {

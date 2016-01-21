@@ -1850,6 +1850,49 @@ webpackJsonp([7],[
 	  form: _react.PropTypes.object
 	};
 	
+	function toNumber(v) {
+	  if (v === '') {
+	    return undefined;
+	  }
+	  if (v.trim() === '') {
+	    return NaN;
+	  }
+	  return Number(v);
+	}
+	
+	function NumberInput(props) {
+	  var _props$form5 = props.form;
+	  var getFieldProps = _props$form5.getFieldProps;
+	  var getFieldError = _props$form5.getFieldError;
+	
+	  var errors = getFieldError('number');
+	  return _react2['default'].createElement(
+	    'div',
+	    { style: _styles.regionStyle },
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      'number input'
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      null,
+	      _react2['default'].createElement('input', getFieldProps('number', {
+	        rules: [{ transform: toNumber, type: 'number', required: false }]
+	      }))
+	    ),
+	    _react2['default'].createElement(
+	      'p',
+	      { style: _styles.errorStyle },
+	      errors ? errors.join(',') : null
+	    )
+	  );
+	}
+	
+	NumberInput.propTypes = {
+	  form: _react.PropTypes.object
+	};
+	
 	var Form = (function (_Component) {
 	  _inherits(Form, _Component);
 	
@@ -1909,6 +1952,7 @@ webpackJsonp([7],[
 	              _react2['default'].createElement('input', getFieldProps('normal'))
 	            )
 	          ),
+	          _react2['default'].createElement(NumberInput, { form: form }),
 	          _react2['default'].createElement(User, { form: form }),
 	          _react2['default'].createElement(Email, { form: form }),
 	          _react2['default'].createElement(CustomInput, { form: form }),
