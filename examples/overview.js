@@ -52,7 +52,7 @@ const User = React.createClass({
     const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
     const errors = getFieldError('user');
     return (<div style={regionStyle}>
-      <p>user async validate</p>
+      <p><span style={{color: 'red'}}>*</span> user async validate</p>
       <p><input {...getFieldProps('user', {
         initialValue: 'x',
         rules: [
@@ -75,7 +75,7 @@ function CustomInput(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
   const errors = getFieldError('select');
   return (<div style={regionStyle}>
-    <p>custom select sync validate</p>
+    <p><span style={{color: 'red'}}>*</span> custom select sync validate</p>
     <p><Select placeholder="please select" style={{width: 200}} {...getFieldProps('select', {
       rules: [
         {required: true},
@@ -101,7 +101,7 @@ function DateInput(props) {
   const {getFieldProps, getFieldError} = props.form;
   const errors = getFieldError('date');
   return (<div style={regionStyle}>
-    <p>DateInput sync validate</p>
+    <p><span style={{color: 'red'}}>*</span> DateInput sync validate</p>
     <p style={{width: 200}}>
       <DatePicker placeholder="please select" {...getFieldProps('date', {
         rules: [
@@ -119,6 +119,9 @@ DateInput.propTypes = {
 };
 
 function toNumber(v) {
+  if (v === undefined) {
+    return v;
+  }
   if (v === '') {
     return undefined;
   }
@@ -135,7 +138,7 @@ function NumberInput(props) {
     <p>number input</p>
     <p>
       <input {...getFieldProps('number', {
-        rules: [{transform: toNumber, type: 'number', required: false}],
+        rules: [{transform: toNumber, type: 'number'}],
       })}/>
     </p>
     <p style={errorStyle}>
