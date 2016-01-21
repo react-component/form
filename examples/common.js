@@ -20636,6 +20636,10 @@
 	  return str;
 	}
 	
+	function isNativeStringType(type) {
+	  return type === 'string' || type === 'url' || type === 'hex' || type === 'email';
+	}
+	
 	function isEmptyValue(value, type) {
 	  if (value === undefined || value === null) {
 	    return true;
@@ -20643,7 +20647,7 @@
 	  if (type === 'array' && Array.isArray(value) && !value.length) {
 	    return true;
 	  }
-	  if (type === 'string' && typeof value === 'string' && !value) {
+	  if (isNativeStringType(type) && typeof value === 'string' && !value) {
 	    return true;
 	  }
 	  return false;
@@ -21632,9 +21636,21 @@
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
+	var _util = __webpack_require__(166);
+	
 	function type(rule, value, callback, source, options) {
+	  var ruleType = rule.type;
 	  var errors = [];
-	  _rule2['default'].type(rule, value, source, errors, options);
+	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+	  if (validate) {
+	    if ((0, _util.isEmptyValue)(value, ruleType) && !rule.required) {
+	      return callback();
+	    }
+	    _rule2['default'].required(rule, value, source, errors, options, ruleType);
+	    if (!(0, _util.isEmptyValue)(value, ruleType)) {
+	      _rule2['default'].type(rule, value, source, errors, options);
+	    }
+	  }
 	  callback(errors);
 	}
 	

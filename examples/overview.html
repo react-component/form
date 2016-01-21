@@ -281,7 +281,6 @@ import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">email</span>', {
       <span class="hljs-attribute">rules:</span> [
-        {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
         {<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>', <span class="hljs-attribute">message:</span> '错误的 <span class="hljs-attribute">email</span> 格式'},
       ],
     })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
@@ -389,7 +388,7 @@ function toNumber(v) {
   if (v === '') {
     return undefined;
   }
-  if (v.trim() === '') {
+  if (v &amp;&amp; v.trim() === '') {
     return NaN;
   }
   return Number(v);

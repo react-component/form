@@ -1689,7 +1689,7 @@ webpackJsonp([7],[
 	      'p',
 	      null,
 	      _react2['default'].createElement('input', getFieldProps('email', {
-	        rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }]
+	        rules: [{ type: 'email', message: '错误的 email 格式' }]
 	      }))
 	    ),
 	    _react2['default'].createElement(
@@ -1854,7 +1854,7 @@ webpackJsonp([7],[
 	  if (v === '') {
 	    return undefined;
 	  }
-	  if (v.trim() === '') {
+	  if (v && v.trim() === '') {
 	    return NaN;
 	  }
 	  return Number(v);
