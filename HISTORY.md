@@ -1,7 +1,7 @@
 # History
 ----
 
-## 0.9.0 / 2015-01-18
+## 0.9.0 / 2016-01-18
 
 - support force, force to revalidate.
 
@@ -9,7 +9,7 @@
 this.props.validateFields(['xx'], {force: true}).
 ```
 
-## 0.8.0 / 2015-01-13
+## 0.8.0 / 2016-01-13
 
 - support validate/validateFirst option for getFieldProps 
 
