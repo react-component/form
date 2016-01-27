@@ -68,28 +68,17 @@ webpackJsonp([1],{
 	    form: _react.PropTypes.object
 	  },
 	
-	  getInitialState: function getInitialState() {
-	    return {
-	      initialValue: '',
-	      loading: true
-	    };
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-	
+	  checkSpecial: function checkSpecial(rule, value, callback) {
 	    setTimeout(function () {
-	      _this.setState({
-	        initialValue: 'x@gmail.com',
-	        loading: false
-	      });
-	    }, 500);
+	      if (value === 'yiminghe@gmail.com') {
+	        callback('can not be!');
+	      } else {
+	        callback();
+	      }
+	    }, 1000);
 	  },
 	
 	  render: function render() {
-	    if (this.state.loading) {
-	      return null;
-	    }
 	    var _props$form = this.props.form;
 	    var getFieldProps = _props$form.getFieldProps;
 	    var getFieldError = _props$form.getFieldError;
@@ -108,8 +97,8 @@ webpackJsonp([1],{
 	        'p',
 	        null,
 	        _react2['default'].createElement('input', getFieldProps('email', {
-	          rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }],
-	          initialValue: this.state.initialValue,
+	          validateFirst: true,
+	          rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }, this.checkSpecial],
 	          validateTrigger: 'onBlur'
 	        }))
 	      ),
@@ -120,7 +109,7 @@ webpackJsonp([1],{
 	      ),
 	      _react2['default'].createElement(
 	        'p',
-	        null,
+	        { style: _styles.errorStyle },
 	        isFieldValidating('email') ? 'validating' : null
 	      )
 	    );
@@ -131,7 +120,7 @@ webpackJsonp([1],{
 	  _inherits(Form, _Component);
 	
 	  function Form() {
-	    var _this2 = this;
+	    var _this = this;
 	
 	    _classCallCheck(this, _Form);
 	
@@ -139,21 +128,53 @@ webpackJsonp([1],{
 	
 	    this.onSubmit = function (e) {
 	      e.preventDefault();
-	      _this2.props.form.validateFields(function (error, values) {
-	        if (!error) {
-	          console.log('ok', values);
-	        } else {
-	          console.log('error', error, values);
-	        }
+	      _this.props.form.submit(function (callback) {
+	        setTimeout(function () {
+	          _this.props.form.validateFields(function (error, values) {
+	            if (!error) {
+	              console.log('ok', values);
+	            } else {
+	              console.log('error', error, values);
+	            }
+	            callback();
+	          });
+	        }, 1000);
 	      });
+	    };
+	
+	    this.reset = function (e) {
+	      e.preventDefault();
+	      _this.props.form.resetFields();
 	    };
 	  }
 	
 	  _createClass(Form, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+	
+	      setTimeout(function () {
+	        _this2.props.form.setFieldsInitialValue({
+	          email: 'xx@gmail.com'
+	        });
+	        _this2.setState({
+	          loading: false
+	        });
+	      }, 1000);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (!this.state || this.state.loading !== false) {
+	        return _react2['default'].createElement(
+	          'b',
+	          null,
+	          'loading'
+	        );
+	      }
 	      var form = this.props.form;
 	
+	      var disabled = form.isFieldsValidating() || form.isSubmitting();
 	      return _react2['default'].createElement(
 	        'div',
 	        { style: { margin: 20 } },
@@ -171,8 +192,20 @@ webpackJsonp([1],{
 	            { style: _styles.regionStyle },
 	            _react2['default'].createElement(
 	              'button',
-	              null,
+	              { disabled: disabled, type: 'submit' },
 	              'submit'
+	            ),
+	            ' ',
+	            disabled ? _react2['default'].createElement(
+	              'span',
+	              { style: { color: 'red' } },
+	              'disabled'
+	            ) : null,
+	            ' ',
+	            _react2['default'].createElement(
+	              'button',
+	              { disabled: disabled, onClick: this.reset },
+	              'reset'
 	            )
 	          )
 	        )

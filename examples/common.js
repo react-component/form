@@ -19783,10 +19783,13 @@
 	        if (mapPropsToFields) {
 	          fields = mapPropsToFields(this.props);
 	        }
+	        this.state = {
+	          submitting: false
+	        };
 	        this.fields = fields || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'getFieldError', 'setFields', 'resetFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsValue', 'getFieldValue'];
+	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'submit', 'isSubmitting', 'getFieldError', 'setFields', 'resetFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsInitialValue', 'isFieldsValidating', 'setFieldsValue', 'getFieldValue'];
 	        bindMethods.forEach(function (m) {
 	          _this[m] = _this[m].bind(_this);
 	        });
@@ -19813,6 +19816,12 @@
 	          var fields = this.fields;
 	          var fieldsMeta = this.fieldsMeta;
 	
+	          var fieldsMetaKeys = Object.keys(fieldsMeta);
+	          fieldsMetaKeys.forEach(function (s) {
+	            if (fieldsMeta[s].stale) {
+	              delete fieldsMeta[s];
+	            }
+	          });
 	          var fieldsKeys = Object.keys(fields);
 	          fieldsKeys.forEach(function (s) {
 	            if (!fieldsMeta[s]) {
@@ -19901,7 +19910,13 @@
 	          var _fieldOption$validate = fieldOption.validate;
 	          var validate = _fieldOption$validate === undefined ? [] : _fieldOption$validate;
 	
-	          var inputProps = _defineProperty({}, valuePropName, fieldOption.initialValue);
+	          var fieldMeta = this.fieldsMeta[name] || {};
+	
+	          if ('initialValue' in fieldOption) {
+	            fieldMeta.initialValue = fieldOption.initialValue;
+	          }
+	
+	          var inputProps = _defineProperty({}, valuePropName, fieldMeta.initialValue);
 	
 	          var validateRules = validate.map(function (item) {
 	            item.trigger = item.trigger || [];
@@ -19935,8 +19950,9 @@
 	          if (field && 'value' in field) {
 	            inputProps[valuePropName] = field.value;
 	          }
-	          this.fieldsMeta[name] = _extends({}, fieldOption, {
-	            validate: validateRules
+	          this.fieldsMeta[name] = _extends({}, fieldMeta, fieldOption, {
+	            validate: validateRules,
+	            stale: 0
 	          });
 	          return inputProps;
 	        }
@@ -20008,9 +20024,13 @@
 	            getFieldValue: this.getFieldValue,
 	            setFieldsValue: this.setFieldsValue,
 	            setFields: this.setFields,
+	            setFieldsInitialValue: this.setFieldsInitialValue,
 	            getFieldProps: this.getFieldProps,
 	            getFieldError: this.getFieldError,
 	            isFieldValidating: this.isFieldValidating,
+	            isFieldsValidating: this.isFieldsValidating,
+	            isSubmitting: this.isSubmitting,
+	            submit: this.submit,
 	            validateFields: this.validateFieldsByName,
 	            resetFields: this.resetFields
 	          };
@@ -20066,6 +20086,19 @@
 	            }
 	          }
 	          this.setFields(fields);
+	        }
+	      }, {
+	        key: 'setFieldsInitialValue',
+	        value: function setFieldsInitialValue(initialValues) {
+	          var fieldsMeta = this.fieldsMeta;
+	          for (var _name2 in initialValues) {
+	            if (initialValues.hasOwnProperty(_name2)) {
+	              var fieldMeta = fieldsMeta[_name2];
+	              fieldsMeta[_name2] = _extends({}, fieldMeta, {
+	                initialValue: initialValues[_name2]
+	              });
+	            }
+	          }
 	        }
 	      }, {
 	        key: 'hasRules',
@@ -20204,6 +20237,32 @@
 	          return this.getFieldMember(name, 'validating');
 	        }
 	      }, {
+	        key: 'isFieldsValidating',
+	        value: function isFieldsValidating(ns) {
+	          var names = ns || this.getValidFieldsName();
+	          return names.some(this.isFieldValidating);
+	        }
+	      }, {
+	        key: 'isSubmitting',
+	        value: function isSubmitting() {
+	          return this.state.submitting;
+	        }
+	      }, {
+	        key: 'submit',
+	        value: function submit(callback) {
+	          var _this7 = this;
+	
+	          var fn = function fn() {
+	            _this7.setState({
+	              submitting: false
+	            });
+	          };
+	          this.setState({
+	            submitting: true
+	          });
+	          callback(fn);
+	        }
+	      }, {
 	        key: 'resetFields',
 	        value: function resetFields(ns) {
 	          var newFields = {};
@@ -20226,7 +20285,12 @@
 	        key: 'render',
 	        value: function render() {
 	          var formProps = _defineProperty({}, formPropName, this.getForm());
-	          this.fieldsMeta = {};
+	          var fieldsMeta = this.fieldsMeta;
+	          for (var _name3 in fieldsMeta) {
+	            if (fieldsMeta.hasOwnProperty(_name3)) {
+	              fieldsMeta[_name3].stale = 1;
+	            }
+	          }
 	          return _react2['default'].createElement(WrappedComponent, _extends({}, formProps, this.props));
 	        }
 	      }]);
