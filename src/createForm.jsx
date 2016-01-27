@@ -20,13 +20,17 @@ function createForm(option = {}) {
         if (mapPropsToFields) {
           fields = mapPropsToFields(this.props);
         }
+        this.state = {
+          submitting: false,
+        };
         this.fields = fields || {};
         this.fieldsMeta = {};
         this.cachedBind = {};
         const bindMethods = [
-          'getFieldProps', 'isFieldValidating',
+          'getFieldProps', 'isFieldValidating', 'submit', 'isSubmitting',
           'getFieldError', 'setFields', 'resetFields',
           'validateFieldsByName', 'getFieldsValue',
+          'setFieldsInitialValue', 'isFieldsValidating',
           'setFieldsValue', 'getFieldValue',
         ];
         bindMethods.forEach((m)=> {
@@ -49,6 +53,12 @@ function createForm(option = {}) {
 
       componentDidUpdate() {
         const {fields, fieldsMeta} = this;
+        const fieldsMetaKeys = Object.keys(fieldsMeta);
+        fieldsMetaKeys.forEach((s)=> {
+          if (fieldsMeta[s].stale) {
+            delete fieldsMeta[s];
+          }
+        });
         const fieldsKeys = Object.keys(fields);
         fieldsKeys.forEach((s)=> {
           if (!fieldsMeta[s]) {
@@ -126,8 +136,14 @@ function createForm(option = {}) {
           validateTrigger = defaultValidateTrigger,
           validate = []} = fieldOption;
 
+        const fieldMeta = this.fieldsMeta[name] || {};
+
+        if ('initialValue' in fieldOption) {
+          fieldMeta.initialValue = fieldOption.initialValue;
+        }
+
         const inputProps = {
-          [valuePropName]: fieldOption.initialValue,
+          [valuePropName]: fieldMeta.initialValue,
         };
 
         const validateRules = validate.map((item)=> {
@@ -161,8 +177,10 @@ function createForm(option = {}) {
           inputProps[valuePropName] = field.value;
         }
         this.fieldsMeta[name] = {
+          ...fieldMeta,
           ...fieldOption,
           validate: validateRules,
+          stale: 0,
         };
         return inputProps;
       }
@@ -220,9 +238,13 @@ function createForm(option = {}) {
           getFieldValue: this.getFieldValue,
           setFieldsValue: this.setFieldsValue,
           setFields: this.setFields,
+          setFieldsInitialValue: this.setFieldsInitialValue,
           getFieldProps: this.getFieldProps,
           getFieldError: this.getFieldError,
           isFieldValidating: this.isFieldValidating,
+          isFieldsValidating: this.isFieldsValidating,
+          isSubmitting: this.isSubmitting,
+          submit: this.submit,
           validateFields: this.validateFieldsByName,
           resetFields: this.resetFields,
         };
@@ -272,6 +294,19 @@ function createForm(option = {}) {
           }
         }
         this.setFields(fields);
+      }
+
+      setFieldsInitialValue(initialValues) {
+        const fieldsMeta = this.fieldsMeta;
+        for (const name in initialValues) {
+          if (initialValues.hasOwnProperty(name)) {
+            const fieldMeta = fieldsMeta[name];
+            fieldsMeta[name] = {
+              ...fieldMeta,
+              initialValue: initialValues[name],
+            };
+          }
+        }
       }
 
       hasRules(validate) {
@@ -397,6 +432,27 @@ function createForm(option = {}) {
         return this.getFieldMember(name, 'validating');
       }
 
+      isFieldsValidating(ns) {
+        const names = ns || this.getValidFieldsName();
+        return names.some(this.isFieldValidating);
+      }
+
+      isSubmitting() {
+        return this.state.submitting;
+      }
+
+      submit(callback) {
+        const fn = () => {
+          this.setState({
+            submitting: false,
+          });
+        };
+        this.setState({
+          submitting: true,
+        });
+        callback(fn);
+      }
+
       resetFields(ns) {
         const newFields = {};
         const {fields} = this;
@@ -418,7 +474,12 @@ function createForm(option = {}) {
         const formProps = {
           [formPropName]: this.getForm(),
         };
-        this.fieldsMeta = {};
+        const fieldsMeta = this.fieldsMeta;
+        for (const name in fieldsMeta) {
+          if (fieldsMeta.hasOwnProperty(name)) {
+            fieldsMeta[name].stale = 1;
+          }
+        }
         return <WrappedComponent {...formProps} {...this.props}/>;
       }
     }

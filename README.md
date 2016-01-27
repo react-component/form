@@ -146,6 +146,8 @@ Validator rules. see: [async-validator](https://github.com/yiminghe/async-valida
 
 Defaults to false. whether stop validate on first rule of error for this field.
 
+
+
 ### getFieldsValue([fieldNames: String[]])
 
 Get fields value by fieldNames.
@@ -157,6 +159,10 @@ Get field value by fieldName.
 ### setFieldsValue(obj: Object)
 
 Set fields value by kv object.
+
+### setFieldsInitialValue(obj: Object)
+
+Set fields initialValue by kv object. use for reset and initial display/value.
 
 ### setFields(obj: Object)
 
@@ -177,9 +183,21 @@ Defaults to false. Whether to validate fields which have been validated(caused b
 
 Get input's validate errors.
 
-### isFieldValidating(name): Bool
+### isFieldValidating(name: String): Bool
 
 Whether this input is validating.
+
+### isFieldsValidating(names: String[]): Bool
+
+Whether one of the inputs is validating.
+
+### isSubmitting(): Bool
+
+Whether the form is submitting.
+
+### submit(callback: Function)
+
+Cause isSubmitting to return true, after callback called, isSubmitting return false.
 
 ### resetFields([names: String[]])
 

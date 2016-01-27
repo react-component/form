@@ -1,5 +1,8 @@
 # History
 ----
+## 0.10.0 / 2016-01-27
+- support setFieldsInitialValue/submit/isFieldsValidating/isSubmitting method for this.props.form
+
 
 ## 0.9.0 / 2016-01-18
 

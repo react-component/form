@@ -1,3 +1,5 @@
+/* eslint no-console:0 */
+
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/index.css';
 import {createForm} from 'rc-form';
