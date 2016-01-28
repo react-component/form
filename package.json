@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "antd": "^0.11.2",
+    "async": "^1.5.2",
     "cz-conventional-changelog": "^1.1.5",
     "expect.js": "0.3.x",
     "history": "^1.16.0",

@@ -10,7 +10,7 @@ const defaultValidateTrigger = 'onChange';
 const defaultTrigger = defaultValidateTrigger;
 
 function createForm(option = {}) {
-  const {mapPropsToFields, onFieldsChange, formPropName = 'form'} = option;
+  const {mapPropsToFields, onFieldsChange, formPropName = 'form', withRef} = option;
 
   function decorate(WrappedComponent) {
     class Form extends Component {
@@ -479,6 +479,9 @@ function createForm(option = {}) {
           if (fieldsMeta.hasOwnProperty(name)) {
             fieldsMeta[name].stale = 1;
           }
+        }
+        if (withRef) {
+          formProps.ref = 'wrappedComponent';
         }
         return <WrappedComponent {...formProps} {...this.props}/>;
       }
