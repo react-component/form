@@ -19768,6 +19768,7 @@
 	  var option = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	  var mapPropsToFields = option.mapPropsToFields;
 	  var onFieldsChange = option.onFieldsChange;
+	  var fieldNameProp = option.fieldNameProp;
 	  var _option$formPropName = option.formPropName;
 	  var formPropName = _option$formPropName === undefined ? 'form' : _option$formPropName;
 	  var withRef = option.withRef;
@@ -19924,6 +19925,10 @@
 	          }
 	
 	          var inputProps = _defineProperty({}, valuePropName, fieldMeta.initialValue);
+	
+	          if (fieldNameProp) {
+	            inputProps[fieldNameProp] = name;
+	          }
 	
 	          var validateRules = validate.map(function (item) {
 	            item.trigger = item.trigger || [];
@@ -20110,9 +20115,12 @@
 	      }, {
 	        key: 'hasRules',
 	        value: function hasRules(validate) {
-	          return validate && validate.some(function (item) {
-	            return !!item.rules;
-	          });
+	          if (validate) {
+	            return validate.some(function (item) {
+	              return !!item.rules;
+	            });
+	          }
+	          return false;
 	        }
 	      }, {
 	        key: 'validateFields',
