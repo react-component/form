@@ -20110,7 +20110,7 @@
 	      }, {
 	        key: 'hasRules',
 	        value: function hasRules(validate) {
-	          return validate.some(function (item) {
+	          return validate && validate.some(function (item) {
 	            return !!item.rules;
 	          });
 	        }
