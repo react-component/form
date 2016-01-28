@@ -10,7 +10,9 @@ const defaultValidateTrigger = 'onChange';
 const defaultTrigger = defaultValidateTrigger;
 
 function createForm(option = {}) {
-  const {mapPropsToFields, onFieldsChange, formPropName = 'form', withRef} = option;
+  const {mapPropsToFields, onFieldsChange,
+    fieldNameProp,
+    formPropName = 'form', withRef} = option;
 
   function decorate(WrappedComponent) {
     class Form extends Component {
@@ -145,6 +147,10 @@ function createForm(option = {}) {
         const inputProps = {
           [valuePropName]: fieldMeta.initialValue,
         };
+
+        if (fieldNameProp) {
+          inputProps[fieldNameProp] = name;
+        }
 
         const validateRules = validate.map((item)=> {
           item.trigger = item.trigger || [];
@@ -310,9 +316,12 @@ function createForm(option = {}) {
       }
 
       hasRules(validate) {
-        return validate && validate.some((item)=> {
-          return !!item.rules;
-        });
+        if (validate) {
+          return validate.some((item)=> {
+            return !!item.rules;
+          });
+        }
+        return false;
       }
 
       validateFields(fields, {fieldNames, action, options = {}}, callback) {
