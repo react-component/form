@@ -19769,6 +19769,7 @@
 	  var mapPropsToFields = option.mapPropsToFields;
 	  var onFieldsChange = option.onFieldsChange;
 	  var fieldNameProp = option.fieldNameProp;
+	  var fieldMetaProp = option.fieldMetaProp;
 	  var _option$formPropName = option.formPropName;
 	  var formPropName = _option$formPropName === undefined ? 'form' : _option$formPropName;
 	  var withRef = option.withRef;
@@ -19962,10 +19963,18 @@
 	          if (field && 'value' in field) {
 	            inputProps[valuePropName] = field.value;
 	          }
-	          this.fieldsMeta[name] = _extends({}, fieldMeta, fieldOption, {
+	
+	          var meta = _extends({}, fieldMeta, fieldOption, {
 	            validate: validateRules,
 	            stale: 0
 	          });
+	
+	          this.fieldsMeta[name] = meta;
+	
+	          if (fieldMetaProp) {
+	            inputProps[fieldMetaProp] = meta;
+	          }
+	
 	          return inputProps;
 	        }
 	      }, {
