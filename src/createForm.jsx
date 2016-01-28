@@ -12,6 +12,7 @@ const defaultTrigger = defaultValidateTrigger;
 function createForm(option = {}) {
   const {mapPropsToFields, onFieldsChange,
     fieldNameProp,
+    fieldMetaProp,
     formPropName = 'form', withRef} = option;
 
   function decorate(WrappedComponent) {
@@ -182,12 +183,20 @@ function createForm(option = {}) {
         if (field && 'value' in field) {
           inputProps[valuePropName] = field.value;
         }
-        this.fieldsMeta[name] = {
+
+        const meta = {
           ...fieldMeta,
           ...fieldOption,
           validate: validateRules,
           stale: 0,
         };
+
+        this.fieldsMeta[name] = meta;
+
+        if (fieldMetaProp) {
+          inputProps[fieldMetaProp] = meta;
+        }
+
         return inputProps;
       }
 
