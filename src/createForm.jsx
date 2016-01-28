@@ -310,7 +310,7 @@ function createForm(option = {}) {
       }
 
       hasRules(validate) {
-        return validate.some((item)=> {
+        return validate && validate.some((item)=> {
           return !!item.rules;
         });
       }
