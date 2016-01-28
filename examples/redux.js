@@ -14,13 +14,13 @@ function form(state = {
   },
 }, action) {
   switch (action.type) {
-  case 'save_fields':
-    return {
-      ...state,
-      ...action.payload,
-    };
-  default:
-    return state;
+    case 'save_fields':
+      return {
+        ...state,
+        ...action.payload,
+      };
+    default:
+      return state;
   }
 }
 
