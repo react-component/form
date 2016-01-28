@@ -272,6 +272,7 @@ a:hover {
   text-decoration: none;
 }
 a[disabled] {
+  color: #ccc;
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -333,9 +334,9 @@ samp {
 }
 @font-face {
   font-family: 'anticon';
-  src: url('//at.alicdn.com/t/font_1450842624_7594283.eot');
+  src: url('//at.alicdn.com/t/font_1452596235_7047422.eot');
   /* IE9*/
-  src: url('//at.alicdn.com/t/font_1450842624_7594283.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('//at.alicdn.com/t/font_1450842624_7594283.woff') format('woff'), /* chrome、firefox */ url('//at.alicdn.com/t/font_1450842624_7594283.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('//at.alicdn.com/t/font_1450842624_7594283.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1452596235_7047422.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('//at.alicdn.com/t/font_1452596235_7047422.woff') format('woff'), /* chrome、firefox */ url('//at.alicdn.com/t/font_1452596235_7047422.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('//at.alicdn.com/t/font_1452596235_7047422.svg#iconfont') format('svg');
   /* iOS 4.1- */
 }
 .anticon {
@@ -500,9 +501,6 @@ samp {
 }
 .anticon-setting:before {
   content: "\E68D";
-}
-.anticon-search:before {
-  content: "\E68C";
 }
 .anticon-poweroff:before {
   content: "\E68B";
@@ -842,6 +840,9 @@ samp {
 }
 .anticon-qrcode:before {
   content: "\E6A5";
+}
+.anticon-scan:before {
+  content: "\E6AF";
 }
 .anticon-like:before {
   content: "\E6A3";
@@ -3335,6 +3336,7 @@ fieldset[disabled] .ant-btn-dashed.active {
 .ant-btn-circle-outline:not([disabled]):active > .anticon,
 .ant-btn-circle-outline:not([disabled]).active > .anticon {
   color: #fff;
+  position: relative;
 }
 .ant-btn-circle-outline:not([disabled]):hover:before,
 .ant-btn-circle-outline:not([disabled]):active:before,
@@ -4725,7 +4727,6 @@ fieldset[disabled] .ant-calendar .ant-calendar-ok-btn.active {
 }
 .ant-calendar-range-part {
   width: 50%;
-  position: relative;
 }
 .ant-calendar-range-left {
   float: left;
@@ -5266,6 +5267,10 @@ textarea.ant-calendar-time .ant-time-picker-input {
 .ant-calendar-decade-panel-last-century-cell .ant-calendar-decade-panel-decade:before {
   content: "\E601";
 }
+.ant-calendar-month .ant-calendar-month-panel,
+.ant-calendar-month .ant-calendar-year-panel {
+  top: 0;
+}
 .ant-time-picker {
   box-sizing: border-box;
 }
@@ -5273,7 +5278,7 @@ textarea.ant-calendar-time .ant-time-picker-input {
   box-sizing: border-box;
 }
 .ant-time-picker-panel {
-  min-width: 168px;
+  max-width: 168px;
   z-index: 1070;
   position: absolute;
 }
@@ -5300,6 +5305,9 @@ textarea.ant-calendar-time .ant-time-picker-input {
 .ant-time-picker-panel.slide-up-leave.slide-up-leave-active.ant-time-picker-panel-placement-bottomRight {
   -webkit-animation-name: antSlideUpOut;
           animation-name: antSlideUpOut;
+}
+.ant-calendar-time .ant-time-picker-panel {
+  min-width: 168px;
 }
 .ant-time-picker {
   position: relative;
@@ -7638,8 +7646,8 @@ fieldset[disabled] .ant-search-input:hover .ant-search-btn-noempty.active {
   line-height: 32px;
   text-align: center;
   font-size: 14px;
-  -webkit-animation: zoomIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  animation: zoomIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  -webkit-animation: zoomIn 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+  animation: zoomIn 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
 }
 .has-success.has-feedback:after {
   -webkit-animation-name: diffZoomIn1 !important;
@@ -8452,8 +8460,8 @@ textarea.ant-input-number {
   border-radius: 3px;
   border-color: #d9d9d9;
   background-color: #fff;
-  -webkit-transition: border-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  transition: border-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  -webkit-transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
+  transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 }
 .ant-checkbox-inner:after {
   -webkit-transform: rotate(45deg) scale(0);
@@ -8468,8 +8476,8 @@ textarea.ant-input-number {
   border-top: 0;
   border-left: 0;
   content: ' ';
-  -webkit-transition: all 0.1s cubic-bezier(0.6, -0.3, 0.74, 0.05);
-  transition: all 0.1s cubic-bezier(0.6, -0.3, 0.74, 0.05);
+  -webkit-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 }
 .ant-checkbox-input {
   position: absolute;
@@ -8521,8 +8529,8 @@ textarea.ant-input-number {
   border-top: 0;
   border-left: 0;
   content: ' ';
-  -webkit-transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) 0.1s;
-  transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) 0.1s;
+  -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+  transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
 }
 .ant-checkbox-disabled.ant-checkbox-checked:hover .ant-checkbox-inner {
   border-color: #d9d9d9;
@@ -8937,11 +8945,11 @@ textarea.ant-input-number {
   -webkit-transform: scale(1);
           transform: scale(1);
   opacity: 1;
-  -webkit-transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-          transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  -webkit-transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+  transition: opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+  transition: transform 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+          transition: transform 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46), opacity 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), background-color 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86), -webkit-transform 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
 }
 .ant-radio-disabled:hover .ant-radio-inner {
   border-color: #d9d9d9;
@@ -9473,8 +9481,8 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
   border-radius: 3px;
   border-color: #d9d9d9;
   background-color: #fff;
-  -webkit-transition: border-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  transition: border-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  -webkit-transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
+  transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 }
 .ant-tree-checkbox-inner:after {
   -webkit-transform: rotate(45deg) scale(0);
@@ -9489,8 +9497,8 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
   border-top: 0;
   border-left: 0;
   content: ' ';
-  -webkit-transition: all 0.1s cubic-bezier(0.6, -0.3, 0.74, 0.05);
-  transition: all 0.1s cubic-bezier(0.6, -0.3, 0.74, 0.05);
+  -webkit-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 }
 .ant-tree-checkbox-input {
   position: absolute;
@@ -9542,8 +9550,8 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
   border-top: 0;
   border-left: 0;
   content: ' ';
-  -webkit-transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) 0.1s;
-  transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) 0.1s;
+  -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+  transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
 }
 .ant-tree-checkbox-disabled.ant-tree-checkbox-checked:hover .ant-tree-checkbox-inner {
   border-color: #d9d9d9;
@@ -10116,9 +10124,9 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
 .ant-upload-list-picture .ant-upload-list-item-thumbnail {
   width: 48px;
   height: 48px;
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: middle;
+  position: absolute;
+  top: 8px;
+  left: 8px;
 }
 .ant-upload-list-picture .ant-upload-list-item-thumbnail img {
   width: 48px;
@@ -10138,6 +10146,11 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
   line-height: 42px;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
+  padding-left: 48px;
+  padding-right: 8px;
+  max-width: 100%;
+  display: inline-block;
+  box-sizing: border-box;
 }
 .ant-upload-list-picture .ant-upload-list-item-uploading .ant-upload-list-item-name {
   line-height: 28px;
@@ -10219,6 +10232,13 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
+.ant-menu-item > a {
+  display: block;
+  color: #666;
+}
+.ant-menu-item > a:hover {
+  color: #666;
+}
 .ant-menu-item-active,
 .ant-menu-submenu-title:hover {
   background-color: #eaf8fe;
@@ -10240,7 +10260,7 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
 }
 .ant-menu-inline .ant-menu-item,
 .ant-menu-vertical .ant-menu-item {
-  border-right: 2px solid transparent;
+  border-right: 1px solid #e9e9e9;
   margin-left: -1px;
   left: 1px;
   position: relative;
@@ -10543,14 +10563,14 @@ label.ant-radio-button-disabled.ant-radio-button-checked {
 }
 .ant-badge-zoom-appear,
 .ant-badge-zoom-enter {
-  -webkit-animation: antZoomBadgeIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-          animation: antZoomBadgeIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  -webkit-animation: antZoomBadgeIn 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
+          animation: antZoomBadgeIn 0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46);
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
 }
 .ant-badge-zoom-leave {
-  -webkit-animation: antZoomBadgeOut 0.3s cubic-bezier(0.6, -0.3, 0.74, 0.05);
-          animation: antZoomBadgeOut 0.3s cubic-bezier(0.6, -0.3, 0.74, 0.05);
+  -webkit-animation: antZoomBadgeOut 0.3s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+          animation: antZoomBadgeOut 0.3s cubic-bezier(0.71, -0.46, 0.88, 0.6);
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
 }
@@ -10970,8 +10990,8 @@ a -count:active {
   border-radius: 3px;
   border-color: #d9d9d9;
   background-color: #fff;
-  -webkit-transition: border-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  transition: border-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  -webkit-transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
+  transition: border-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.1s cubic-bezier(0.71, -0.46, 0.29, 1.46);
 }
 .ant-transfer-checkbox-inner:after {
   -webkit-transform: rotate(45deg) scale(0);
@@ -10986,8 +11006,8 @@ a -count:active {
   border-top: 0;
   border-left: 0;
   content: ' ';
-  -webkit-transition: all 0.1s cubic-bezier(0.6, -0.3, 0.74, 0.05);
-  transition: all 0.1s cubic-bezier(0.6, -0.3, 0.74, 0.05);
+  -webkit-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 }
 .ant-transfer-checkbox-input {
   position: absolute;
@@ -11039,8 +11059,8 @@ a -count:active {
   border-top: 0;
   border-left: 0;
   content: ' ';
-  -webkit-transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) 0.1s;
-  transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) 0.1s;
+  -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+  transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
 }
 .ant-transfer-checkbox-disabled.ant-transfer-checkbox-checked:hover .ant-transfer-checkbox-inner {
   border-color: #d9d9d9;

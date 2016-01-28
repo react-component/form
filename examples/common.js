@@ -16704,15 +16704,21 @@
 	 * @typechecks
 	 */
 	
+	/* eslint-disable fb-www/typeof-undefined */
+	
 	/**
 	 * Same as document.activeElement but wraps in a try-catch block. In IE it is
 	 * not safe to call document.activeElement if there is nothing focused.
 	 *
-	 * The activeElement will be null only if the document body is not yet defined.
+	 * The activeElement will be null only if the document or document body is not
+	 * yet defined.
 	 */
-	"use strict";
+	'use strict';
 	
 	function getActiveElement() /*?DOMElement*/{
+	  if (typeof document === 'undefined') {
+	    return null;
+	  }
 	  try {
 	    return document.activeElement || document.body;
 	  } catch (e) {
@@ -18711,7 +18717,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.5';
+	module.exports = '0.14.6';
 
 /***/ },
 /* 148 */
@@ -19764,6 +19770,7 @@
 	  var onFieldsChange = option.onFieldsChange;
 	  var _option$formPropName = option.formPropName;
 	  var formPropName = _option$formPropName === undefined ? 'form' : _option$formPropName;
+	  var withRef = option.withRef;
 	
 	  function decorate(WrappedComponent) {
 	    var Form = (function (_Component) {
@@ -20290,6 +20297,9 @@
 	            if (fieldsMeta.hasOwnProperty(_name3)) {
 	              fieldsMeta[_name3].stale = 1;
 	            }
+	          }
+	          if (withRef) {
+	            formProps.ref = 'wrappedComponent';
 	          }
 	          return _react2['default'].createElement(WrappedComponent, _extends({}, formProps, this.props));
 	        }

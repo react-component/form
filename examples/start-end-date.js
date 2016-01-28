@@ -352,49 +352,6 @@ webpackJsonp([13],[
 /* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	module.exports = {
-	  guid: __webpack_require__(257),
-	  classSet: __webpack_require__(258),
-	  joinClasses: __webpack_require__(260),
-	  KeyCode: __webpack_require__(261),
-	  PureRenderMixin: __webpack_require__(262),
-	  shallowEqual: __webpack_require__(263),
-	  createChainedFunction: __webpack_require__(264),
-	  Dom: {
-	    addEventListener: __webpack_require__(265),
-	    contains: __webpack_require__(270)
-	  },
-	  Children: {
-	    toArray: __webpack_require__(271),
-	    mapSelf: __webpack_require__(272)
-	  }
-	};
-
-/***/ },
-/* 257 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var seed = 0;
-	module.exports = function guid() {
-	  return Date.now() + '_' + seed++;
-	};
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = __webpack_require__(259);
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2016 Jed Watson.
 	  Licensed under the MIT License (MIT), see
@@ -446,7 +403,63 @@ webpackJsonp([13],[
 
 
 /***/ },
-/* 260 */
+/* 257 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = {
+	  guid: __webpack_require__(266),
+	  classSet: __webpack_require__(267),
+	  joinClasses: __webpack_require__(268),
+	  KeyCode: __webpack_require__(269),
+	  PureRenderMixin: __webpack_require__(270),
+	  shallowEqual: __webpack_require__(271),
+	  createChainedFunction: __webpack_require__(272),
+	  Dom: {
+	    addEventListener: __webpack_require__(273),
+	    contains: __webpack_require__(278)
+	  },
+	  Children: {
+	    toArray: __webpack_require__(279),
+	    mapSelf: __webpack_require__(280)
+	  }
+	};
+
+/***/ },
+/* 266 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var seed = 0;
+	module.exports = function guid() {
+	  return Date.now() + '_' + seed++;
+	};
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(256);
+
+/***/ },
+/* 268 */
 /***/ function(module, exports) {
 
 	/**
@@ -480,7 +493,7 @@ webpackJsonp([13],[
 	module.exports = joinClasses;
 
 /***/ },
-/* 261 */
+/* 269 */
 /***/ function(module, exports) {
 
 	/**
@@ -1005,12 +1018,12 @@ webpackJsonp([13],[
 	module.exports = KeyCode;
 
 /***/ },
-/* 262 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var shallowEqual = __webpack_require__(263);
+	var shallowEqual = __webpack_require__(271);
 	
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
@@ -1045,7 +1058,7 @@ webpackJsonp([13],[
 	module.exports = ReactComponentWithPureRenderMixin;
 
 /***/ },
-/* 263 */
+/* 271 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1073,7 +1086,7 @@ webpackJsonp([13],[
 	module.exports = shallowEqual;
 
 /***/ },
-/* 264 */
+/* 272 */
 /***/ function(module, exports) {
 
 	/**
@@ -1100,7 +1113,7 @@ webpackJsonp([13],[
 	module.exports = createChainedFunction;
 
 /***/ },
-/* 265 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1112,7 +1125,7 @@ webpackJsonp([13],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _addDomEventListener = __webpack_require__(266);
+	var _addDomEventListener = __webpack_require__(274);
 	
 	var _addDomEventListener2 = _interopRequireDefault(_addDomEventListener);
 	
@@ -1131,7 +1144,7 @@ webpackJsonp([13],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 266 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1143,7 +1156,7 @@ webpackJsonp([13],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _EventObject = __webpack_require__(267);
+	var _EventObject = __webpack_require__(275);
 	
 	var _EventObject2 = _interopRequireDefault(_EventObject);
 	
@@ -1173,7 +1186,7 @@ webpackJsonp([13],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 267 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1190,11 +1203,11 @@ webpackJsonp([13],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _EventBaseObject = __webpack_require__(268);
+	var _EventBaseObject = __webpack_require__(276);
 	
 	var _EventBaseObject2 = _interopRequireDefault(_EventBaseObject);
 	
-	var _objectAssign = __webpack_require__(269);
+	var _objectAssign = __webpack_require__(277);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -1456,7 +1469,7 @@ webpackJsonp([13],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 268 */
+/* 276 */
 /***/ function(module, exports) {
 
 	/**
@@ -1524,7 +1537,7 @@ webpackJsonp([13],[
 	module.exports = exports["default"];
 
 /***/ },
-/* 269 */
+/* 277 */
 /***/ function(module, exports) {
 
 	/* eslint-disable no-unused-vars */
@@ -1569,7 +1582,7 @@ webpackJsonp([13],[
 
 
 /***/ },
-/* 270 */
+/* 278 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1587,7 +1600,7 @@ webpackJsonp([13],[
 	};
 
 /***/ },
-/* 271 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1603,7 +1616,7 @@ webpackJsonp([13],[
 	};
 
 /***/ },
-/* 272 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1620,19 +1633,6 @@ webpackJsonp([13],[
 	};
 
 /***/ },
-/* 273 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
 /* 281 */,
 /* 282 */
 /***/ function(module, exports, __webpack_require__) {
@@ -1745,13 +1745,19 @@ webpackJsonp([13],[
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    var _this2 = this;
 	
+	    this.nextProps = nextProps;
 	    var nextChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(nextProps));
 	    var props = this.props;
+	    // exclusive needs immediate response
+	    if (props.exclusive) {
+	      Object.keys(this.currentlyAnimatingKeys).forEach(function (key) {
+	        _this2.stop(key);
+	      });
+	    }
 	    var showProp = props.showProp;
 	    var currentlyAnimatingKeys = this.currentlyAnimatingKeys;
 	    // last props children if exclusive
-	    // exclusive needs immediate response
-	    var currentChildren = this.state.children;
+	    var currentChildren = props.exclusive ? (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props)) : this.state.children;
 	    // in case destroy in showProp mode
 	    var newChildren = [];
 	    if (showProp) {
@@ -1824,15 +1830,7 @@ webpackJsonp([13],[
 	    });
 	  },
 	
-	  componentDidUpdate: function componentDidUpdate(prevProps) {
-	    var _this3 = this;
-	
-	    // exclusive needs immediate response
-	    if (this.props.exclusive && this.props !== prevProps) {
-	      Object.keys(this.currentlyAnimatingKeys).forEach(function (key) {
-	        _this3.stop(key);
-	      });
-	    }
+	  componentDidUpdate: function componentDidUpdate() {
 	    if (this.isMounted()) {
 	      var keysToEnter = this.keysToEnter;
 	      this.keysToEnter = [];
@@ -1861,6 +1859,10 @@ webpackJsonp([13],[
 	  handleDoneAdding: function handleDoneAdding(key, type) {
 	    var props = this.props;
 	    delete this.currentlyAnimatingKeys[key];
+	    // if update on exclusive mode, skip check
+	    if (props.exclusive && props !== this.nextProps) {
+	      return;
+	    }
 	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props));
 	    if (!this.isValidChildByKey(currentChildren, key)) {
 	      // exclusive will not need this
@@ -1891,6 +1893,10 @@ webpackJsonp([13],[
 	  handleDoneLeaving: function handleDoneLeaving(key) {
 	    var props = this.props;
 	    delete this.currentlyAnimatingKeys[key];
+	    // if update on exclusive mode, skip check
+	    if (props.exclusive && props !== this.nextProps) {
+	      return;
+	    }
 	    var currentChildren = (0, _ChildrenUtils.toArrayChildren)(getChildrenFromProps(props));
 	    // in case state change is too fast
 	    if (this.isValidChildByKey(currentChildren, key)) {
@@ -1926,10 +1932,14 @@ webpackJsonp([13],[
 	
 	  render: function render() {
 	    var props = this.props;
+	    this.nextProps = props;
 	    var stateChildren = this.state.children;
 	    var children = null;
 	    if (stateChildren) {
 	      children = stateChildren.map(function (child) {
+	        if (child === null) {
+	          return child;
+	        }
 	        if (!child.key) {
 	          throw new Error('must set key for <rc-animate> children');
 	        }
@@ -2539,7 +2549,7 @@ webpackJsonp([13],[
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcUtil = __webpack_require__(256);
+	var _rcUtil = __webpack_require__(265);
 	
 	var _Popup = __webpack_require__(308);
 	
@@ -3073,7 +3083,7 @@ webpackJsonp([13],[
 	
 	var _domAlign2 = _interopRequireDefault(_domAlign);
 	
-	var _rcUtil = __webpack_require__(256);
+	var _rcUtil = __webpack_require__(265);
 	
 	var _isWindow = __webpack_require__(319);
 	
@@ -4312,7 +4322,7 @@ webpackJsonp([13],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _objectAssign = __webpack_require__(269);
+	var _objectAssign = __webpack_require__(277);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -4385,7 +4395,7 @@ webpackJsonp([13],[
 	
 	var _rcTimePicker2 = _interopRequireDefault(_rcTimePicker);
 	
-	var _classnames = __webpack_require__(259);
+	var _classnames = __webpack_require__(256);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -4431,7 +4441,8 @@ webpackJsonp([13],[
 	      this.props.onChange(timeValue);
 	    },
 	    render: function render() {
-	      var _this = this;
+	      var _classNames,
+	          _this = this;
 	
 	      var locale = this.getLocale();
 	      // 以下两行代码
@@ -4446,7 +4457,7 @@ webpackJsonp([13],[
 	        placeholder: locale.lang.timePlaceholder,
 	        transitionName: 'slide-up' }) : null;
 	
-	      var calendarClassName = (0, _classnames2.default)(_defineProperty({}, 'ant-calendar-time', this.props.showTime));
+	      var calendarClassName = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, 'ant-calendar-time', this.props.showTime), _defineProperty(_classNames, 'ant-calendar-month', _MonthCalendar2.default === TheCalendar), _classNames));
 	
 	      var calendar = _react2.default.createElement(TheCalendar, {
 	        disabledDate: this.props.disabledDate,
@@ -4489,6 +4500,7 @@ webpackJsonp([13],[
 	            onChange: this.handleChange },
 	          function (_ref) {
 	            var value = _ref.value;
+	
 	            return _react2.default.createElement(
 	              'span',
 	              null,
@@ -4569,7 +4581,7 @@ webpackJsonp([13],[
 	
 	var _gregorianCalendar2 = _interopRequireDefault(_gregorianCalendar);
 	
-	var _rcUtil = __webpack_require__(256);
+	var _rcUtil = __webpack_require__(265);
 	
 	var _dateDateTable = __webpack_require__(331);
 	
@@ -4664,7 +4676,6 @@ webpackJsonp([13],[
 	      showToday: true,
 	      showDateInput: true,
 	      timePicker: null,
-	      onClear: noop,
 	      onOk: noop
 	    };
 	  },
@@ -6146,6 +6157,12 @@ webpackJsonp([13],[
 	    }
 	    this.time = undefined;
 	    this.fieldsComputed = false;
+	  },
+	
+	  toString: function toString() {
+	    // for debug
+	    var v = this;
+	    return '[GregorianCalendar]: ' + v.getYear() + '/' + v.getMonth() + '/' + v.getDayOfMonth() + ' ' + v.getHourOfDay() + ':' + v.getMinutes() + ':' + v.getSeconds();
 	  }
 	};
 	
@@ -7871,7 +7888,7 @@ webpackJsonp([13],[
 	
 	var _yearYearPanel2 = _interopRequireDefault(_yearYearPanel);
 	
-	var _rcUtil = __webpack_require__(256);
+	var _rcUtil = __webpack_require__(265);
 	
 	var _rcUtil2 = _interopRequireDefault(_rcUtil);
 	
@@ -8090,6 +8107,7 @@ webpackJsonp([13],[
 	
 	  propTypes: {
 	    onChange: _react.PropTypes.func,
+	    disabledDate: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func
 	  },
 	
@@ -8208,6 +8226,7 @@ webpackJsonp([13],[
 	          'div',
 	          { className: prefixCls + '-body' },
 	          _react2['default'].createElement(_MonthTable2['default'], {
+	            disabledDate: props.disabledDate,
 	            onSelect: this.setAndSelectValue,
 	            locale: locale,
 	            value: value,
@@ -8248,7 +8267,7 @@ webpackJsonp([13],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(259);
+	var _classnames = __webpack_require__(256);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -8501,7 +8520,7 @@ webpackJsonp([13],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(259);
+	var _classnames = __webpack_require__(256);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -8701,7 +8720,7 @@ webpackJsonp([13],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(259);
+	var _classnames = __webpack_require__(256);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -8873,7 +8892,7 @@ webpackJsonp([13],[
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcUtil = __webpack_require__(256);
+	var _rcUtil = __webpack_require__(265);
 	
 	var _rcUtil2 = _interopRequireDefault(_rcUtil);
 	
@@ -9068,7 +9087,7 @@ webpackJsonp([13],[
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(259);
+	var _classnames = __webpack_require__(256);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -9149,11 +9168,11 @@ webpackJsonp([13],[
 	    var props = this.props;
 	    var prefixCls = props.prefixCls;
 	
-	    var className = (_className = {}, _defineProperty(_className, prefixCls, 1), _defineProperty(_className, prefixCls + '-hidden', !props.visible), _defineProperty(_className, props.className, !!props.className), _className);
+	    var className = (_className = {}, _defineProperty(_className, prefixCls, 1), _defineProperty(_className, prefixCls + '-hidden', !props.visible), _defineProperty(_className, props.className, !!props.className), _defineProperty(_className, newProps.className, !!newProps.className), _className);
 	
 	    return _react2['default'].createElement(
 	      'div',
-	      { className: (0, _classnames2['default'])(className) + ' ' + newProps.className,
+	      { className: '' + (0, _classnames2['default'])(className),
 	        style: this.props.style,
 	        tabIndex: '0', onKeyDown: this.onKeyDown },
 	      newProps.children
@@ -9235,7 +9254,8 @@ webpackJsonp([13],[
 	      prefixCls: 'rc-calendar',
 	      className: '',
 	      onSelect: noop,
-	      onChange: noop
+	      onChange: noop,
+	      onClear: noop
 	    };
 	  },
 	
@@ -9503,7 +9523,7 @@ webpackJsonp([13],[
 	
 	var _mixinCommonMixin2 = _interopRequireDefault(_mixinCommonMixin);
 	
-	var _rcUtil = __webpack_require__(256);
+	var _rcUtil = __webpack_require__(265);
 	
 	var MonthCalendar = _react2['default'].createClass({
 	  displayName: 'MonthCalendar',
@@ -9592,7 +9612,7 @@ webpackJsonp([13],[
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _rcUtil = __webpack_require__(256);
+	var _rcUtil = __webpack_require__(265);
 	
 	var _pickerPlacements = __webpack_require__(352);
 	
@@ -9623,8 +9643,8 @@ webpackJsonp([13],[
 	    defaultOpen: _react.PropTypes.bool,
 	    prefixCls: _react.PropTypes.string,
 	    placement: _react.PropTypes.any,
-	    value: _react.PropTypes.object,
-	    defaultValue: _react.PropTypes.object,
+	    value: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.array]),
+	    defaultValue: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.array]),
 	    align: _react.PropTypes.object
 	  },
 	
@@ -9710,10 +9730,19 @@ webpackJsonp([13],[
 	    var props = this.props;
 	    var state = this.state;
 	    var calendarProp = props.calendar;
+	    var value = state.value;
+	
+	    var defaultValue = undefined;
+	    // RangeCalendar
+	    if (Array.isArray(value)) {
+	      defaultValue = value[0];
+	    } else {
+	      defaultValue = value;
+	    }
 	    var extraProps = {
 	      ref: this.saveCalendarRef,
-	      defaultValue: state.value || calendarProp.props.defaultValue,
-	      defaultSelectedValue: state.value,
+	      defaultValue: defaultValue || calendarProp.props.defaultValue,
+	      defaultSelectedValue: value,
 	      onKeyDown: this.onCalendarKeyDown,
 	      onOk: (0, _rcUtil.createChainedFunction)(calendarProp.props.onOk, this.onCalendarOk),
 	      onSelect: (0, _rcUtil.createChainedFunction)(calendarProp.props.onSelect, this.onCalendarSelect),
@@ -9929,7 +9958,7 @@ webpackJsonp([13],[
 	
 	var _rcTimePicker2 = _interopRequireDefault(_rcTimePicker);
 	
-	var _classnames = __webpack_require__(259);
+	var _classnames = __webpack_require__(256);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -10026,7 +10055,7 @@ webpackJsonp([13],[
 	      disabledDate: disabledDate,
 	      dateInputPlaceholder: [startPlaceholder, endPlaceholder],
 	      locale: locale.lang,
-	      defaultValue: defaultCalendarValue,
+	      defaultValue: [defaultCalendarValue, defaultCalendarValue],
 	      showClear: true });
 	
 	    var pickerClass = (0, _classnames2.default)({
@@ -10115,7 +10144,7 @@ webpackJsonp([13],[
 	
 	var _gregorianCalendar2 = _interopRequireDefault(_gregorianCalendar);
 	
-	var _classnames = __webpack_require__(259);
+	var _classnames = __webpack_require__(256);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -10167,17 +10196,6 @@ webpackJsonp([13],[
 	  return value || init && defaultValue || selectedValue[0] || init && getNow();
 	}
 	
-	function onTimeSelect(direction, value) {
-	  var index = direction === 'left' ? 0 : 1;
-	  var selectedValue = this.state.selectedValue;
-	  if (selectedValue[index]) {
-	    selectedValue = selectedValue.concat();
-	    selectedValue[index] = selectedValue[index].clone();
-	    (0, _util.syncTime)(value, selectedValue[index]);
-	    this.fireSelectValueChange(selectedValue);
-	  }
-	}
-	
 	function onInputSelect(direction, value) {
 	  if (!value) {
 	    return;
@@ -10187,8 +10205,8 @@ webpackJsonp([13],[
 	  var index = direction === 'left' ? 0 : 1;
 	  selectedValue[index] = value;
 	  if (selectedValue[0] && selectedValue[1]) {
-	    if (selectedValue[0].getTime() > selectedValue[1].getTime()) {
-	      selectedValue.length = 1;
+	    if (this.compare(selectedValue[0], selectedValue[1]) > 0) {
+	      selectedValue[1 - index] = undefined;
 	    }
 	  }
 	  this.fireSelectValueChange(selectedValue);
@@ -10199,6 +10217,7 @@ webpackJsonp([13],[
 	
 	  propTypes: {
 	    defaultValue: _react.PropTypes.any,
+	    timePicker: _react.PropTypes.any,
 	    value: _react.PropTypes.any,
 	    selectedValue: _react.PropTypes.array,
 	    defaultSelectedValue: _react.PropTypes.array,
@@ -10206,7 +10225,8 @@ webpackJsonp([13],[
 	    onChange: _react.PropTypes.func,
 	    onSelect: _react.PropTypes.func,
 	    onValueChange: _react.PropTypes.func,
-	    formatter: _react.PropTypes.object
+	    formatter: _react.PropTypes.object,
+	    onClear: _react.PropTypes.func
 	  },
 	
 	  mixins: [_mixinCommonMixin2['default']],
@@ -10249,10 +10269,10 @@ webpackJsonp([13],[
 	      selectedValue.length = 1;
 	      selectedValue[0] = value;
 	      changed = true;
-	    } else if (selectedValue[0].getTime() < value.getTime()) {
+	    } else if (this.compare(selectedValue[0], value) <= 0) {
 	      selectedValue[1] = value;
 	      changed = true;
-	    } else if (selectedValue[0].getTime() > value.getTime()) {
+	    } else if (this.compare(selectedValue[0], value) > 0) {
 	      selectedValue.length = 1;
 	      selectedValue[0] = value;
 	      changed = true;
@@ -10267,7 +10287,7 @@ webpackJsonp([13],[
 	    if (!selectedValue.length || selectedValue.length === 2 && !selectedValue.hovering) {
 	      return;
 	    }
-	    if (hoverValue.getTime() < selectedValue[0].getTime()) {
+	    if (this.compare(hoverValue, selectedValue[0]) < 0) {
 	      return;
 	    }
 	    selectedValue = selectedValue.concat();
@@ -10289,7 +10309,8 @@ webpackJsonp([13],[
 	  getStartValue: function getStartValue() {
 	    var value = this.state.value;
 	    var selectedValue = this.state.selectedValue;
-	    if (selectedValue[0]) {
+	    // keep selectedTime when select date
+	    if (selectedValue[0] && this.props.timePicker) {
 	      value = value.clone();
 	      (0, _util.syncTime)(selectedValue[0], value);
 	    }
@@ -10300,18 +10321,26 @@ webpackJsonp([13],[
 	    var endValue = this.state.value.clone();
 	    endValue.addMonth(1);
 	    var selectedValue = this.state.selectedValue;
-	    if (selectedValue[1]) {
+	    // keep selectedTime when select date
+	    if (selectedValue[1] && this.props.timePicker) {
 	      (0, _util.syncTime)(selectedValue[1], endValue);
 	    }
 	    return endValue;
 	  },
 	
-	  fireSelectValueChange: function fireSelectValueChange(selectedValue) {
+	  compare: function compare(v1, v2) {
+	    if (this.props.timePicker) {
+	      return v1.getTime() - v2.getTime();
+	    }
+	    return v1.compareToDay(v2);
+	  },
+	
+	  fireSelectValueChange: function fireSelectValueChange(selectedValue, direct) {
 	    if (!('selectedValue' in this.props)) {
 	      this.setState({ selectedValue: selectedValue });
 	    }
 	    this.props.onChange(selectedValue);
-	    if (selectedValue.length === 2 && !selectedValue.hovering) {
+	    if (direct || selectedValue[0] && selectedValue[1] && !selectedValue.hovering) {
 	      this.props.onSelect(selectedValue);
 	    }
 	  },
@@ -10322,6 +10351,11 @@ webpackJsonp([13],[
 	      this.setState({ value: value });
 	    }
 	    props.onValueChange(value);
+	  },
+	
+	  clear: function clear() {
+	    this.fireSelectValueChange([], true);
+	    this.props.onClear();
 	  },
 	
 	  render: function render() {
@@ -10357,12 +10391,12 @@ webpackJsonp([13],[
 	      'div',
 	      { className: classes, style: props.style,
 	        tabIndex: '0' },
+	      _react2['default'].createElement('a', { className: prefixCls + '-clear-btn', role: 'button', title: '清除', onClick: this.clear }),
 	      _react2['default'].createElement(_rangeCalendarCalendarPart2['default'], _extends({}, props, newProps, { direction: 'left',
 	        formatter: this.getFormatter(),
 	        value: this.getStartValue(),
 	        placeholder: placeholder1,
 	        onInputSelect: onInputSelect.bind(this, 'left'),
-	        onTimeSelect: onTimeSelect.bind(this, 'left'),
 	        onValueChange: onValueChange.bind(this, 'left') })),
 	      _react2['default'].createElement(
 	        'span',
@@ -10374,7 +10408,6 @@ webpackJsonp([13],[
 	        placeholder: placeholder2,
 	        value: this.getEndValue(),
 	        onInputSelect: onInputSelect.bind(this, 'right'),
-	        onTimeSelect: onTimeSelect.bind(this, 'right'),
 	        onValueChange: onValueChange.bind(this, 'right') })),
 	      _react2['default'].createElement(
 	        'div',
@@ -10430,10 +10463,6 @@ webpackJsonp([13],[
 	var Calendar = _react2['default'].createClass({
 	  displayName: 'Calendar',
 	
-	  propTypes: {
-	    onTimeSelect: _react.PropTypes.func
-	  },
-	
 	  render: function render() {
 	    var props = this.props;
 	    var value = props.value;
@@ -10462,7 +10491,7 @@ webpackJsonp([13],[
 	        disabledTime: disabledTime,
 	        gregorianCalendarLocale: value.locale,
 	        showClear: false,
-	        selectedValue: selectedValue[index] || selectedValue[0],
+	        selectedValue: selectedValue[index],
 	        onChange: props.onInputSelect }),
 	      _react2['default'].createElement(
 	        'div',
@@ -10485,7 +10514,6 @@ webpackJsonp([13],[
 	        _react2['default'].createElement(_calendarCalendarFooter2['default'], _extends({}, newProps, {
 	          disabledDate: props.disabledDate,
 	          timeDisabled: !selectedValue[index] || !!selectedValue.hovering,
-	          onSelect: this.props.onTimeSelect,
 	          onToday: this.chooseToday
 	        }))
 	      )
@@ -11509,7 +11537,7 @@ webpackJsonp([13],[
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _classnames2 = __webpack_require__(259);
+	var _classnames2 = __webpack_require__(256);
 	
 	var _classnames3 = _interopRequireDefault(_classnames2);
 	
@@ -11705,7 +11733,7 @@ webpackJsonp([13],[
 	  value: true
 	});
 	
-	var _objectAssign = __webpack_require__(269);
+	var _objectAssign = __webpack_require__(277);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -11774,7 +11802,7 @@ webpackJsonp([13],[
 	  value: true
 	});
 	
-	var _objectAssign = __webpack_require__(269);
+	var _objectAssign = __webpack_require__(277);
 	
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 	
@@ -11870,7 +11898,7 @@ webpackJsonp([13],[
 	
 	var _antdLibDatePicker2 = _interopRequireDefault(_antdLibDatePicker);
 	
-	__webpack_require__(273);
+	__webpack_require__(257);
 	
 	var _rcForm = __webpack_require__(160);
 	
