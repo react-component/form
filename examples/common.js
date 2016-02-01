@@ -19759,8 +19759,6 @@
 	
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
 	
-	// avoid concurrency problems
-	var gid = 0;
 	var defaultValidateTrigger = 'onChange';
 	var defaultTrigger = defaultValidateTrigger;
 	
@@ -19852,8 +19850,7 @@
 	          var field = this.getField(name, true);
 	          this.setFields(_defineProperty({}, name, _extends({}, field, {
 	            value: value,
-	            dirty: this.hasRules(validate),
-	            sid: ++gid
+	            dirty: this.hasRules(validate)
 	          })));
 	        }
 	      }, {
@@ -19986,7 +19983,7 @@
 	      }, {
 	        key: 'getFieldError',
 	        value: function getFieldError(name) {
-	          return this.getFieldMember(name, 'errors');
+	          return (0, _utils.getErrorStrs)(this.getFieldMember(name, 'errors'));
 	        }
 	      }, {
 	        key: 'getValidFieldsName',
@@ -20141,8 +20138,6 @@
 	          var _ref$options = _ref.options;
 	          var options = _ref$options === undefined ? {} : _ref$options;
 	
-	          var currentGlobalId = gid;
-	          ++gid;
 	          var allRules = {};
 	          var allValues = {};
 	          var allFields = {};
@@ -20159,7 +20154,6 @@
 	            field.errors = undefined;
 	            field.validating = true;
 	            field.dirty = true;
-	            field.sid = currentGlobalId;
 	            allRules[name] = _this5.getRules(fieldMeta, action);
 	            allValues[name] = field.value;
 	            allFields[name] = field;
@@ -20184,23 +20178,30 @@
 	                errorsGroup[fieldName] = fieldErrors;
 	              });
 	            }
-	            var expired = false;
+	            var expired = [];
 	            var nowAllFields = {};
 	            Object.keys(allRules).forEach(function (name) {
 	              var fieldErrors = errorsGroup[name];
 	              var nowField = _this5.getField(name, true);
-	              if (nowField.sid !== currentGlobalId) {
-	                expired = true;
+	              // avoid concurrency problems
+	              if (nowField.value !== allValues[name]) {
+	                expired.push(name);
 	              } else {
-	                nowField.errors = fieldErrors && (0, _utils.getErrorStrs)(fieldErrors);
+	                nowField.errors = fieldErrors;
+	                nowField.value = allValues[name];
 	                nowField.validating = false;
 	                nowField.dirty = false;
-	                nowField.value = allValues[name];
 	                nowAllFields[name] = nowField;
 	              }
 	            });
 	            _this5.setFields(nowAllFields);
-	            if (callback && !expired) {
+	            if (callback) {
+	              if (expired.length) {
+	                expired.forEach(function (name) {
+	                  errorsGroup[name] = [new Error(name + ' need to revalidate')];
+	                  errorsGroup[name].expired = true;
+	                });
+	              }
 	              callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this5.getFieldsValue(fieldNames));
 	            }
 	          });
