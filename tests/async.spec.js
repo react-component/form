@@ -110,11 +110,23 @@ describe('async usage', () => {
     expect(form.isSubmitting()).to.be(false);
     form.submit((callback)=> {
       expect(form.isSubmitting()).to.be(true);
-      setTimeout(()=> {
+      setTimeout(() => {
         callback();
         expect(form.isSubmitting()).to.be(false);
         done();
       }, 100);
     });
+  });
+
+  it('will error if change when validating', (done) => {
+    form.validateFields((errors) => {
+      expect(Object.keys(errors).length).to.be(1);
+      expect(errors.async.map(e => e.message)).to.eql(['async need to revalidate']);
+      setTimeout(() => {
+        done();
+      }, 500);
+    });
+    component.refs.async.value = '1';
+    Simulate.change(component.refs.async);
   });
 });

@@ -4,8 +4,6 @@ import { argumentContainer,
   isEmptyObject, flattenArray } from './utils';
 import AsyncValidate from 'async-validator';
 
-// avoid concurrency problems
-let gid = 0;
 const defaultValidateTrigger = 'onChange';
 const defaultTrigger = defaultValidateTrigger;
 
@@ -84,7 +82,6 @@ function createForm(option = {}) {
             ...field,
             value,
             dirty: this.hasRules(validate),
-            sid: ++gid,
           },
         });
       }
@@ -206,7 +203,7 @@ function createForm(option = {}) {
       }
 
       getFieldError(name) {
-        return this.getFieldMember(name, 'errors');
+        return getErrorStrs(this.getFieldMember(name, 'errors'));
       }
 
       getValidFieldsName() {
@@ -334,8 +331,6 @@ function createForm(option = {}) {
       }
 
       validateFields(fields, {fieldNames, action, options = {}}, callback) {
-        const currentGlobalId = gid;
-        ++gid;
         const allRules = {};
         const allValues = {};
         const allFields = {};
@@ -352,7 +347,6 @@ function createForm(option = {}) {
           field.errors = undefined;
           field.validating = true;
           field.dirty = true;
-          field.sid = currentGlobalId;
           allRules[name] = this.getRules(fieldMeta, action);
           allValues[name] = field.value;
           allFields[name] = field;
@@ -377,23 +371,30 @@ function createForm(option = {}) {
               errorsGroup[fieldName] = fieldErrors;
             });
           }
-          let expired = false;
+          const expired = [];
           const nowAllFields = {};
-          Object.keys(allRules).forEach((name)=> {
+          Object.keys(allRules).forEach((name) => {
             const fieldErrors = errorsGroup[name];
             const nowField = this.getField(name, true);
-            if (nowField.sid !== currentGlobalId) {
-              expired = true;
+            // avoid concurrency problems
+            if (nowField.value !== allValues[name]) {
+              expired.push(name);
             } else {
-              nowField.errors = fieldErrors && getErrorStrs(fieldErrors);
+              nowField.errors = fieldErrors;
+              nowField.value = allValues[name];
               nowField.validating = false;
               nowField.dirty = false;
-              nowField.value = allValues[name];
               nowAllFields[name] = nowField;
             }
           });
           this.setFields(nowAllFields);
-          if (callback && !expired) {
+          if (callback) {
+            if (expired.length) {
+              expired.forEach((name) => {
+                errorsGroup[name] = [new Error(`${name} need to revalidate`)];
+                errorsGroup[name].expired = true;
+              });
+            }
             callback(isEmptyObject(errorsGroup) ? null : errorsGroup, this.getFieldsValue(fieldNames));
           }
         });
