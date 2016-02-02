@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import { argumentContainer,
   getValueFromEvent, getErrorStrs,
   isEmptyObject, flattenArray } from './utils';
-import AsyncValidate from 'async-validator';
+import AsyncValidator from 'async-validator';
 
 const defaultValidateTrigger = 'onChange';
 const defaultTrigger = defaultValidateTrigger;
 
 function createForm(option = {}) {
   const {mapPropsToFields, onFieldsChange,
-    fieldNameProp,
-    fieldMetaProp,
+    fieldNameProp, fieldMetaProp,
+    validateMessages,
     formPropName = 'form', withRef} = option;
 
   function decorate(WrappedComponent) {
@@ -361,7 +361,11 @@ function createForm(option = {}) {
           callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
           return;
         }
-        new AsyncValidate(allRules).validate(allValues, options, (errors)=> {
+        const validator = new AsyncValidator(allRules);
+        if (validateMessages) {
+          validator.messages(validateMessages);
+        }
+        validator.validate(allValues, options, (errors)=> {
           const errorsGroup = {...alreadyErrors};
           if (errors && errors.length) {
             errors.forEach((e) => {
@@ -392,6 +396,7 @@ function createForm(option = {}) {
             if (expired.length) {
               expired.forEach((name) => {
                 errorsGroup[name] = [new Error(`${name} need to revalidate`)];
+                errorsGroup[name][0].field = name;
                 errorsGroup[name].expired = true;
               });
             }

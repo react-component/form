@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "0.10.4",
+  "version": "0.11.0",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -61,7 +61,7 @@
     "lint"
   ],
   "dependencies": {
-    "async-validator": "^1.4.0",
+    "async-validator": "^1.5.0",
     "hoist-non-react-statics": "^1.0.3"
   }
 }

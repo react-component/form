@@ -30,6 +30,7 @@ let Form = React.createClass({
     let keys = form.getFieldValue('keys');
     keys = keys.concat(uuid);
     // can use data-binding to set
+    // important! notify form to detect changes
     form.setFieldsValue({
       keys,
     });

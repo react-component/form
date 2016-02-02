@@ -73,6 +73,10 @@ class Form extends React.Component {
 
 ## createForm(formOption): Function
 
+### formOption.validateMessages: Object
+
+preset messages of [async-validator](https://github.com/yiminghe/async-validator)
+
 ### formOption.onFieldsChange(props, fields)
 
 Called when field changed, you can dispatch fields to redux store.

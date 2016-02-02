@@ -15,11 +15,11 @@ function Email(props) {
     <p>email sync validate</p>
     <p><input {...getFieldProps('email', {
       rules: [
-        {type: 'email', message: '错误的 email 格式'},
+        {type: 'email', message: <b key="err">错误的 email 格式</b>},
       ],
     })}/></p>
     <p style={errorStyle}>
-      {errors ? errors.join(',') : null}
+      {errors}
     </p>
     <p style={errorStyle}>
       {isFieldValidating('email') ? 'validating' : null}
@@ -151,7 +151,13 @@ NumberInput.propTypes = {
   form: PropTypes.object,
 };
 
-@createForm()
+@createForm({
+  validateMessages: {
+    required(field) {
+      return `${field} 必填`;
+    },
+  },
+})
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,

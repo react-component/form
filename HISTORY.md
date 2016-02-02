@@ -1,8 +1,12 @@
 # History
 ----
-## 0.10.0 / 2016-01-27
-- support setFieldsInitialValue/submit/isFieldsValidating/isSubmitting method for this.props.form
+## 0.11.0 / 2016-02-02
 
+- support validateMessages of createForm option.
+
+## 0.10.0 / 2016-01-27
+
+- support setFieldsInitialValue/submit/isFieldsValidating/isSubmitting method for this.props.form
 
 ## 0.9.0 / 2016-01-18
 
