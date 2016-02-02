@@ -3,12 +3,12 @@ webpackJsonp([5],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(259);
+	module.exports = __webpack_require__(268);
 
 
 /***/ },
 
-/***/ 236:
+/***/ 245:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32,7 +32,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 259:
+/***/ 268:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint no-console:0 */
@@ -51,7 +51,7 @@ webpackJsonp([5],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(236);
+	var _styles = __webpack_require__(245);
 	
 	var uuid = 0;
 	
@@ -82,6 +82,7 @@ webpackJsonp([5],{
 	    var keys = form.getFieldValue('keys');
 	    keys = keys.concat(uuid);
 	    // can use data-binding to set
+	    // important! notify form to detect changes
 	    form.setFieldsValue({
 	      keys: keys
 	    });
