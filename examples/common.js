@@ -19769,6 +19769,7 @@
 	  var fieldNameProp = option.fieldNameProp;
 	  var fieldMetaProp = option.fieldMetaProp;
 	  var validateMessages = option.validateMessages;
+	  var refComponent = option.refComponent;
 	  var _option$formPropName = option.formPropName;
 	  var formPropName = _option$formPropName === undefined ? 'form' : _option$formPropName;
 	  var withRef = option.withRef;
@@ -19797,7 +19798,7 @@
 	        this.fields = fields || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'submit', 'isSubmitting', 'getFieldError', 'setFields', 'resetFields', 'validateFieldsByName', 'getFieldsValue', 'setFieldsInitialValue', 'isFieldsValidating', 'setFieldsValue', 'getFieldValue'];
+	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'submit', 'isSubmitting', 'getFieldError', 'setFields', 'resetFields', 'validateFieldsByName', 'getFieldsValue', 'saveRef', 'setFieldsInitialValue', 'isFieldsValidating', 'setFieldsValue', 'getFieldValue'];
 	        bindMethods.forEach(function (m) {
 	          _this[m] = _this[m].bind(_this);
 	        });
@@ -19962,6 +19963,10 @@
 	            inputProps[valuePropName] = field.value;
 	          }
 	
+	          if (refComponent) {
+	            inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
+	          }
+	
 	          var meta = _extends({}, fieldMeta, fieldOption, {
 	            validate: validateRules,
 	            stale: 0
@@ -20120,6 +20125,19 @@
 	          }
 	        }
 	      }, {
+	        key: 'saveRef',
+	        value: function saveRef(name, _, component) {
+	          var fieldMeta = this.getFieldMeta(name);
+	          if (fieldMeta && fieldMeta.ref) {
+	            if (typeof fieldMeta.ref === 'string') {
+	              throw new Error('can not set ref string for ' + name);
+	            }
+	            fieldMeta.ref(component);
+	          }
+	          this.fields[name] = this.fields[name] || {};
+	          this.fields[name].instance = component;
+	        }
+	      }, {
 	        key: 'hasRules',
 	        value: function hasRules(validate) {
 	          if (validate) {
@@ -20147,7 +20165,10 @@
 	            var name = field.name;
 	            if (options.force !== true && field.dirty === false) {
 	              if (field.errors) {
-	                alreadyErrors[name] = field.errors;
+	                alreadyErrors[name] = {
+	                  errors: field.errors,
+	                  instance: field.instance
+	                };
 	              }
 	              return;
 	            }
@@ -20178,9 +20199,9 @@
 	            if (errors && errors.length) {
 	              errors.forEach(function (e) {
 	                var fieldName = e.field;
-	                var fieldErrors = errorsGroup[fieldName] || [];
+	                errorsGroup[fieldName] = errorsGroup[fieldName] || { errors: [] };
+	                var fieldErrors = errorsGroup[fieldName].errors;
 	                fieldErrors.push(e);
-	                errorsGroup[fieldName] = fieldErrors;
 	              });
 	            }
 	            var expired = [];
@@ -20190,22 +20211,31 @@
 	              var nowField = _this5.getField(name, true);
 	              // avoid concurrency problems
 	              if (nowField.value !== allValues[name]) {
-	                expired.push(name);
+	                expired.push({ name: name, instance: nowField.instance });
 	              } else {
-	                nowField.errors = fieldErrors;
+	                nowField.errors = fieldErrors && fieldErrors.errors;
 	                nowField.value = allValues[name];
 	                nowField.validating = false;
 	                nowField.dirty = false;
 	                nowAllFields[name] = nowField;
 	              }
+	              if (fieldErrors) {
+	                fieldErrors.instance = nowField.instance;
+	              }
 	            });
 	            _this5.setFields(nowAllFields);
 	            if (callback) {
 	              if (expired.length) {
-	                expired.forEach(function (name) {
-	                  errorsGroup[name] = [new Error(name + ' need to revalidate')];
-	                  errorsGroup[name][0].field = name;
-	                  errorsGroup[name].expired = true;
+	                expired.forEach(function (_ref2) {
+	                  var name = _ref2.name;
+	                  var instance = _ref2.instance;
+	
+	                  var fieldErrors = [{ message: name + ' need to revalidate', field: name }];
+	                  errorsGroup[name] = {
+	                    expired: true,
+	                    instance: instance,
+	                    errors: fieldErrors
+	                  };
 	                });
 	              }
 	              callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this5.getFieldsValue(fieldNames));

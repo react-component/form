@@ -462,6 +462,10 @@ webpackJsonp([7],[
 	
 	var _styles = __webpack_require__(245);
 	
+	var _domScrollIntoView = __webpack_require__(303);
+	
+	var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
+	
 	function Email(props) {
 	  var _props$form = props.form;
 	  var getFieldProps = _props$form.getFieldProps;
@@ -548,7 +552,7 @@ webpackJsonp([7],[
 	        'p',
 	        null,
 	        _react2['default'].createElement('input', getFieldProps('user', {
-	          initialValue: 'x',
+	          validateFirst: true,
 	          rules: [{ required: true }, { validator: this.userExists }]
 	        }))
 	      ),
@@ -692,6 +696,7 @@ webpackJsonp([7],[
 	      'p',
 	      null,
 	      _react2['default'].createElement('input', getFieldProps('number', {
+	        initialValue: '1',
 	        rules: [{ transform: toNumber, type: 'number' }]
 	      }))
 	    ),
@@ -725,6 +730,14 @@ webpackJsonp([7],[
 	          console.log('ok', values);
 	        } else {
 	          console.log('error', error, values);
+	          for (var _name in error) {
+	            if (error.hasOwnProperty(_name) && error[_name].instance) {
+	              (0, _domScrollIntoView2['default'])(_reactDom2['default'].findDOMNode(error[_name].instance), window, {
+	                onlyScrollIfNeeded: true
+	              });
+	              break;
+	            }
+	          }
 	        }
 	      });
 	    };
@@ -752,6 +765,11 @@ webpackJsonp([7],[
 	        _react2['default'].createElement(
 	          'form',
 	          { onSubmit: this.onSubmit },
+	          _react2['default'].createElement(User, { form: form, saveRef: this.saveRef }),
+	          _react2['default'].createElement(NumberInput, { form: form }),
+	          _react2['default'].createElement(Email, { form: form }),
+	          _react2['default'].createElement(CustomInput, { form: form }),
+	          _react2['default'].createElement(DateInput, { form: form }),
 	          _react2['default'].createElement(
 	            'div',
 	            { style: _styles.regionStyle },
@@ -766,11 +784,6 @@ webpackJsonp([7],[
 	              _react2['default'].createElement('input', getFieldProps('normal'))
 	            )
 	          ),
-	          _react2['default'].createElement(NumberInput, { form: form }),
-	          _react2['default'].createElement(User, { form: form }),
-	          _react2['default'].createElement(Email, { form: form }),
-	          _react2['default'].createElement(CustomInput, { form: form }),
-	          _react2['default'].createElement(DateInput, { form: form }),
 	          _react2['default'].createElement(
 	            'div',
 	            { style: _styles.regionStyle },
@@ -795,6 +808,7 @@ webpackJsonp([7],[
 	
 	  var _Form = Form;
 	  Form = (0, _rcForm.createForm)({
+	    refComponent: true,
 	    validateMessages: {
 	      required: function required(field) {
 	        return field + ' 必填';
