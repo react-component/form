@@ -153,8 +153,46 @@ NumberInput.propTypes = {
   form: PropTypes.object,
 };
 
+function addScrollToValidate(validateFields) {
+  return (...args) => {
+    const originalCallback = args[args.length - 1];
+
+    function newCb(error, values) {
+      if (error) {
+        for (const name in error) {
+          if (error.hasOwnProperty(name) && error[name].instance) {
+            scrollIntoView(ReactDOM.findDOMNode(error[name].instance), window, {
+              onlyScrollIfNeeded: true,
+            });
+            break;
+          }
+        }
+      }
+      if (typeof originalCallback === 'function') {
+        originalCallback(error, values);
+      }
+    }
+
+    if (typeof originalCallback === 'function') {
+      args[args.length - 1] = newCb;
+    } else {
+      args.push(newCb);
+    }
+    validateFields.apply(null, args);
+  };
+}
+
 @createForm({
   refComponent: true,
+  mapProps(props) {
+    if (!this.__scrollAndValidate) {
+      this.__scrollAndValidate = addScrollToValidate(props.form.validateFields);
+    }
+    return {
+      ...props,
+      scrollAndValidate: this.__scrollAndValidate,
+    };
+  },
   validateMessages: {
     required(field) {
       return `${field} 必填`;
@@ -164,24 +202,17 @@ NumberInput.propTypes = {
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
+    scrollAndValidate: PropTypes.func,
   };
 
   onSubmit = (e) => {
     console.log('submit');
     e.preventDefault();
-    this.props.form.validateFields((error, values)=> {
+    this.props.scrollAndValidate((error, values)=> {
       if (!error) {
         console.log('ok', values);
       } else {
         console.log('error', error, values);
-        for (const name in error) {
-          if (error.hasOwnProperty(name) && error[name].instance) {
-            scrollIntoView(ReactDOM.findDOMNode(error[name].instance), window, {
-              onlyScrollIfNeeded: true,
-            });
-            break;
-          }
-        }
       }
     });
   };

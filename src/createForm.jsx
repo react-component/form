@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { argumentContainer,
+import { argumentContainer, mirror,
   getValueFromEvent, getErrorStrs,
   isEmptyObject, flattenArray } from './utils';
 import AsyncValidator from 'async-validator';
@@ -10,8 +10,8 @@ const defaultTrigger = defaultValidateTrigger;
 function createForm(option = {}) {
   const {mapPropsToFields, onFieldsChange,
     fieldNameProp, fieldMetaProp,
-    validateMessages,
-    refComponent,
+    validateMessages, refComponent,
+    mapProps = mirror,
     formPropName = 'form', withRef} = option;
 
   function decorate(WrappedComponent) {
@@ -533,7 +533,11 @@ function createForm(option = {}) {
         if (withRef) {
           formProps.ref = 'wrappedComponent';
         }
-        return <WrappedComponent {...formProps} {...this.props}/>;
+        const props = mapProps.call(this, {
+          ...formProps,
+          ...this.props,
+        });
+        return <WrappedComponent {...props}/>;
       }
     }
 

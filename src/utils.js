@@ -38,3 +38,7 @@ export function isEmptyObject(obj) {
 export function flattenArray(arr) {
   return Array.prototype.concat.apply([], arr);
 }
+
+export function mirror(obj) {
+  return obj;
+}
