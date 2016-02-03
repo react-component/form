@@ -2,7 +2,7 @@
 ----
 ## 0.12.0 / 2016-02-02
 
-- support refComponent option for createForm to scroll error fields into view.
+- support refComponent/mapProps option for createForm to scroll error fields into view.
 
 ## 0.11.0 / 2016-02-02
 

@@ -77,6 +77,10 @@ class Form extends React.Component {
 
 preset messages of [async-validator](https://github.com/yiminghe/async-validator)
 
+### formOption.mapProps: Function(props): Object
+
+Get new props transfered to WrappedComponent. Defaults to props=>props.
+
 ### formOption.refComponent: Boolean
 
 Defaults to false. Whether save component as ref. Can get instance from validateFields's callback parameter by instance member.
