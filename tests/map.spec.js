@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {createForm} from '../';
 import {Simulate} from 'react-addons-test-utils';
 
-let Test = React.createClass({
+const TestComponent = React.createClass({
   propTypes: {
     form: React.PropTypes.object,
   },
@@ -19,7 +19,7 @@ let Test = React.createClass({
 });
 
 
-describe('initialValue usage', () => {
+describe('map usage', () => {
   let container;
   let component;
   let form;
@@ -35,7 +35,7 @@ describe('initialValue usage', () => {
   });
 
   it('onFieldsChange works', () => {
-    Test = createForm({
+    const Test = createForm({
       withRef: true,
       onFieldsChange(props, fields) {
         expect(Object.keys(fields).length).to.be(1);
@@ -50,7 +50,7 @@ describe('initialValue usage', () => {
           },
         };
       },
-    })(Test);
+    })(TestComponent);
     component = ReactDOM.render(<Test formState={{normal: '2'}}/>, container);
     component = component.refs.wrappedComponent;
     form = component.props.form;
@@ -61,5 +61,19 @@ describe('initialValue usage', () => {
     component.refs.normal.value = '3';
     Simulate.change(component.refs.normal);
     expect(form.getFieldValue('normal')).to.be('3');
+  });
+
+
+  it('mapProps works', () => {
+    const Test = createForm({
+      withRef: true,
+      mapProps(props) {
+        props.x += 1;
+        return props;
+      },
+    })(TestComponent);
+    component = ReactDOM.render(<Test x={2}/>, container);
+    component = component.refs.wrappedComponent;
+    expect(component.props.x).to.be(3);
   });
 });

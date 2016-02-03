@@ -23,6 +23,8 @@ let Test = React.createClass({
     return (<div>
       <input {...getFieldProps('normal', {
         initialValue: '1',
+        // test empty rules
+        rules: [],
       })} ref="normal"/>
     </div>);
   },

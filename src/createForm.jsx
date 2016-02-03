@@ -166,7 +166,9 @@ function createForm(option = {}) {
           });
         }
 
-        validateRules.map((item)=> {
+        validateRules.filter((item) => {
+          return !!item.rules && item.rules.length;
+        }).map((item)=> {
           return item.trigger;
         }).reduce((pre, curr)=> {
           return pre.concat(curr);
@@ -174,7 +176,7 @@ function createForm(option = {}) {
           inputProps[action] = this.getCacheBind(name, action, this.onChangeValidate);
         });
 
-        if (trigger && validateRules.every((item) => item.trigger.indexOf(trigger) === -1 || !item.rules)) {
+        if (trigger && validateRules.every((item) => item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length)) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
         const field = this.getField(name);
@@ -341,7 +343,7 @@ function createForm(option = {}) {
       hasRules(validate) {
         if (validate) {
           return validate.some((item)=> {
-            return !!item.rules;
+            return !!item.rules && item.rules.length;
           });
         }
         return false;
