@@ -77,6 +77,10 @@ class Form extends React.Component {
 
 preset messages of [async-validator](https://github.com/yiminghe/async-validator)
 
+### formOption.refComponent: Boolean
+
+Defaults to false. Whether save component as ref. Can get instance from validateFields's callback parameter by instance member.
+
 ### formOption.onFieldsChange(props, fields)
 
 Called when field changed, you can dispatch fields to redux store.

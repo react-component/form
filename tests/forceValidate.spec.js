@@ -13,7 +13,7 @@ let Test = React.createClass({
     this.props.form.validateFields(['check'], {force: true}, (errors) => {
       if (errors) {
         const es = Object.keys(errors).map((name)=> {
-          return errors[name];
+          return errors[name].errors;
         }).reduce((result, current)=> {
           return result.concat.apply(result, current);
         }, []);
@@ -79,7 +79,7 @@ describe('async usage', () => {
     form.validateFields((errors) => {
       expect(Object.keys(errors).length).to.be(1);
       expect(form.getFieldError('check')).to.eql(['error']);
-      expect(errors.check.map(e => e.message)).to.eql(['error']);
+      expect(errors.check.errors.map(e => e.message)).to.eql(['error']);
       expect(form.getFieldError('force')).not.to.be.ok();
       done();
     });

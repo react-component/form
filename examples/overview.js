@@ -7,6 +7,7 @@ import Select, {Option} from 'antd/lib/select';
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/index.css';
 import {regionStyle, errorStyle} from './styles';
+import scrollIntoView from 'dom-scroll-into-view';
 
 function Email(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
@@ -54,7 +55,7 @@ const User = React.createClass({
     return (<div style={regionStyle}>
       <p><span style={{color: 'red'}}>*</span> user async validate</p>
       <p><input {...getFieldProps('user', {
-        initialValue: 'x',
+        validateFirst: true,
         rules: [
           {required: true},
           {validator: this.userExists},
@@ -138,6 +139,7 @@ function NumberInput(props) {
     <p>number input</p>
     <p>
       <input {...getFieldProps('number', {
+        initialValue: '1',
         rules: [{transform: toNumber, type: 'number'}],
       })}/>
     </p>
@@ -152,6 +154,7 @@ NumberInput.propTypes = {
 };
 
 @createForm({
+  refComponent: true,
   validateMessages: {
     required(field) {
       return `${field} 必填`;
@@ -171,6 +174,14 @@ class Form extends Component {
         console.log('ok', values);
       } else {
         console.log('error', error, values);
+        for (const name in error) {
+          if (error.hasOwnProperty(name) && error[name].instance) {
+            scrollIntoView(ReactDOM.findDOMNode(error[name].instance), window, {
+              onlyScrollIfNeeded: true,
+            });
+            break;
+          }
+        }
       }
     });
   };
@@ -186,22 +197,22 @@ class Form extends Component {
     return (<div style={{margin: 20}}>
       <h2>overview</h2>
       <form onSubmit={this.onSubmit}>
-        <div style={regionStyle}>
-          <p>normal input, no validate</p>
-          <p>
-            <input {...getFieldProps('normal')}/>
-          </p>
-        </div>
+        <User form={form} saveRef={this.saveRef}/>
 
         <NumberInput form={form}/>
-
-        <User form={form}/>
 
         <Email form={form}/>
 
         <CustomInput form={form}/>
 
         <DateInput form={form}/>
+
+        <div style={regionStyle}>
+          <p>normal input, no validate</p>
+          <p>
+            <input {...getFieldProps('normal')}/>
+          </p>
+        </div>
 
         <div style={regionStyle}>
           <button onClick={this.reset}>reset</button>

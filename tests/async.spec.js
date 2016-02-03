@@ -90,7 +90,7 @@ describe('async usage', () => {
       expect(values.normal).to.be(undefined);
       expect(values.async).to.be(undefined);
       expect(Object.keys(errors).length).to.be(1);
-      expect(errors.async.map(e => e.message)).to.eql(['must be 1']);
+      expect(errors.async.errors.map(e => e.message)).to.eql(['must be 1']);
       done();
     });
   });
@@ -121,7 +121,7 @@ describe('async usage', () => {
   it('will error if change when validating', (done) => {
     form.validateFields((errors) => {
       expect(Object.keys(errors).length).to.be(1);
-      expect(errors.async.map(e => e.message)).to.eql(['async need to revalidate']);
+      expect(errors.async.errors.map(e => e.message)).to.eql(['async need to revalidate']);
       setTimeout(() => {
         done();
       }, 500);

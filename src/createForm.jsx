@@ -11,6 +11,7 @@ function createForm(option = {}) {
   const {mapPropsToFields, onFieldsChange,
     fieldNameProp, fieldMetaProp,
     validateMessages,
+    refComponent,
     formPropName = 'form', withRef} = option;
 
   function decorate(WrappedComponent) {
@@ -30,7 +31,7 @@ function createForm(option = {}) {
         const bindMethods = [
           'getFieldProps', 'isFieldValidating', 'submit', 'isSubmitting',
           'getFieldError', 'setFields', 'resetFields',
-          'validateFieldsByName', 'getFieldsValue',
+          'validateFieldsByName', 'getFieldsValue', 'saveRef',
           'setFieldsInitialValue', 'isFieldsValidating',
           'setFieldsValue', 'getFieldValue',
         ];
@@ -181,6 +182,10 @@ function createForm(option = {}) {
           inputProps[valuePropName] = field.value;
         }
 
+        if (refComponent) {
+          inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
+        }
+
         const meta = {
           ...fieldMeta,
           ...fieldOption,
@@ -321,6 +326,18 @@ function createForm(option = {}) {
         }
       }
 
+      saveRef(name, _, component) {
+        const fieldMeta = this.getFieldMeta(name);
+        if (fieldMeta && fieldMeta.ref) {
+          if (typeof fieldMeta.ref === 'string') {
+            throw new Error('can not set ref string for ' + name);
+          }
+          fieldMeta.ref(component);
+        }
+        this.fields[name] = this.fields[name] || {};
+        this.fields[name].instance = component;
+      }
+
       hasRules(validate) {
         if (validate) {
           return validate.some((item)=> {
@@ -339,7 +356,10 @@ function createForm(option = {}) {
           const name = field.name;
           if (options.force !== true && field.dirty === false) {
             if (field.errors) {
-              alreadyErrors[name] = field.errors;
+              alreadyErrors[name] = {
+                errors: field.errors,
+                instance: field.instance,
+              };
             }
             return;
           }
@@ -370,9 +390,9 @@ function createForm(option = {}) {
           if (errors && errors.length) {
             errors.forEach((e) => {
               const fieldName = e.field;
-              const fieldErrors = errorsGroup[fieldName] || [];
+              errorsGroup[fieldName] = errorsGroup[fieldName] || {errors: []};
+              const fieldErrors = errorsGroup[fieldName].errors;
               fieldErrors.push(e);
-              errorsGroup[fieldName] = fieldErrors;
             });
           }
           const expired = [];
@@ -382,22 +402,28 @@ function createForm(option = {}) {
             const nowField = this.getField(name, true);
             // avoid concurrency problems
             if (nowField.value !== allValues[name]) {
-              expired.push(name);
+              expired.push({name, instance: nowField.instance});
             } else {
-              nowField.errors = fieldErrors;
+              nowField.errors = fieldErrors && fieldErrors.errors;
               nowField.value = allValues[name];
               nowField.validating = false;
               nowField.dirty = false;
               nowAllFields[name] = nowField;
             }
+            if (fieldErrors) {
+              fieldErrors.instance = nowField.instance;
+            }
           });
           this.setFields(nowAllFields);
           if (callback) {
             if (expired.length) {
-              expired.forEach((name) => {
-                errorsGroup[name] = [new Error(`${name} need to revalidate`)];
-                errorsGroup[name][0].field = name;
-                errorsGroup[name].expired = true;
+              expired.forEach(({name, instance}) => {
+                const fieldErrors = [{message: `${name} need to revalidate`, field: name}];
+                errorsGroup[name] = {
+                  expired: true,
+                  instance,
+                  errors: fieldErrors,
+                };
               });
             }
             callback(isEmptyObject(errorsGroup) ? null : errorsGroup, this.getFieldsValue(fieldNames));

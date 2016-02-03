@@ -86,8 +86,8 @@ describe('overview usage', () => {
   it('validateFields works for error', (callback) => {
     form.validateFields((errors, values) => {
       expect(Object.keys(errors).length).to.be(2);
-      expect(errors.required.map(e => e.message)).to.eql(['required is required']);
-      expect(errors.blurRequired.map(e => e.message)).to.eql(['blurRequired is required']);
+      expect(errors.required.errors.map(e => e.message)).to.eql(['required is required']);
+      expect(errors.blurRequired.errors.map(e => e.message)).to.eql(['blurRequired is required']);
       expect(values.normal).to.be(undefined);
       expect(values.blurRequired).to.be(undefined);
       expect(values.required).to.be(undefined);
