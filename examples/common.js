@@ -19770,6 +19770,8 @@
 	  var fieldMetaProp = option.fieldMetaProp;
 	  var validateMessages = option.validateMessages;
 	  var refComponent = option.refComponent;
+	  var _option$mapProps = option.mapProps;
+	  var mapProps = _option$mapProps === undefined ? _utils.mirror : _option$mapProps;
 	  var _option$formPropName = option.formPropName;
 	  var formPropName = _option$formPropName === undefined ? 'form' : _option$formPropName;
 	  var withRef = option.withRef;
@@ -19945,7 +19947,9 @@
 	            });
 	          }
 	
-	          validateRules.map(function (item) {
+	          validateRules.filter(function (item) {
+	            return !!item.rules && item.rules.length;
+	          }).map(function (item) {
 	            return item.trigger;
 	          }).reduce(function (pre, curr) {
 	            return pre.concat(curr);
@@ -19954,7 +19958,7 @@
 	          });
 	
 	          if (trigger && validateRules.every(function (item) {
-	            return item.trigger.indexOf(trigger) === -1 || !item.rules;
+	            return item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length;
 	          })) {
 	            inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
 	          }
@@ -20142,7 +20146,7 @@
 	        value: function hasRules(validate) {
 	          if (validate) {
 	            return validate.some(function (item) {
-	              return !!item.rules;
+	              return !!item.rules && item.rules.length;
 	            });
 	          }
 	          return false;
@@ -20355,7 +20359,8 @@
 	          if (withRef) {
 	            formProps.ref = 'wrappedComponent';
 	          }
-	          return _react2['default'].createElement(WrappedComponent, _extends({}, formProps, this.props));
+	          var props = mapProps.call(this, _extends({}, formProps, this.props));
+	          return _react2['default'].createElement(WrappedComponent, props);
 	        }
 	      }]);
 	
@@ -20385,6 +20390,7 @@
 	exports.getErrorStrs = getErrorStrs;
 	exports.isEmptyObject = isEmptyObject;
 	exports.flattenArray = flattenArray;
+	exports.mirror = mirror;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
@@ -20430,6 +20436,10 @@
 	
 	function flattenArray(arr) {
 	  return Array.prototype.concat.apply([], arr);
+	}
+	
+	function mirror(obj) {
+	  return obj;
 	}
 
 /***/ },

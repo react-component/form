@@ -712,6 +712,39 @@ webpackJsonp([7],[
 	  form: _react.PropTypes.object
 	};
 	
+	function addScrollToValidate(validateFields) {
+	  return function () {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    var originalCallback = args[args.length - 1];
+	
+	    function newCb(error, values) {
+	      if (error) {
+	        for (var _name in error) {
+	          if (error.hasOwnProperty(_name) && error[_name].instance) {
+	            (0, _domScrollIntoView2['default'])(_reactDom2['default'].findDOMNode(error[_name].instance), window, {
+	              onlyScrollIfNeeded: true
+	            });
+	            break;
+	          }
+	        }
+	      }
+	      if (typeof originalCallback === 'function') {
+	        originalCallback(error, values);
+	      }
+	    }
+	
+	    if (typeof originalCallback === 'function') {
+	      args[args.length - 1] = newCb;
+	    } else {
+	      args.push(newCb);
+	    }
+	    validateFields.apply(null, args);
+	  };
+	}
+	
 	var Form = (function (_Component) {
 	  _inherits(Form, _Component);
 	
@@ -725,19 +758,11 @@ webpackJsonp([7],[
 	    this.onSubmit = function (e) {
 	      console.log('submit');
 	      e.preventDefault();
-	      _this.props.form.validateFields(function (error, values) {
+	      _this.props.scrollAndValidate(function (error, values) {
 	        if (!error) {
 	          console.log('ok', values);
 	        } else {
 	          console.log('error', error, values);
-	          for (var _name in error) {
-	            if (error.hasOwnProperty(_name) && error[_name].instance) {
-	              (0, _domScrollIntoView2['default'])(_reactDom2['default'].findDOMNode(error[_name].instance), window, {
-	                onlyScrollIfNeeded: true
-	              });
-	              break;
-	            }
-	          }
 	        }
 	      });
 	    };
@@ -801,7 +826,8 @@ webpackJsonp([7],[
 	  }], [{
 	    key: 'propTypes',
 	    value: {
-	      form: _react.PropTypes.object
+	      form: _react.PropTypes.object,
+	      scrollAndValidate: _react.PropTypes.func
 	    },
 	    enumerable: true
 	  }]);
@@ -809,6 +835,14 @@ webpackJsonp([7],[
 	  var _Form = Form;
 	  Form = (0, _rcForm.createForm)({
 	    refComponent: true,
+	    mapProps: function mapProps(props) {
+	      if (!this.__scrollAndValidate) {
+	        this.__scrollAndValidate = addScrollToValidate(props.form.validateFields);
+	      }
+	      return _extends({}, props, {
+	        scrollAndValidate: this.__scrollAndValidate
+	      });
+	    },
 	    validateMessages: {
 	      required: function required(field) {
 	        return field + ' 必填';
