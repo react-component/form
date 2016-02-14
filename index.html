@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@0.12.1 - React High Order Form Component</title>
+  <title>rc-form@0.13.0 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@0.12.1</h1>
+  <h1>rc-form@0.13.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -755,6 +755,8 @@
       <li><a href="examples/dynamic.html">dynamic</a></li>
       
       <li><a href="examples/input-array.html">input-array</a></li>
+      
+      <li><a href="examples/modal.html">modal</a></li>
       
       <li><a href="examples/normalize.html">normalize</a></li>
       
@@ -865,6 +867,9 @@ add a new force member.</p>
 <h3>isSubmitting(): Bool<a id="user-content-issubmitting():-bool" name="issubmitting():-bool" class="anchor" aria-hidden="true" href="#issubmitting():-bool"><span class="octicon octicon-link"></span></a></h3><p>Whether the form is submitting.</p>
 <h3>submit(callback: Function)<a id="user-content-submit(callback:-function)" name="submit(callback:-function)" class="anchor" aria-hidden="true" href="#submit(callback:-function)"><span class="octicon octicon-link"></span></a></h3><p>Cause isSubmitting to return true, after callback called, isSubmitting return false.</p>
 <h3>resetFields([names: String[]])<a id="user-content-resetfields([names:-string[]])" name="resetfields([names:-string[]])" class="anchor" aria-hidden="true" href="#resetfields([names:-string[]])"><span class="octicon octicon-link"></span></a></h3><p>Reset specified inputs. Defaults to all.</p>
+<h2>rc-form/lib/createDOMForm(formOption): Function<a id="user-content-rc-form/lib/createdomform(formoption):-function" name="rc-form/lib/createdomform(formoption):-function" class="anchor" aria-hidden="true" href="#rc-form/lib/createdomform(formoption):-function"><span class="octicon octicon-link"></span></a></h2><p>createForm enhancement, support props.form.validateFieldsAndScroll</p>
+<h3>props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))<a id="user-content-props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" name="props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" class="anchor" aria-hidden="true" href="#props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))"><span class="octicon octicon-link"></span></a></h3><p>props.form.validateFields enhancement, support scroll to the first invalid form field</p>
+<h4>options.container: HTMLElement<a id="user-content-options.container:-htmlelement" name="options.container:-htmlelement" class="anchor" aria-hidden="true" href="#options.container:-htmlelement"><span class="octicon octicon-link"></span></a></h4><p>Defaults to first scrollable container of form field(until document).</p>
 <h2>Test Case<a id="user-content-test-case" name="test-case" class="anchor" aria-hidden="true" href="#test-case"><span class="octicon octicon-link"></span></a></h2><p><a href="http://localhost:8000/tests/runner.html?coverage" title="null">http://localhost:8000/tests/runner.html?coverage</a></p>
 <h2>Coverage<a id="user-content-coverage" name="coverage" class="anchor" aria-hidden="true" href="#coverage"><span class="octicon octicon-link"></span></a></h2><p><a href="http://localhost:8000/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage" title="null">http://localhost:8000/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage</a></p>
 <h2>License<a id="user-content-license" name="license" class="anchor" aria-hidden="true" href="#license"><span class="octicon octicon-link"></span></a></h2><p>rc-form is released under the MIT license.</p>

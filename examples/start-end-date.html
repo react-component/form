@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>start-end-date.js - example - rc-form@0.12.1</title>
+  <title>start-end-date.js - example - rc-form@0.13.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.12.1</h1>
+    <h1>rc-form@0.13.0</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -268,12 +268,12 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
 import DatePicker from <span class="hljs-string">'antd/lib/date-picker'</span>;
 import <span class="hljs-string">'antd/lib/index.css'</span>;
-import {createForm} from <span class="hljs-string">'rc-form'</span>;
+import createDOMForm from <span class="hljs-string">'rc-form/lib/createDOMForm'</span>;
 import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span>;
 import React, {PropTypes, Component} from <span class="hljs-string">'react'</span>;
 import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 
-@createForm()
+@createDOMForm()
 <span class="hljs-keyword">class</span> Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -282,7 +282,7 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
   onSubmit = (e) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'submit'</span>);
     e.preventDefault();
-    <span class="hljs-keyword">this</span>.props.form.validateFields((error, values)=&gt; {
+    <span class="hljs-keyword">this</span>.props.form.validateFieldsAndScroll((error, values)=&gt; {
       <span class="hljs-keyword">if</span> (!error) {
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
       } <span class="hljs-keyword">else</span> {

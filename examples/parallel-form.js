@@ -1,14 +1,53 @@
-webpackJsonp([8],{
+webpackJsonp([9],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(381);
+	module.exports = __webpack_require__(398);
 
 
 /***/ },
 
-/***/ 245:
+/***/ 160:
+/***/ function(module, exports, __webpack_require__) {
+
+	// export this package's api
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+	
+	var _src = __webpack_require__(161);
+	
+	var form = _interopRequireWildcard(_src);
+	
+	exports['default'] = form;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 161:
+/***/ function(module, exports, __webpack_require__) {
+
+	// export this package's api
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+	
+	var _createForm = __webpack_require__(162);
+	
+	exports.createForm = _interopRequire(_createForm);
+
+/***/ },
+
+/***/ 248:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32,7 +71,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 262:
+/***/ 265:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43,7 +82,7 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rcSwitch = __webpack_require__(263);
+	var _rcSwitch = __webpack_require__(266);
 	
 	var _rcSwitch2 = _interopRequireDefault(_rcSwitch);
 	
@@ -51,7 +90,7 @@ webpackJsonp([8],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(265);
+	var _classnames = __webpack_require__(268);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -63,8 +102,7 @@ webpackJsonp([8],{
 	  displayName: 'switch',
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      prefixCls: 'ant-switch',
-	      size: 'default'
+	      prefixCls: 'ant-switch'
 	    };
 	  },
 	  render: function render() {
@@ -75,7 +113,7 @@ webpackJsonp([8],{
 	    var size = _props.size;
 	    var className = _props.className;
 	
-	    var cls = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, className, !!className), _defineProperty(_classNames, prefixCls + '-' + size, true), _classNames));
+	    var cls = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, className, !!className), _defineProperty(_classNames, prefixCls + '-small', size === 'small'), _classNames));
 	    return _react2.default.createElement(_rcSwitch2.default, _extends({ className: cls }, this.props));
 	  }
 	});
@@ -83,16 +121,16 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 263:
+/***/ 266:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(264);
+	module.exports = __webpack_require__(267);
 
 /***/ },
 
-/***/ 264:
+/***/ 267:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -100,7 +138,7 @@ webpackJsonp([8],{
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	var React = __webpack_require__(2);
-	var classNames = __webpack_require__(265);
+	var classNames = __webpack_require__(268);
 	
 	function noop() {}
 	
@@ -184,7 +222,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 265:
+/***/ 268:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -239,14 +277,14 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 266:
+/***/ 269:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 381:
+/***/ 398:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint react/no-multi-comp:0, no-console:0 */
@@ -275,13 +313,13 @@ webpackJsonp([8],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(245);
+	var _styles = __webpack_require__(248);
 	
-	var _antdLibSwitch = __webpack_require__(262);
+	var _antdLibSwitch = __webpack_require__(265);
 	
 	var _antdLibSwitch2 = _interopRequireDefault(_antdLibSwitch);
 	
-	__webpack_require__(266);
+	__webpack_require__(269);
 	
 	var TopForm = _react2['default'].createClass({
 	  displayName: 'TopForm',

@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		17:0
+/******/ 		18:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"input-array","6":"normalize","7":"overview","8":"parallel-form","9":"redux","10":"router","11":"server-validate","12":"setFieldsValue","13":"start-end-date","14":"suggest","15":"validateFirst","16":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"input-array","6":"modal","7":"normalize","8":"overview","9":"parallel-form","10":"redux","11":"router","12":"server-validate","13":"setFieldsValue","14":"start-end-date","15":"suggest","16":"validateFirst","17":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -9350,6 +9350,7 @@
 	 */
 	var EventInterface = {
 	  type: null,
+	  target: null,
 	  // currentTarget is set when dispatching; no use in copying it here
 	  currentTarget: emptyFunction.thatReturnsNull,
 	  eventPhase: null,
@@ -9383,8 +9384,6 @@
 	  this.dispatchConfig = dispatchConfig;
 	  this.dispatchMarker = dispatchMarker;
 	  this.nativeEvent = nativeEvent;
-	  this.target = nativeEventTarget;
-	  this.currentTarget = nativeEventTarget;
 	
 	  var Interface = this.constructor.Interface;
 	  for (var propName in Interface) {
@@ -9395,7 +9394,11 @@
 	    if (normalize) {
 	      this[propName] = normalize(nativeEvent);
 	    } else {
-	      this[propName] = nativeEvent[propName];
+	      if (propName === 'target') {
+	        this.target = nativeEventTarget;
+	      } else {
+	        this[propName] = nativeEvent[propName];
+	      }
 	    }
 	  }
 	
@@ -13244,7 +13247,10 @@
 	      }
 	    });
 	
-	    nativeProps.children = content;
+	    if (content) {
+	      nativeProps.children = content;
+	    }
+	
 	    return nativeProps;
 	  }
 	
@@ -18717,7 +18723,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.6';
+	module.exports = '0.14.7';
 
 /***/ },
 /* 148 */
@@ -19689,44 +19695,52 @@
 
 
 /***/ },
-/* 160 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// export this package's api
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-	
-	var _src = __webpack_require__(161);
-	
-	var form = _interopRequireWildcard(_src);
-	
-	exports['default'] = form;
-	module.exports = exports['default'];
-
-/***/ },
-/* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// export this package's api
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	
-	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-	
-	var _createForm = __webpack_require__(162);
-	
-	exports.createForm = _interopRequire(_createForm);
-
-/***/ },
+/* 160 */,
+/* 161 */,
 /* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _createBaseForm = __webpack_require__(163);
+	
+	var _createBaseForm2 = _interopRequireDefault(_createBaseForm);
+	
+	var mixin = {
+	  getForm: function getForm() {
+	    return {
+	      getFieldsValue: this.getFieldsValue,
+	      getFieldValue: this.getFieldValue,
+	      setFieldsValue: this.setFieldsValue,
+	      setFields: this.setFields,
+	      setFieldsInitialValue: this.setFieldsInitialValue,
+	      getFieldProps: this.getFieldProps,
+	      getFieldError: this.getFieldError,
+	      isFieldValidating: this.isFieldValidating,
+	      isFieldsValidating: this.isFieldsValidating,
+	      isSubmitting: this.isSubmitting,
+	      submit: this.submit,
+	      validateFields: this.validateFields,
+	      resetFields: this.resetFields
+	    };
+	  }
+	};
+	
+	exports.mixin = mixin;
+	function createForm(options) {
+	  return (0, _createBaseForm2['default'])(options, [mixin]);
+	}
+	
+	exports['default'] = createForm;
+
+/***/ },
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19737,33 +19751,26 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(163);
+	var _utils = __webpack_require__(164);
 	
-	var _asyncValidator = __webpack_require__(165);
+	var _asyncValidator = __webpack_require__(166);
 	
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
 	
 	var defaultValidateTrigger = 'onChange';
 	var defaultTrigger = defaultValidateTrigger;
 	
-	function createForm() {
+	function createBaseForm() {
 	  var option = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var mixins = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 	  var mapPropsToFields = option.mapPropsToFields;
 	  var onFieldsChange = option.onFieldsChange;
 	  var fieldNameProp = option.fieldNameProp;
@@ -19777,595 +19784,509 @@
 	  var withRef = option.withRef;
 	
 	  function decorate(WrappedComponent) {
-	    var Form = (function (_Component) {
-	      _inherits(Form, _Component);
+	    var Form = _react2['default'].createClass({
+	      displayName: 'Form',
 	
-	      function Form() {
-	        var _this = this;
+	      mixins: mixins,
 	
-	        _classCallCheck(this, Form);
-	
-	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	          args[_key] = arguments[_key];
-	        }
-	
-	        _get(Object.getPrototypeOf(Form.prototype), 'constructor', this).apply(this, args);
+	      getInitialState: function getInitialState() {
 	        var fields = undefined;
 	        if (mapPropsToFields) {
 	          fields = mapPropsToFields(this.props);
 	        }
-	        this.state = {
-	          submitting: false
-	        };
 	        this.fields = fields || {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
-	        var bindMethods = ['getFieldProps', 'isFieldValidating', 'submit', 'isSubmitting', 'getFieldError', 'setFields', 'resetFields', 'validateFieldsByName', 'getFieldsValue', 'saveRef', 'setFieldsInitialValue', 'isFieldsValidating', 'setFieldsValue', 'getFieldValue'];
-	        bindMethods.forEach(function (m) {
-	          _this[m] = _this[m].bind(_this);
+	        return {
+	          submitting: false
+	        };
+	      },
+	
+	      componentDidMount: function componentDidMount() {
+	        this.componentDidUpdate();
+	      },
+	
+	      componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        if (mapPropsToFields) {
+	          var fields = mapPropsToFields(nextProps);
+	          if (fields) {
+	            this.fields = _extends({}, this.fields, fields);
+	          }
+	        }
+	      },
+	
+	      componentDidUpdate: function componentDidUpdate() {
+	        var fields = this.fields;
+	        var fieldsMeta = this.fieldsMeta;
+	
+	        var fieldsMetaKeys = Object.keys(fieldsMeta);
+	        fieldsMetaKeys.forEach(function (s) {
+	          if (fieldsMeta[s].stale) {
+	            delete fieldsMeta[s];
+	          }
 	        });
-	      }
+	        var fieldsKeys = Object.keys(fields);
+	        fieldsKeys.forEach(function (s) {
+	          if (!fieldsMeta[s]) {
+	            delete fields[s];
+	          }
+	        });
+	        // do not notify store
+	      },
 	
-	      _createClass(Form, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	          this.componentDidUpdate();
-	        }
-	      }, {
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps(nextProps) {
-	          if (mapPropsToFields) {
-	            var fields = mapPropsToFields(nextProps);
-	            if (fields) {
-	              this.fields = _extends({}, this.fields, fields);
-	            }
-	          }
-	        }
-	      }, {
-	        key: 'componentDidUpdate',
-	        value: function componentDidUpdate() {
-	          var fields = this.fields;
-	          var fieldsMeta = this.fieldsMeta;
+	      onChange: function onChange(name, action, event) {
+	        var fieldMeta = this.getFieldMeta(name);
+	        var validate = fieldMeta.validate;
 	
-	          var fieldsMetaKeys = Object.keys(fieldsMeta);
-	          fieldsMetaKeys.forEach(function (s) {
-	            if (fieldsMeta[s].stale) {
-	              delete fieldsMeta[s];
-	            }
-	          });
-	          var fieldsKeys = Object.keys(fields);
-	          fieldsKeys.forEach(function (s) {
-	            if (!fieldsMeta[s]) {
-	              delete fields[s];
-	            }
-	          });
-	          // do not notify store
+	        if (fieldMeta[action]) {
+	          fieldMeta[action](event);
 	        }
-	      }, {
-	        key: 'onChange',
-	        value: function onChange(name, action, event) {
-	          var fieldMeta = this.getFieldMeta(name);
-	          var validate = fieldMeta.validate;
+	        var value = (0, _utils.getValueFromEvent)(event);
+	        var field = this.getField(name, true);
+	        this.setFields(_defineProperty({}, name, _extends({}, field, {
+	          value: value,
+	          dirty: (0, _utils.hasRules)(validate)
+	        })));
+	      },
 	
-	          if (fieldMeta[action]) {
-	            fieldMeta[action](event);
+	      onChangeValidate: function onChangeValidate(name, action, event) {
+	        var fieldMeta = this.getFieldMeta(name);
+	        if (fieldMeta[action]) {
+	          fieldMeta[action](event);
+	        }
+	        var value = (0, _utils.getValueFromEvent)(event);
+	        var field = this.getField(name, true);
+	        field.value = value;
+	        field.dirty = true;
+	        this.validateFieldsInternal([field], {
+	          action: action,
+	          options: {
+	            firstFields: !!fieldMeta.validateFirst
 	          }
-	          var value = (0, _utils.getValueFromEvent)(event);
-	          var field = this.getField(name, true);
-	          this.setFields(_defineProperty({}, name, _extends({}, field, {
-	            value: value,
-	            dirty: this.hasRules(validate)
-	          })));
+	        });
+	      },
+	
+	      getCacheBind: function getCacheBind(name, action, fn) {
+	        var cache = this.cachedBind[name] = this.cachedBind[name] || {};
+	        if (!cache[action]) {
+	          cache[action] = fn.bind(this, name, action);
 	        }
-	      }, {
-	        key: 'onChangeValidate',
-	        value: function onChangeValidate(name, action, event) {
-	          var fieldMeta = this.getFieldMeta(name);
-	          if (fieldMeta[action]) {
-	            fieldMeta[action](event);
-	          }
-	          var value = (0, _utils.getValueFromEvent)(event);
-	          var field = this.getField(name, true);
-	          field.value = value;
-	          field.dirty = true;
-	          this.validateFields([field], {
-	            action: action,
-	            options: {
-	              firstFields: !!fieldMeta.validateFirst
-	            }
-	          });
+	        return cache[action];
+	      },
+	
+	      getFieldMeta: function getFieldMeta(name) {
+	        return this.fieldsMeta[name];
+	      },
+	
+	      getField: function getField(name, copy) {
+	        var ret = this.fields[name];
+	        if (ret) {
+	          ret.name = name;
 	        }
-	      }, {
-	        key: 'getCacheBind',
-	        value: function getCacheBind(name, action, fn) {
-	          var cache = this.cachedBind[name] = this.cachedBind[name] || {};
-	          if (!cache[action]) {
-	            cache[action] = fn.bind(this, name, action);
-	          }
-	          return cache[action];
-	        }
-	      }, {
-	        key: 'getFieldMeta',
-	        value: function getFieldMeta(name) {
-	          return this.fieldsMeta[name];
-	        }
-	      }, {
-	        key: 'getField',
-	        value: function getField(name, copy) {
-	          var ret = this.fields[name];
+	        if (copy) {
 	          if (ret) {
-	            ret.name = name;
+	            return _extends({}, ret);
 	          }
-	          if (copy) {
-	            if (ret) {
-	              return _extends({}, ret);
-	            }
-	            return { name: name };
-	          }
-	          return ret;
+	          return { name: name };
 	        }
-	      }, {
-	        key: 'getFieldProps',
-	        value: function getFieldProps(name) {
-	          var _this2 = this;
+	        return ret;
+	      },
 	
-	          var fieldOption = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	          var rules = fieldOption.rules;
-	          var _fieldOption$trigger = fieldOption.trigger;
-	          var trigger = _fieldOption$trigger === undefined ? defaultTrigger : _fieldOption$trigger;
-	          var _fieldOption$valuePropName = fieldOption.valuePropName;
-	          var valuePropName = _fieldOption$valuePropName === undefined ? 'value' : _fieldOption$valuePropName;
-	          var _fieldOption$validateTrigger = fieldOption.validateTrigger;
-	          var validateTrigger = _fieldOption$validateTrigger === undefined ? defaultValidateTrigger : _fieldOption$validateTrigger;
-	          var _fieldOption$validate = fieldOption.validate;
-	          var validate = _fieldOption$validate === undefined ? [] : _fieldOption$validate;
+	      getFieldProps: function getFieldProps(name) {
+	        var _this = this;
 	
-	          var fieldMeta = this.fieldsMeta[name] || {};
+	        var fieldOption = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	        var rules = fieldOption.rules;
+	        var _fieldOption$trigger = fieldOption.trigger;
+	        var trigger = _fieldOption$trigger === undefined ? defaultTrigger : _fieldOption$trigger;
+	        var _fieldOption$valuePropName = fieldOption.valuePropName;
+	        var valuePropName = _fieldOption$valuePropName === undefined ? 'value' : _fieldOption$valuePropName;
+	        var _fieldOption$validateTrigger = fieldOption.validateTrigger;
+	        var validateTrigger = _fieldOption$validateTrigger === undefined ? defaultValidateTrigger : _fieldOption$validateTrigger;
+	        var _fieldOption$validate = fieldOption.validate;
+	        var validate = _fieldOption$validate === undefined ? [] : _fieldOption$validate;
 	
-	          if ('initialValue' in fieldOption) {
-	            fieldMeta.initialValue = fieldOption.initialValue;
+	        var fieldMeta = this.fieldsMeta[name] || {};
+	
+	        if ('initialValue' in fieldOption) {
+	          fieldMeta.initialValue = fieldOption.initialValue;
+	        }
+	
+	        var inputProps = _defineProperty({}, valuePropName, fieldMeta.initialValue);
+	
+	        if (fieldNameProp) {
+	          inputProps[fieldNameProp] = name;
+	        }
+	
+	        var validateRules = validate.map(function (item) {
+	          item.trigger = item.trigger || [];
+	          if (typeof item.trigger === 'string') {
+	            item.trigger = [item.trigger];
 	          }
+	          return item;
+	        });
 	
-	          var inputProps = _defineProperty({}, valuePropName, fieldMeta.initialValue);
-	
-	          if (fieldNameProp) {
-	            inputProps[fieldNameProp] = name;
-	          }
-	
-	          var validateRules = validate.map(function (item) {
-	            item.trigger = item.trigger || [];
-	            if (typeof item.trigger === 'string') {
-	              item.trigger = [item.trigger];
-	            }
-	            return item;
+	        if (rules) {
+	          validateRules.push({
+	            trigger: validateTrigger ? [].concat(validateTrigger) : [],
+	            rules: rules
 	          });
-	
-	          if (rules) {
-	            validateRules.push({
-	              trigger: validateTrigger ? [].concat(validateTrigger) : [],
-	              rules: rules
-	            });
-	          }
-	
-	          validateRules.filter(function (item) {
-	            return !!item.rules && item.rules.length;
-	          }).map(function (item) {
-	            return item.trigger;
-	          }).reduce(function (pre, curr) {
-	            return pre.concat(curr);
-	          }, []).forEach(function (action) {
-	            inputProps[action] = _this2.getCacheBind(name, action, _this2.onChangeValidate);
-	          });
-	
-	          if (trigger && validateRules.every(function (item) {
-	            return item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length;
-	          })) {
-	            inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
-	          }
-	          var field = this.getField(name);
-	          if (field && 'value' in field) {
-	            inputProps[valuePropName] = field.value;
-	          }
-	
-	          if (refComponent) {
-	            inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
-	          }
-	
-	          var meta = _extends({}, fieldMeta, fieldOption, {
-	            validate: validateRules,
-	            stale: 0
-	          });
-	
-	          this.fieldsMeta[name] = meta;
-	
-	          if (fieldMetaProp) {
-	            inputProps[fieldMetaProp] = meta;
-	          }
-	
-	          return inputProps;
 	        }
-	      }, {
-	        key: 'getFieldMember',
-	        value: function getFieldMember(name, member) {
-	          var field = this.getField(name);
-	          return field && field[member];
-	        }
-	      }, {
-	        key: 'getFieldError',
-	        value: function getFieldError(name) {
-	          return (0, _utils.getErrorStrs)(this.getFieldMember(name, 'errors'));
-	        }
-	      }, {
-	        key: 'getValidFieldsName',
-	        value: function getValidFieldsName() {
-	          var fieldsMeta = this.fieldsMeta;
-	          return fieldsMeta ? Object.keys(fieldsMeta).filter(function (name) {
-	            return !fieldsMeta[name].hidden;
-	          }) : [];
-	        }
-	      }, {
-	        key: 'getFieldsValue',
-	        value: function getFieldsValue(names) {
-	          var _this3 = this;
 	
-	          var fields = names || this.getValidFieldsName();
-	          var allValues = {};
-	          fields.forEach(function (f) {
-	            allValues[f] = _this3.getFieldValue(f);
-	          });
-	          return allValues;
-	        }
-	      }, {
-	        key: 'getFieldValue',
-	        value: function getFieldValue(name) {
-	          var fields = this.fields;
+	        validateRules.filter(function (item) {
+	          return !!item.rules && item.rules.length;
+	        }).map(function (item) {
+	          return item.trigger;
+	        }).reduce(function (pre, curr) {
+	          return pre.concat(curr);
+	        }, []).forEach(function (action) {
+	          inputProps[action] = _this.getCacheBind(name, action, _this.onChangeValidate);
+	        });
 	
-	          return this.getValueFromFields(name, fields);
+	        if (trigger && validateRules.every(function (item) {
+	          return item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length;
+	        })) {
+	          inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
 	        }
-	      }, {
-	        key: 'getValueFromFields',
-	        value: function getValueFromFields(name, fields) {
-	          var fieldsMeta = this.fieldsMeta;
+	        var field = this.getField(name);
+	        if (field && 'value' in field) {
+	          inputProps[valuePropName] = field.value;
+	        }
 	
-	          var field = fields[name];
-	          if (field && 'value' in field) {
-	            return field.value;
-	          }
-	          var fieldMeta = fieldsMeta[name];
-	          return fieldMeta && fieldMeta.initialValue;
+	        if (refComponent) {
+	          inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
 	        }
-	      }, {
-	        key: 'getRules',
-	        value: function getRules(fieldMeta, action) {
-	          var actionRules = fieldMeta.validate.filter(function (item) {
-	            return !action || item.trigger.indexOf(action) >= 0;
-	          }).map(function (item) {
-	            return item.rules;
-	          });
-	          return (0, _utils.flattenArray)(actionRules);
-	        }
-	      }, {
-	        key: 'getForm',
-	        value: function getForm() {
-	          return {
-	            getFieldsValue: this.getFieldsValue,
-	            getFieldValue: this.getFieldValue,
-	            setFieldsValue: this.setFieldsValue,
-	            setFields: this.setFields,
-	            setFieldsInitialValue: this.setFieldsInitialValue,
-	            getFieldProps: this.getFieldProps,
-	            getFieldError: this.getFieldError,
-	            isFieldValidating: this.isFieldValidating,
-	            isFieldsValidating: this.isFieldsValidating,
-	            isSubmitting: this.isSubmitting,
-	            submit: this.submit,
-	            validateFields: this.validateFieldsByName,
-	            resetFields: this.resetFields
-	          };
-	        }
-	      }, {
-	        key: 'setFields',
-	        value: function setFields(fields) {
-	          var _this4 = this;
 	
-	          var originalFields = this.fields;
-	          var nowFields = _extends({}, originalFields, fields);
-	          var fieldsMeta = this.fieldsMeta;
-	          var nowValues = {};
-	          Object.keys(fieldsMeta).forEach(function (f) {
-	            nowValues[f] = _this4.getValueFromFields(f, nowFields);
-	          });
-	          var changedFieldsName = Object.keys(fields);
-	          Object.keys(nowValues).forEach(function (f) {
-	            var value = nowValues[f];
-	            var fieldMeta = fieldsMeta[f];
-	            if (fieldMeta && fieldMeta.normalize) {
-	              var nowValue = fieldMeta.normalize(value, _this4.getValueFromFields(f, originalFields), nowValues);
-	              if (nowValue !== value) {
-	                nowFields[f] = _extends({}, nowFields[f], { value: nowValue });
-	                if (changedFieldsName.indexOf(f) === -1) {
-	                  changedFieldsName.push(f);
-	                }
+	        var meta = _extends({}, fieldMeta, fieldOption, {
+	          validate: validateRules,
+	          stale: 0
+	        });
+	
+	        this.fieldsMeta[name] = meta;
+	
+	        if (fieldMetaProp) {
+	          inputProps[fieldMetaProp] = meta;
+	        }
+	
+	        return inputProps;
+	      },
+	
+	      getFieldMember: function getFieldMember(name, member) {
+	        var field = this.getField(name);
+	        return field && field[member];
+	      },
+	
+	      getFieldError: function getFieldError(name) {
+	        return (0, _utils.getErrorStrs)(this.getFieldMember(name, 'errors'));
+	      },
+	
+	      getValidFieldsName: function getValidFieldsName() {
+	        var fieldsMeta = this.fieldsMeta;
+	        return fieldsMeta ? Object.keys(fieldsMeta).filter(function (name) {
+	          return !fieldsMeta[name].hidden;
+	        }) : [];
+	      },
+	
+	      getFieldsValue: function getFieldsValue(names) {
+	        var _this2 = this;
+	
+	        var fields = names || this.getValidFieldsName();
+	        var allValues = {};
+	        fields.forEach(function (f) {
+	          allValues[f] = _this2.getFieldValue(f);
+	        });
+	        return allValues;
+	      },
+	
+	      getFieldValue: function getFieldValue(name) {
+	        var fields = this.fields;
+	
+	        return this.getValueFromFields(name, fields);
+	      },
+	
+	      getValueFromFields: function getValueFromFields(name, fields) {
+	        var fieldsMeta = this.fieldsMeta;
+	
+	        var field = fields[name];
+	        if (field && 'value' in field) {
+	          return field.value;
+	        }
+	        var fieldMeta = fieldsMeta[name];
+	        return fieldMeta && fieldMeta.initialValue;
+	      },
+	
+	      getRules: function getRules(fieldMeta, action) {
+	        var actionRules = fieldMeta.validate.filter(function (item) {
+	          return !action || item.trigger.indexOf(action) >= 0;
+	        }).map(function (item) {
+	          return item.rules;
+	        });
+	        return (0, _utils.flattenArray)(actionRules);
+	      },
+	      setFields: function setFields(fields) {
+	        var _this3 = this;
+	
+	        var originalFields = this.fields;
+	        var nowFields = _extends({}, originalFields, fields);
+	        var fieldsMeta = this.fieldsMeta;
+	        var nowValues = {};
+	        Object.keys(fieldsMeta).forEach(function (f) {
+	          nowValues[f] = _this3.getValueFromFields(f, nowFields);
+	        });
+	        var changedFieldsName = Object.keys(fields);
+	        Object.keys(nowValues).forEach(function (f) {
+	          var value = nowValues[f];
+	          var fieldMeta = fieldsMeta[f];
+	          if (fieldMeta && fieldMeta.normalize) {
+	            var nowValue = fieldMeta.normalize(value, _this3.getValueFromFields(f, originalFields), nowValues);
+	            if (nowValue !== value) {
+	              nowFields[f] = _extends({}, nowFields[f], { value: nowValue });
+	              if (changedFieldsName.indexOf(f) === -1) {
+	                changedFieldsName.push(f);
 	              }
 	            }
-	          });
-	          this.fields = nowFields;
-	          if (onFieldsChange) {
-	            (function () {
-	              var changedFields = {};
-	              changedFieldsName.forEach(function (f) {
-	                changedFields[f] = nowFields[f];
-	              });
-	              onFieldsChange(_this4.props, changedFields);
-	            })();
 	          }
-	          this.forceUpdate();
+	        });
+	        this.fields = nowFields;
+	        if (onFieldsChange) {
+	          (function () {
+	            var changedFields = {};
+	            changedFieldsName.forEach(function (f) {
+	              changedFields[f] = nowFields[f];
+	            });
+	            onFieldsChange(_this3.props, changedFields);
+	          })();
 	        }
-	      }, {
-	        key: 'setFieldsValue',
-	        value: function setFieldsValue(fieldsValue) {
-	          var fields = {};
-	          for (var _name in fieldsValue) {
-	            if (fieldsValue.hasOwnProperty(_name)) {
-	              fields[_name] = {
-	                name: _name,
-	                value: fieldsValue[_name]
+	        this.forceUpdate();
+	      },
+	
+	      setFieldsValue: function setFieldsValue(fieldsValue) {
+	        var fields = {};
+	        for (var _name in fieldsValue) {
+	          if (fieldsValue.hasOwnProperty(_name)) {
+	            fields[_name] = {
+	              name: _name,
+	              value: fieldsValue[_name]
+	            };
+	          }
+	        }
+	        this.setFields(fields);
+	      },
+	
+	      setFieldsInitialValue: function setFieldsInitialValue(initialValues) {
+	        var fieldsMeta = this.fieldsMeta;
+	        for (var _name2 in initialValues) {
+	          if (initialValues.hasOwnProperty(_name2)) {
+	            var fieldMeta = fieldsMeta[_name2];
+	            fieldsMeta[_name2] = _extends({}, fieldMeta, {
+	              initialValue: initialValues[_name2]
+	            });
+	          }
+	        }
+	      },
+	
+	      saveRef: function saveRef(name, _, component) {
+	        var fieldMeta = this.getFieldMeta(name);
+	        if (fieldMeta && fieldMeta.ref) {
+	          if (typeof fieldMeta.ref === 'string') {
+	            throw new Error('can not set ref string for ' + name);
+	          }
+	          fieldMeta.ref(component);
+	        }
+	        this.fields[name] = this.fields[name] || {};
+	        this.fields[name].instance = component;
+	      },
+	
+	      validateFieldsInternal: function validateFieldsInternal(fields, _ref, callback) {
+	        var _this4 = this;
+	
+	        var fieldNames = _ref.fieldNames;
+	        var action = _ref.action;
+	        var _ref$options = _ref.options;
+	        var options = _ref$options === undefined ? {} : _ref$options;
+	
+	        var allRules = {};
+	        var allValues = {};
+	        var allFields = {};
+	        var alreadyErrors = {};
+	        fields.forEach(function (field) {
+	          var name = field.name;
+	          if (options.force !== true && field.dirty === false) {
+	            if (field.errors) {
+	              alreadyErrors[name] = {
+	                errors: field.errors,
+	                instance: field.instance
 	              };
 	            }
-	          }
-	          this.setFields(fields);
-	        }
-	      }, {
-	        key: 'setFieldsInitialValue',
-	        value: function setFieldsInitialValue(initialValues) {
-	          var fieldsMeta = this.fieldsMeta;
-	          for (var _name2 in initialValues) {
-	            if (initialValues.hasOwnProperty(_name2)) {
-	              var fieldMeta = fieldsMeta[_name2];
-	              fieldsMeta[_name2] = _extends({}, fieldMeta, {
-	                initialValue: initialValues[_name2]
-	              });
-	            }
-	          }
-	        }
-	      }, {
-	        key: 'saveRef',
-	        value: function saveRef(name, _, component) {
-	          var fieldMeta = this.getFieldMeta(name);
-	          if (fieldMeta && fieldMeta.ref) {
-	            if (typeof fieldMeta.ref === 'string') {
-	              throw new Error('can not set ref string for ' + name);
-	            }
-	            fieldMeta.ref(component);
-	          }
-	          this.fields[name] = this.fields[name] || {};
-	          this.fields[name].instance = component;
-	        }
-	      }, {
-	        key: 'hasRules',
-	        value: function hasRules(validate) {
-	          if (validate) {
-	            return validate.some(function (item) {
-	              return !!item.rules && item.rules.length;
-	            });
-	          }
-	          return false;
-	        }
-	      }, {
-	        key: 'validateFields',
-	        value: function validateFields(fields, _ref, callback) {
-	          var _this5 = this;
-	
-	          var fieldNames = _ref.fieldNames;
-	          var action = _ref.action;
-	          var _ref$options = _ref.options;
-	          var options = _ref$options === undefined ? {} : _ref$options;
-	
-	          var allRules = {};
-	          var allValues = {};
-	          var allFields = {};
-	          var alreadyErrors = {};
-	          fields.forEach(function (field) {
-	            var name = field.name;
-	            if (options.force !== true && field.dirty === false) {
-	              if (field.errors) {
-	                alreadyErrors[name] = {
-	                  errors: field.errors,
-	                  instance: field.instance
-	                };
-	              }
-	              return;
-	            }
-	            var fieldMeta = _this5.getFieldMeta(name);
-	            field.errors = undefined;
-	            field.validating = true;
-	            field.dirty = true;
-	            allRules[name] = _this5.getRules(fieldMeta, action);
-	            allValues[name] = field.value;
-	            allFields[name] = field;
-	          });
-	          this.setFields(allFields);
-	          var nowFields = this.fields;
-	          // in case normalize
-	          Object.keys(allValues).forEach(function (f) {
-	            allValues[f] = nowFields[f].value;
-	          });
-	          if (callback && (0, _utils.isEmptyObject)(allFields)) {
-	            callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
 	            return;
 	          }
-	          var validator = new _asyncValidator2['default'](allRules);
-	          if (validateMessages) {
-	            validator.messages(validateMessages);
-	          }
-	          validator.validate(allValues, options, function (errors) {
-	            var errorsGroup = _extends({}, alreadyErrors);
-	            if (errors && errors.length) {
-	              errors.forEach(function (e) {
-	                var fieldName = e.field;
-	                errorsGroup[fieldName] = errorsGroup[fieldName] || { errors: [] };
-	                var fieldErrors = errorsGroup[fieldName].errors;
-	                fieldErrors.push(e);
-	              });
-	            }
-	            var expired = [];
-	            var nowAllFields = {};
-	            Object.keys(allRules).forEach(function (name) {
-	              var fieldErrors = errorsGroup[name];
-	              var nowField = _this5.getField(name, true);
-	              // avoid concurrency problems
-	              if (nowField.value !== allValues[name]) {
-	                expired.push({ name: name, instance: nowField.instance });
-	              } else {
-	                nowField.errors = fieldErrors && fieldErrors.errors;
-	                nowField.value = allValues[name];
-	                nowField.validating = false;
-	                nowField.dirty = false;
-	                nowAllFields[name] = nowField;
-	              }
-	              if (fieldErrors) {
-	                fieldErrors.instance = nowField.instance;
-	              }
-	            });
-	            _this5.setFields(nowAllFields);
-	            if (callback) {
-	              if (expired.length) {
-	                expired.forEach(function (_ref2) {
-	                  var name = _ref2.name;
-	                  var instance = _ref2.instance;
-	
-	                  var fieldErrors = [{ message: name + ' need to revalidate', field: name }];
-	                  errorsGroup[name] = {
-	                    expired: true,
-	                    instance: instance,
-	                    errors: fieldErrors
-	                  };
-	                });
-	              }
-	              callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this5.getFieldsValue(fieldNames));
-	            }
-	          });
+	          var fieldMeta = _this4.getFieldMeta(name);
+	          field.errors = undefined;
+	          field.validating = true;
+	          field.dirty = true;
+	          allRules[name] = _this4.getRules(fieldMeta, action);
+	          allValues[name] = field.value;
+	          allFields[name] = field;
+	        });
+	        this.setFields(allFields);
+	        var nowFields = this.fields;
+	        // in case normalize
+	        Object.keys(allValues).forEach(function (f) {
+	          allValues[f] = nowFields[f].value;
+	        });
+	        if (callback && (0, _utils.isEmptyObject)(allFields)) {
+	          callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
+	          return;
 	        }
-	      }, {
-	        key: 'validateFieldsByName',
-	        value: function validateFieldsByName(ns, opt, cb) {
-	          var _this6 = this;
-	
-	          var names = ns;
-	          var callback = cb;
-	          var options = opt;
-	          if (typeof names === 'function') {
-	            callback = names;
-	            options = {};
-	            names = undefined;
-	          } else if (Array.isArray(ns)) {
-	            if (typeof options === 'function') {
-	              callback = options;
-	              options = {};
+	        var validator = new _asyncValidator2['default'](allRules);
+	        if (validateMessages) {
+	          validator.messages(validateMessages);
+	        }
+	        validator.validate(allValues, options, function (errors) {
+	          var errorsGroup = _extends({}, alreadyErrors);
+	          if (errors && errors.length) {
+	            errors.forEach(function (e) {
+	              var fieldName = e.field;
+	              errorsGroup[fieldName] = errorsGroup[fieldName] || { errors: [] };
+	              var fieldErrors = errorsGroup[fieldName].errors;
+	              fieldErrors.push(e);
+	            });
+	          }
+	          var expired = [];
+	          var nowAllFields = {};
+	          Object.keys(allRules).forEach(function (name) {
+	            var fieldErrors = errorsGroup[name];
+	            var nowField = _this4.getField(name, true);
+	            // avoid concurrency problems
+	            if (nowField.value !== allValues[name]) {
+	              expired.push({ name: name, instance: nowField.instance });
 	            } else {
-	              options = options || {};
+	              nowField.errors = fieldErrors && fieldErrors.errors;
+	              nowField.value = allValues[name];
+	              nowField.validating = false;
+	              nowField.dirty = false;
+	              nowAllFields[name] = nowField;
 	            }
-	          } else {
-	            callback = options;
-	            options = names || {};
-	            names = undefined;
-	          }
-	          var fieldNames = names || this.getValidFieldsName();
-	          var fields = fieldNames.map(function (name) {
-	            var fieldMeta = _this6.getFieldMeta(name);
-	            if (!_this6.hasRules(fieldMeta.validate)) {
-	              return null;
-	            }
-	            var field = _this6.getField(name, true);
-	            field.value = _this6.getFieldValue(name);
-	            return field;
-	          }).filter(function (f) {
-	            return !!f;
-	          });
-	          if (!fields.length) {
-	            if (callback) {
-	              callback(null, this.getFieldsValue(fieldNames));
-	            }
-	            return;
-	          }
-	          if (!('firstFields' in options)) {
-	            options.firstFields = fieldNames.filter(function (name) {
-	              var fieldMeta = _this6.getFieldMeta(name);
-	              return !!fieldMeta.validateFirst;
-	            });
-	          }
-	          this.validateFields(fields, { fieldNames: fieldNames, options: options }, callback);
-	        }
-	      }, {
-	        key: 'isFieldValidating',
-	        value: function isFieldValidating(name) {
-	          return this.getFieldMember(name, 'validating');
-	        }
-	      }, {
-	        key: 'isFieldsValidating',
-	        value: function isFieldsValidating(ns) {
-	          var names = ns || this.getValidFieldsName();
-	          return names.some(this.isFieldValidating);
-	        }
-	      }, {
-	        key: 'isSubmitting',
-	        value: function isSubmitting() {
-	          return this.state.submitting;
-	        }
-	      }, {
-	        key: 'submit',
-	        value: function submit(callback) {
-	          var _this7 = this;
-	
-	          var fn = function fn() {
-	            _this7.setState({
-	              submitting: false
-	            });
-	          };
-	          this.setState({
-	            submitting: true
-	          });
-	          callback(fn);
-	        }
-	      }, {
-	        key: 'resetFields',
-	        value: function resetFields(ns) {
-	          var newFields = {};
-	          var fields = this.fields;
-	
-	          var changed = false;
-	          var names = ns || Object.keys(fields);
-	          names.forEach(function (name) {
-	            var field = fields[name];
-	            if (field && 'value' in field) {
-	              changed = true;
-	              newFields[name] = {};
+	            if (fieldErrors) {
+	              fieldErrors.instance = nowField.instance;
 	            }
 	          });
-	          if (changed) {
-	            this.setFields(newFields);
-	          }
-	        }
-	      }, {
-	        key: 'render',
-	        value: function render() {
-	          var formProps = _defineProperty({}, formPropName, this.getForm());
-	          var fieldsMeta = this.fieldsMeta;
-	          for (var _name3 in fieldsMeta) {
-	            if (fieldsMeta.hasOwnProperty(_name3)) {
-	              fieldsMeta[_name3].stale = 1;
-	            }
-	          }
-	          if (withRef) {
-	            formProps.ref = 'wrappedComponent';
-	          }
-	          var props = mapProps.call(this, _extends({}, formProps, this.props));
-	          return _react2['default'].createElement(WrappedComponent, props);
-	        }
-	      }]);
+	          _this4.setFields(nowAllFields);
+	          if (callback) {
+	            if (expired.length) {
+	              expired.forEach(function (_ref2) {
+	                var name = _ref2.name;
+	                var instance = _ref2.instance;
 	
-	      return Form;
-	    })(_react.Component);
+	                var fieldErrors = [{ message: name + ' need to revalidate', field: name }];
+	                errorsGroup[name] = {
+	                  expired: true,
+	                  instance: instance,
+	                  errors: fieldErrors
+	                };
+	              });
+	            }
+	            callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this4.getFieldsValue(fieldNames));
+	          }
+	        });
+	      },
+	
+	      validateFields: function validateFields(ns, opt, cb) {
+	        var _this5 = this;
+	
+	        var _getParams = (0, _utils.getParams)(ns, opt, cb);
+	
+	        var names = _getParams.names;
+	        var callback = _getParams.callback;
+	        var options = _getParams.options;
+	
+	        var fieldNames = names || this.getValidFieldsName();
+	        var fields = fieldNames.map(function (name) {
+	          var fieldMeta = _this5.getFieldMeta(name);
+	          if (!(0, _utils.hasRules)(fieldMeta.validate)) {
+	            return null;
+	          }
+	          var field = _this5.getField(name, true);
+	          field.value = _this5.getFieldValue(name);
+	          return field;
+	        }).filter(function (f) {
+	          return !!f;
+	        });
+	        if (!fields.length) {
+	          if (callback) {
+	            callback(null, this.getFieldsValue(fieldNames));
+	          }
+	          return;
+	        }
+	        if (!('firstFields' in options)) {
+	          options.firstFields = fieldNames.filter(function (name) {
+	            var fieldMeta = _this5.getFieldMeta(name);
+	            return !!fieldMeta.validateFirst;
+	          });
+	        }
+	        this.validateFieldsInternal(fields, { fieldNames: fieldNames, options: options }, callback);
+	      },
+	
+	      isFieldValidating: function isFieldValidating(name) {
+	        return this.getFieldMember(name, 'validating');
+	      },
+	
+	      isFieldsValidating: function isFieldsValidating(ns) {
+	        var names = ns || this.getValidFieldsName();
+	        return names.some(this.isFieldValidating);
+	      },
+	
+	      isSubmitting: function isSubmitting() {
+	        return this.state.submitting;
+	      },
+	
+	      submit: function submit(callback) {
+	        var _this6 = this;
+	
+	        var fn = function fn() {
+	          _this6.setState({
+	            submitting: false
+	          });
+	        };
+	        this.setState({
+	          submitting: true
+	        });
+	        callback(fn);
+	      },
+	
+	      resetFields: function resetFields(ns) {
+	        var newFields = {};
+	        var fields = this.fields;
+	
+	        var changed = false;
+	        var names = ns || Object.keys(fields);
+	        names.forEach(function (name) {
+	          var field = fields[name];
+	          if (field && 'value' in field) {
+	            changed = true;
+	            newFields[name] = {};
+	          }
+	        });
+	        if (changed) {
+	          this.setFields(newFields);
+	        }
+	      },
+	
+	      render: function render() {
+	        var formProps = _defineProperty({}, formPropName, this.getForm());
+	        var fieldsMeta = this.fieldsMeta;
+	        for (var _name3 in fieldsMeta) {
+	          if (fieldsMeta.hasOwnProperty(_name3)) {
+	            fieldsMeta[_name3].stale = 1;
+	          }
+	        }
+	        if (withRef) {
+	          formProps.ref = 'wrappedComponent';
+	        }
+	        var props = mapProps.call(this, _extends({}, formProps, this.props));
+	        return _react2['default'].createElement(WrappedComponent, props);
+	      }
+	    });
 	
 	    return (0, _utils.argumentContainer)(Form, WrappedComponent);
 	  }
@@ -20373,11 +20294,11 @@
 	  return decorate;
 	}
 	
-	exports['default'] = createForm;
+	exports['default'] = createBaseForm;
 	module.exports = exports['default'];
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20391,10 +20312,12 @@
 	exports.isEmptyObject = isEmptyObject;
 	exports.flattenArray = flattenArray;
 	exports.mirror = mirror;
+	exports.hasRules = hasRules;
+	exports.getParams = getParams;
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _hoistNonReactStatics = __webpack_require__(164);
+	var _hoistNonReactStatics = __webpack_require__(165);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
@@ -20441,9 +20364,43 @@
 	function mirror(obj) {
 	  return obj;
 	}
+	
+	function hasRules(validate) {
+	  if (validate) {
+	    return validate.some(function (item) {
+	      return !!item.rules && item.rules.length;
+	    });
+	  }
+	  return false;
+	}
+	
+	function getParams(ns, opt, cb) {
+	  var names = ns;
+	  var callback = cb;
+	  var options = opt;
+	  if (cb === undefined) {
+	    if (typeof names === 'function') {
+	      callback = names;
+	      options = {};
+	      names = undefined;
+	    } else if (Array.isArray(ns)) {
+	      if (typeof options === 'function') {
+	        callback = options;
+	        options = {};
+	      } else {
+	        options = options || {};
+	      }
+	    } else {
+	      callback = options;
+	      options = names || {};
+	      names = undefined;
+	    }
+	  }
+	  return { names: names, callback: callback, options: options };
+	}
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports) {
 
 	/**
@@ -20476,7 +20433,11 @@
 	    var keys = Object.getOwnPropertyNames(sourceComponent);
 	    for (var i=0; i<keys.length; ++i) {
 	        if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]]) {
-	            targetComponent[keys[i]] = sourceComponent[keys[i]];
+	            try {
+	                targetComponent[keys[i]] = sourceComponent[keys[i]];
+	            } catch (error) {
+	
+	            }
 	        }
 	    }
 	
@@ -20485,7 +20446,7 @@
 
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20498,17 +20459,17 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
-	var _validator = __webpack_require__(167);
+	var _validator = __webpack_require__(168);
 	
 	var _validator2 = _interopRequireDefault(_validator);
 	
-	var _messages2 = __webpack_require__(188);
+	var _messages2 = __webpack_require__(189);
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
-	var _lodashMergewith = __webpack_require__(189);
+	var _lodashMergewith = __webpack_require__(190);
 	
 	var _lodashMergewith2 = _interopRequireDefault(_lodashMergewith);
 	
@@ -20740,7 +20701,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -20910,7 +20871,7 @@
 	}
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20919,26 +20880,26 @@
 	  value: true
 	});
 	exports['default'] = {
-	  string: __webpack_require__(168),
-	  method: __webpack_require__(176),
-	  number: __webpack_require__(177),
-	  boolean: __webpack_require__(178),
-	  regexp: __webpack_require__(179),
-	  integer: __webpack_require__(180),
-	  'float': __webpack_require__(181),
-	  array: __webpack_require__(182),
-	  object: __webpack_require__(183),
-	  'enum': __webpack_require__(184),
-	  pattern: __webpack_require__(185),
-	  email: __webpack_require__(186),
-	  url: __webpack_require__(186),
-	  date: __webpack_require__(187),
-	  hex: __webpack_require__(186)
+	  string: __webpack_require__(169),
+	  method: __webpack_require__(177),
+	  number: __webpack_require__(178),
+	  boolean: __webpack_require__(179),
+	  regexp: __webpack_require__(180),
+	  integer: __webpack_require__(181),
+	  'float': __webpack_require__(182),
+	  array: __webpack_require__(183),
+	  object: __webpack_require__(184),
+	  'enum': __webpack_require__(185),
+	  pattern: __webpack_require__(186),
+	  email: __webpack_require__(187),
+	  url: __webpack_require__(187),
+	  date: __webpack_require__(188),
+	  hex: __webpack_require__(187)
 	};
 	module.exports = exports['default'];
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20949,11 +20910,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	/**
 	 *  Performs validation for string types.
@@ -20989,7 +20950,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20998,17 +20959,17 @@
 	  value: true
 	});
 	exports['default'] = {
-	  required: __webpack_require__(170),
-	  whitespace: __webpack_require__(171),
-	  type: __webpack_require__(172),
-	  range: __webpack_require__(173),
-	  'enum': __webpack_require__(174),
-	  pattern: __webpack_require__(175)
+	  required: __webpack_require__(171),
+	  whitespace: __webpack_require__(172),
+	  type: __webpack_require__(173),
+	  range: __webpack_require__(174),
+	  'enum': __webpack_require__(175),
+	  pattern: __webpack_require__(176)
 	};
 	module.exports = exports['default'];
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21019,7 +20980,7 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -21044,7 +21005,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21055,7 +21016,7 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -21080,7 +21041,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21093,11 +21054,11 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	var _required = __webpack_require__(170);
+	var _required = __webpack_require__(171);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
@@ -21185,7 +21146,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21196,7 +21157,7 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -21253,7 +21214,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21264,7 +21225,7 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -21292,7 +21253,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21303,7 +21264,7 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -21330,7 +21291,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21341,7 +21302,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -21374,7 +21335,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21385,7 +21346,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -21419,7 +21380,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21430,7 +21391,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -21463,7 +21424,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21474,11 +21435,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	/**
 	 *  Validates the regular expression type.
@@ -21509,7 +21470,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21520,7 +21481,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -21554,7 +21515,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21565,7 +21526,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -21599,7 +21560,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21610,11 +21571,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	/**
 	 *  Validates an array.
@@ -21646,7 +21607,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21657,7 +21618,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -21690,7 +21651,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21701,7 +21662,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -21736,7 +21697,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21747,11 +21708,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	/**
 	 *  Validates a regular expression pattern.
@@ -21785,7 +21746,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21796,11 +21757,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	function type(rule, value, callback, source, options) {
 	  var ruleType = rule.type;
@@ -21822,7 +21783,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21833,11 +21794,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(169);
+	var _rule = __webpack_require__(170);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(166);
+	var _util = __webpack_require__(167);
 	
 	function date(rule, value, callback, source, options) {
 	  // console.log('integer rule called %j', rule);
@@ -21863,7 +21824,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21932,24 +21893,25 @@
 	exports.messages = messages;
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * lodash 4.0.3 (Custom Build) <https://lodash.com/>
+	/**
+	 * lodash 4.1.0 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var Stack = __webpack_require__(190),
-	    arrayEach = __webpack_require__(192),
-	    baseFor = __webpack_require__(193),
-	    isPlainObject = __webpack_require__(194),
-	    keys = __webpack_require__(195),
-	    keysIn = __webpack_require__(196),
-	    rest = __webpack_require__(197);
+	var Stack = __webpack_require__(191),
+	    arrayEach = __webpack_require__(195),
+	    baseFor = __webpack_require__(196),
+	    isPlainObject = __webpack_require__(197),
+	    keys = __webpack_require__(198),
+	    keysIn = __webpack_require__(199),
+	    rest = __webpack_require__(200),
+	    root = __webpack_require__(193);
 	
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER = 9007199254740991;
@@ -22143,10 +22105,10 @@
 	}
 	
 	/** Used for built-in method references. */
-	var objectProto = global.Object.prototype;
+	var objectProto = Object.prototype;
 	
 	/** Used to resolve the decompiled source of functions. */
-	var funcToString = global.Function.prototype.toString;
+	var funcToString = Function.prototype.toString;
 	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty = objectProto.hasOwnProperty;
@@ -22164,14 +22126,14 @@
 	);
 	
 	/** Built-in value references. */
-	var Symbol = global.Symbol,
-	    Uint8Array = global.Uint8Array,
+	var Symbol = root.Symbol,
+	    Uint8Array = root.Uint8Array,
 	    getOwnPropertySymbols = Object.getOwnPropertySymbols,
 	    propertyIsEnumerable = objectProto.propertyIsEnumerable;
 	
 	/* Built-in method references that are verified to be native. */
-	var Map = getNative(global, 'Map'),
-	    Set = getNative(global, 'Set');
+	var Map = getNative(root, 'Map'),
+	    Set = getNative(root, 'Set');
 	
 	/** Used to detect maps and sets. */
 	var mapCtorString = Map ? funcToString.call(Map) : '',
@@ -23124,6 +23086,8 @@
 	 * method instead. The `customizer` is invoked with seven arguments:
 	 * (objValue, srcValue, key, object, source, stack).
 	 *
+	 * **Note:** This method mutates `object`.
+	 *
 	 * @static
 	 * @memberOf _
 	 * @category Object
@@ -23157,28 +23121,27 @@
 	});
 	
 	module.exports = mergeWith;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+	/**
+	 * lodash 4.0.2 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var MapCache = __webpack_require__(191);
+	var MapCache = __webpack_require__(192);
 	
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
 	
 	/** Used for built-in method references. */
-	var arrayProto = global.Array.prototype;
+	var arrayProto = Array.prototype;
 	
 	/** Built-in value references. */
 	var splice = arrayProto.splice;
@@ -23413,21 +23376,21 @@
 	Stack.prototype.set = stackSet;
 	
 	module.exports = Stack;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
 
 /***/ },
-/* 191 */
-/***/ function(module, exports) {
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+	/**
+	 * lodash 4.1.0 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
+	var root = __webpack_require__(193);
 	
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -23462,11 +23425,11 @@
 	}
 	
 	/** Used for built-in method references. */
-	var arrayProto = global.Array.prototype,
-	    objectProto = global.Object.prototype;
+	var arrayProto = Array.prototype,
+	    objectProto = Object.prototype;
 	
 	/** Used to resolve the decompiled source of functions. */
-	var funcToString = global.Function.prototype.toString;
+	var funcToString = Function.prototype.toString;
 	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty = objectProto.hasOwnProperty;
@@ -23487,7 +23450,7 @@
 	var splice = arrayProto.splice;
 	
 	/* Built-in method references that are verified to be native. */
-	var Map = getNative(global, 'Map'),
+	var Map = getNative(root, 'Map'),
 	    nativeCreate = getNative(Object, 'create');
 	
 	/**
@@ -23842,8 +23805,6 @@
 	 * // => false
 	 */
 	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
 	  var type = typeof value;
 	  return !!value && (type == 'object' || type == 'function');
 	}
@@ -23913,11 +23874,86 @@
 	MapCache.prototype.set = mapSet;
 	
 	module.exports = MapCache;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
 
 /***/ },
-/* 192 */
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module, global) {/**
+	 * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	
+	/** Used to determine if values are of the language type `Object`. */
+	var objectTypes = {
+	  'function': true,
+	  'object': true
+	};
+	
+	/** Detect free variable `exports`. */
+	var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType) ? exports : null;
+	
+	/** Detect free variable `module`. */
+	var freeModule = (objectTypes[typeof module] && module && !module.nodeType) ? module : null;
+	
+	/** Detect free variable `global` from Node.js. */
+	var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+	
+	/** Detect free variable `self`. */
+	var freeSelf = checkGlobal(objectTypes[typeof self] && self);
+	
+	/** Detect free variable `window`. */
+	var freeWindow = checkGlobal(objectTypes[typeof window] && window);
+	
+	/** Detect `this` as the global object. */
+	var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
+	
+	/**
+	 * Used as a reference to the global object.
+	 *
+	 * The `this` value is used if it's the global object to avoid Greasemonkey's
+	 * restricted `window` object, otherwise the `window` object is used.
+	 */
+	var root = freeGlobal || ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) || freeSelf || thisGlobal || Function('return this')();
+	
+	/**
+	 * Checks if `value` is a global object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+	 */
+	function checkGlobal(value) {
+	  return (value && value.Object === Object) ? value : null;
+	}
+	
+	module.exports = root;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(194)(module), (function() { return this; }())))
+
+/***/ },
+/* 194 */
+/***/ function(module, exports) {
+
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 195 */
 /***/ function(module, exports) {
 
 	/**
@@ -23954,7 +23990,7 @@
 
 
 /***/ },
-/* 193 */
+/* 196 */
 /***/ function(module, exports) {
 
 	/**
@@ -24008,11 +24044,11 @@
 
 
 /***/ },
-/* 194 */
+/* 197 */
 /***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+	/**
+	 * lodash 4.0.1 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -24043,10 +24079,10 @@
 	}
 	
 	/** Used for built-in method references. */
-	var objectProto = global.Object.prototype;
+	var objectProto = Object.prototype;
 	
 	/** Used to resolve the decompiled source of functions. */
-	var funcToString = global.Function.prototype.toString;
+	var funcToString = Function.prototype.toString;
 	
 	/** Used to infer the `Object` constructor. */
 	var objectCtorString = funcToString.call(Object);
@@ -24131,15 +24167,14 @@
 	}
 	
 	module.exports = isPlainObject;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
 
 /***/ },
-/* 195 */
+/* 198 */
 /***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * lodash 4.0.1 (Custom Build) <https://lodash.com/>
+	/**
+	 * lodash 4.0.2 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -24193,7 +24228,7 @@
 	}
 	
 	/** Used for built-in method references. */
-	var objectProto = global.Object.prototype;
+	var objectProto = Object.prototype;
 	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty = objectProto.hasOwnProperty;
@@ -24577,21 +24612,21 @@
 	}
 	
 	module.exports = keys;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
 
 /***/ },
-/* 196 */
-/***/ function(module, exports) {
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * lodash 4.0.1 (Custom Build) <https://lodash.com/>
+	/**
+	 * lodash 4.1.0 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
+	var root = __webpack_require__(193);
 	
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER = 9007199254740991;
@@ -24656,7 +24691,7 @@
 	}
 	
 	/** Used for built-in method references. */
-	var objectProto = global.Object.prototype;
+	var objectProto = Object.prototype;
 	
 	/** Used to check objects for own properties. */
 	var hasOwnProperty = objectProto.hasOwnProperty;
@@ -24668,7 +24703,7 @@
 	var objectToString = objectProto.toString;
 	
 	/** Built-in value references. */
-	var Reflect = global.Reflect,
+	var Reflect = root.Reflect,
 	    enumerate = Reflect ? Reflect.enumerate : undefined,
 	    propertyIsEnumerable = objectProto.propertyIsEnumerable;
 	
@@ -25029,15 +25064,14 @@
 	}
 	
 	module.exports = keysIn;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
 
 /***/ },
-/* 197 */
+/* 200 */
 /***/ function(module, exports) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+	/**
+	 * lodash 4.0.1 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -25069,7 +25103,7 @@
 	/** Used to detect octal string values. */
 	var reIsOctal = /^0o[0-7]+$/i;
 	
-	/** Built-in method references without a dependency on `global`. */
+	/** Built-in method references without a dependency on `root`. */
 	var freeParseInt = parseInt;
 	
 	/**
@@ -25079,11 +25113,11 @@
 	 * @private
 	 * @param {Function} func The function to invoke.
 	 * @param {*} thisArg The `this` binding of `func`.
-	 * @param {...*} [args] The arguments to invoke `func` with.
+	 * @param {...*} args The arguments to invoke `func` with.
 	 * @returns {*} Returns the result of `func`.
 	 */
 	function apply(func, thisArg, args) {
-	  var length = args ? args.length : 0;
+	  var length = args.length;
 	  switch (length) {
 	    case 0: return func.call(thisArg);
 	    case 1: return func.call(thisArg, args[0]);
@@ -25094,7 +25128,7 @@
 	}
 	
 	/** Used for built-in method references. */
-	var objectProto = global.Object.prototype;
+	var objectProto = Object.prototype;
 	
 	/**
 	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
@@ -25204,8 +25238,6 @@
 	 * // => false
 	 */
 	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
 	  var type = typeof value;
 	  return !!value && (type == 'object' || type == 'function');
 	}
@@ -25285,8 +25317,7 @@
 	}
 	
 	module.exports = rest;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
 
 /***/ }
 /******/ ]);
