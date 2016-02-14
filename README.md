@@ -156,8 +156,6 @@ Validator rules. see: [async-validator](https://github.com/yiminghe/async-valida
 
 Defaults to false. whether stop validate on first rule of error for this field.
 
-
-
 ### getFieldsValue([fieldNames: String[]])
 
 Get fields value by fieldNames.
@@ -212,6 +210,18 @@ Cause isSubmitting to return true, after callback called, isSubmitting return fa
 ### resetFields([names: String[]])
 
 Reset specified inputs. Defaults to all.
+
+## rc-form/lib/createDOMForm(formOption): Function
+
+createForm enhancement, support props.form.validateFieldsAndScroll
+
+### props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))
+
+props.form.validateFields enhancement, support scroll to the first invalid form field
+
+#### options.container: HTMLElement
+
+Defaults to first scrollable container of form field(until document).
 
 ## Test Case
 

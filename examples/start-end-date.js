@@ -2,12 +2,12 @@
 
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/index.css';
-import {createForm} from 'rc-form';
+import createDOMForm from 'rc-form/src/createDOMForm';
 import {regionStyle, errorStyle} from './styles';
 import React, {PropTypes, Component} from 'react';
 import ReactDOM from 'react-dom';
 
-@createForm()
+@createDOMForm()
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -16,7 +16,7 @@ class Form extends Component {
   onSubmit = (e) => {
     console.log('submit');
     e.preventDefault();
-    this.props.form.validateFields((error, values)=> {
+    this.props.form.validateFieldsAndScroll((error, values)=> {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -34,7 +34,7 @@ class Form extends Component {
     const {validateFields} = this.props.form;
     validateFields(['end'], {
       force: true,
-    });
+    })
     callback();
   };
 

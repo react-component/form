@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import {createForm} from 'rc-form';
+import createDOMForm from 'rc-form/src/createDOMForm';
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import Select, {Option} from 'antd/lib/select';
@@ -153,46 +153,7 @@ NumberInput.propTypes = {
   form: PropTypes.object,
 };
 
-function addScrollToValidate(validateFields) {
-  return (...args) => {
-    const originalCallback = args[args.length - 1];
-
-    function newCb(error, values) {
-      if (error) {
-        for (const name in error) {
-          if (error.hasOwnProperty(name) && error[name].instance) {
-            scrollIntoView(ReactDOM.findDOMNode(error[name].instance), window, {
-              onlyScrollIfNeeded: true,
-            });
-            break;
-          }
-        }
-      }
-      if (typeof originalCallback === 'function') {
-        originalCallback(error, values);
-      }
-    }
-
-    if (typeof originalCallback === 'function') {
-      args[args.length - 1] = newCb;
-    } else {
-      args.push(newCb);
-    }
-    validateFields.apply(null, args);
-  };
-}
-
-@createForm({
-  refComponent: true,
-  mapProps(props) {
-    if (!this.__scrollAndValidate) {
-      this.__scrollAndValidate = addScrollToValidate(props.form.validateFields);
-    }
-    return {
-      ...props,
-      scrollAndValidate: this.__scrollAndValidate,
-    };
-  },
+@createDOMForm({
   validateMessages: {
     required(field) {
       return `${field} 必填`;
@@ -202,13 +163,12 @@ function addScrollToValidate(validateFields) {
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
-    scrollAndValidate: PropTypes.func,
   };
 
   onSubmit = (e) => {
     console.log('submit');
     e.preventDefault();
-    this.props.scrollAndValidate((error, values)=> {
+    this.props.form.validateFieldsAndScroll((error, values)=> {
       if (!error) {
         console.log('ok', values);
       } else {
