@@ -37,17 +37,15 @@ webpackJsonp([13],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.createForm = undefined;
 	
 	var _createForm = __webpack_require__(162);
 	
-	Object.defineProperty(exports, 'createForm', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_createForm).default;
-	  }
-	});
-
+	var _createForm2 = _interopRequireDefault(_createForm);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.createForm = _createForm2.default; // export this package's api
 
 /***/ },
 
