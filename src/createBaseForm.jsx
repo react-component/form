@@ -460,7 +460,7 @@ function createBaseForm(option = {}, mixins = []) {
           const field = fields[name];
           if (field && 'value' in field) {
             changed = true;
-            newFields[name] = {};
+            newFields[name] = { instance: field.instance };
           }
         });
         if (changed) {
