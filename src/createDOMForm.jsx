@@ -22,7 +22,7 @@ function computedStyle(el, prop) {
       // DEV: Grabbed from jQuery
       // https://github.com/jquery/jquery/blob/1.9-stable/src/css.js#L191-L194
       // https://github.com/jquery/jquery/blob/1.9-stable/src/core.js#L593-L597
-      prop.replace(/-(\w)/gi, function (word, letter) {
+      prop.replace(/-(\w)/gi, (word, letter) => {
         return letter.toUpperCase();
       })
       ];

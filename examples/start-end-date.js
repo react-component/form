@@ -34,7 +34,7 @@ class Form extends Component {
     const {validateFields} = this.props.form;
     validateFields(['end'], {
       force: true,
-    })
+    });
     callback();
   };
 

@@ -7,7 +7,6 @@ import Select, {Option} from 'antd/lib/select';
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/index.css';
 import {regionStyle, errorStyle} from './styles';
-import scrollIntoView from 'dom-scroll-into-view';
 
 function Email(props) {
   const {getFieldProps, getFieldError, isFieldValidating} = props.form;
@@ -36,7 +35,6 @@ const User = React.createClass({
   propTypes: {
     form: PropTypes.object,
   },
-
   userExists(rule, value, callback) {
     setTimeout(() => {
       if (value === '1') {

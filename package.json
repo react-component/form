@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -44,7 +44,6 @@
     "antd": "^0.12.1",
     "async": "^1.5.2",
     "cz-conventional-changelog": "^1.1.5",
-    "dom-scroll-into-view": "^1.0.1",
     "expect.js": "0.3.x",
     "history": "^1.16.0",
     "pre-commit": "1.x",
@@ -62,7 +61,8 @@
     "lint"
   ],
   "dependencies": {
-    "async-validator": "^1.5.0",
-    "hoist-non-react-statics": "^1.0.3"
+    "async-validator": "1.x",
+    "dom-scroll-into-view": "1.x",
+    "hoist-non-react-statics": "1.x"
   }
 }
