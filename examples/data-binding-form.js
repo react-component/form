@@ -1655,7 +1655,9 @@ webpackJsonp([3],{
 	        'p',
 	        null,
 	        _react2.default.createElement('input', form.getFieldProps('email', {
-	          rules: [{ type: 'email' }],
+	          rules: [{
+	            type: 'email'
+	          }],
 	          hidden: !on
 	        }))
 	      )

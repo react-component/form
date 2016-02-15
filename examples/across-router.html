@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>across-router.js - example - rc-form@0.13.1</title>
+  <title>across-router.js - example - rc-form@0.13.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.1</h1>
+    <h1>rc-form@0.13.2</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -266,7 +266,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="across-router.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-<span class="hljs-keyword">import</span> React, {PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> React, { PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
 <span class="hljs-keyword">import</span> { Router, Route } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-router'</span>;
@@ -285,16 +285,26 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-built_in">window</span>.history.back();
   },
   render() {
-    <span class="hljs-keyword">const</span> {getFieldProps} = <span class="hljs-keyword">this</span>.props.form;
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{position:</span> '<span class="hljs-attribute">absolute</span>', <span class="hljs-attribute">left:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">top:</span> <span class="hljs-attribute">0</span>, <span class="hljs-attribute">height:</span> '<span class="hljs-attribute">100</span>%', <span class="hljs-attribute">width:</span> '<span class="hljs-attribute">100</span>%', <span class="hljs-attribute">background:</span> '<span class="hljs-attribute">white</span>'}}&gt;</span>
+    <span class="hljs-keyword">const</span> { getFieldProps } = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>
+      <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
+        <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">absolute</span>',
+        <span class="hljs-attribute">left:</span> <span class="hljs-attribute">0</span>,
+        <span class="hljs-attribute">top:</span> <span class="hljs-attribute">0</span>,
+        <span class="hljs-attribute">height:</span> '<span class="hljs-attribute">100</span>%',
+        <span class="hljs-attribute">width:</span> '<span class="hljs-attribute">100</span>%',
+        <span class="hljs-attribute">background:</span> '<span class="hljs-attribute">white</span>',
+      }}
+    &gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>child form<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
         name:
         <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">name</span>', {
           <span class="hljs-attribute">initialValue:</span> <span class="hljs-attribute">this.props.initialValue.name</span>,
-        })}/&gt;</span>
+        })}
+        /&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onClick}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
@@ -313,7 +323,7 @@ ChildForm = createForm()(ChildForm);
     <span class="hljs-built_in">window</span>.location.hash = <span class="hljs-string">'/open'</span>;
   },
   render() {
-    <span class="hljs-keyword">const</span> {value, childForm} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">const</span> { value, childForm } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-keyword">const</span> valueEl = value ?
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onClick}</span>&gt;</span>{value.name}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span> :
       <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onClick}</span>&gt;</span>please select<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
@@ -337,17 +347,17 @@ ChildForm = createForm()(ChildForm);
     <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.props.form.getFieldsValue());
   },
   render() {
-    <span class="hljs-keyword">const</span> {getFieldProps} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">const</span> { getFieldProps } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>parent form<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
         family: <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">family</span>')}/&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">Picker</span> <span class="hljs-attribute">childForm</span>=<span class="hljs-value">{this.props.children}</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">picker</span>')}/&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onClick}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
@@ -356,7 +366,12 @@ ChildForm = createForm()(ChildForm);
 
 ParentForm = createForm()(ParentForm);
 
-ReactDOM.render((<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{height:</span> <span class="hljs-attribute">300</span>, <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">relative</span>'}}&gt;</span>
+ReactDOM.render((<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>
+  <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
+    <span class="hljs-attribute">height:</span> <span class="hljs-attribute">300</span>,
+    <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">relative</span>',
+  }}
+&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-title">Router</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">Route</span> <span class="hljs-attribute">path</span>=<span class="hljs-value">"/"</span> <span class="hljs-attribute">component</span>=<span class="hljs-value">{ParentForm}</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Route</span> <span class="hljs-attribute">path</span>=<span class="hljs-value">"/open"</span> <span class="hljs-attribute">component</span>=<span class="hljs-value">{ChildForm}</span>/&gt;</span>

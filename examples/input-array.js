@@ -147,11 +147,11 @@ webpackJsonp([5],{
 	        'div',
 	        { key: k, style: _styles.regionStyle },
 	        _react2.default.createElement('input', getFieldProps('name' + k)),
-	        ' ',
 	        _react2.default.createElement(
 	          'a',
 	          {
-	            onClick: _this.remove.bind(_this, k) },
+	            onClick: _this.remove.bind(_this, k)
+	          },
 	          'delete'
 	        )
 	      );

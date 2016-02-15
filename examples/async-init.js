@@ -136,7 +136,12 @@ webpackJsonp([1],{
 	        null,
 	        _react2.default.createElement('input', getFieldProps('email', {
 	          validateFirst: true,
-	          rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }, this.checkSpecial],
+	          rules: [{
+	            required: true
+	          }, {
+	            type: 'email',
+	            message: '错误的 email 格式'
+	          }, this.checkSpecial],
 	          validateTrigger: 'onBlur'
 	        }))
 	      ),

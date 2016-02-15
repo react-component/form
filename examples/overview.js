@@ -5385,11 +5385,14 @@ webpackJsonp([8],[
 	      'p',
 	      null,
 	      _react2.default.createElement('input', getFieldProps('email', {
-	        rules: [{ type: 'email', message: _react2.default.createElement(
+	        rules: [{
+	          type: 'email',
+	          message: _react2.default.createElement(
 	            'b',
 	            { key: 'err' },
 	            '错误的 email 格式'
-	          ) }]
+	          )
+	        }]
 	      }))
 	    ),
 	    _react2.default.createElement(
@@ -5451,7 +5454,11 @@ webpackJsonp([8],[
 	        null,
 	        _react2.default.createElement('input', getFieldProps('user', {
 	          validateFirst: true,
-	          rules: [{ required: true }, { validator: this.userExists }]
+	          rules: [{
+	            required: true
+	          }, {
+	            validator: this.userExists
+	          }]
 	        }))
 	      ),
 	      _react2.default.createElement(
@@ -5493,8 +5500,13 @@ webpackJsonp([8],[
 	      null,
 	      _react2.default.createElement(
 	        _select2.default,
-	        _extends({ placeholder: 'please select', style: { width: 200 } }, getFieldProps('select', {
-	          rules: [{ required: true }]
+	        _extends({
+	          placeholder: 'please select',
+	          style: { width: 200 }
+	        }, getFieldProps('select', {
+	          rules: [{
+	            required: true
+	          }]
 	        })),
 	        _react2.default.createElement(
 	          _select.Option,
@@ -5547,8 +5559,13 @@ webpackJsonp([8],[
 	    _react2.default.createElement(
 	      'p',
 	      { style: { width: 200 } },
-	      _react2.default.createElement(_datePicker2.default, _extends({ placeholder: 'please select' }, getFieldProps('date', {
-	        rules: [{ required: true, type: 'date' }]
+	      _react2.default.createElement(_datePicker2.default, _extends({
+	        placeholder: 'please select'
+	      }, getFieldProps('date', {
+	        rules: [{
+	          required: true,
+	          type: 'date'
+	        }]
 	      })))
 	    ),
 	    _react2.default.createElement(
@@ -5595,7 +5612,10 @@ webpackJsonp([8],[
 	      null,
 	      _react2.default.createElement('input', getFieldProps('number', {
 	        initialValue: '1',
-	        rules: [{ transform: toNumber, type: 'number' }]
+	        rules: [{
+	          transform: toNumber,
+	          type: 'number'
+	        }]
 	      }))
 	    ),
 	    _react2.default.createElement(

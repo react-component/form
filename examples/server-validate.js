@@ -118,7 +118,12 @@ webpackJsonp([12],{
 	      'p',
 	      null,
 	      _react2.default.createElement('input', getFieldProps('email', {
-	        rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }]
+	        rules: [{
+	          required: true
+	        }, {
+	          type: 'email',
+	          message: '错误的 email 格式'
+	        }]
 	      }))
 	    ),
 	    _react2.default.createElement(
@@ -158,7 +163,9 @@ webpackJsonp([12],{
 	        'p',
 	        null,
 	        _react2.default.createElement('input', getFieldProps('user', {
-	          rules: [{ required: true }]
+	          rules: [{
+	            required: true
+	          }]
 	        }))
 	      ),
 	      _react2.default.createElement(

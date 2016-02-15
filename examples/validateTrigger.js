@@ -121,10 +121,15 @@ webpackJsonp([17],{
 	      _react2.default.createElement('input', getFieldProps('email', {
 	        validate: [{
 	          trigger: 'onBlur',
-	          rules: [{ required: true }]
+	          rules: [{
+	            required: true
+	          }]
 	        }, {
 	          trigger: ['onBlur', 'onChange'],
-	          rules: [{ type: 'email', message: '错误的 email 格式' }]
+	          rules: [{
+	            type: 'email',
+	            message: '错误的 email 格式'
+	          }]
 	        }]
 	      }))
 	    ),
@@ -171,7 +176,12 @@ webpackJsonp([17],{
 	        'p',
 	        null,
 	        _react2.default.createElement('input', getFieldProps('user', {
-	          rules: [{ required: true }, { type: 'string', min: 5 }],
+	          rules: [{
+	            required: true
+	          }, {
+	            type: 'string',
+	            min: 5
+	          }],
 	          validateTrigger: null
 	        }))
 	      ),

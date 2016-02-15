@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>input-array.js - example - rc-form@0.13.1</title>
+  <title>input-array.js - example - rc-form@0.13.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.1</h1>
+    <h1>rc-form@0.13.2</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -266,10 +266,10 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="input-array.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console:0 */</span>
 
-<span class="hljs-keyword">import</span> {createForm} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> React, {PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
+<span class="hljs-keyword">import</span> React, { PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> {regionStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> { regionStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
 <span class="hljs-keyword">let</span> uuid = <span class="hljs-number">0</span>;
 
@@ -278,7 +278,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     form: PropTypes.object,
   },
   remove(k) {
-    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-comment">// can use data-binding to get</span>
     <span class="hljs-keyword">let</span> keys = form.getFieldValue(<span class="hljs-string">'keys'</span>);
     keys = keys.filter((key) =&gt; {
@@ -291,7 +291,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   },
   add() {
     uuid++;
-    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-comment">// can use data-binding to get</span>
     <span class="hljs-keyword">let</span> keys = form.getFieldValue(<span class="hljs-string">'keys'</span>);
     keys = keys.concat(uuid);
@@ -306,17 +306,20 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.props.form.getFieldsValue());
   },
   render() {
-    <span class="hljs-keyword">const</span> {getFieldProps, getFieldValue} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">const</span> { getFieldProps, getFieldValue } = <span class="hljs-keyword">this</span>.props.form;
     getFieldProps(<span class="hljs-string">'keys'</span>, {
       initialValue: [],
     });
-    <span class="hljs-keyword">const</span> inputs = getFieldValue(<span class="hljs-string">'keys'</span>).map((k)=&gt; {
-      <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{k}</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">name</span>' + <span class="hljs-attribute">k</span>)}/&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-title">a</span>
-        <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.remove.bind(this,</span> <span class="hljs-attribute">k</span>)}&gt;</span>delete<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
+    <span class="hljs-keyword">const</span> inputs = getFieldValue(<span class="hljs-string">'keys'</span>).map((k) =&gt; {
+      <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{k}</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>(`<span class="hljs-attribute">name</span>${<span class="hljs-attribute">k</span>}`)}/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">a</span>
+          <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.remove.bind(this,</span> <span class="hljs-attribute">k</span>)}
+        &gt;</span>delete<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
     });
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
       {inputs}
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.submit}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.add}</span>&gt;</span>add<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>

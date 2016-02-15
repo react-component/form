@@ -19880,7 +19880,9 @@
 	          if (ret) {
 	            return _extends({}, ret);
 	          }
-	          return { name: name };
+	          return {
+	            name: name
+	          };
 	        }
 	        return ret;
 	      },
@@ -19912,11 +19914,13 @@
 	        }
 	
 	        var validateRules = validate.map(function (item) {
-	          item.trigger = item.trigger || [];
-	          if (typeof item.trigger === 'string') {
-	            item.trigger = [item.trigger];
+	          var newItem = _extends({}, item, {
+	            trigger: item.trigger || []
+	          });
+	          if (typeof newItem.trigger === 'string') {
+	            newItem.trigger = [newItem.trigger];
 	          }
-	          return item;
+	          return newItem;
 	        });
 	
 	        if (rules) {
@@ -19936,9 +19940,11 @@
 	          inputProps[action] = _this.getCacheBind(name, action, _this.onChangeValidate);
 	        });
 	
-	        if (trigger && validateRules.every(function (item) {
+	        function checkRule(item) {
 	          return item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length;
-	        })) {
+	        }
+	
+	        if (trigger && validateRules.every(checkRule)) {
 	          inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
 	        }
 	        var field = this.getField(name);
@@ -20026,7 +20032,9 @@
 	          if (fieldMeta && fieldMeta.normalize) {
 	            var nowValue = fieldMeta.normalize(value, _this3.getValueFromFields(f, originalFields), nowValues);
 	            if (nowValue !== value) {
-	              nowFields[f] = _extends({}, nowFields[f], { value: nowValue });
+	              nowFields[f] = _extends({}, nowFields[f], {
+	                value: nowValue
+	              });
 	              if (changedFieldsName.indexOf(f) === -1) {
 	                changedFieldsName.push(f);
 	              }
@@ -20103,12 +20111,13 @@
 	            return;
 	          }
 	          var fieldMeta = _this4.getFieldMeta(name);
-	          field.errors = undefined;
-	          field.validating = true;
-	          field.dirty = true;
+	          var newField = _extends({}, field);
+	          newField.errors = undefined;
+	          newField.validating = true;
+	          newField.dirty = true;
 	          allRules[name] = _this4.getRules(fieldMeta, action);
-	          allValues[name] = field.value;
-	          allFields[name] = field;
+	          allValues[name] = newField.value;
+	          allFields[name] = newField;
 	        });
 	        this.setFields(allFields);
 	        var nowFields = this.fields;
@@ -20129,7 +20138,11 @@
 	          if (errors && errors.length) {
 	            errors.forEach(function (e) {
 	              var fieldName = e.field;
-	              errorsGroup[fieldName] = errorsGroup[fieldName] || { errors: [] };
+	              if (!errorsGroup[fieldName]) {
+	                errorsGroup[fieldName] = {
+	                  errors: []
+	                };
+	              }
 	              var fieldErrors = errorsGroup[fieldName].errors;
 	              fieldErrors.push(e);
 	            });
@@ -20141,7 +20154,10 @@
 	            var nowField = _this4.getField(name, true);
 	            // avoid concurrency problems
 	            if (nowField.value !== allValues[name]) {
-	              expired.push({ name: name, instance: nowField.instance });
+	              expired.push({
+	                name: name,
+	                instance: nowField.instance
+	              });
 	            } else {
 	              nowField.errors = fieldErrors && fieldErrors.errors;
 	              nowField.value = allValues[name];
@@ -20160,7 +20176,10 @@
 	                var name = _ref2.name;
 	                var instance = _ref2.instance;
 	
-	                var fieldErrors = [{ message: name + ' need to revalidate', field: name }];
+	                var fieldErrors = [{
+	                  message: name + ' need to revalidate',
+	                  field: name
+	                }];
 	                errorsGroup[name] = {
 	                  expired: true,
 	                  instance: instance,
@@ -20205,7 +20224,10 @@
 	            return !!fieldMeta.validateFirst;
 	          });
 	        }
-	        this.validateFieldsInternal(fields, { fieldNames: fieldNames, options: options }, callback);
+	        this.validateFieldsInternal(fields, {
+	          fieldNames: fieldNames,
+	          options: options
+	        }, callback);
 	      },
 	      isFieldValidating: function isFieldValidating(name) {
 	        return this.getFieldMember(name, 'validating');
@@ -20301,6 +20323,7 @@
 	}
 	
 	function argumentContainer(Container, WrappedComponent) {
+	  /* eslint no-param-reassign:0 */
 	  Container.displayName = 'Form(' + getDisplayName(WrappedComponent) + ')';
 	  Container.WrappedComponent = WrappedComponent;
 	  return (0, _hoistNonReactStatics2.default)(Container, WrappedComponent);
@@ -20371,7 +20394,11 @@
 	      names = undefined;
 	    }
 	  }
-	  return { names: names, callback: callback, options: options };
+	  return {
+	    names: names,
+	    callback: callback,
+	    options: options
+	  };
 	}
 
 /***/ },

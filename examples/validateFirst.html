@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>validateFirst.js - example - rc-form@0.13.1</title>
+  <title>validateFirst.js - example - rc-form@0.13.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.1</h1>
+    <h1>rc-form@0.13.2</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -266,24 +266,32 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="validateFirst.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-<span class="hljs-keyword">import</span> {createForm} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> React, {Component, PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
+<span class="hljs-keyword">import</span> React, { Component, PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/index.css'</span>;
-<span class="hljs-keyword">import</span> {regionStyle, errorStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> { regionStyle, errorStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Email</span>(<span class="hljs-params">props</span>) </span>{
-  <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = props.form;
+  <span class="hljs-keyword">const</span> { getFieldProps, getFieldError, isFieldValidating } = props.form;
   <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'email'</span>);
-  <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+  <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">email</span>', {
-      <span class="hljs-attribute">validateFirst:</span> <span class="hljs-attribute">true</span>,
-      <span class="hljs-attribute">rules:</span> [
-        {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
-        {<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>', <span class="hljs-attribute">message:</span> '错误的 <span class="hljs-attribute">email</span> 格式'},
-      ],
-    })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">email</span>', {
+        <span class="hljs-attribute">validateFirst:</span> <span class="hljs-attribute">true</span>,
+        <span class="hljs-attribute">rules:</span> [
+          {
+            <span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>,
+          },
+          {
+            <span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>',
+            <span class="hljs-attribute">message:</span> '错误的 <span class="hljs-attribute">email</span> 格式',
+          },
+        ],
+      })}
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
       {errors ? errors.join(',') : null}
     <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
@@ -315,16 +323,24 @@ Email.propTypes = {
   },
 
   render() {
-    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">const</span> { getFieldProps, getFieldError, isFieldValidating } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'user'</span>);
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>user async validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">user</span>', {
-        <span class="hljs-attribute">rules:</span> [
-          {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>, <span class="hljs-attribute">min:</span> <span class="hljs-attribute">2</span>},
-          {<span class="hljs-attribute">validator:</span> <span class="hljs-attribute">this.userExists</span>},
-        ],
-      })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">user</span>', {
+          <span class="hljs-attribute">rules:</span> [
+            {
+              <span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>,
+              <span class="hljs-attribute">min:</span> <span class="hljs-attribute">2</span>,
+            },
+            {
+              <span class="hljs-attribute">validator:</span> <span class="hljs-attribute">this.userExists</span>,
+            },
+          ],
+        })}
+        /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
         {(errors) ? errors.join(',') : null}
       <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
@@ -345,7 +361,7 @@ Email.propTypes = {
     e.preventDefault();
     <span class="hljs-keyword">this</span>.props.form.validateFields({
       <span class="hljs-comment">// firstFields: false,</span>
-    }, (error, values)=&gt; {
+    }, (error, values) =&gt; {
       <span class="hljs-keyword">if</span> (!error) {
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
       } <span class="hljs-keyword">else</span> {
@@ -360,15 +376,15 @@ Email.propTypes = {
   };
 
   render() {
-    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
+    <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>validateFirst<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">User</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">User</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">form</span> }/&gt;</span>
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">Email</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Email</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">form</span> }/&gt;</span>
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.reset}</span>&gt;</span>reset<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
           &amp;nbsp;
           <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"submit"</span>/&gt;</span>

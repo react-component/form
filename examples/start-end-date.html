@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>start-end-date.js - example - rc-form@0.13.1</title>
+  <title>start-end-date.js - example - rc-form@0.13.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.1</h1>
+    <h1>rc-form@0.13.2</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -269,8 +269,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> DatePicker <span class="hljs-keyword">from</span> <span class="hljs-string">'antd/lib/date-picker'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/index.css'</span>;
 <span class="hljs-keyword">import</span> createDOMForm <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form/lib/createDOMForm'</span>;
-<span class="hljs-keyword">import</span> {regionStyle, errorStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
-<span class="hljs-keyword">import</span> React, {PropTypes, Component} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { regionStyle, errorStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> React, { PropTypes, Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
@@ -281,7 +281,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   onSubmit = (e) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'submit'</span>);
     e.preventDefault();
-    <span class="hljs-keyword">this</span>.props.form.validateFieldsAndScroll((error, values)=&gt; {
+    <span class="hljs-keyword">this</span>.props.form.validateFieldsAndScroll((error, values) =&gt; {
       <span class="hljs-keyword">if</span> (!error) {
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
       } <span class="hljs-keyword">else</span> {
@@ -296,7 +296,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   };
 
   checkStart = (rule, value, callback) =&gt; {
-    <span class="hljs-keyword">const</span> {validateFields} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">const</span> { validateFields } = <span class="hljs-keyword">this</span>.props.form;
     validateFields([<span class="hljs-string">'end'</span>], {
       force: <span class="hljs-literal">true</span>,
     });
@@ -305,7 +305,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
   checkEnd = (rule, value, callback) =&gt; {
     <span class="hljs-keyword">const</span> end = value;
-    <span class="hljs-keyword">const</span> {getFieldValue} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">const</span> { getFieldValue } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">const</span> start = getFieldValue(<span class="hljs-string">'start'</span>);
     <span class="hljs-keyword">if</span> (!end || !start) {
       callback(<span class="hljs-string">'please select both start and end time'</span>);
@@ -317,26 +317,28 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   };
 
   render() {
-    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError} = form;
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
+    <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">const</span> { getFieldProps, getFieldError } = form;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>startTime and endTime validation<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>start: <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">DatePicker</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">start</span>', {
               <span class="hljs-attribute">rules:</span> [<span class="hljs-attribute">this.checkStart</span>],
-            })}/&gt;</span>
+            })}
+            /&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>end: <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">DatePicker</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">end</span>', {
               <span class="hljs-attribute">rules:</span> [<span class="hljs-attribute">this.checkEnd</span>],
-            })}/&gt;</span>
+            })}
+            /&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
@@ -344,7 +346,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           {getFieldError('end') ? getFieldError('end').join(',') : ''}
         <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.reset}</span>&gt;</span>reset<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
           &amp;nbsp;
           <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"submit"</span>/&gt;</span>

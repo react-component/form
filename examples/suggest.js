@@ -8578,12 +8578,20 @@ webpackJsonp([15],{
 	        null,
 	        _react2.default.createElement(
 	          _select2.default,
-	          _extends({ placeholder: 'please select', combobox: true,
+	          _extends({
+	            placeholder: 'please select',
+	            combobox: true,
 	            filterOption: false,
-	            style: { width: 200 }
+	            style: {
+	              width: 200
+	            }
 	          }, getFieldProps('select', {
 	            onChange: this.onChange,
-	            rules: [{ type: 'email' }, { required: true }]
+	            rules: [{
+	              type: 'email'
+	            }, {
+	              required: true
+	            }]
 	          })),
 	          this.state.data.map(function (d) {
 	            return _react2.default.createElement(
@@ -8599,7 +8607,11 @@ webpackJsonp([15],{
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : _react2.default.createElement(
 	          'b',
-	          { style: { visibility: 'hidden' } },
+	          {
+	            style: {
+	              visibility: 'hidden'
+	            }
+	          },
 	          '1'
 	        )
 	      ),
@@ -8608,7 +8620,11 @@ webpackJsonp([15],{
 	        { style: _styles.errorStyle },
 	        isFieldValidating('select') ? 'validating' : _react2.default.createElement(
 	          'b',
-	          { style: { visibility: 'hidden' } },
+	          {
+	            style: {
+	              visibility: 'hidden'
+	            }
+	          },
 	          '1'
 	        )
 	      )

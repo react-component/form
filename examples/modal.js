@@ -1061,10 +1061,15 @@ webpackJsonp([6],{
 	        ),
 	        _react2.default.createElement(
 	          _modal2.default,
-	          { visible: this.state.visible,
-	            bodyStyle: { height: 200, overflow: 'auto' },
+	          {
+	            visible: this.state.visible,
+	            bodyStyle: {
+	              height: 200,
+	              overflow: 'auto'
+	            },
 	            onCancel: this.onCancel,
-	            title: 'modal' },
+	            title: 'modal'
+	          },
 	          _react2.default.createElement(
 	            'div',
 	            { ref: 'dialogContent' },
@@ -1072,7 +1077,10 @@ webpackJsonp([6],{
 	              'form',
 	              { onSubmit: this.onSubmit },
 	              _react2.default.createElement('input', getFieldProps('required', {
-	                rules: [{ required: true, message: '必填' }]
+	                rules: [{
+	                  required: true,
+	                  message: '必填'
+	                }]
 	              })),
 	              _react2.default.createElement(
 	                'p',

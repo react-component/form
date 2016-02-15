@@ -277,7 +277,9 @@ webpackJsonp([10],{
 	  };
 	})(Out);
 	
-	var store = (0, _redux.createStore)((0, _redux.combineReducers)({ form: form }));
+	var store = (0, _redux.createStore)((0, _redux.combineReducers)({
+	  form: form
+	}));
 	
 	var NewForm = (0, _reactRedux.connect)(function (state) {
 	  return {

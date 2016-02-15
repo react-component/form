@@ -5984,6 +5984,17 @@ webpackJsonp([11],{
 	
 	App = (0, _reactDataBinding.createRootContainer)()(App);
 	
+	function onClick(name) {
+	  this.props.setStoreState({
+	    formState: _extends({}, this.props.getStoreState().formState, {
+	      city: {
+	        value: name
+	      }
+	    })
+	  });
+	  history.pushState('/');
+	}
+	
 	var CitySelector = _react2.default.createClass({
 	  displayName: 'CitySelector',
 	
@@ -5996,28 +6007,18 @@ webpackJsonp([11],{
 	      onChange: function onChange() {}
 	    };
 	  },
-	  onClick: function onClick(name) {
-	    this.props.setStoreState({
-	      formState: _extends({}, this.props.getStoreState().formState, {
-	        city: {
-	          value: name
-	        }
-	      })
-	    });
-	    history.pushState('/');
-	  },
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
 	      { className: 'region' },
 	      _react2.default.createElement(
 	        'p',
-	        { onClick: this.onClick.bind(this, 'sh') },
+	        { onClick: onClick.bind(this, 'sh') },
 	        'shanghai'
 	      ),
 	      _react2.default.createElement(
 	        'p',
-	        { onClick: this.onClick.bind(this, 'hz') },
+	        { onClick: onClick.bind(this, 'hz') },
 	        'hangzhou'
 	      )
 	    );
@@ -6072,9 +6073,11 @@ webpackJsonp([11],{
 	        _react2.default.createElement(
 	          'p',
 	          null,
-	          'user: ',
+	          'user:',
 	          _react2.default.createElement('input', getFieldProps('user', {
-	            rules: [{ required: true }]
+	            rules: [{
+	              required: true
+	            }]
 	          }))
 	        ),
 	        getFieldError('user') ? _react2.default.createElement(
@@ -6089,9 +6092,11 @@ webpackJsonp([11],{
 	        _react2.default.createElement(
 	          'p',
 	          null,
-	          'city: ',
+	          'city:',
 	          _react2.default.createElement(CityInput, getFieldProps('city', {
-	            rules: [{ required: true }],
+	            rules: [{
+	              required: true
+	            }],
 	            validatorTrigger: false,
 	            trigger: false
 	          }))

@@ -48,7 +48,16 @@ webpackJsonp([0],[
 	
 	    return _react2.default.createElement(
 	      'div',
-	      { style: { position: 'absolute', left: 0, top: 0, height: '100%', width: '100%', background: 'white' } },
+	      {
+	        style: {
+	          position: 'absolute',
+	          left: 0,
+	          top: 0,
+	          height: '100%',
+	          width: '100%',
+	          background: 'white'
+	        }
+	      },
 	      _react2.default.createElement(
 	        'h2',
 	        null,
@@ -164,7 +173,12 @@ webpackJsonp([0],[
 	
 	_reactDom2.default.render(_react2.default.createElement(
 	  'div',
-	  { style: { height: 300, position: 'relative' } },
+	  {
+	    style: {
+	      height: 300,
+	      position: 'relative'
+	    }
+	  },
 	  _react2.default.createElement(
 	    _reactRouter.Router,
 	    null,

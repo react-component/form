@@ -119,9 +119,14 @@ webpackJsonp([4],{
 	    _react2.default.createElement(
 	      'p',
 	      null,
-	      'email: ',
+	      'email:',
 	      _react2.default.createElement('input', getFieldProps('email', {
-	        rules: [{ required: true }, { type: 'email', message: '错误的 email 格式' }],
+	        rules: [{
+	          required: true
+	        }, {
+	          type: 'email',
+	          message: '错误的 email 格式'
+	        }],
 	        hidden: hidden
 	      }))
 	    ),
@@ -139,7 +144,8 @@ webpackJsonp([4],{
 	}
 	
 	Email.propTypes = {
-	  form: _react.PropTypes.object
+	  form: _react.PropTypes.object,
+	  hidden: _react.PropTypes.bool
 	};
 	
 	var User = _react2.default.createClass({
@@ -162,10 +168,12 @@ webpackJsonp([4],{
 	      _react2.default.createElement(
 	        'p',
 	        null,
-	        'user: ',
+	        'user:',
 	        _react2.default.createElement('input', getFieldProps('user', {
 	          initialValue: 'x',
-	          rules: [{ required: true }]
+	          rules: [{
+	            required: true
+	          }]
 	        }))
 	      ),
 	      errors ? _react2.default.createElement(
@@ -235,8 +243,10 @@ webpackJsonp([4],{
 	              _react2.default.createElement(
 	                'label',
 	                null,
-	                'remove/add user: ',
-	                _react2.default.createElement('input', _extends({ type: 'checkbox' }, getFieldProps('remove_user', {
+	                'remove/add user:',
+	                _react2.default.createElement('input', _extends({
+	                  type: 'checkbox'
+	                }, getFieldProps('remove_user', {
 	                  // initialValue:true,
 	                  valuePropName: 'checked'
 	                })))
@@ -253,8 +263,10 @@ webpackJsonp([4],{
 	              _react2.default.createElement(
 	                'label',
 	                null,
-	                'hide/show email: ',
-	                _react2.default.createElement('input', _extends({ type: 'checkbox' }, getFieldProps('hide_email', {
+	                'hide/show email:',
+	                _react2.default.createElement('input', _extends({
+	                  type: 'checkbox'
+	                }, getFieldProps('hide_email', {
 	                  // initialValue:true,
 	                  valuePropName: 'checked'
 	                })))

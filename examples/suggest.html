@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>suggest.js - example - rc-form@0.13.1</title>
+  <title>suggest.js - example - rc-form@0.13.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,108 +257,132 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.1</h1>
+    <h1>rc-form@0.13.2</h1>
 
     <p>React High Order Form Component</p>
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
   <script src="suggest.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
+  <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
 
-<span class="hljs-keyword">import</span> {createForm} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> React, {Component, PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> Select, {Option} <span class="hljs-keyword">from</span> <span class="hljs-string">'antd/lib/select'</span>;
+import { createForm } from 'rc-form';
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import Select, { Option } from 'antd/lib/select';
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/index.css'</span>;
-<span class="hljs-keyword">import</span> {regionStyle, errorStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
-<span class="hljs-keyword">const</span> emailTpl = [<span class="hljs-string">'@gmail.com'</span>, <span class="hljs-string">'@outlook.com'</span>, <span class="hljs-string">'@qq.com'</span>];
+import 'antd/lib/index.css';
+import { regionStyle, errorStyle } from './styles';
+const emailTpl = ['@gmail.com', '@outlook.com', '@qq.com'];
 
-<span class="hljs-keyword">const</span> CustomInput = React.createClass({
+const CustomInput = React.createClass({
   propTypes: {
     form: PropTypes.object,
   },
   getInitialState() {
-    <span class="hljs-keyword">return</span> {
+    return {
       data: [],
     };
   },
   onChange(v) {
-    <span class="hljs-keyword">if</span> (v.indexOf(<span class="hljs-string">'@'</span>) === -<span class="hljs-number">1</span>) {
-      <span class="hljs-keyword">this</span>.setState({
-        data: emailTpl.map(m=&gt;v + m),
+    if (v.indexOf('@') === -1) {
+      this.setState({
+        data: emailTpl.map(m =&gt; v + m),
       });
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.data.length) {
-      <span class="hljs-keyword">this</span>.setState({
+    } else if (this.state.data.length) {
+      this.setState({
         data: [],
       });
     }
   },
   render() {
-    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = <span class="hljs-keyword">this</span>.props.form;
-    <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'select'</span>);
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>custom select sync validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">Select</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select"</span> <span class="hljs-attribute">combobox</span>
-                   <span class="hljs-attribute">filterOption</span>=<span class="hljs-value">{false}</span>
-                   <span class="hljs-attribute">style</span>=<span class="hljs-value">{{width:</span> <span class="hljs-attribute">200</span>}}
-        {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">select</span>', {
-          <span class="hljs-attribute">onChange:</span> <span class="hljs-attribute">this.onChange</span>,
-          <span class="hljs-attribute">rules:</span> [
-            {<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>'},
-            {<span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>},
-          ],
-        })}&gt;</span>
-        {this.state.data.map((d)=&gt; {
-          return <span class="hljs-tag">&lt;<span class="hljs-title">Option</span> <span class="hljs-attribute">key</span>=<span class="hljs-value">{d}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{d}</span>&gt;</span>{d}<span class="hljs-tag">&lt;/<span class="hljs-title">Option</span>&gt;</span>;</span>
-        })}
-      &lt;<span class="hljs-regexp">/Select&gt;&lt;/</span>div&gt;
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
-        {(errors) ? errors.join(',') : <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{visibility:</span> '<span class="hljs-attribute">hidden</span>'}}&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>}
-      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
-        {isFieldValidating('select') ? 'validating' : <span class="hljs-tag">&lt;<span class="hljs-title">b</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{visibility:</span> '<span class="hljs-attribute">hidden</span>'}}&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-title">b</span>&gt;</span>}
-      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
+    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
+    const errors = getFieldError('select');
+    return (&lt;div style={ regionStyle }&gt;
+      &lt;p&gt;custom select sync validate&lt;/p&gt;
+      &lt;div&gt;
+        &lt;Select
+          placeholder="please select"
+          combobox
+          filterOption={false}
+          style={{
+            width: 200,
+          }}
+          {...getFieldProps('select', {
+            onChange: this.onChange,
+            rules: [
+              {
+                type: 'email',
+              },
+              {
+                required: true,
+              },
+            ],
+          })}
+        &gt;
+          {this.state.data.map((d) =&gt; {
+            return &lt;Option key={d} value={d}&gt;{d}&lt;/Option&gt;;
+          })}
+        &lt;/Select&gt;
+      &lt;/div&gt;
+      &lt;p style={errorStyle}&gt;
+        {(errors) ? errors.join(',') :
+          &lt;b
+            style={{
+              visibility: 'hidden',
+            }}
+          &gt;
+            1
+          &lt;/b&gt;}
+      &lt;/p&gt;
+      &lt;p style={errorStyle}&gt;
+        {isFieldValidating('select') ? 'validating' : &lt;b
+          style={{
+            visibility: 'hidden',
+          }}
+        &gt;
+          1
+        &lt;/b&gt;}
+      &lt;/p&gt;
+    &lt;/div&gt;);
   },
 });
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
   };
 
   onSubmit = (e) =&gt; {
     e.preventDefault();
-    <span class="hljs-keyword">this</span>.props.form.validateFields((error, values)=&gt; {
-      <span class="hljs-keyword">if</span> (!error) {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
-      } <span class="hljs-keyword">else</span> {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'error'</span>, error, values);
+    this.props.form.validateFields((error, values) =&gt; {
+      if (!error) {
+        console.log('ok', values);
+      } else {
+        console.log('error', error, values);
       }
     });
   };
 
   render() {
-    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>suggest<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">CustomInput</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
+    const { form } = this.props;
+    return (&lt;div style={{ margin: 20 }}&gt;
+      &lt;h2&gt;suggest&lt;/h2&gt;
+      &lt;form onSubmit={this.onSubmit}&gt;
+        &lt;CustomInput form={ form }/&gt;
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">button</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
+        &lt;div style={ regionStyle }&gt;
+          &lt;button&gt;submit&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;);
   }
 }
 
-<span class="hljs-keyword">const</span> NewForm = createForm()(Form);
+const NewForm = createForm()(Form);
 
-ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">NewForm</span> /&gt;</span>, document.getElementById('__react-content'));
-</span></code></pre></div>
+ReactDOM.render(&lt;NewForm /&gt;, document.getElementById('__react-content'));
+</code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">
   <img style="position: absolute; top: 0; right: 0; border: 0;"
