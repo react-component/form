@@ -7,7 +7,6 @@ import Modal from 'antd/lib/modal';
 import 'antd/lib/index.css';
 import {regionStyle, errorStyle} from './styles';
 
-@createDOMForm()
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -73,4 +72,6 @@ class Form extends Component {
   }
 }
 
-ReactDOM.render(<Form />, document.getElementById('__react-content'));
+const NewForm = createDOMForm()(Form);
+
+ReactDOM.render(<NewForm />, document.getElementById('__react-content'));

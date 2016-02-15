@@ -151,13 +151,6 @@ NumberInput.propTypes = {
   form: PropTypes.object,
 };
 
-@createDOMForm({
-  validateMessages: {
-    required(field) {
-      return `${field} 必填`;
-    },
-  },
-})
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -213,4 +206,12 @@ class Form extends Component {
   }
 }
 
-ReactDOM.render(<Form />, document.getElementById('__react-content'));
+const NewForm = createDOMForm({
+  validateMessages: {
+    required(field) {
+      return `${field} 必填`;
+    },
+  },
+})(Form);
+
+ReactDOM.render(<NewForm />, document.getElementById('__react-content'));

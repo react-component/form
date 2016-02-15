@@ -7,7 +7,6 @@ import {regionStyle, errorStyle} from './styles';
 import React, {PropTypes, Component} from 'react';
 import ReactDOM from 'react-dom';
 
-@createDOMForm()
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -89,4 +88,6 @@ class Form extends Component {
   }
 }
 
-ReactDOM.render(<Form />, document.getElementById('__react-content'));
+const NewForm = createDOMForm()(Form);
+
+ReactDOM.render(<NewForm />, document.getElementById('__react-content'));

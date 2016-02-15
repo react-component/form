@@ -95,7 +95,6 @@ Form = createContainer((state) => {
   };
 })(Form);
 
-@createRootContainer()
 class App extends React.Component {
   render() {
     return (<div>
@@ -105,4 +104,6 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('__react-content'));
+const NewApp = createRootContainer()(App);
+
+ReactDOM.render(<NewApp />, document.getElementById('__react-content'));

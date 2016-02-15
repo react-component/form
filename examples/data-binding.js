@@ -6,27 +6,6 @@ import {createRootContainer, createContainer} from 'react-data-binding';
 import ReactDOM from 'react-dom';
 import {regionStyle, errorStyle} from './styles';
 
-@createContainer((state) => {
-  return {
-    formState: state.formState,
-    formInitialState: state.formInitialState,
-  };
-})
-@createForm({
-  mapPropsToFields(props) {
-    console.log('mapPropsToFields', props);
-    return props.formState;
-  },
-  onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
-    props.setStoreState({
-      formState: {
-        ...props.formState,
-        ...fields,
-      },
-    });
-  },
-})
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -95,21 +74,43 @@ Out = createContainer((state) => {
   };
 })(Out);
 
-@createRootContainer({
-  formInitialState: {
-    email: {
-      value: 'initial@gmail.com',
-    },
+const NewForm = createContainer((state) => {
+  return {
+    formState: state.formState,
+    formInitialState: state.formInitialState,
+  };
+})(createForm({
+  mapPropsToFields(props) {
+    console.log('mapPropsToFields', props);
+    return props.formState;
   },
-})
+  onFieldsChange(props, fields) {
+    console.log('onFieldsChange', fields);
+    props.setStoreState({
+      formState: {
+        ...props.formState,
+        ...fields,
+      },
+    });
+  },
+})(Form));
+
 class App extends React.Component {
   render() {
     return (<div>
       <h2>integrate with react-data-binding</h2>
-      <Form />
+      <NewForm />
       <Out />
     </div>);
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('__react-content'));
+const NewApp = createRootContainer({
+  formInitialState: {
+    email: {
+      value: 'initial@gmail.com',
+    },
+  },
+})(App);
+
+ReactDOM.render(<NewApp />, document.getElementById('__react-content'));

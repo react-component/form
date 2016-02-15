@@ -24,28 +24,6 @@ function form(state = {
   }
 }
 
-@connect((state) => {
-  return {
-    formState: {
-      email: state.form.email,
-    },
-  };
-})
-@createForm({
-  mapPropsToFields(props) {
-    console.log('mapPropsToFields', props);
-    return {
-      email: props.formState.email,
-    };
-  },
-  onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
-    props.dispatch({
-      type: 'save_fields',
-      payload: fields,
-    });
-  },
-})
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -104,12 +82,34 @@ Out = connect((state) => {
 
 const store = createStore(combineReducers({form}));
 
+const NewForm = connect((state) => {
+  return {
+    formState: {
+      email: state.form.email,
+    },
+  };
+})(createForm({
+  mapPropsToFields(props) {
+    console.log('mapPropsToFields', props);
+    return {
+      email: props.formState.email,
+    };
+  },
+  onFieldsChange(props, fields) {
+    console.log('onFieldsChange', fields);
+    props.dispatch({
+      type: 'save_fields',
+      payload: fields,
+    });
+  },
+})(Form));
+
 class App extends React.Component {
   render() {
     return (<Provider store={store}>
       <div>
         <h2>integrate with redux</h2>
-        <Form />
+        <NewForm />
         <Out />
       </div>
     </Provider>);

@@ -69,7 +69,6 @@ const User = React.createClass({
   },
 });
 
-@createForm()
 class Form extends Component {
   static propTypes = {
     form: PropTypes.object,
@@ -113,4 +112,6 @@ class Form extends Component {
   }
 }
 
-ReactDOM.render(<Form />, document.getElementById('__react-content'));
+const NewForm = createForm()(Form);
+
+ReactDOM.render(<NewForm />, document.getElementById('__react-content'));
