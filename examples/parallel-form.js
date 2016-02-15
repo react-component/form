@@ -11,20 +11,20 @@ webpackJsonp([9],{
 /***/ 160:
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _src = __webpack_require__(161);
 	
 	var form = _interopRequireWildcard(_src);
 	
-	exports['default'] = form;
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	exports.default = form; // export this package's api
+	
 	module.exports = exports['default'];
 
 /***/ },
@@ -32,18 +32,22 @@ webpackJsonp([9],{
 /***/ 161:
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-	
 	var _createForm = __webpack_require__(162);
 	
-	exports.createForm = _interopRequire(_createForm);
+	Object.defineProperty(exports, 'createForm', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_createForm).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
 
@@ -52,22 +56,20 @@ webpackJsonp([9],{
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var regionStyle = {
+	var regionStyle = exports.regionStyle = {
 	  border: '1px solid red',
 	  marginTop: 10,
 	  padding: 10
 	};
 	
-	exports.regionStyle = regionStyle;
-	var errorStyle = {
+	var errorStyle = exports.errorStyle = {
 	  color: 'red',
 	  marginTop: 10,
 	  padding: 10
 	};
-	exports.errorStyle = errorStyle;
 
 /***/ },
 
@@ -287,21 +289,11 @@ webpackJsonp([9],{
 /***/ 398:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-multi-comp:0, no-console:0 */
 	
 	var _rcForm = __webpack_require__(160);
 	
@@ -315,13 +307,21 @@ webpackJsonp([9],{
 	
 	var _styles = __webpack_require__(248);
 	
-	var _antdLibSwitch = __webpack_require__(265);
+	var _switch = __webpack_require__(265);
 	
-	var _antdLibSwitch2 = _interopRequireDefault(_antdLibSwitch);
+	var _switch2 = _interopRequireDefault(_switch);
 	
 	__webpack_require__(269);
 	
-	var TopForm = _react2['default'].createClass({
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TopForm = _react2.default.createClass({
 	  displayName: 'TopForm',
 	
 	  propTypes: {
@@ -331,18 +331,18 @@ webpackJsonp([9],{
 	  render: function render() {
 	    var getFieldProps = this.props.form.getFieldProps;
 	
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { style: _styles.regionStyle },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
 	        'has email? '
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement(_antdLibSwitch2['default'], getFieldProps('on', {
+	        _react2.default.createElement(_switch2.default, getFieldProps('on', {
 	          initialValue: true,
 	          valuePropName: 'checked'
 	        }))
@@ -351,7 +351,7 @@ webpackJsonp([9],{
 	  }
 	});
 	
-	var BottomForm = _react2['default'].createClass({
+	var BottomForm = _react2.default.createClass({
 	  displayName: 'BottomForm',
 	
 	  propTypes: {
@@ -366,18 +366,18 @@ webpackJsonp([9],{
 	    var style = _extends({}, _styles.regionStyle, {
 	      display: on ? 'block' : 'none'
 	    });
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { style: style },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
 	        'email: '
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement('input', form.getFieldProps('email', {
+	        _react2.default.createElement('input', form.getFieldProps('email', {
 	          rules: [{ type: 'email' }],
 	          hidden: !on
 	        }))
@@ -386,7 +386,7 @@ webpackJsonp([9],{
 	  }
 	});
 	
-	var Form = _react2['default'].createClass({
+	var Form = _react2.default.createClass({
 	  displayName: 'Form',
 	
 	  propTypes: {
@@ -399,15 +399,15 @@ webpackJsonp([9],{
 	  render: function render() {
 	    var form = this.props.form;
 	
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(TopForm, { form: form }),
-	      _react2['default'].createElement(BottomForm, { form: form }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(TopForm, { form: form }),
+	      _react2.default.createElement(BottomForm, { form: form }),
+	      _react2.default.createElement(
 	        'div',
 	        { style: _styles.regionStyle },
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.onSubmit },
 	          'submit'
@@ -419,35 +419,35 @@ webpackJsonp([9],{
 	
 	Form = (0, _rcForm.createForm)()(Form);
 	
-	var App = (function (_React$Component) {
+	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 	
 	  function App() {
 	    _classCallCheck(this, App);
 	
-	    _get(Object.getPrototypeOf(App.prototype), 'constructor', this).apply(this, arguments);
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).apply(this, arguments));
 	  }
 	
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(
+	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'h2',
 	          null,
 	          'parallel form'
 	        ),
-	        _react2['default'].createElement(Form, null)
+	        _react2.default.createElement(Form, null)
 	      );
 	    }
 	  }]);
 	
 	  return App;
-	})(_react2['default'].Component);
+	}(_react2.default.Component);
 	
-	_reactDom2['default'].render(_react2['default'].createElement(App, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('__react-content'));
 
 /***/ }
 

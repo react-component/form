@@ -324,22 +324,20 @@ webpackJsonp([14],[
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var regionStyle = {
+	var regionStyle = exports.regionStyle = {
 	  border: '1px solid red',
 	  marginTop: 10,
 	  padding: 10
 	};
 	
-	exports.regionStyle = regionStyle;
-	var errorStyle = {
+	var errorStyle = exports.errorStyle = {
 	  color: 'red',
 	  marginTop: 10,
 	  padding: 10
 	};
-	exports.errorStyle = errorStyle;
 
 /***/ },
 /* 249 */,
@@ -1299,13 +1297,11 @@ webpackJsonp([14],[
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _createBaseForm = __webpack_require__(163);
 	
@@ -1322,6 +1318,8 @@ webpackJsonp([14],[
 	var _domScrollIntoView = __webpack_require__(274);
 	
 	var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function computedStyle(el, prop) {
 	  var getComputedStyle = window.getComputedStyle;
@@ -1367,7 +1365,6 @@ webpackJsonp([14],[
 	      validateFieldsAndScroll: this.validateFieldsAndScroll
 	    });
 	  },
-	
 	  validateFieldsAndScroll: function validateFieldsAndScroll(ns, opt, cb) {
 	    var _getParams = (0, _utils.getParams)(ns, opt, cb);
 	
@@ -1375,13 +1372,14 @@ webpackJsonp([14],[
 	    var callback = _getParams.callback;
 	    var options = _getParams.options;
 	
+	
 	    function newCb(error, values) {
 	      if (error) {
-	        for (var _name in error) {
-	          if (error.hasOwnProperty(_name) && error[_name].instance) {
-	            var node = _reactDom2['default'].findDOMNode(error[_name].instance);
+	        for (var name in error) {
+	          if (error.hasOwnProperty(name) && error[name].instance) {
+	            var node = _reactDom2.default.findDOMNode(error[name].instance);
 	            var c = options.container || getScrollableContainer(node);
-	            (0, _domScrollIntoView2['default'])(node, c, {
+	            (0, _domScrollIntoView2.default)(node, c, {
 	              onlyScrollIfNeeded: true
 	            });
 	            break;
@@ -1398,12 +1396,12 @@ webpackJsonp([14],[
 	};
 	
 	function createDOMForm(option) {
-	  return (0, _createBaseForm2['default'])(_extends({}, option, {
+	  return (0, _createBaseForm2.default)(_extends({}, option, {
 	    refComponent: true
 	  }), [mixin]);
 	}
 	
-	exports['default'] = createDOMForm;
+	exports.default = createDOMForm;
 	module.exports = exports['default'];
 
 /***/ },
@@ -13516,29 +13514,19 @@ webpackJsonp([14],[
 /* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint no-console:0 */
-	
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	var _datePicker = __webpack_require__(350);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _antdLibDatePicker = __webpack_require__(350);
-	
-	var _antdLibDatePicker2 = _interopRequireDefault(_antdLibDatePicker);
+	var _datePicker2 = _interopRequireDefault(_datePicker);
 	
 	__webpack_require__(269);
 	
-	var _rcFormSrcCreateDOMForm = __webpack_require__(273);
+	var _createDOMForm = __webpack_require__(273);
 	
-	var _rcFormSrcCreateDOMForm2 = _interopRequireDefault(_rcFormSrcCreateDOMForm);
+	var _createDOMForm2 = _interopRequireDefault(_createDOMForm);
 	
 	var _styles = __webpack_require__(248);
 	
@@ -13550,17 +13538,29 @@ webpackJsonp([14],[
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var Form = (function (_Component) {
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint no-console:0 */
+	
+	var Form = function (_Component) {
 	  _inherits(Form, _Component);
 	
 	  function Form() {
-	    var _this = this;
+	    var _Object$getPrototypeO;
 	
-	    _classCallCheck(this, _Form);
+	    var _temp, _this, _ret;
 	
-	    _get(Object.getPrototypeOf(_Form.prototype), 'constructor', this).apply(this, arguments);
+	    _classCallCheck(this, Form);
 	
-	    this.onSubmit = function (e) {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Form)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onSubmit = function (e) {
 	      console.log('submit');
 	      e.preventDefault();
 	      _this.props.form.validateFieldsAndScroll(function (error, values) {
@@ -13570,23 +13570,17 @@ webpackJsonp([14],[
 	          console.log('error', error, values);
 	        }
 	      });
-	    };
-	
-	    this.reset = function (e) {
+	    }, _this.reset = function (e) {
 	      e.preventDefault();
 	      _this.props.form.resetFields();
-	    };
-	
-	    this.checkStart = function (rule, value, callback) {
+	    }, _this.checkStart = function (rule, value, callback) {
 	      var validateFields = _this.props.form.validateFields;
 	
 	      validateFields(['end'], {
 	        force: true
 	      });
 	      callback();
-	    };
-	
-	    this.checkEnd = function (rule, value, callback) {
+	    }, _this.checkEnd = function (rule, value, callback) {
 	      var end = value;
 	      var getFieldValue = _this.props.form.getFieldValue;
 	
@@ -13598,7 +13592,7 @@ webpackJsonp([14],[
 	      } else {
 	        callback();
 	      }
-	    };
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 	
 	  _createClass(Form, [{
@@ -13608,82 +13602,81 @@ webpackJsonp([14],[
 	      var getFieldProps = form.getFieldProps;
 	      var getFieldError = form.getFieldError;
 	
-	      return _react2['default'].createElement(
+	      return _react2.default.createElement(
 	        'div',
 	        { style: { margin: 20 } },
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'h2',
 	          null,
 	          'startTime and endTime validation'
 	        ),
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.onSubmit },
-	          _react2['default'].createElement(
+	          _react2.default.createElement(
 	            'div',
 	            { style: _styles.regionStyle },
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'p',
 	              null,
 	              'start: '
 	            ),
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'p',
 	              null,
-	              _react2['default'].createElement(_antdLibDatePicker2['default'], getFieldProps('start', {
+	              _react2.default.createElement(_datePicker2.default, getFieldProps('start', {
 	                rules: [this.checkStart]
 	              }))
 	            )
 	          ),
-	          _react2['default'].createElement(
+	          _react2.default.createElement(
 	            'div',
 	            { style: _styles.regionStyle },
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'p',
 	              null,
 	              'end: '
 	            ),
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'p',
 	              null,
-	              _react2['default'].createElement(_antdLibDatePicker2['default'], getFieldProps('end', {
+	              _react2.default.createElement(_datePicker2.default, getFieldProps('end', {
 	                rules: [this.checkEnd]
 	              }))
 	            )
 	          ),
-	          _react2['default'].createElement(
+	          _react2.default.createElement(
 	            'p',
 	            { style: _styles.errorStyle },
 	            getFieldError('end') ? getFieldError('end').join(',') : ''
 	          ),
-	          _react2['default'].createElement(
+	          _react2.default.createElement(
 	            'div',
 	            { style: _styles.regionStyle },
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'button',
 	              { onClick: this.reset },
 	              'reset'
 	            ),
 	            ' ',
-	            _react2['default'].createElement('input', { type: 'submit', value: 'submit' })
+	            _react2.default.createElement('input', { type: 'submit', value: 'submit' })
 	          )
 	        )
 	      );
 	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      form: _react.PropTypes.object
-	    },
-	    enumerable: true
 	  }]);
 	
-	  var _Form = Form;
-	  Form = (0, _rcFormSrcCreateDOMForm2['default'])()(Form) || Form;
 	  return Form;
-	})(_react.Component);
+	}(_react.Component);
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Form, null), document.getElementById('__react-content'));
+	Form.propTypes = {
+	  form: _react.PropTypes.object
+	};
+	
+	
+	var NewForm = (0, _createDOMForm2.default)()(Form);
+	
+	_reactDom2.default.render(_react2.default.createElement(NewForm, null), document.getElementById('__react-content'));
 
 /***/ }
 ]);

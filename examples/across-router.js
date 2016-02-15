@@ -9,13 +9,9 @@ webpackJsonp([0],[
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
 	'use strict';
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-multi-comp:0, no-console:0 */
 	
 	var _react = __webpack_require__(2);
 	
@@ -31,7 +27,9 @@ webpackJsonp([0],[
 	
 	var _styles = __webpack_require__(248);
 	
-	var ChildForm = _react2['default'].createClass({
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var ChildForm = _react2.default.createClass({
 	  displayName: 'ChildForm',
 	
 	  propTypes: {
@@ -48,26 +46,26 @@ webpackJsonp([0],[
 	  render: function render() {
 	    var getFieldProps = this.props.form.getFieldProps;
 	
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { style: { position: 'absolute', left: 0, top: 0, height: '100%', width: '100%', background: 'white' } },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'child form'
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { style: _styles.regionStyle },
 	        'name:',
-	        _react2['default'].createElement('input', getFieldProps('name', {
+	        _react2.default.createElement('input', getFieldProps('name', {
 	          initialValue: this.props.initialValue.name
 	        }))
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { style: _styles.regionStyle },
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.onClick },
 	          'submit'
@@ -79,7 +77,7 @@ webpackJsonp([0],[
 	
 	ChildForm = (0, _rcForm.createForm)()(ChildForm);
 	
-	var Picker = _react2['default'].createClass({
+	var Picker = _react2.default.createClass({
 	  displayName: 'Picker',
 	
 	  propTypes: {
@@ -95,20 +93,20 @@ webpackJsonp([0],[
 	    var value = _props.value;
 	    var childForm = _props.childForm;
 	
-	    var valueEl = value ? _react2['default'].createElement(
+	    var valueEl = value ? _react2.default.createElement(
 	      'div',
 	      { onClick: this.onClick },
 	      value.name
-	    ) : _react2['default'].createElement(
+	    ) : _react2.default.createElement(
 	      'div',
 	      { onClick: this.onClick },
 	      'please select'
 	    );
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
 	      valueEl,
-	      childForm ? _react2['default'].cloneElement(childForm, {
+	      childForm ? _react2.default.cloneElement(childForm, {
 	        onDestroy: this.props.onChange,
 	        initialValue: value || {}
 	      }) : null
@@ -116,7 +114,7 @@ webpackJsonp([0],[
 	  }
 	});
 	
-	var ParentForm = _react2['default'].createClass({
+	var ParentForm = _react2.default.createClass({
 	  displayName: 'ParentForm',
 	
 	  propTypes: {
@@ -130,29 +128,29 @@ webpackJsonp([0],[
 	  render: function render() {
 	    var getFieldProps = this.props.form.getFieldProps;
 	
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'h2',
 	        null,
 	        'parent form'
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { style: _styles.regionStyle },
 	        'family: ',
-	        _react2['default'].createElement('input', getFieldProps('family'))
+	        _react2.default.createElement('input', getFieldProps('family'))
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { style: _styles.regionStyle },
-	        _react2['default'].createElement(Picker, _extends({ childForm: this.props.children }, getFieldProps('picker')))
+	        _react2.default.createElement(Picker, _extends({ childForm: this.props.children }, getFieldProps('picker')))
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { style: _styles.regionStyle },
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.onClick },
 	          'submit'
@@ -164,16 +162,16 @@ webpackJsonp([0],[
 	
 	ParentForm = (0, _rcForm.createForm)()(ParentForm);
 	
-	_reactDom2['default'].render(_react2['default'].createElement(
+	_reactDom2.default.render(_react2.default.createElement(
 	  'div',
 	  { style: { height: 300, position: 'relative' } },
-	  _react2['default'].createElement(
+	  _react2.default.createElement(
 	    _reactRouter.Router,
 	    null,
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      _reactRouter.Route,
 	      { path: '/', component: ParentForm },
-	      _react2['default'].createElement(_reactRouter.Route, { path: '/open', component: ChildForm })
+	      _react2.default.createElement(_reactRouter.Route, { path: '/open', component: ChildForm })
 	    )
 	  )
 	), document.getElementById('__react-content'));
@@ -340,38 +338,42 @@ webpackJsonp([0],[
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _src = __webpack_require__(161);
 	
 	var form = _interopRequireWildcard(_src);
 	
-	exports['default'] = form;
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	exports.default = form; // export this package's api
+	
 	module.exports = exports['default'];
 
 /***/ },
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-	
 	var _createForm = __webpack_require__(162);
 	
-	exports.createForm = _interopRequire(_createForm);
+	Object.defineProperty(exports, 'createForm', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_createForm).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
 /* 162 */,
@@ -4751,22 +4753,20 @@ webpackJsonp([0],[
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var regionStyle = {
+	var regionStyle = exports.regionStyle = {
 	  border: '1px solid red',
 	  marginTop: 10,
 	  padding: 10
 	};
 	
-	exports.regionStyle = regionStyle;
-	var errorStyle = {
+	var errorStyle = exports.errorStyle = {
 	  color: 'red',
 	  marginTop: 10,
 	  padding: 10
 	};
-	exports.errorStyle = errorStyle;
 
 /***/ }
 ]);

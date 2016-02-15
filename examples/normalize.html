@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>normalize.js - example - rc-form@0.13.0</title>
+  <title>normalize.js - example - rc-form@0.13.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.0</h1>
+    <h1>rc-form@0.13.1</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -266,11 +266,11 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="normalize.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-import {createForm} from <span class="hljs-string">'rc-form'</span>;
-import React, {Component, PropTypes} from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import <span class="hljs-string">'antd/lib/index.css'</span>;
-import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> {createForm} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
+<span class="hljs-keyword">import</span> React, {Component, PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/index.css'</span>;
+<span class="hljs-keyword">import</span> {regionStyle, errorStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
 <span class="hljs-keyword">const</span> CustomInput = React.createClass({
   propTypes: {
@@ -308,39 +308,39 @@ import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
         {(errors) ? errors.join(',') : null}
       <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
-const MaxMin = React.createClass({
+<span class="hljs-keyword">const</span> MaxMin = React.createClass({
   propTypes: {
     form: PropTypes.object,
   },
   normalizeMin(value, prevValue, allValues) {
-    console.log('normalizeMin', allValues.min, allValues.max);
-    const previousAllValues = this.props.form.getFieldsValue();
-    if (allValues.max !== previousAllValues.max) {
-      // max changed
-      if (value === '' || Number(allValues.max) <span class="hljs-tag">&lt; <span class="hljs-attribute">Number</span>(<span class="hljs-attribute">value</span>)) {
-        <span class="hljs-attribute">return</span> <span class="hljs-attribute">allValues.max</span>;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'normalizeMin'</span>, allValues.min, allValues.max);
+    <span class="hljs-keyword">const</span> previousAllValues = <span class="hljs-keyword">this</span>.props.form.getFieldsValue();
+    <span class="hljs-keyword">if</span> (allValues.max !== previousAllValues.max) {
+      <span class="hljs-comment">// max changed</span>
+      <span class="hljs-keyword">if</span> (value === <span class="hljs-string">''</span> || <span class="hljs-built_in">Number</span>(allValues.max) &lt; <span class="hljs-built_in">Number</span>(value)) {
+        <span class="hljs-keyword">return</span> allValues.max;
       }
     }
-    <span class="hljs-attribute">return</span> <span class="hljs-attribute">value</span>;
+    <span class="hljs-keyword">return</span> value;
   },
-  <span class="hljs-attribute">normalizeMax</span>(<span class="hljs-attribute">value</span>, <span class="hljs-attribute">prevValue</span>, <span class="hljs-attribute">allValues</span>) {
-    <span class="hljs-attribute">console.log</span>('<span class="hljs-attribute">normalizeMax</span>', <span class="hljs-attribute">allValues.min</span>, <span class="hljs-attribute">allValues.max</span>);
-    <span class="hljs-attribute">const</span> <span class="hljs-attribute">previousAllValues</span> = <span class="hljs-attribute">this.props.form.getFieldsValue</span>();
-    <span class="hljs-attribute">if</span> (<span class="hljs-attribute">allValues.min</span> !=<span class="hljs-value">=</span> <span class="hljs-attribute">previousAllValues.min</span>) {
-      // <span class="hljs-attribute">min</span> <span class="hljs-attribute">changed</span>
-      <span class="hljs-attribute">if</span> (<span class="hljs-attribute">value</span> =<span class="hljs-value">==</span> '' || <span class="hljs-attribute">Number</span>(<span class="hljs-attribute">allValues.min</span>) &gt;</span> Number(value)) {
-        return allValues.min;
+  normalizeMax(value, prevValue, allValues) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'normalizeMax'</span>, allValues.min, allValues.max);
+    <span class="hljs-keyword">const</span> previousAllValues = <span class="hljs-keyword">this</span>.props.form.getFieldsValue();
+    <span class="hljs-keyword">if</span> (allValues.min !== previousAllValues.min) {
+      <span class="hljs-comment">// min changed</span>
+      <span class="hljs-keyword">if</span> (value === <span class="hljs-string">''</span> || <span class="hljs-built_in">Number</span>(allValues.min) &gt; <span class="hljs-built_in">Number</span>(value)) {
+        <span class="hljs-keyword">return</span> allValues.min;
       }
     }
-    return value;
+    <span class="hljs-keyword">return</span> value;
   },
   render() {
-    const {getFieldProps} = this.props.form;
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+    <span class="hljs-keyword">const</span> {getFieldProps} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>min: <span class="hljs-tag">&lt;<span class="hljs-title">select</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">min</span>', {
         <span class="hljs-attribute">normalize:</span> <span class="hljs-attribute">this.normalizeMin</span>,
         <span class="hljs-attribute">initialValue:</span> '',
@@ -365,30 +365,29 @@ const MaxMin = React.createClass({
         <span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"5"</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">select</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
-@createForm()
-class Form extends Component {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   static propTypes = {
     form: PropTypes.object,
   }
 
   onSubmit = (e)=&gt; {
     e.preventDefault();
-    this.props.form.validateFields((error, values)=&gt; {
-      if (!error) {
-        console.log('ok', values);
-      } else {
-        console.log('error', error, values);
+    <span class="hljs-keyword">this</span>.props.form.validateFields((error, values)=&gt; {
+      <span class="hljs-keyword">if</span> (!error) {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'error'</span>, error, values);
       }
     });
   }
 
   render() {
-    const {form} = this.props;
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
+    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>normalize<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">CustomInput</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
@@ -399,11 +398,13 @@ class Form extends Component {
           <span class="hljs-tag">&lt;<span class="hljs-title">button</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   }
 }
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>, document.getElementById('__react-content'));
+<span class="hljs-keyword">const</span> NewForm = createForm()(Form);
+
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">NewForm</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">

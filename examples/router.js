@@ -11,20 +11,20 @@ webpackJsonp([11],{
 /***/ 160:
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _src = __webpack_require__(161);
 	
 	var form = _interopRequireWildcard(_src);
 	
-	exports['default'] = form;
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	exports.default = form; // export this package's api
+	
 	module.exports = exports['default'];
 
 /***/ },
@@ -32,18 +32,22 @@ webpackJsonp([11],{
 /***/ 161:
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-	
 	var _createForm = __webpack_require__(162);
 	
-	exports.createForm = _interopRequire(_createForm);
+	Object.defineProperty(exports, 'createForm', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_createForm).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
 
@@ -5917,13 +5921,9 @@ webpackJsonp([11],{
 /***/ 419:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
 	'use strict';
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-multi-comp:0, no-console:0 */
 	
 	var _react = __webpack_require__(2);
 	
@@ -5939,11 +5939,13 @@ webpackJsonp([11],{
 	
 	var _history = __webpack_require__(420);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var history = (0, _history.createHashHistory)();
 	
 	var style = '\n.region p {\n  border: 1px solid red;\n  padding: 5px;\n  margin: 10px;\n}\n.error {\n  color: red;\n}\n';
 	
-	var App = _react2['default'].createClass({
+	var App = _react2.default.createClass({
 	  displayName: 'App',
 	
 	  propTypes: {
@@ -5957,21 +5959,21 @@ webpackJsonp([11],{
 	  render: function render() {
 	    var location = this.props.location;
 	
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2['default'].createElement('style', { dangerouslySetInnerHTML: { __html: style } }),
-	      _react2['default'].createElement(
+	      _react2.default.createElement('style', { dangerouslySetInnerHTML: { __html: style } }),
+	      _react2.default.createElement(
 	        'p',
 	        null,
 	        'header ',
-	        location.pathname === '/' ? null : _react2['default'].createElement(
+	        location.pathname === '/' ? null : _react2.default.createElement(
 	          'a',
 	          { href: '#', onClick: this.onClick },
 	          'back'
 	        )
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        null,
 	        this.props.children
@@ -5982,7 +5984,7 @@ webpackJsonp([11],{
 	
 	App = (0, _reactDataBinding.createRootContainer)()(App);
 	
-	var CitySelector = _react2['default'].createClass({
+	var CitySelector = _react2.default.createClass({
 	  displayName: 'CitySelector',
 	
 	  propTypes: {
@@ -6005,15 +6007,15 @@ webpackJsonp([11],{
 	    history.pushState('/');
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { className: 'region' },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        { onClick: this.onClick.bind(this, 'sh') },
 	        'shanghai'
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        { onClick: this.onClick.bind(this, 'hz') },
 	        'hangzhou'
@@ -6024,7 +6026,7 @@ webpackJsonp([11],{
 	
 	CitySelector = (0, _reactDataBinding.createContainer)()(CitySelector);
 	
-	var CityInput = _react2['default'].createClass({
+	var CityInput = _react2.default.createClass({
 	  displayName: 'CityInput',
 	
 	  propTypes: {
@@ -6035,7 +6037,7 @@ webpackJsonp([11],{
 	    history.pushState({}, '/city-selector');
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'a',
 	      { href: '#', onClick: this.onClick },
 	      this.props.value || 'please select'
@@ -6043,7 +6045,7 @@ webpackJsonp([11],{
 	  }
 	});
 	
-	var Form = _react2['default'].createClass({
+	var Form = _react2.default.createClass({
 	  displayName: 'Form',
 	
 	  propTypes: {
@@ -6061,49 +6063,49 @@ webpackJsonp([11],{
 	    var getFieldProps = _props$form.getFieldProps;
 	    var getFieldError = _props$form.getFieldError;
 	
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { className: 'region' },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'p',
 	          null,
 	          'user: ',
-	          _react2['default'].createElement('input', getFieldProps('user', {
+	          _react2.default.createElement('input', getFieldProps('user', {
 	            rules: [{ required: true }]
 	          }))
 	        ),
-	        getFieldError('user') ? _react2['default'].createElement(
+	        getFieldError('user') ? _react2.default.createElement(
 	          'p',
 	          { className: 'error' },
 	          getFieldError('user').join(',')
 	        ) : null
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'p',
 	          null,
 	          'city: ',
-	          _react2['default'].createElement(CityInput, getFieldProps('city', {
+	          _react2.default.createElement(CityInput, getFieldProps('city', {
 	            rules: [{ required: true }],
 	            validatorTrigger: false,
 	            trigger: false
 	          }))
 	        ),
-	        getFieldError('city') ? _react2['default'].createElement(
+	        getFieldError('city') ? _react2.default.createElement(
 	          'p',
 	          { className: 'error' },
 	          getFieldError('city').join(',')
 	        ) : null
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.onSubmit },
 	          'submit'
@@ -6142,15 +6144,15 @@ webpackJsonp([11],{
 	  }]
 	};
 	
-	(0, _reactDom.render)(_react2['default'].createElement(
+	(0, _reactDom.render)(_react2.default.createElement(
 	  'div',
 	  { style: { margin: 20 } },
-	  _react2['default'].createElement(
+	  _react2.default.createElement(
 	    'h1',
 	    null,
 	    'integrate with react-router'
 	  ),
-	  _react2['default'].createElement(
+	  _react2.default.createElement(
 	    _reactRouter.Router,
 	    { history: history },
 	    routes

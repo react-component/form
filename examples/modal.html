@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>modal.js - example - rc-form@0.13.0</title>
+  <title>modal.js - example - rc-form@0.13.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.0</h1>
+    <h1>rc-form@0.13.1</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -266,21 +266,20 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="modal.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-import createDOMForm from <span class="hljs-string">'rc-form/lib/createDOMForm'</span>;
-import React, {Component, PropTypes} from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import Modal from <span class="hljs-string">'antd/lib/modal'</span>;
-import <span class="hljs-string">'antd/lib/index.css'</span>;
-import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> createDOMForm <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form/lib/createDOMForm'</span>;
+<span class="hljs-keyword">import</span> React, {Component, PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> Modal <span class="hljs-keyword">from</span> <span class="hljs-string">'antd/lib/modal'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/index.css'</span>;
+<span class="hljs-keyword">import</span> {regionStyle, errorStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
-@createDOMForm()
-<span class="hljs-keyword">class</span> Form extends Component {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   static propTypes = {
     form: PropTypes.object,
   };
 
   constructor() {
-    super();
+    <span class="hljs-keyword">super</span>();
     <span class="hljs-keyword">this</span>.state = {
       visible: <span class="hljs-literal">false</span>,
     };
@@ -335,11 +334,13 @@ import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span
       <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.open}</span>&gt;</span>open<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   }
 }
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>, document.getElementById('__react-content'));
+<span class="hljs-keyword">const</span> NewForm = createDOMForm()(Form);
+
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">NewForm</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">

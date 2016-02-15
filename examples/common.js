@@ -19702,17 +19702,18 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	exports.mixin = undefined;
 	
 	var _createBaseForm = __webpack_require__(163);
 	
 	var _createBaseForm2 = _interopRequireDefault(_createBaseForm);
 	
-	var mixin = {
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mixin = exports.mixin = {
 	  getForm: function getForm() {
 	    return {
 	      getFieldsValue: this.getFieldsValue,
@@ -19732,12 +19733,11 @@
 	  }
 	};
 	
-	exports.mixin = mixin;
 	function createForm(options) {
-	  return (0, _createBaseForm2['default'])(options, [mixin]);
+	  return (0, _createBaseForm2.default)(options, [mixin]);
 	}
 	
-	exports['default'] = createForm;
+	exports.default = createForm;
 
 /***/ },
 /* 163 */
@@ -19745,15 +19745,11 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	var _react = __webpack_require__(2);
 	
@@ -19764,6 +19760,10 @@
 	var _asyncValidator = __webpack_require__(166);
 	
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	var defaultValidateTrigger = 'onChange';
 	var defaultTrigger = defaultValidateTrigger;
@@ -19783,8 +19783,9 @@
 	  var formPropName = _option$formPropName === undefined ? 'form' : _option$formPropName;
 	  var withRef = option.withRef;
 	
+	
 	  function decorate(WrappedComponent) {
-	    var Form = _react2['default'].createClass({
+	    var Form = _react2.default.createClass({
 	      displayName: 'Form',
 	
 	      mixins: mixins,
@@ -19801,11 +19802,9 @@
 	          submitting: false
 	        };
 	      },
-	
 	      componentDidMount: function componentDidMount() {
 	        this.componentDidUpdate();
 	      },
-	
 	      componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        if (mapPropsToFields) {
 	          var fields = mapPropsToFields(nextProps);
@@ -19814,7 +19813,6 @@
 	          }
 	        }
 	      },
-	
 	      componentDidUpdate: function componentDidUpdate() {
 	        var fields = this.fields;
 	        var fieldsMeta = this.fieldsMeta;
@@ -19833,7 +19831,6 @@
 	        });
 	        // do not notify store
 	      },
-	
 	      onChange: function onChange(name, action, event) {
 	        var fieldMeta = this.getFieldMeta(name);
 	        var validate = fieldMeta.validate;
@@ -19848,7 +19845,6 @@
 	          dirty: (0, _utils.hasRules)(validate)
 	        })));
 	      },
-	
 	      onChangeValidate: function onChangeValidate(name, action, event) {
 	        var fieldMeta = this.getFieldMeta(name);
 	        if (fieldMeta[action]) {
@@ -19865,7 +19861,6 @@
 	          }
 	        });
 	      },
-	
 	      getCacheBind: function getCacheBind(name, action, fn) {
 	        var cache = this.cachedBind[name] = this.cachedBind[name] || {};
 	        if (!cache[action]) {
@@ -19873,11 +19868,9 @@
 	        }
 	        return cache[action];
 	      },
-	
 	      getFieldMeta: function getFieldMeta(name) {
 	        return this.fieldsMeta[name];
 	      },
-	
 	      getField: function getField(name, copy) {
 	        var ret = this.fields[name];
 	        if (ret) {
@@ -19891,7 +19884,6 @@
 	        }
 	        return ret;
 	      },
-	
 	      getFieldProps: function getFieldProps(name) {
 	        var _this = this;
 	
@@ -19899,12 +19891,13 @@
 	        var rules = fieldOption.rules;
 	        var _fieldOption$trigger = fieldOption.trigger;
 	        var trigger = _fieldOption$trigger === undefined ? defaultTrigger : _fieldOption$trigger;
-	        var _fieldOption$valuePropName = fieldOption.valuePropName;
-	        var valuePropName = _fieldOption$valuePropName === undefined ? 'value' : _fieldOption$valuePropName;
-	        var _fieldOption$validateTrigger = fieldOption.validateTrigger;
-	        var validateTrigger = _fieldOption$validateTrigger === undefined ? defaultValidateTrigger : _fieldOption$validateTrigger;
-	        var _fieldOption$validate = fieldOption.validate;
-	        var validate = _fieldOption$validate === undefined ? [] : _fieldOption$validate;
+	        var _fieldOption$valuePro = fieldOption.valuePropName;
+	        var valuePropName = _fieldOption$valuePro === undefined ? 'value' : _fieldOption$valuePro;
+	        var _fieldOption$validate = fieldOption.validateTrigger;
+	        var validateTrigger = _fieldOption$validate === undefined ? defaultValidateTrigger : _fieldOption$validate;
+	        var _fieldOption$validate2 = fieldOption.validate;
+	        var validate = _fieldOption$validate2 === undefined ? [] : _fieldOption$validate2;
+	
 	
 	        var fieldMeta = this.fieldsMeta[name] || {};
 	
@@ -19970,23 +19963,19 @@
 	
 	        return inputProps;
 	      },
-	
 	      getFieldMember: function getFieldMember(name, member) {
 	        var field = this.getField(name);
 	        return field && field[member];
 	      },
-	
 	      getFieldError: function getFieldError(name) {
 	        return (0, _utils.getErrorStrs)(this.getFieldMember(name, 'errors'));
 	      },
-	
 	      getValidFieldsName: function getValidFieldsName() {
 	        var fieldsMeta = this.fieldsMeta;
 	        return fieldsMeta ? Object.keys(fieldsMeta).filter(function (name) {
 	          return !fieldsMeta[name].hidden;
 	        }) : [];
 	      },
-	
 	      getFieldsValue: function getFieldsValue(names) {
 	        var _this2 = this;
 	
@@ -19997,13 +19986,11 @@
 	        });
 	        return allValues;
 	      },
-	
 	      getFieldValue: function getFieldValue(name) {
 	        var fields = this.fields;
 	
 	        return this.getValueFromFields(name, fields);
 	      },
-	
 	      getValueFromFields: function getValueFromFields(name, fields) {
 	        var fieldsMeta = this.fieldsMeta;
 	
@@ -20014,7 +20001,6 @@
 	        var fieldMeta = fieldsMeta[name];
 	        return fieldMeta && fieldMeta.initialValue;
 	      },
-	
 	      getRules: function getRules(fieldMeta, action) {
 	        var actionRules = fieldMeta.validate.filter(function (item) {
 	          return !action || item.trigger.indexOf(action) >= 0;
@@ -20059,32 +20045,29 @@
 	        }
 	        this.forceUpdate();
 	      },
-	
 	      setFieldsValue: function setFieldsValue(fieldsValue) {
 	        var fields = {};
-	        for (var _name in fieldsValue) {
-	          if (fieldsValue.hasOwnProperty(_name)) {
-	            fields[_name] = {
-	              name: _name,
-	              value: fieldsValue[_name]
+	        for (var name in fieldsValue) {
+	          if (fieldsValue.hasOwnProperty(name)) {
+	            fields[name] = {
+	              name: name,
+	              value: fieldsValue[name]
 	            };
 	          }
 	        }
 	        this.setFields(fields);
 	      },
-	
 	      setFieldsInitialValue: function setFieldsInitialValue(initialValues) {
 	        var fieldsMeta = this.fieldsMeta;
-	        for (var _name2 in initialValues) {
-	          if (initialValues.hasOwnProperty(_name2)) {
-	            var fieldMeta = fieldsMeta[_name2];
-	            fieldsMeta[_name2] = _extends({}, fieldMeta, {
-	              initialValue: initialValues[_name2]
+	        for (var name in initialValues) {
+	          if (initialValues.hasOwnProperty(name)) {
+	            var fieldMeta = fieldsMeta[name];
+	            fieldsMeta[name] = _extends({}, fieldMeta, {
+	              initialValue: initialValues[name]
 	            });
 	          }
 	        }
 	      },
-	
 	      saveRef: function saveRef(name, _, component) {
 	        var fieldMeta = this.getFieldMeta(name);
 	        if (fieldMeta && fieldMeta.ref) {
@@ -20096,7 +20079,6 @@
 	        this.fields[name] = this.fields[name] || {};
 	        this.fields[name].instance = component;
 	      },
-	
 	      validateFieldsInternal: function validateFieldsInternal(fields, _ref, callback) {
 	        var _this4 = this;
 	
@@ -20138,7 +20120,7 @@
 	          callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
 	          return;
 	        }
-	        var validator = new _asyncValidator2['default'](allRules);
+	        var validator = new _asyncValidator2.default(allRules);
 	        if (validateMessages) {
 	          validator.messages(validateMessages);
 	        }
@@ -20190,7 +20172,6 @@
 	          }
 	        });
 	      },
-	
 	      validateFields: function validateFields(ns, opt, cb) {
 	        var _this5 = this;
 	
@@ -20226,20 +20207,16 @@
 	        }
 	        this.validateFieldsInternal(fields, { fieldNames: fieldNames, options: options }, callback);
 	      },
-	
 	      isFieldValidating: function isFieldValidating(name) {
 	        return this.getFieldMember(name, 'validating');
 	      },
-	
 	      isFieldsValidating: function isFieldsValidating(ns) {
 	        var names = ns || this.getValidFieldsName();
 	        return names.some(this.isFieldValidating);
 	      },
-	
 	      isSubmitting: function isSubmitting() {
 	        return this.state.submitting;
 	      },
-	
 	      submit: function submit(callback) {
 	        var _this6 = this;
 	
@@ -20253,7 +20230,6 @@
 	        });
 	        callback(fn);
 	      },
-	
 	      resetFields: function resetFields(ns) {
 	        var newFields = {};
 	        var fields = this.fields;
@@ -20271,20 +20247,19 @@
 	          this.setFields(newFields);
 	        }
 	      },
-	
 	      render: function render() {
 	        var formProps = _defineProperty({}, formPropName, this.getForm());
 	        var fieldsMeta = this.fieldsMeta;
-	        for (var _name3 in fieldsMeta) {
-	          if (fieldsMeta.hasOwnProperty(_name3)) {
-	            fieldsMeta[_name3].stale = 1;
+	        for (var name in fieldsMeta) {
+	          if (fieldsMeta.hasOwnProperty(name)) {
+	            fieldsMeta[name].stale = 1;
 	          }
 	        }
 	        if (withRef) {
 	          formProps.ref = 'wrappedComponent';
 	        }
 	        var props = mapProps.call(this, _extends({}, formProps, this.props));
-	        return _react2['default'].createElement(WrappedComponent, props);
+	        return _react2.default.createElement(WrappedComponent, props);
 	      }
 	    });
 	
@@ -20294,7 +20269,7 @@
 	  return decorate;
 	}
 	
-	exports['default'] = createBaseForm;
+	exports.default = createBaseForm;
 	module.exports = exports['default'];
 
 /***/ },
@@ -20303,7 +20278,7 @@
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.argumentContainer = argumentContainer;
@@ -20315,11 +20290,11 @@
 	exports.hasRules = hasRules;
 	exports.getParams = getParams;
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
 	var _hoistNonReactStatics = __webpack_require__(165);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function getDisplayName(WrappedComponent) {
 	  return WrappedComponent.displayName || WrappedComponent.name || 'WrappedComponent';
@@ -20328,7 +20303,7 @@
 	function argumentContainer(Container, WrappedComponent) {
 	  Container.displayName = 'Form(' + getDisplayName(WrappedComponent) + ')';
 	  Container.WrappedComponent = WrappedComponent;
-	  return (0, _hoistNonReactStatics2['default'])(Container, WrappedComponent);
+	  return (0, _hoistNonReactStatics2.default)(Container, WrappedComponent);
 	}
 	
 	function getValueFromEvent(e) {

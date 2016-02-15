@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>validateFirst.js - example - rc-form@0.13.0</title>
+  <title>validateFirst.js - example - rc-form@0.13.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.0</h1>
+    <h1>rc-form@0.13.1</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -266,13 +266,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="validateFirst.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-import {createForm} from <span class="hljs-string">'rc-form'</span>;
-import React, {Component, PropTypes} from <span class="hljs-string">'react'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import <span class="hljs-string">'antd/lib/index.css'</span>;
-import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> {createForm} <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
+<span class="hljs-keyword">import</span> React, {Component, PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/index.css'</span>;
+<span class="hljs-keyword">import</span> {regionStyle, errorStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Email</span><span class="hljs-params">(props)</span> </span>{
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Email</span>(<span class="hljs-params">props</span>) </span>{
   <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = props.form;
   <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'email'</span>);
   <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
@@ -290,34 +290,34 @@ import {regionStyle, errorStyle} from <span class="hljs-string">'./styles'</span
     <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
       {isFieldValidating('email') ? 'validating' : null}
     <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+  <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
 }
 
 Email.propTypes = {
   form: PropTypes.object,
 };
 
-const User = React.createClass({
+<span class="hljs-keyword">const</span> User = React.createClass({
   propTypes: {
     form: PropTypes.object,
   },
 
   userExists(rule, value, callback) {
     setTimeout(() =&gt; {
-      if (value === '1') {
-        callback([new Error('are you kidding?')]);
-      } else if (value === 'yiminghe') {
-        callback([new Error('forbid yiminghe')]);
-      } else {
+      <span class="hljs-keyword">if</span> (value === <span class="hljs-string">'1'</span>) {
+        callback([<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'are you kidding?'</span>)]);
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (value === <span class="hljs-string">'yiminghe'</span>) {
+        callback([<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'forbid yiminghe'</span>)]);
+      } <span class="hljs-keyword">else</span> {
         callback();
       }
-    }, 300);
+    }, <span class="hljs-number">300</span>);
   },
 
   render() {
-    const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
-    const errors = getFieldError('user');
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
+    <span class="hljs-keyword">const</span> {getFieldProps, getFieldError, isFieldValidating} = <span class="hljs-keyword">this</span>.props.form;
+    <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'user'</span>);
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>user async validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">user</span>', {
         <span class="hljs-attribute">rules:</span> [
@@ -331,38 +331,37 @@ const User = React.createClass({
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
         {isFieldValidating('user') ? 'validating' : null}
       <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
-@createForm()
-class Form extends Component {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   static propTypes = {
     form: PropTypes.object,
   };
 
   onSubmit = (e) =&gt; {
-    console.log('submit');
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'submit'</span>);
     e.preventDefault();
-    this.props.form.validateFields({
-      // firstFields: false,
+    <span class="hljs-keyword">this</span>.props.form.validateFields({
+      <span class="hljs-comment">// firstFields: false,</span>
     }, (error, values)=&gt; {
-      if (!error) {
-        console.log('ok', values);
-      } else {
-        console.log('error', error, values);
+      <span class="hljs-keyword">if</span> (!error) {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'error'</span>, error, values);
       }
     });
   };
 
   reset = (e) =&gt; {
     e.preventDefault();
-    this.props.form.resetFields();
+    <span class="hljs-keyword">this</span>.props.form.resetFields();
   };
 
   render() {
-    const {form} = this.props;
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
+    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{margin:</span> <span class="hljs-attribute">20</span>}}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>validateFirst<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">User</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
@@ -375,11 +374,13 @@ class Form extends Component {
           <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"submit"</span>/&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   }
 }
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>, document.getElementById('__react-content'));
+<span class="hljs-keyword">const</span> NewForm = createForm()(Form);
+
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">NewForm</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">

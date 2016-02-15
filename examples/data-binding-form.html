@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>data-binding-form.js - example - rc-form@0.13.0</title>
+  <title>data-binding-form.js - example - rc-form@0.13.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.13.0</h1>
+    <h1>rc-form@0.13.1</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -266,13 +266,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <script src="data-binding-form.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-import { createForm } from <span class="hljs-string">'rc-form'</span>;
-import React, {PropTypes} from <span class="hljs-string">'react'</span>;
-import {createRootContainer, createContainer} from <span class="hljs-string">'react-data-binding'</span>;
-import ReactDOM from <span class="hljs-string">'react-dom'</span>;
-import {regionStyle} from <span class="hljs-string">'./styles'</span>;
-import Switch from <span class="hljs-string">'antd/lib/switch'</span>;
-import <span class="hljs-string">'antd/lib/index.css'</span>;
+<span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
+<span class="hljs-keyword">import</span> React, {PropTypes} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> {createRootContainer, createContainer} <span class="hljs-keyword">from</span> <span class="hljs-string">'react-data-binding'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> {regionStyle} <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
+<span class="hljs-keyword">import</span> Switch <span class="hljs-keyword">from</span> <span class="hljs-string">'antd/lib/switch'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">'antd/lib/index.css'</span>;
 
 <span class="hljs-keyword">const</span> TopForm = React.createClass({
   propTypes: {
@@ -287,65 +287,65 @@ import <span class="hljs-string">'antd/lib/index.css'</span>;
         <span class="hljs-attribute">initialValue:</span> <span class="hljs-attribute">true</span>,
         <span class="hljs-attribute">valuePropName:</span> '<span class="hljs-attribute">checked</span>',
       })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
-let BottomForm = React.createClass({
+<span class="hljs-keyword">let</span> BottomForm = React.createClass({
   propTypes: {
     form: PropTypes.object,
     on: PropTypes.bool,
   },
 
   render() {
-    const {form, on} = this.props;
-    const style = {
+    <span class="hljs-keyword">const</span> {form, on} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">const</span> style = {
       ...regionStyle,
-      display: on ? 'block' : 'none',
+      display: on ? <span class="hljs-string">'block'</span> : <span class="hljs-string">'none'</span>,
     };
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{style}</span>&gt;</span>
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{style}</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email: <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...form.getFieldProps</span>('<span class="hljs-attribute">email</span>', {
         <span class="hljs-attribute">rules:</span> [{<span class="hljs-attribute">type:</span> '<span class="hljs-attribute">email</span>'}],
         <span class="hljs-attribute">hidden:</span> !<span class="hljs-attribute">on</span>,
       })}/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
 BottomForm = createContainer((state) =&gt; {
-  return {
-    on: ((state.formState || {}).on || {}).value || false,
+  <span class="hljs-keyword">return</span> {
+    on: ((state.formState || {}).on || {}).value || <span class="hljs-literal">false</span>,
   };
 })(BottomForm);
 
-let Form = React.createClass({
+<span class="hljs-keyword">let</span> Form = React.createClass({
   propTypes: {
     form: PropTypes.object,
   },
   onSubmit(e) {
     e.preventDefault();
-    console.log(this.props.form.getFieldsValue());
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.props.form.getFieldsValue());
   },
   render() {
-    const {form} = this.props;
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-keyword">const</span> {form} = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">TopForm</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">BottomForm</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{form}</span>/&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{regionStyle}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
 
 Form = createForm({
   mapPropsToFields(props) {
-    console.log('mapPropsToFields', props);
-    return props.formState;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'mapPropsToFields'</span>, props);
+    <span class="hljs-keyword">return</span> props.formState;
   },
   onFieldsChange(props, fields) {
-    console.log('onFieldsChange', fields);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'onFieldsChange'</span>, fields);
     props.setStoreState({
       formState: {
         ...props.formState,
@@ -356,22 +356,23 @@ Form = createForm({
 })(Form);
 
 Form = createContainer((state) =&gt; {
-  return {
+  <span class="hljs-keyword">return</span> {
     formState: state.formState,
   };
 })(Form);
 
-@createRootContainer()
-class App extends React.Component {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   render() {
-    return (<span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>integrate with react-data-binding<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Form</span> /&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>);
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   }
 }
 
-ReactDOM.render(<span class="hljs-tag">&lt;<span class="hljs-title">App</span> /&gt;</span>, document.getElementById('__react-content'));
+<span class="hljs-keyword">const</span> NewApp = createRootContainer()(App);
+
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">NewApp</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
 </div>
 <a href="https://github.com/react-component/form">

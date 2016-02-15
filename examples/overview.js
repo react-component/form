@@ -324,22 +324,20 @@ webpackJsonp([8],[
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var regionStyle = {
+	var regionStyle = exports.regionStyle = {
 	  border: '1px solid red',
 	  marginTop: 10,
 	  padding: 10
 	};
 	
-	exports.regionStyle = regionStyle;
-	var errorStyle = {
+	var errorStyle = exports.errorStyle = {
 	  color: 'red',
 	  marginTop: 10,
 	  padding: 10
 	};
-	exports.errorStyle = errorStyle;
 
 /***/ },
 /* 249 */,
@@ -1299,13 +1297,11 @@ webpackJsonp([8],[
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _createBaseForm = __webpack_require__(163);
 	
@@ -1322,6 +1318,8 @@ webpackJsonp([8],[
 	var _domScrollIntoView = __webpack_require__(274);
 	
 	var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function computedStyle(el, prop) {
 	  var getComputedStyle = window.getComputedStyle;
@@ -1367,7 +1365,6 @@ webpackJsonp([8],[
 	      validateFieldsAndScroll: this.validateFieldsAndScroll
 	    });
 	  },
-	
 	  validateFieldsAndScroll: function validateFieldsAndScroll(ns, opt, cb) {
 	    var _getParams = (0, _utils.getParams)(ns, opt, cb);
 	
@@ -1375,13 +1372,14 @@ webpackJsonp([8],[
 	    var callback = _getParams.callback;
 	    var options = _getParams.options;
 	
+	
 	    function newCb(error, values) {
 	      if (error) {
-	        for (var _name in error) {
-	          if (error.hasOwnProperty(_name) && error[_name].instance) {
-	            var node = _reactDom2['default'].findDOMNode(error[_name].instance);
+	        for (var name in error) {
+	          if (error.hasOwnProperty(name) && error[name].instance) {
+	            var node = _reactDom2.default.findDOMNode(error[name].instance);
 	            var c = options.container || getScrollableContainer(node);
-	            (0, _domScrollIntoView2['default'])(node, c, {
+	            (0, _domScrollIntoView2.default)(node, c, {
 	              onlyScrollIfNeeded: true
 	            });
 	            break;
@@ -1398,12 +1396,12 @@ webpackJsonp([8],[
 	};
 	
 	function createDOMForm(option) {
-	  return (0, _createBaseForm2['default'])(_extends({}, option, {
+	  return (0, _createBaseForm2.default)(_extends({}, option, {
 	    refComponent: true
 	  }), [mixin]);
 	}
 	
-	exports['default'] = createDOMForm;
+	exports.default = createDOMForm;
 	module.exports = exports['default'];
 
 /***/ },
@@ -5330,25 +5328,15 @@ webpackJsonp([8],[
 /* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
 	'use strict';
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-multi-comp:0, no-console:0 */
 	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	var _createDOMForm = __webpack_require__(273);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var _rcFormSrcCreateDOMForm = __webpack_require__(273);
-	
-	var _rcFormSrcCreateDOMForm2 = _interopRequireDefault(_rcFormSrcCreateDOMForm);
+	var _createDOMForm2 = _interopRequireDefault(_createDOMForm);
 	
 	var _react = __webpack_require__(2);
 	
@@ -5358,17 +5346,25 @@ webpackJsonp([8],[
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _antdLibSelect = __webpack_require__(325);
+	var _select = __webpack_require__(325);
 	
-	var _antdLibSelect2 = _interopRequireDefault(_antdLibSelect);
+	var _select2 = _interopRequireDefault(_select);
 	
-	var _antdLibDatePicker = __webpack_require__(350);
+	var _datePicker = __webpack_require__(350);
 	
-	var _antdLibDatePicker2 = _interopRequireDefault(_antdLibDatePicker);
+	var _datePicker2 = _interopRequireDefault(_datePicker);
 	
 	__webpack_require__(269);
 	
 	var _styles = __webpack_require__(248);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	function Email(props) {
 	  var _props$form = props.form;
@@ -5377,31 +5373,31 @@ webpackJsonp([8],[
 	  var isFieldValidating = _props$form.isFieldValidating;
 	
 	  var errors = getFieldError('email');
-	  return _react2['default'].createElement(
+	  return _react2.default.createElement(
 	    'div',
 	    { style: _styles.regionStyle },
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      null,
 	      'email sync validate'
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      null,
-	      _react2['default'].createElement('input', getFieldProps('email', {
-	        rules: [{ type: 'email', message: _react2['default'].createElement(
+	      _react2.default.createElement('input', getFieldProps('email', {
+	        rules: [{ type: 'email', message: _react2.default.createElement(
 	            'b',
 	            { key: 'err' },
 	            '错误的 email 格式'
 	          ) }]
 	      }))
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      errors
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      isFieldValidating('email') ? 'validating' : null
@@ -5413,7 +5409,7 @@ webpackJsonp([8],[
 	  form: _react.PropTypes.object
 	};
 	
-	var User = _react2['default'].createClass({
+	var User = _react2.default.createClass({
 	  displayName: 'User',
 	
 	  propTypes: {
@@ -5430,7 +5426,6 @@ webpackJsonp([8],[
 	      }
 	    }, 300);
 	  },
-	
 	  render: function render() {
 	    var _props$form2 = this.props.form;
 	    var getFieldProps = _props$form2.getFieldProps;
@@ -5438,33 +5433,33 @@ webpackJsonp([8],[
 	    var isFieldValidating = _props$form2.isFieldValidating;
 	
 	    var errors = getFieldError('user');
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      { style: _styles.regionStyle },
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'span',
 	          { style: { color: 'red' } },
 	          '*'
 	        ),
 	        ' user async validate'
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        null,
-	        _react2['default'].createElement('input', getFieldProps('user', {
+	        _react2.default.createElement('input', getFieldProps('user', {
 	          validateFirst: true,
 	          rules: [{ required: true }, { validator: this.userExists }]
 	        }))
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      ),
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'p',
 	        { style: _styles.errorStyle },
 	        isFieldValidating('user') ? 'validating' : null
@@ -5480,45 +5475,45 @@ webpackJsonp([8],[
 	  var isFieldValidating = _props$form3.isFieldValidating;
 	
 	  var errors = getFieldError('select');
-	  return _react2['default'].createElement(
+	  return _react2.default.createElement(
 	    'div',
 	    { style: _styles.regionStyle },
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      null,
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'span',
 	        { style: { color: 'red' } },
 	        '*'
 	      ),
 	      ' custom select sync validate'
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      null,
-	      _react2['default'].createElement(
-	        _antdLibSelect2['default'],
+	      _react2.default.createElement(
+	        _select2.default,
 	        _extends({ placeholder: 'please select', style: { width: 200 } }, getFieldProps('select', {
 	          rules: [{ required: true }]
 	        })),
-	        _react2['default'].createElement(
-	          _antdLibSelect.Option,
+	        _react2.default.createElement(
+	          _select.Option,
 	          { value: '1' },
 	          '1'
 	        ),
-	        _react2['default'].createElement(
-	          _antdLibSelect.Option,
+	        _react2.default.createElement(
+	          _select.Option,
 	          { value: '2' },
 	          '2'
 	        )
 	      )
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      isFieldValidating('select') ? 'validating' : null
@@ -5536,27 +5531,27 @@ webpackJsonp([8],[
 	  var getFieldError = _props$form4.getFieldError;
 	
 	  var errors = getFieldError('date');
-	  return _react2['default'].createElement(
+	  return _react2.default.createElement(
 	    'div',
 	    { style: _styles.regionStyle },
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      null,
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'span',
 	        { style: { color: 'red' } },
 	        '*'
 	      ),
 	      ' DateInput sync validate'
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      { style: { width: 200 } },
-	      _react2['default'].createElement(_antdLibDatePicker2['default'], _extends({ placeholder: 'please select' }, getFieldProps('date', {
+	      _react2.default.createElement(_datePicker2.default, _extends({ placeholder: 'please select' }, getFieldProps('date', {
 	        rules: [{ required: true, type: 'date' }]
 	      })))
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
@@ -5587,23 +5582,23 @@ webpackJsonp([8],[
 	  var getFieldError = _props$form5.getFieldError;
 	
 	  var errors = getFieldError('number');
-	  return _react2['default'].createElement(
+	  return _react2.default.createElement(
 	    'div',
 	    { style: _styles.regionStyle },
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      null,
 	      'number input'
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      null,
-	      _react2['default'].createElement('input', getFieldProps('number', {
+	      _react2.default.createElement('input', getFieldProps('number', {
 	        initialValue: '1',
 	        rules: [{ transform: toNumber, type: 'number' }]
 	      }))
 	    ),
-	    _react2['default'].createElement(
+	    _react2.default.createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
@@ -5615,17 +5610,21 @@ webpackJsonp([8],[
 	  form: _react.PropTypes.object
 	};
 	
-	var Form = (function (_Component) {
+	var Form = function (_Component) {
 	  _inherits(Form, _Component);
 	
 	  function Form() {
-	    var _this = this;
+	    var _Object$getPrototypeO;
 	
-	    _classCallCheck(this, _Form);
+	    var _temp, _this, _ret;
 	
-	    _get(Object.getPrototypeOf(_Form.prototype), 'constructor', this).apply(this, arguments);
+	    _classCallCheck(this, Form);
 	
-	    this.onSubmit = function (e) {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Form)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onSubmit = function (e) {
 	      console.log('submit');
 	      e.preventDefault();
 	      _this.props.form.validateFieldsAndScroll(function (error, values) {
@@ -5635,12 +5634,10 @@ webpackJsonp([8],[
 	          console.log('error', error, values);
 	        }
 	      });
-	    };
-	
-	    this.reset = function (e) {
+	    }, _this.reset = function (e) {
 	      e.preventDefault();
 	      _this.props.form.resetFields();
-	    };
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 	
 	  _createClass(Form, [{
@@ -5649,70 +5646,69 @@ webpackJsonp([8],[
 	      var form = this.props.form;
 	      var getFieldProps = form.getFieldProps;
 	
-	      return _react2['default'].createElement(
+	      return _react2.default.createElement(
 	        'div',
 	        { style: { margin: 20 } },
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'h2',
 	          null,
 	          'overview'
 	        ),
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.onSubmit },
-	          _react2['default'].createElement(User, { form: form, saveRef: this.saveRef }),
-	          _react2['default'].createElement(NumberInput, { form: form }),
-	          _react2['default'].createElement(Email, { form: form }),
-	          _react2['default'].createElement(CustomInput, { form: form }),
-	          _react2['default'].createElement(DateInput, { form: form }),
-	          _react2['default'].createElement(
+	          _react2.default.createElement(User, { form: form, saveRef: this.saveRef }),
+	          _react2.default.createElement(NumberInput, { form: form }),
+	          _react2.default.createElement(Email, { form: form }),
+	          _react2.default.createElement(CustomInput, { form: form }),
+	          _react2.default.createElement(DateInput, { form: form }),
+	          _react2.default.createElement(
 	            'div',
 	            { style: _styles.regionStyle },
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'p',
 	              null,
 	              'normal input, no validate'
 	            ),
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'p',
 	              null,
-	              _react2['default'].createElement('input', getFieldProps('normal'))
+	              _react2.default.createElement('input', getFieldProps('normal'))
 	            )
 	          ),
-	          _react2['default'].createElement(
+	          _react2.default.createElement(
 	            'div',
 	            { style: _styles.regionStyle },
-	            _react2['default'].createElement(
+	            _react2.default.createElement(
 	              'button',
 	              { onClick: this.reset },
 	              'reset'
 	            ),
 	            ' ',
-	            _react2['default'].createElement('input', { type: 'submit', value: 'submit' })
+	            _react2.default.createElement('input', { type: 'submit', value: 'submit' })
 	          )
 	        )
 	      );
 	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: {
-	      form: _react.PropTypes.object
-	    },
-	    enumerable: true
 	  }]);
 	
-	  var _Form = Form;
-	  Form = (0, _rcFormSrcCreateDOMForm2['default'])({
-	    validateMessages: {
-	      required: function required(field) {
-	        return field + ' 必填';
-	      }
-	    }
-	  })(Form) || Form;
 	  return Form;
-	})(_react.Component);
+	}(_react.Component);
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Form, null), document.getElementById('__react-content'));
+	Form.propTypes = {
+	  form: _react.PropTypes.object
+	};
+	
+	
+	var NewForm = (0, _createDOMForm2.default)({
+	  validateMessages: {
+	    required: function required(field) {
+	      return field + ' 必填';
+	    }
+	  }
+	})(Form);
+	
+	_reactDom2.default.render(_react2.default.createElement(NewForm, null), document.getElementById('__react-content'));
 
 /***/ },
 /* 325 */

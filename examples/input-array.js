@@ -11,20 +11,20 @@ webpackJsonp([5],{
 /***/ 160:
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var _src = __webpack_require__(161);
 	
 	var form = _interopRequireWildcard(_src);
 	
-	exports['default'] = form;
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	exports.default = form; // export this package's api
+	
 	module.exports = exports['default'];
 
 /***/ },
@@ -32,18 +32,22 @@ webpackJsonp([5],{
 /***/ 161:
 /***/ function(module, exports, __webpack_require__) {
 
-	// export this package's api
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-	
 	var _createForm = __webpack_require__(162);
 	
-	exports.createForm = _interopRequire(_createForm);
+	Object.defineProperty(exports, 'createForm', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_createForm).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
 
@@ -52,33 +56,27 @@ webpackJsonp([5],{
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var regionStyle = {
+	var regionStyle = exports.regionStyle = {
 	  border: '1px solid red',
 	  marginTop: 10,
 	  padding: 10
 	};
 	
-	exports.regionStyle = regionStyle;
-	var errorStyle = {
+	var errorStyle = exports.errorStyle = {
 	  color: 'red',
 	  marginTop: 10,
 	  padding: 10
 	};
-	exports.errorStyle = errorStyle;
 
 /***/ },
 
 /***/ 271:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint no-console:0 */
-	
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var _rcForm = __webpack_require__(160);
 	
@@ -92,9 +90,13 @@ webpackJsonp([5],{
 	
 	var _styles = __webpack_require__(248);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/* eslint no-console:0 */
+	
 	var uuid = 0;
 	
-	var Form = _react2['default'].createClass({
+	var Form = _react2.default.createClass({
 	  displayName: 'Form',
 	
 	  propTypes: {
@@ -102,8 +104,8 @@ webpackJsonp([5],{
 	  },
 	  remove: function remove(k) {
 	    var form = this.props.form;
-	
 	    // can use data-binding to get
+	
 	    var keys = form.getFieldValue('keys');
 	    keys = keys.filter(function (key) {
 	      return key !== k;
@@ -116,8 +118,8 @@ webpackJsonp([5],{
 	  add: function add() {
 	    uuid++;
 	    var form = this.props.form;
-	
 	    // can use data-binding to get
+	
 	    var keys = form.getFieldValue('keys');
 	    keys = keys.concat(uuid);
 	    // can use data-binding to set
@@ -141,12 +143,12 @@ webpackJsonp([5],{
 	      initialValue: []
 	    });
 	    var inputs = getFieldValue('keys').map(function (k) {
-	      return _react2['default'].createElement(
+	      return _react2.default.createElement(
 	        'div',
 	        { key: k, style: _styles.regionStyle },
-	        _react2['default'].createElement('input', getFieldProps('name' + k)),
+	        _react2.default.createElement('input', getFieldProps('name' + k)),
 	        ' ',
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'a',
 	          {
 	            onClick: _this.remove.bind(_this, k) },
@@ -154,19 +156,19 @@ webpackJsonp([5],{
 	        )
 	      );
 	    });
-	    return _react2['default'].createElement(
+	    return _react2.default.createElement(
 	      'div',
 	      null,
 	      inputs,
-	      _react2['default'].createElement(
+	      _react2.default.createElement(
 	        'div',
 	        { style: _styles.regionStyle },
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.submit },
 	          'submit'
 	        ),
-	        _react2['default'].createElement(
+	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.add },
 	          'add'
@@ -178,7 +180,7 @@ webpackJsonp([5],{
 	
 	Form = (0, _rcForm.createForm)()(Form);
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Form, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Form, null), document.getElementById('__react-content'));
 
 /***/ }
 
