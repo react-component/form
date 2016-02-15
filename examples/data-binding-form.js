@@ -1,10 +1,10 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, {PropTypes} from 'react';
-import {createRootContainer, createContainer} from 'react-data-binding';
+import React, { PropTypes } from 'react';
+import { createRootContainer, createContainer } from 'react-data-binding';
 import ReactDOM from 'react-dom';
-import {regionStyle} from './styles';
+import { regionStyle } from './styles';
 import Switch from 'antd/lib/switch';
 import 'antd/lib/index.css';
 
@@ -15,12 +15,14 @@ const TopForm = React.createClass({
 
   render() {
     const { getFieldProps } = this.props.form;
-    return (<div style={regionStyle}>
+    return (<div style={ regionStyle }>
       <p>has email? </p>
-      <p><Switch {...getFieldProps('on', {
-        initialValue: true,
-        valuePropName: 'checked',
-      })}/></p>
+      <p>
+        <Switch {...getFieldProps('on', {
+          initialValue: true,
+          valuePropName: 'checked',
+        })}
+        /></p>
     </div>);
   },
 });
@@ -32,17 +34,21 @@ let BottomForm = React.createClass({
   },
 
   render() {
-    const {form, on} = this.props;
+    const { form, on } = this.props;
     const style = {
       ...regionStyle,
       display: on ? 'block' : 'none',
     };
-    return (<div style={style}>
+    return (<div style={ style }>
       <p>email: </p>
-      <p><input {...form.getFieldProps('email', {
-        rules: [{type: 'email'}],
-        hidden: !on,
-      })}/></p>
+      <p>
+        <input {...form.getFieldProps('email', {
+          rules: [{
+            type: 'email',
+          }],
+          hidden: !on,
+        })}
+        /></p>
     </div>);
   },
 });
@@ -62,11 +68,11 @@ let Form = React.createClass({
     console.log(this.props.form.getFieldsValue());
   },
   render() {
-    const {form} = this.props;
+    const { form } = this.props;
     return (<div>
-      <TopForm form={form}/>
-      <BottomForm form={form}/>
-      <div style={regionStyle}>
+      <TopForm form={ form }/>
+      <BottomForm form={ form }/>
+      <div style={ regionStyle }>
         <button onClick={this.onSubmit}>submit</button>
       </div>
     </div>);

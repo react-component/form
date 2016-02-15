@@ -1,11 +1,11 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'antd/lib/modal';
 import 'antd/lib/index.css';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 class Form extends Component {
   static propTypes = {
@@ -21,7 +21,7 @@ class Form extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((error, values)=> {
+    this.props.form.validateFieldsAndScroll((error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -43,29 +43,39 @@ class Form extends Component {
   };
 
   render() {
-    const {getFieldProps, getFieldError} = this.props.form;
-    return (<div style={{margin: 20}}>
+    const { getFieldProps, getFieldError } = this.props.form;
+    return (<div style={{ margin: 20 }}>
       <h2>modal</h2>
-      <Modal visible={this.state.visible}
-             bodyStyle={{height: 200, overflow: 'auto'}}
-             onCancel={this.onCancel}
-             title="modal">
+      <Modal
+        visible={this.state.visible}
+        bodyStyle={{
+          height: 200,
+          overflow: 'auto',
+        }}
+        onCancel={this.onCancel}
+        title="modal"
+      >
         <div ref="dialogContent">
           <form onSubmit={this.onSubmit}>
-            <input {...getFieldProps('required', {
-              rules: [{required: true, message: '必填'}],
-            })}/>
+            <input
+              {...getFieldProps('required', {
+                rules: [{
+                  required: true,
+                  message: '必填',
+                }],
+              })}
+            />
             <p style={errorStyle}>
               {getFieldError('required') ? getFieldError('required').join(',') :
-                <b style={{visibility: 'hidden'}}>1</b>}
+                <b style={{ visibility: 'hidden' }}>1</b>}
             </p>
-            <div style={{marginTop: 300}}>
+            <div style={{ marginTop: 300 }}>
               <button>submit</button>
             </div>
           </form>
         </div>
       </Modal>
-      <div style={regionStyle}>
+      <div style={ regionStyle }>
         <button onClick={this.open}>open</button>
       </div>
     </div>);

@@ -1,8 +1,8 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createForm} from '../';
-import {Simulate} from 'react-addons-test-utils';
+import { createForm } from '../';
+import { Simulate } from 'react-addons-test-utils';
 
 const TestComponent = React.createClass({
   propTypes: {
@@ -10,7 +10,7 @@ const TestComponent = React.createClass({
   },
 
   render() {
-    const {getFieldProps} = this.props.form;
+    const { getFieldProps } = this.props.form;
     return (<div>
       <input {...getFieldProps('normal')} ref="normal"/>
       <input {...getFieldProps('normal2')} ref="normal2"/>
@@ -51,7 +51,7 @@ describe('map usage', () => {
         };
       },
     })(TestComponent);
-    component = ReactDOM.render(<Test formState={{normal: '2'}}/>, container);
+    component = ReactDOM.render(<Test formState={{ normal: '2' }}/>, container);
     component = component.refs.wrappedComponent;
     form = component.props.form;
     expect(component.refs.normal.value).to.be('2');
@@ -68,8 +68,10 @@ describe('map usage', () => {
     const Test = createForm({
       withRef: true,
       mapProps(props) {
-        props.x += 1;
-        return props;
+        return {
+          ...props,
+          x: props.x + 1,
+        };
       },
     })(TestComponent);
     component = ReactDOM.render(<Test x={2}/>, container);

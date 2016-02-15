@@ -1,10 +1,10 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, {Component, PropTypes} from 'react';
-import {createRootContainer, createContainer} from 'react-data-binding';
+import React, { Component, PropTypes } from 'react';
+import { createRootContainer, createContainer } from 'react-data-binding';
 import ReactDOM from 'react-dom';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 class Form extends Component {
   static propTypes = {
@@ -20,14 +20,16 @@ class Form extends Component {
     const { getFieldProps, getFieldError } = this.props.form;
     const { formInitialState } = this.props;
     const errors = getFieldError('email');
-    return (<div style={regionStyle}>
+    return (<div style={ regionStyle }>
       <p>email:</p>
-      <p><input {...getFieldProps('email', {
-        initialValue: formInitialState.email.value,
-        rules: [{
-          type: 'email',
-        }],
-      })}/></p>
+      <p>
+        <input {...getFieldProps('email', {
+          initialValue: formInitialState.email.value,
+          rules: [{
+            type: 'email',
+          }],
+        })}
+        /></p>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
@@ -58,8 +60,8 @@ let Out = React.createClass({
   },
 
   render() {
-    const {email} = this.props;
-    return (<div style={regionStyle}>
+    const { email } = this.props;
+    return (<div style={ regionStyle }>
       <p>
         email: {email && email.value}
       </p>

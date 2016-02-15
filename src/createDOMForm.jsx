@@ -1,6 +1,6 @@
 import createBaseForm from './createBaseForm';
-import {mixin as formMixin} from './createForm';
-import {getParams} from './utils';
+import { mixin as formMixin } from './createForm';
+import { getParams } from './utils';
 import ReactDOM from 'react-dom';
 import scrollIntoView from 'dom-scroll-into-view';
 
@@ -53,7 +53,7 @@ const mixin = {
   },
 
   validateFieldsAndScroll(ns, opt, cb) {
-    const {names, callback, options} = getParams(ns, opt, cb);
+    const { names, callback, options } = getParams(ns, opt, cb);
 
     function newCb(error, values) {
       if (error) {

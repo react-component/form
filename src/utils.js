@@ -5,6 +5,7 @@ function getDisplayName(WrappedComponent) {
 }
 
 export function argumentContainer(Container, WrappedComponent) {
+  /* eslint no-param-reassign:0 */
   Container.displayName = `Form(${getDisplayName(WrappedComponent)})`;
   Container.WrappedComponent = WrappedComponent;
   return hoistStatics(Container, WrappedComponent);
@@ -15,7 +16,7 @@ export function getValueFromEvent(e) {
   if (!e || !e.target) {
     return e;
   }
-  const {target} = e;
+  const { target } = e;
   return target.type === 'checkbox' ? target.checked : target.value;
 }
 
@@ -45,7 +46,7 @@ export function mirror(obj) {
 
 export function hasRules(validate) {
   if (validate) {
-    return validate.some((item)=> {
+    return validate.some((item) => {
       return !!item.rules && item.rules.length;
     });
   }
@@ -74,5 +75,9 @@ export function getParams(ns, opt, cb) {
       names = undefined;
     }
   }
-  return {names, callback, options};
+  return {
+    names,
+    callback,
+    options,
+  };
 }

@@ -1,23 +1,28 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Select, {Option} from 'antd/lib/select';
+import Select, { Option } from 'antd/lib/select';
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/index.css';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 function Email(props) {
-  const {getFieldProps, getFieldError, isFieldValidating} = props.form;
+  const { getFieldProps, getFieldError, isFieldValidating } = props.form;
   const errors = getFieldError('email');
-  return (<div style={regionStyle}>
+  return (<div style={ regionStyle }>
     <p>email sync validate</p>
-    <p><input {...getFieldProps('email', {
-      rules: [
-        {type: 'email', message: <b key="err">错误的 email 格式</b>},
-      ],
-    })}/></p>
+    <p>
+      <input {...getFieldProps('email', {
+        rules: [
+          {
+            type: 'email',
+            message: <b key="err">错误的 email 格式</b>,
+          },
+        ],
+      })}
+      /></p>
     <p style={errorStyle}>
       {errors}
     </p>
@@ -48,17 +53,23 @@ const User = React.createClass({
   },
 
   render() {
-    const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
+    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('user');
-    return (<div style={regionStyle}>
-      <p><span style={{color: 'red'}}>*</span> user async validate</p>
-      <p><input {...getFieldProps('user', {
-        validateFirst: true,
-        rules: [
-          {required: true},
-          {validator: this.userExists},
-        ],
-      })}/></p>
+    return (<div style={ regionStyle }>
+      <p><span style={{ color: 'red' }}>*</span> user async validate</p>
+      <p>
+        <input {...getFieldProps('user', {
+          validateFirst: true,
+          rules: [
+            {
+              required: true,
+            },
+            {
+              validator: this.userExists,
+            },
+          ],
+        })}
+        /></p>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
@@ -71,15 +82,21 @@ const User = React.createClass({
 
 
 function CustomInput(props) {
-  const {getFieldProps, getFieldError, isFieldValidating} = props.form;
+  const { getFieldProps, getFieldError, isFieldValidating } = props.form;
   const errors = getFieldError('select');
-  return (<div style={regionStyle}>
-    <p><span style={{color: 'red'}}>*</span> custom select sync validate</p>
-    <p><Select placeholder="please select" style={{width: 200}} {...getFieldProps('select', {
-      rules: [
-        {required: true},
-      ],
-    })}>
+  return (<div style={ regionStyle }>
+    <p><span style={{ color: 'red' }}>*</span> custom select sync validate</p>
+    <p><Select
+      placeholder="please select"
+      style={{ width: 200 }}
+      {...getFieldProps('select', {
+        rules: [
+          {
+            required: true,
+          },
+        ],
+      })}
+    >
       <Option value="1">1</Option>
       <Option value="2">2</Option>
     </Select></p>
@@ -97,16 +114,23 @@ CustomInput.propTypes = {
 };
 
 function DateInput(props) {
-  const {getFieldProps, getFieldError} = props.form;
+  const { getFieldProps, getFieldError } = props.form;
   const errors = getFieldError('date');
-  return (<div style={regionStyle}>
-    <p><span style={{color: 'red'}}>*</span> DateInput sync validate</p>
-    <p style={{width: 200}}>
-      <DatePicker placeholder="please select" {...getFieldProps('date', {
-        rules: [
-          {required: true, type: 'date'},
-        ],
-      })} /></p>
+  return (<div style={ regionStyle }>
+    <p><span style={{ color: 'red' }}>*</span> DateInput sync validate</p>
+    <p style={{ width: 200 }}>
+      <DatePicker
+        placeholder="please select"
+        {...getFieldProps('date', {
+          rules: [
+            {
+              required: true,
+              type: 'date',
+            },
+          ],
+        })}
+      />
+    </p>
     <p style={errorStyle}>
       {(errors) ? errors.join(',') : null}
     </p>
@@ -131,15 +155,20 @@ function toNumber(v) {
 }
 
 function NumberInput(props) {
-  const {getFieldProps, getFieldError} = props.form;
+  const { getFieldProps, getFieldError } = props.form;
   const errors = getFieldError('number');
-  return (<div style={regionStyle}>
+  return (<div style={ regionStyle }>
     <p>number input</p>
     <p>
-      <input {...getFieldProps('number', {
-        initialValue: '1',
-        rules: [{transform: toNumber, type: 'number'}],
-      })}/>
+      <input
+        {...getFieldProps('number', {
+          initialValue: '1',
+          rules: [{
+            transform: toNumber,
+            type: 'number',
+          }],
+        })}
+      />
     </p>
     <p style={errorStyle}>
       {(errors) ? errors.join(',') : null}
@@ -159,7 +188,7 @@ class Form extends Component {
   onSubmit = (e) => {
     console.log('submit');
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((error, values)=> {
+    this.props.form.validateFieldsAndScroll((error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -174,29 +203,29 @@ class Form extends Component {
   };
 
   render() {
-    const {form} = this.props;
-    const {getFieldProps} = form;
-    return (<div style={{margin: 20}}>
+    const { form } = this.props;
+    const { getFieldProps } = form;
+    return (<div style={{ margin: 20 }}>
       <h2>overview</h2>
       <form onSubmit={this.onSubmit}>
-        <User form={form} saveRef={this.saveRef}/>
+        <User form={ form } saveRef={this.saveRef}/>
 
-        <NumberInput form={form}/>
+        <NumberInput form={ form }/>
 
-        <Email form={form}/>
+        <Email form={ form }/>
 
-        <CustomInput form={form}/>
+        <CustomInput form={ form }/>
 
-        <DateInput form={form}/>
+        <DateInput form={ form }/>
 
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <p>normal input, no validate</p>
           <p>
             <input {...getFieldProps('normal')}/>
           </p>
         </div>
 
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <button onClick={this.reset}>reset</button>
           &nbsp;
           <input type="submit" value="submit"/>

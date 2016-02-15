@@ -1,10 +1,10 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import {createForm} from 'rc-form';
-import React, {Component, PropTypes} from 'react';
+import { createForm } from 'rc-form';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/lib/index.css';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 const CustomInput = React.createClass({
   propTypes: {
@@ -29,16 +29,19 @@ const CustomInput = React.createClass({
     return v.toUpperCase();
   },
   render() {
-    const {getFieldProps, getFieldError} = this.props.form;
+    const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('upper');
-    return (<div style={regionStyle}>
+    return (<div style={ regionStyle }>
       <p>upper normalize</p>
-      <div><input {...getFieldProps('upper', {
-        normalize: this.toUpper,
-        rules: [{
-          validator: this.checkUpper,
-        }],
-      })}/></div>
+      <div>
+        <input {...getFieldProps('upper', {
+          normalize: this.toUpper,
+          rules: [{
+            validator: this.checkUpper,
+          }],
+        })}
+        />
+      </div>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
@@ -73,12 +76,14 @@ const MaxMin = React.createClass({
     return value;
   },
   render() {
-    const {getFieldProps} = this.props.form;
-    return (<div style={regionStyle}>
-      <div>min: <select {...getFieldProps('min', {
-        normalize: this.normalizeMin,
-        initialValue: '',
-      })}>
+    const { getFieldProps } = this.props.form;
+    return (<div style={ regionStyle }>
+      <div>min: <select
+        {...getFieldProps('min', {
+          normalize: this.normalizeMin,
+          initialValue: '',
+        })}
+      >
         <option value="">empty</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -87,10 +92,12 @@ const MaxMin = React.createClass({
         <option value="5">5</option>
       </select>
       </div>
-      <div>max: <select {...getFieldProps('max', {
-        initialValue: '',
-        normalize: this.normalizeMax,
-      })}>
+      <div>max: <select
+        {...getFieldProps('max', {
+          initialValue: '',
+          normalize: this.normalizeMax,
+        })}
+      >
         <option value="">empty</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -108,9 +115,9 @@ class Form extends Component {
     form: PropTypes.object,
   }
 
-  onSubmit = (e)=> {
+  onSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((error, values)=> {
+    this.props.form.validateFields((error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -120,15 +127,15 @@ class Form extends Component {
   }
 
   render() {
-    const {form} = this.props;
-    return (<div style={{margin: 20}}>
+    const { form } = this.props;
+    return (<div style={{ margin: 20 }}>
       <h2>normalize</h2>
       <form onSubmit={this.onSubmit}>
-        <CustomInput form={form}/>
+        <CustomInput form={ form }/>
 
-        <MaxMin form={form}/>
+        <MaxMin form={ form }/>
 
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <button>submit</button>
         </div>
       </form>

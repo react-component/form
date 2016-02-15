@@ -1,12 +1,12 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import { combineReducers } from 'redux';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import ReactDOM from 'react-dom';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 function form(state = {
   email: {
@@ -32,13 +32,15 @@ class Form extends Component {
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('email');
-    return (<div style={regionStyle}>
+    return (<div style={ regionStyle }>
       <p>email:</p>
-      <p><input {...getFieldProps('email', {
-        rules: [{
-          type: 'email',
-        }],
-      })}/></p>
+      <p>
+        <input {...getFieldProps('email', {
+          rules: [{
+            type: 'email',
+          }],
+        })}
+        /></p>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
@@ -64,8 +66,8 @@ let Out = React.createClass({
   },
 
   render() {
-    const {email} = this.props;
-    return (<div style={regionStyle}>
+    const { email } = this.props;
+    return (<div style={ regionStyle }>
       <p>
         email: {email && email.value}
       </p>
@@ -80,7 +82,9 @@ Out = connect((state) => {
   };
 })(Out);
 
-const store = createStore(combineReducers({form}));
+const store = createStore(combineReducers({
+  form,
+}));
 
 const NewForm = connect((state) => {
   return {

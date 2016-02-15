@@ -1,9 +1,9 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 let Form = React.createClass({
   propTypes: {
@@ -19,13 +19,16 @@ let Form = React.createClass({
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('email');
-    return (<div style={regionStyle}>
+    return (<div style={ regionStyle }>
       <p>email:</p>
-      <p><input {...getFieldProps('email', {
-        rules: [{
-          type: 'email',
-        }],
-      })}/></p>
+      <p>
+        <input {...getFieldProps('email', {
+          rules: [{
+            type: 'email',
+          }],
+        })}
+        />
+      </p>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>

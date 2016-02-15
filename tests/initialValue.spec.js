@@ -1,15 +1,15 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createForm} from '../';
-import {Simulate} from 'react-addons-test-utils';
+import { createForm } from '../';
+import { Simulate } from 'react-addons-test-utils';
 
 let Test = React.createClass({
   propTypes: {
     form: React.PropTypes.object,
   },
   check(rule, value, callback) {
-    setTimeout(()=> {
+    setTimeout(() => {
       if (value === '1') {
         callback();
       } else {
@@ -19,13 +19,14 @@ let Test = React.createClass({
   },
 
   render() {
-    const {getFieldProps} = this.props.form;
+    const { getFieldProps } = this.props.form;
     return (<div>
       <input {...getFieldProps('normal', {
         initialValue: '1',
         // test empty rules
         rules: [],
-      })} ref="normal"/>
+      })} ref="normal"
+      />
     </div>);
   },
 });

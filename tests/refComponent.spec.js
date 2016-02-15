@@ -1,7 +1,7 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createForm} from '../';
+import { createForm } from '../';
 
 const TestComponent = React.createClass({
   propTypes: {
@@ -9,7 +9,7 @@ const TestComponent = React.createClass({
   },
 
   render() {
-    const {getFieldProps} = this.props.form;
+    const { getFieldProps } = this.props.form;
     return (<div>
       <input {...getFieldProps('normal')} id="t12345"/>
     </div>);

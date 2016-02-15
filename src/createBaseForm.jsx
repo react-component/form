@@ -9,15 +9,15 @@ const defaultValidateTrigger = 'onChange';
 const defaultTrigger = defaultValidateTrigger;
 
 function createBaseForm(option = {}, mixins = []) {
-  const {mapPropsToFields, onFieldsChange,
+  const { mapPropsToFields, onFieldsChange,
     fieldNameProp, fieldMetaProp,
     validateMessages, refComponent,
     mapProps = mirror,
-    formPropName = 'form', withRef} = option;
+    formPropName = 'form', withRef } = option;
 
   function decorate(WrappedComponent) {
     const Form = React.createClass({
-      mixins: mixins,
+      mixins,
 
       getInitialState() {
         let fields;
@@ -40,21 +40,24 @@ function createBaseForm(option = {}, mixins = []) {
         if (mapPropsToFields) {
           const fields = mapPropsToFields(nextProps);
           if (fields) {
-            this.fields = {...this.fields, ...fields};
+            this.fields = {
+              ...this.fields,
+              ...fields,
+            };
           }
         }
       },
 
       componentDidUpdate() {
-        const {fields, fieldsMeta} = this;
+        const { fields, fieldsMeta } = this;
         const fieldsMetaKeys = Object.keys(fieldsMeta);
-        fieldsMetaKeys.forEach((s)=> {
+        fieldsMetaKeys.forEach((s) => {
           if (fieldsMeta[s].stale) {
             delete fieldsMeta[s];
           }
         });
         const fieldsKeys = Object.keys(fields);
-        fieldsKeys.forEach((s)=> {
+        fieldsKeys.forEach((s) => {
           if (!fieldsMeta[s]) {
             delete fields[s];
           }
@@ -115,19 +118,23 @@ function createBaseForm(option = {}, mixins = []) {
         }
         if (copy) {
           if (ret) {
-            return {...ret};
+            return {
+              ...ret,
+            };
           }
-          return {name};
+          return {
+            name,
+          };
         }
         return ret;
       },
 
       getFieldProps(name, fieldOption = {}) {
-        const {rules,
+        const { rules,
           trigger = defaultTrigger,
           valuePropName = 'value',
           validateTrigger = defaultValidateTrigger,
-          validate = []} = fieldOption;
+          validate = [] } = fieldOption;
 
         const fieldMeta = this.fieldsMeta[name] || {};
 
@@ -143,12 +150,15 @@ function createBaseForm(option = {}, mixins = []) {
           inputProps[fieldNameProp] = name;
         }
 
-        const validateRules = validate.map((item)=> {
-          item.trigger = item.trigger || [];
-          if (typeof item.trigger === 'string') {
-            item.trigger = [item.trigger];
+        const validateRules = validate.map((item) => {
+          const newItem = {
+            ...item,
+            trigger: item.trigger || [],
+          };
+          if (typeof newItem.trigger === 'string') {
+            newItem.trigger = [newItem.trigger];
           }
-          return item;
+          return newItem;
         });
 
         if (rules) {
@@ -160,15 +170,19 @@ function createBaseForm(option = {}, mixins = []) {
 
         validateRules.filter((item) => {
           return !!item.rules && item.rules.length;
-        }).map((item)=> {
+        }).map((item) => {
           return item.trigger;
-        }).reduce((pre, curr)=> {
+        }).reduce((pre, curr) => {
           return pre.concat(curr);
-        }, []).forEach((action)=> {
+        }, []).forEach((action) => {
           inputProps[action] = this.getCacheBind(name, action, this.onChangeValidate);
         });
 
-        if (trigger && validateRules.every((item) => item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length)) {
+        function checkRule(item) {
+          return item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length;
+        }
+
+        if (trigger && validateRules.every(checkRule)) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
         const field = this.getField(name);
@@ -177,7 +191,7 @@ function createBaseForm(option = {}, mixins = []) {
         }
 
         if (refComponent) {
-          inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
+          inputProps.ref = this.getCacheBind(name, `${name}__ref`, this.saveRef);
         }
 
         const meta = {
@@ -207,7 +221,7 @@ function createBaseForm(option = {}, mixins = []) {
 
       getValidFieldsName() {
         const fieldsMeta = this.fieldsMeta;
-        return fieldsMeta ? Object.keys(fieldsMeta).filter((name)=> {
+        return fieldsMeta ? Object.keys(fieldsMeta).filter((name) => {
           return !fieldsMeta[name].hidden;
         }) : [];
       },
@@ -215,19 +229,19 @@ function createBaseForm(option = {}, mixins = []) {
       getFieldsValue(names) {
         const fields = names || this.getValidFieldsName();
         const allValues = {};
-        fields.forEach((f)=> {
+        fields.forEach((f) => {
           allValues[f] = this.getFieldValue(f);
         });
         return allValues;
       },
 
       getFieldValue(name) {
-        const {fields} = this;
+        const { fields } = this;
         return this.getValueFromFields(name, fields);
       },
 
       getValueFromFields(name, fields) {
-        const {fieldsMeta} = this;
+        const { fieldsMeta } = this;
         const field = fields[name];
         if (field && 'value' in field) {
           return field.value;
@@ -237,27 +251,34 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       getRules(fieldMeta, action) {
-        const actionRules = fieldMeta.validate.filter((item)=> {
+        const actionRules = fieldMeta.validate.filter((item) => {
           return !action || item.trigger.indexOf(action) >= 0;
         }).map((item) => item.rules);
         return flattenArray(actionRules);
       },
       setFields(fields) {
         const originalFields = this.fields;
-        const nowFields = {...originalFields, ...fields};
+        const nowFields = {
+          ...originalFields,
+          ...fields,
+        };
         const fieldsMeta = this.fieldsMeta;
         const nowValues = {};
-        Object.keys(fieldsMeta).forEach((f)=> {
+        Object.keys(fieldsMeta).forEach((f) => {
           nowValues[f] = this.getValueFromFields(f, nowFields);
         });
         const changedFieldsName = Object.keys(fields);
-        Object.keys(nowValues).forEach((f)=> {
+        Object.keys(nowValues).forEach((f) => {
           const value = nowValues[f];
           const fieldMeta = fieldsMeta[f];
           if (fieldMeta && fieldMeta.normalize) {
-            const nowValue = fieldMeta.normalize(value, this.getValueFromFields(f, originalFields), nowValues);
+            const nowValue = fieldMeta.normalize(value,
+              this.getValueFromFields(f, originalFields), nowValues);
             if (nowValue !== value) {
-              nowFields[f] = {...nowFields[f], value: nowValue};
+              nowFields[f] = {
+                ...nowFields[f],
+                value: nowValue,
+              };
               if (changedFieldsName.indexOf(f) === -1) {
                 changedFieldsName.push(f);
               }
@@ -267,7 +288,7 @@ function createBaseForm(option = {}, mixins = []) {
         this.fields = nowFields;
         if (onFieldsChange) {
           const changedFields = {};
-          changedFieldsName.forEach((f)=> {
+          changedFieldsName.forEach((f) => {
             changedFields[f] = nowFields[f];
           });
           onFieldsChange(this.props, changedFields);
@@ -280,7 +301,7 @@ function createBaseForm(option = {}, mixins = []) {
         for (const name in fieldsValue) {
           if (fieldsValue.hasOwnProperty(name)) {
             fields[name] = {
-              name: name,
+              name,
               value: fieldsValue[name],
             };
           }
@@ -305,7 +326,7 @@ function createBaseForm(option = {}, mixins = []) {
         const fieldMeta = this.getFieldMeta(name);
         if (fieldMeta && fieldMeta.ref) {
           if (typeof fieldMeta.ref === 'string') {
-            throw new Error('can not set ref string for ' + name);
+            throw new Error(`can not set ref string for ${name}`);
           }
           fieldMeta.ref(component);
         }
@@ -313,12 +334,16 @@ function createBaseForm(option = {}, mixins = []) {
         this.fields[name].instance = component;
       },
 
-      validateFieldsInternal(fields, {fieldNames, action, options = {}}, callback) {
+      validateFieldsInternal(fields, {
+        fieldNames,
+        action,
+        options = {},
+        }, callback) {
         const allRules = {};
         const allValues = {};
         const allFields = {};
         const alreadyErrors = {};
-        fields.forEach((field)=> {
+        fields.forEach((field) => {
           const name = field.name;
           if (options.force !== true && field.dirty === false) {
             if (field.errors) {
@@ -330,33 +355,43 @@ function createBaseForm(option = {}, mixins = []) {
             return;
           }
           const fieldMeta = this.getFieldMeta(name);
-          field.errors = undefined;
-          field.validating = true;
-          field.dirty = true;
+          const newField = {
+            ...field,
+          };
+          newField.errors = undefined;
+          newField.validating = true;
+          newField.dirty = true;
           allRules[name] = this.getRules(fieldMeta, action);
-          allValues[name] = field.value;
-          allFields[name] = field;
+          allValues[name] = newField.value;
+          allFields[name] = newField;
         });
         this.setFields(allFields);
         const nowFields = this.fields;
         // in case normalize
-        Object.keys(allValues).forEach((f)=> {
+        Object.keys(allValues).forEach((f) => {
           allValues[f] = nowFields[f].value;
         });
         if (callback && isEmptyObject(allFields)) {
-          callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue(fieldNames));
+          callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors,
+            this.getFieldsValue(fieldNames));
           return;
         }
         const validator = new AsyncValidator(allRules);
         if (validateMessages) {
           validator.messages(validateMessages);
         }
-        validator.validate(allValues, options, (errors)=> {
-          const errorsGroup = {...alreadyErrors};
+        validator.validate(allValues, options, (errors) => {
+          const errorsGroup = {
+            ...alreadyErrors,
+          };
           if (errors && errors.length) {
             errors.forEach((e) => {
               const fieldName = e.field;
-              errorsGroup[fieldName] = errorsGroup[fieldName] || {errors: []};
+              if (!errorsGroup[fieldName]) {
+                errorsGroup[fieldName] = {
+                  errors: [],
+                };
+              }
               const fieldErrors = errorsGroup[fieldName].errors;
               fieldErrors.push(e);
             });
@@ -368,7 +403,10 @@ function createBaseForm(option = {}, mixins = []) {
             const nowField = this.getField(name, true);
             // avoid concurrency problems
             if (nowField.value !== allValues[name]) {
-              expired.push({name, instance: nowField.instance});
+              expired.push({
+                name,
+                instance: nowField.instance,
+              });
             } else {
               nowField.errors = fieldErrors && fieldErrors.errors;
               nowField.value = allValues[name];
@@ -383,8 +421,11 @@ function createBaseForm(option = {}, mixins = []) {
           this.setFields(nowAllFields);
           if (callback) {
             if (expired.length) {
-              expired.forEach(({name, instance}) => {
-                const fieldErrors = [{message: `${name} need to revalidate`, field: name}];
+              expired.forEach(({ name, instance }) => {
+                const fieldErrors = [{
+                  message: `${name} need to revalidate`,
+                  field: name,
+                }];
                 errorsGroup[name] = {
                   expired: true,
                   instance,
@@ -392,13 +433,14 @@ function createBaseForm(option = {}, mixins = []) {
                 };
               });
             }
-            callback(isEmptyObject(errorsGroup) ? null : errorsGroup, this.getFieldsValue(fieldNames));
+            callback(isEmptyObject(errorsGroup) ? null : errorsGroup,
+              this.getFieldsValue(fieldNames));
           }
         });
       },
 
       validateFields(ns, opt, cb) {
-        const {names, callback, options} = getParams(ns, opt, cb);
+        const { names, callback, options } = getParams(ns, opt, cb);
         const fieldNames = names || this.getValidFieldsName();
         const fields = fieldNames.map((name) => {
           const fieldMeta = this.getFieldMeta(name);
@@ -418,12 +460,15 @@ function createBaseForm(option = {}, mixins = []) {
           return;
         }
         if (!('firstFields' in options)) {
-          options.firstFields = fieldNames.filter((name)=> {
+          options.firstFields = fieldNames.filter((name) => {
             const fieldMeta = this.getFieldMeta(name);
             return !!fieldMeta.validateFirst;
           });
         }
-        this.validateFieldsInternal(fields, {fieldNames, options}, callback);
+        this.validateFieldsInternal(fields, {
+          fieldNames,
+          options,
+        }, callback);
       },
 
       isFieldValidating(name) {
@@ -453,10 +498,10 @@ function createBaseForm(option = {}, mixins = []) {
 
       resetFields(ns) {
         const newFields = {};
-        const {fields} = this;
+        const { fields } = this;
         let changed = false;
         const names = ns || Object.keys(fields);
-        names.forEach((name)=> {
+        names.forEach((name) => {
           const field = fields[name];
           if (field && 'value' in field) {
             changed = true;

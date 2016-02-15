@@ -1,8 +1,8 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createForm} from '../';
-import {Simulate} from 'react-addons-test-utils';
+import { createForm } from '../';
+import { Simulate } from 'react-addons-test-utils';
 import async from 'async';
 
 let Test = React.createClass({
@@ -10,7 +10,7 @@ let Test = React.createClass({
     form: React.PropTypes.object,
   },
   check(rule, value, callback) {
-    setTimeout(()=> {
+    setTimeout(() => {
       if (value === '1') {
         callback();
       } else {
@@ -20,12 +20,13 @@ let Test = React.createClass({
   },
 
   render() {
-    const {getFieldProps} = this.props.form;
+    const { getFieldProps } = this.props.form;
     return (<div>
       <input {...getFieldProps('normal')} ref="normal"/>
       <input {...getFieldProps('async', {
         rules: [this.check],
-      })} ref="async"/>
+      })} ref="async"
+      />
     </div>);
   },
 });
@@ -108,7 +109,7 @@ describe('async usage', () => {
 
   it('submit works', (done) => {
     expect(form.isSubmitting()).to.be(false);
-    form.submit((callback)=> {
+    form.submit((callback) => {
       expect(form.isSubmitting()).to.be(true);
       setTimeout(() => {
         callback();

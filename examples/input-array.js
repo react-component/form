@@ -1,9 +1,9 @@
 /* eslint no-console:0 */
 
-import {createForm} from 'rc-form';
-import React, {PropTypes} from 'react';
+import { createForm } from 'rc-form';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import {regionStyle} from './styles';
+import { regionStyle } from './styles';
 
 let uuid = 0;
 
@@ -12,7 +12,7 @@ let Form = React.createClass({
     form: PropTypes.object,
   },
   remove(k) {
-    const {form} = this.props;
+    const { form } = this.props;
     // can use data-binding to get
     let keys = form.getFieldValue('keys');
     keys = keys.filter((key) => {
@@ -25,7 +25,7 @@ let Form = React.createClass({
   },
   add() {
     uuid++;
-    const {form} = this.props;
+    const { form } = this.props;
     // can use data-binding to get
     let keys = form.getFieldValue('keys');
     keys = keys.concat(uuid);
@@ -40,17 +40,20 @@ let Form = React.createClass({
     console.log(this.props.form.getFieldsValue());
   },
   render() {
-    const {getFieldProps, getFieldValue} = this.props.form;
+    const { getFieldProps, getFieldValue } = this.props.form;
     getFieldProps('keys', {
       initialValue: [],
     });
-    const inputs = getFieldValue('keys').map((k)=> {
-      return (<div key={k} style={regionStyle}><input {...getFieldProps('name' + k)}/> <a
-        onClick={this.remove.bind(this, k)}>delete</a></div>);
+    const inputs = getFieldValue('keys').map((k) => {
+      return (<div key={k} style={ regionStyle }>
+        <input {...getFieldProps(`name${k}`)}/>
+        <a
+          onClick={this.remove.bind(this, k)}
+        >delete</a></div>);
     });
     return (<div>
       {inputs}
-      <div style={regionStyle}>
+      <div style={ regionStyle }>
         <button onClick={this.submit}>submit</button>
 
         <button onClick={this.add}>add</button>

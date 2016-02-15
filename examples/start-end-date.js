@@ -3,8 +3,8 @@
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/index.css';
 import createDOMForm from 'rc-form/src/createDOMForm';
-import {regionStyle, errorStyle} from './styles';
-import React, {PropTypes, Component} from 'react';
+import { regionStyle, errorStyle } from './styles';
+import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class Form extends Component {
@@ -15,7 +15,7 @@ class Form extends Component {
   onSubmit = (e) => {
     console.log('submit');
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((error, values)=> {
+    this.props.form.validateFieldsAndScroll((error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -30,7 +30,7 @@ class Form extends Component {
   };
 
   checkStart = (rule, value, callback) => {
-    const {validateFields} = this.props.form;
+    const { validateFields } = this.props.form;
     validateFields(['end'], {
       force: true,
     });
@@ -39,7 +39,7 @@ class Form extends Component {
 
   checkEnd = (rule, value, callback) => {
     const end = value;
-    const {getFieldValue} = this.props.form;
+    const { getFieldValue } = this.props.form;
     const start = getFieldValue('start');
     if (!end || !start) {
       callback('please select both start and end time');
@@ -51,26 +51,28 @@ class Form extends Component {
   };
 
   render() {
-    const {form} = this.props;
-    const {getFieldProps, getFieldError} = form;
-    return (<div style={{margin: 20}}>
+    const { form } = this.props;
+    const { getFieldProps, getFieldError } = form;
+    return (<div style={{ margin: 20 }}>
       <h2>startTime and endTime validation</h2>
       <form onSubmit={this.onSubmit}>
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <p>start: </p>
           <p>
             <DatePicker {...getFieldProps('start', {
               rules: [this.checkStart],
-            })}/>
+            })}
+            />
           </p>
         </div>
 
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <p>end: </p>
           <p>
             <DatePicker {...getFieldProps('end', {
               rules: [this.checkEnd],
-            })}/>
+            })}
+            />
           </p>
         </div>
 
@@ -78,7 +80,7 @@ class Form extends Component {
           {getFieldError('end') ? getFieldError('end').join(',') : ''}
         </p>
 
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <button onClick={this.reset}>reset</button>
           &nbsp;
           <input type="submit" value="submit"/>

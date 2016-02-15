@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createForm } from 'rc-form';
 import { Router, Route } from 'react-router';
@@ -19,16 +19,26 @@ let ChildForm = React.createClass({
     window.history.back();
   },
   render() {
-    const {getFieldProps} = this.props.form;
-    return (<div style={{position: 'absolute', left: 0, top: 0, height: '100%', width: '100%', background: 'white'}}>
+    const { getFieldProps } = this.props.form;
+    return (<div
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        height: '100%',
+        width: '100%',
+        background: 'white',
+      }}
+    >
       <h2>child form</h2>
-      <div style={regionStyle}>
+      <div style={ regionStyle }>
         name:
         <input {...getFieldProps('name', {
           initialValue: this.props.initialValue.name,
-        })}/>
+        })}
+        />
       </div>
-      <div style={regionStyle}>
+      <div style={ regionStyle }>
         <button onClick={this.onClick}>submit</button>
       </div>
     </div>);
@@ -47,7 +57,7 @@ const Picker = React.createClass({
     window.location.hash = '/open';
   },
   render() {
-    const {value, childForm} = this.props;
+    const { value, childForm } = this.props;
     const valueEl = value ?
       <div onClick={this.onClick}>{value.name}</div> :
       <div onClick={this.onClick}>please select</div>;
@@ -71,17 +81,17 @@ let ParentForm = React.createClass({
     console.log(this.props.form.getFieldsValue());
   },
   render() {
-    const {getFieldProps} = this.props.form;
+    const { getFieldProps } = this.props.form;
     return (<div>
       <h2>parent form</h2>
-      <div style={regionStyle}>
+      <div style={ regionStyle }>
         family: <input {...getFieldProps('family')}/>
       </div>
-      <div style={regionStyle}>
+      <div style={ regionStyle }>
         <Picker childForm={this.props.children} {...getFieldProps('picker')}/>
       </div>
 
-      <div style={regionStyle}>
+      <div style={ regionStyle }>
         <button onClick={this.onClick}>submit</button>
       </div>
     </div>);
@@ -90,7 +100,12 @@ let ParentForm = React.createClass({
 
 ParentForm = createForm()(ParentForm);
 
-ReactDOM.render((<div style={{height: 300, position: 'relative'}}>
+ReactDOM.render((<div
+  style={{
+    height: 300,
+    position: 'relative',
+  }}
+>
   <Router>
     <Route path="/" component={ParentForm}>
       <Route path="/open" component={ChildForm}/>

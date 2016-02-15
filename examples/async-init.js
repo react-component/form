@@ -1,9 +1,9 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import {createForm} from 'rc-form';
-import React, {Component, PropTypes} from 'react';
+import { createForm } from 'rc-form';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 const Email = React.createClass({
   propTypes: {
@@ -21,19 +21,26 @@ const Email = React.createClass({
   },
 
   render() {
-    const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
+    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('email');
-    return (<div style={regionStyle}>
+    return (<div style={ regionStyle }>
       <p>email validate onBlur</p>
-      <p><input {...getFieldProps('email', {
-        validateFirst: true,
-        rules: [
-          {required: true},
-          {type: 'email', message: '错误的 email 格式'},
-          this.checkSpecial,
-        ],
-        validateTrigger: 'onBlur',
-      })}/></p>
+      <p>
+        <input {...getFieldProps('email', {
+          validateFirst: true,
+          rules: [
+            {
+              required: true,
+            },
+            {
+              type: 'email',
+              message: '错误的 email 格式',
+            },
+            this.checkSpecial,
+          ],
+          validateTrigger: 'onBlur',
+        })}
+        /></p>
       <p style={errorStyle}>
         {errors ? errors.join(',') : null}
       </p>
@@ -62,9 +69,9 @@ class Form extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.form.submit((callback)=> {
+    this.props.form.submit((callback) => {
       setTimeout(() => {
-        this.props.form.validateFields((error, values)=> {
+        this.props.form.validateFields((error, values) => {
           if (!error) {
             console.log('ok', values);
           } else {
@@ -85,16 +92,16 @@ class Form extends Component {
     if (!this.state || this.state.loading !== false) {
       return <b>loading</b>;
     }
-    const {form} = this.props;
+    const { form } = this.props;
     const disabled = form.isFieldsValidating() || form.isSubmitting();
-    return (<div style={{margin: 20}}>
+    return (<div style={{ margin: 20 }}>
       <h2>async init field</h2>
       <form onSubmit={this.onSubmit}>
-        <Email form={form}/>
+        <Email form={ form }/>
 
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <button disabled={disabled} type="submit">submit</button>
-          &nbsp;{disabled ? <span style={{color: 'red'}}>disabled</span> : null}&nbsp;
+          &nbsp;{disabled ? <span style={{ color: 'red' }}>disabled</span> : null}&nbsp;
           <button disabled={disabled} onClick={this.reset}>reset</button>
         </div>
       </form>

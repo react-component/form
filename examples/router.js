@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { createForm } from 'rc-form';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
@@ -30,9 +30,9 @@ let App = React.createClass({
     history.goBack();
   },
   render() {
-    const {location} = this.props;
+    const { location } = this.props;
     return (<div>
-      <style dangerouslySetInnerHTML={{__html: style}}/>
+      <style dangerouslySetInnerHTML={{ __html: style }}/>
       <p>header {location.pathname === '/' ? null : <a href="#" onClick={this.onClick}>back</a>}</p>
       <div>
         {this.props.children}
@@ -42,6 +42,18 @@ let App = React.createClass({
 });
 
 App = createRootContainer()(App);
+
+function onClick(name) {
+  this.props.setStoreState({
+    formState: {
+      ...this.props.getStoreState().formState,
+      city: {
+        value: name,
+      },
+    },
+  });
+  history.pushState('/');
+}
 
 let CitySelector = React.createClass({
   propTypes: {
@@ -54,23 +66,12 @@ let CitySelector = React.createClass({
       },
     };
   },
-  onClick(name) {
-    this.props.setStoreState({
-      formState: {
-        ...this.props.getStoreState().formState,
-        city: {
-          value: name,
-        },
-      },
-    });
-    history.pushState('/');
-  },
   render() {
     return (<div className="region">
-      <p onClick={this.onClick.bind(this, 'sh')}>
+      <p onClick={onClick.bind(this, 'sh')}>
         shanghai
       </p>
-      <p onClick={this.onClick.bind(this, 'hz')}>
+      <p onClick={onClick.bind(this, 'hz')}>
         hangzhou
       </p>
     </div>);
@@ -104,20 +105,28 @@ let Form = React.createClass({
     // console.log(this.props.form.getFieldsValue());
   },
   render() {
-    const {getFieldProps, getFieldError} = this.props.form;
+    const { getFieldProps, getFieldError } = this.props.form;
     return (<div className="region">
       <div>
-        <p>user: <input {...getFieldProps('user', {
-          rules: [{required: true}],
-        })} /></p>
-       {getFieldError('user') ? <p className="error">{getFieldError('user').join(',')}</p> : null}
+        <p>user:
+          <input {...getFieldProps('user', {
+            rules: [{
+              required: true,
+            }],
+          })}
+          /></p>
+        {getFieldError('user') ? <p className="error">{getFieldError('user').join(',')}</p> : null}
       </div>
       <div>
-        <p>city: <CityInput {...getFieldProps('city', {
-          rules: [{required: true}],
-          validatorTrigger: false,
-          trigger: false,
-        })}/></p>
+        <p>city:
+          <CityInput {...getFieldProps('city', {
+            rules: [{
+              required: true,
+            }],
+            validatorTrigger: false,
+            trigger: false,
+          })}
+          /></p>
         {getFieldError('city') ? <p className="error">{getFieldError('city').join(',')}</p> : null}
       </div>
       <p>
@@ -160,7 +169,7 @@ const routes = {
 };
 
 render(
-  <div style={{margin: 20}}>
+  <div style={{ margin: 20 }}>
     <h1>integrate with react-router</h1>
     <Router history={history}>{routes}</Router>
   </div>, document.getElementById('__react-content'));

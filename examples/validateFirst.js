@@ -1,23 +1,31 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import {createForm} from 'rc-form';
-import React, {Component, PropTypes} from 'react';
+import { createForm } from 'rc-form';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/lib/index.css';
-import {regionStyle, errorStyle} from './styles';
+import { regionStyle, errorStyle } from './styles';
 
 function Email(props) {
-  const {getFieldProps, getFieldError, isFieldValidating} = props.form;
+  const { getFieldProps, getFieldError, isFieldValidating } = props.form;
   const errors = getFieldError('email');
-  return (<div style={regionStyle}>
+  return (<div style={ regionStyle }>
     <p>email sync validate</p>
-    <p><input {...getFieldProps('email', {
-      validateFirst: true,
-      rules: [
-        {required: true},
-        {type: 'email', message: '错误的 email 格式'},
-      ],
-    })}/></p>
+    <p>
+      <input {...getFieldProps('email', {
+        validateFirst: true,
+        rules: [
+          {
+            required: true,
+          },
+          {
+            type: 'email',
+            message: '错误的 email 格式',
+          },
+        ],
+      })}
+      />
+    </p>
     <p style={errorStyle}>
       {errors ? errors.join(',') : null}
     </p>
@@ -49,16 +57,24 @@ const User = React.createClass({
   },
 
   render() {
-    const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
+    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('user');
-    return (<div style={regionStyle}>
+    return (<div style={ regionStyle }>
       <p>user async validate</p>
-      <p><input {...getFieldProps('user', {
-        rules: [
-          {required: true, min: 2},
-          {validator: this.userExists},
-        ],
-      })}/></p>
+      <p>
+        <input {...getFieldProps('user', {
+          rules: [
+            {
+              required: true,
+              min: 2,
+            },
+            {
+              validator: this.userExists,
+            },
+          ],
+        })}
+        />
+      </p>
       <p style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </p>
@@ -79,7 +95,7 @@ class Form extends Component {
     e.preventDefault();
     this.props.form.validateFields({
       // firstFields: false,
-    }, (error, values)=> {
+    }, (error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {
@@ -94,15 +110,15 @@ class Form extends Component {
   };
 
   render() {
-    const {form} = this.props;
-    return (<div style={{margin: 20}}>
+    const { form } = this.props;
+    return (<div style={{ margin: 20 }}>
       <h2>validateFirst</h2>
       <form onSubmit={this.onSubmit}>
-        <User form={form}/>
+        <User form={ form }/>
 
-        <Email form={form}/>
+        <Email form={ form }/>
 
-        <div style={regionStyle}>
+        <div style={ regionStyle }>
           <button onClick={this.reset}>reset</button>
           &nbsp;
           <input type="submit" value="submit"/>
