@@ -19718,6 +19718,7 @@
 	    return {
 	      getFieldsValue: this.getFieldsValue,
 	      getFieldValue: this.getFieldValue,
+	      getFieldInstance: this.getFieldInstance,
 	      setFieldsValue: this.setFieldsValue,
 	      setFields: this.setFields,
 	      setFieldsInitialValue: this.setFieldsInitialValue,
@@ -19997,6 +19998,11 @@
 	
 	        return this.getValueFromFields(name, fields);
 	      },
+	      getFieldInstance: function getFieldInstance(name) {
+	        var fields = this.fields;
+	
+	        return fields[name] && fields[name].instance;
+	      },
 	      getValueFromFields: function getValueFromFields(name, fields) {
 	        var fieldsMeta = this.fieldsMeta;
 	
@@ -20262,7 +20268,9 @@
 	          var field = fields[name];
 	          if (field && 'value' in field) {
 	            changed = true;
-	            newFields[name] = { instance: field.instance };
+	            newFields[name] = {
+	              instance: field.instance
+	            };
 	          }
 	        });
 	        if (changed) {

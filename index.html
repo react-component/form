@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@0.13.4 - React High Order Form Component</title>
+  <title>rc-form@0.13.5 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@0.13.4</h1>
+  <h1>rc-form@0.13.5</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -854,6 +854,7 @@ Defaults to <code>onChange</code>, set to falsy to only validate when call props
 }</code></pre></div><h4>option.validateFirst: Boolean<a id="user-content-option.validatefirst:-boolean" name="option.validatefirst:-boolean" class="anchor" aria-hidden="true" href="#option.validatefirst:-boolean"><span class="octicon octicon-link"></span></a></h4><p>Defaults to false. whether stop validate on first rule of error for this field.</p>
 <h3>getFieldsValue([fieldNames: String[]])<a id="user-content-getfieldsvalue([fieldnames:-string[]])" name="getfieldsvalue([fieldnames:-string[]])" class="anchor" aria-hidden="true" href="#getfieldsvalue([fieldnames:-string[]])"><span class="octicon octicon-link"></span></a></h3><p>Get fields value by fieldNames.</p>
 <h3>getFieldValue(fieldName: String)<a id="user-content-getfieldvalue(fieldname:-string)" name="getfieldvalue(fieldname:-string)" class="anchor" aria-hidden="true" href="#getfieldvalue(fieldname:-string)"><span class="octicon octicon-link"></span></a></h3><p>Get field value by fieldName.</p>
+<h3>getFieldInstance(fieldName: String)<a id="user-content-getfieldinstance(fieldname:-string)" name="getfieldinstance(fieldname:-string)" class="anchor" aria-hidden="true" href="#getfieldinstance(fieldname:-string)"><span class="octicon octicon-link"></span></a></h3><p>Get field react public instance by fieldName (if refComponent set to true).</p>
 <h3>setFieldsValue(obj: Object)<a id="user-content-setfieldsvalue(obj:-object)" name="setfieldsvalue(obj:-object)" class="anchor" aria-hidden="true" href="#setfieldsvalue(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>Set fields value by kv object.</p>
 <h3>setFieldsInitialValue(obj: Object)<a id="user-content-setfieldsinitialvalue(obj:-object)" name="setfieldsinitialvalue(obj:-object)" class="anchor" aria-hidden="true" href="#setfieldsinitialvalue(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>Set fields initialValue by kv object. use for reset and initial display/value.</p>
 <h3>setFields(obj: Object)<a id="user-content-setfields(obj:-object)" name="setfields(obj:-object)" class="anchor" aria-hidden="true" href="#setfields(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>Set fields by kv object. each field can contain errors and value member.</p>
@@ -867,7 +868,8 @@ add a new force member.</p>
 <h3>isSubmitting(): Bool<a id="user-content-issubmitting():-bool" name="issubmitting():-bool" class="anchor" aria-hidden="true" href="#issubmitting():-bool"><span class="octicon octicon-link"></span></a></h3><p>Whether the form is submitting.</p>
 <h3>submit(callback: Function)<a id="user-content-submit(callback:-function)" name="submit(callback:-function)" class="anchor" aria-hidden="true" href="#submit(callback:-function)"><span class="octicon octicon-link"></span></a></h3><p>Cause isSubmitting to return true, after callback called, isSubmitting return false.</p>
 <h3>resetFields([names: String[]])<a id="user-content-resetfields([names:-string[]])" name="resetfields([names:-string[]])" class="anchor" aria-hidden="true" href="#resetfields([names:-string[]])"><span class="octicon octicon-link"></span></a></h3><p>Reset specified inputs. Defaults to all.</p>
-<h2>rc-form/lib/createDOMForm(formOption): Function<a id="user-content-rc-form/lib/createdomform(formoption):-function" name="rc-form/lib/createdomform(formoption):-function" class="anchor" aria-hidden="true" href="#rc-form/lib/createdomform(formoption):-function"><span class="octicon octicon-link"></span></a></h2><p>createForm enhancement, support props.form.validateFieldsAndScroll</p>
+<h2>rc-form/lib/createDOMForm(formOption): Function<a id="user-content-rc-form/lib/createdomform(formoption):-function" name="rc-form/lib/createdomform(formoption):-function" class="anchor" aria-hidden="true" href="#rc-form/lib/createdomform(formoption):-function"><span class="octicon octicon-link"></span></a></h2><p>createForm enhancement, formOption.refComponent is set to true(must be set to true).
+support props.form.validateFieldsAndScroll</p>
 <h3>props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))<a id="user-content-props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" name="props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" class="anchor" aria-hidden="true" href="#props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))"><span class="octicon octicon-link"></span></a></h3><p>props.form.validateFields enhancement, support scroll to the first invalid form field</p>
 <h4>options.container: HTMLElement<a id="user-content-options.container:-htmlelement" name="options.container:-htmlelement" class="anchor" aria-hidden="true" href="#options.container:-htmlelement"><span class="octicon octicon-link"></span></a></h4><p>Defaults to first scrollable container of form field(until document).</p>
 <h2>Test Case<a id="user-content-test-case" name="test-case" class="anchor" aria-hidden="true" href="#test-case"><span class="octicon octicon-link"></span></a></h2><div class="highlight"><pre><code language="undefined">npm test
