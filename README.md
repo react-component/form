@@ -164,6 +164,10 @@ Get fields value by fieldNames.
 
 Get field value by fieldName.
 
+### getFieldInstance(fieldName: String)
+
+Get field react public instance by fieldName (if refComponent set to true).
+
 ### setFieldsValue(obj: Object)
 
 Set fields value by kv object.
@@ -213,7 +217,8 @@ Reset specified inputs. Defaults to all.
 
 ## rc-form/lib/createDOMForm(formOption): Function
 
-createForm enhancement, support props.form.validateFieldsAndScroll
+createForm enhancement, formOption.refComponent is set to true(must be set to true).
+support props.form.validateFieldsAndScroll
 
 ### props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))
 

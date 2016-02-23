@@ -5,6 +5,7 @@ export const mixin = {
     return {
       getFieldsValue: this.getFieldsValue,
       getFieldValue: this.getFieldValue,
+      getFieldInstance: this.getFieldInstance,
       setFieldsValue: this.setFieldsValue,
       setFields: this.setFields,
       setFieldsInitialValue: this.setFieldsInitialValue,

@@ -240,6 +240,11 @@ function createBaseForm(option = {}, mixins = []) {
         return this.getValueFromFields(name, fields);
       },
 
+      getFieldInstance(name) {
+        const { fields } = this;
+        return fields[name] && fields[name].instance;
+      },
+
       getValueFromFields(name, fields) {
         const { fieldsMeta } = this;
         const field = fields[name];
@@ -505,7 +510,9 @@ function createBaseForm(option = {}, mixins = []) {
           const field = fields[name];
           if (field && 'value' in field) {
             changed = true;
-            newFields[name] = { instance: field.instance };
+            newFields[name] = {
+              instance: field.instance,
+            };
           }
         });
         if (changed) {

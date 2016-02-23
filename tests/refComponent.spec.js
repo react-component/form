@@ -37,6 +37,6 @@ describe('refComponent usage', () => {
       refComponent: true,
     })(TestComponent);
     component = ReactDOM.render(<Test x={2}/>, container);
-    expect(component.fields.normal.instance).to.be(document.getElementById('t12345'));
+    expect(component.getFieldInstance('normal')).to.be(document.getElementById('t12345'));
   });
 });
