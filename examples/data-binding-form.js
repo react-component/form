@@ -1595,15 +1595,25 @@ webpackJsonp([3],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var createFormContainer = (0, _reactDataBinding.createContainer)(function (state) {
+	  return {
+	    on: ((state.formState || {}).on || {}).value || false
+	  };
+	});
+	
 	var TopForm = _react2.default.createClass({
 	  displayName: 'TopForm',
 	
 	  propTypes: {
-	    form: _react.PropTypes.object
+	    form: _react.PropTypes.object,
+	    on: _react.PropTypes.bool
 	  },
 	
 	  render: function render() {
-	    var getFieldProps = this.props.form.getFieldProps;
+	    var _props = this.props;
+	    var form = _props.form;
+	    var on = _props.on;
+	    var getFieldProps = form.getFieldProps;
 	
 	    return _react2.default.createElement(
 	      'div',
@@ -1617,13 +1627,14 @@ webpackJsonp([3],{
 	        'p',
 	        null,
 	        _react2.default.createElement(_switch2.default, getFieldProps('on', {
-	          initialValue: true,
+	          initialValue: on,
 	          valuePropName: 'checked'
 	        }))
 	      )
 	    );
 	  }
 	});
+	TopForm = createFormContainer(TopForm);
 	
 	var BottomForm = _react2.default.createClass({
 	  displayName: 'BottomForm',
@@ -1634,9 +1645,9 @@ webpackJsonp([3],{
 	  },
 	
 	  render: function render() {
-	    var _props = this.props;
-	    var form = _props.form;
-	    var on = _props.on;
+	    var _props2 = this.props;
+	    var form = _props2.form;
+	    var on = _props2.on;
 	
 	    var style = _extends({}, _styles.regionStyle, {
 	      display: on ? 'block' : 'none'
@@ -1663,11 +1674,7 @@ webpackJsonp([3],{
 	  }
 	});
 	
-	BottomForm = (0, _reactDataBinding.createContainer)(function (state) {
-	  return {
-	    on: ((state.formState || {}).on || {}).value || false
-	  };
-	})(BottomForm);
+	BottomForm = createFormContainer(BottomForm);
 	
 	var Form = _react2.default.createClass({
 	  displayName: 'Form',
@@ -1747,7 +1754,11 @@ webpackJsonp([3],{
 	  return App;
 	}(_react2.default.Component);
 	
-	var NewApp = (0, _reactDataBinding.createRootContainer)()(App);
+	var NewApp = (0, _reactDataBinding.createRootContainer)({
+	  formState: {
+	    on: { value: true }
+	  }
+	})(App);
 	
 	_reactDom2.default.render(_react2.default.createElement(NewApp, null), document.getElementById('__react-content'));
 
