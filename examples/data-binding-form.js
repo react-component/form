@@ -8,24 +8,33 @@ import { regionStyle } from './styles';
 import Switch from 'antd/lib/switch';
 import 'antd/lib/index.css';
 
-const TopForm = React.createClass({
+const createFormContainer = createContainer((state) => {
+  return {
+    on: ((state.formState || {}).on || {}).value || false,
+  };
+});
+
+let TopForm = React.createClass({
   propTypes: {
     form: PropTypes.object,
+    on: PropTypes.bool,
   },
 
   render() {
-    const { getFieldProps } = this.props.form;
+    const { form, on } = this.props;
+    const { getFieldProps } = form;
     return (<div style={ regionStyle }>
       <p>has email? </p>
       <p>
         <Switch {...getFieldProps('on', {
-          initialValue: true,
+          initialValue: on,
           valuePropName: 'checked',
         })}
         /></p>
     </div>);
   },
 });
+TopForm = createFormContainer(TopForm);
 
 let BottomForm = React.createClass({
   propTypes: {
@@ -53,11 +62,7 @@ let BottomForm = React.createClass({
   },
 });
 
-BottomForm = createContainer((state) => {
-  return {
-    on: ((state.formState || {}).on || {}).value || false,
-  };
-})(BottomForm);
+BottomForm = createFormContainer(BottomForm);
 
 let Form = React.createClass({
   propTypes: {
@@ -110,6 +115,10 @@ class App extends React.Component {
   }
 }
 
-const NewApp = createRootContainer()(App);
+const NewApp = createRootContainer({
+  formState: {
+    on: { value: true },
+  },
+})(App);
 
 ReactDOM.render(<NewApp />, document.getElementById('__react-content'));
