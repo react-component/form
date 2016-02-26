@@ -19810,7 +19810,15 @@
 	        if (mapPropsToFields) {
 	          var fields = mapPropsToFields(nextProps);
 	          if (fields) {
-	            this.fields = _extends({}, this.fields, fields);
+	            var instanceFields = this.fields = _extends({}, this.fields);
+	            for (var fieldName in fields) {
+	              if (fields.hasOwnProperty(fieldName)) {
+	                instanceFields[fieldName] = _extends({}, fields[fieldName], {
+	                  // keep instance
+	                  instance: instanceFields[fieldName] && instanceFields[fieldName].instance
+	                });
+	              }
+	            }
 	          }
 	        }
 	      },
