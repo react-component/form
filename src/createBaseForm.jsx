@@ -40,10 +40,18 @@ function createBaseForm(option = {}, mixins = []) {
         if (mapPropsToFields) {
           const fields = mapPropsToFields(nextProps);
           if (fields) {
-            this.fields = {
+            const instanceFields = this.fields = {
               ...this.fields,
-              ...fields,
             };
+            for (const fieldName in fields) {
+              if (fields.hasOwnProperty(fieldName)) {
+                instanceFields[fieldName] = {
+                  ...fields[fieldName],
+                  // keep instance
+                  instance: instanceFields[fieldName] && instanceFields[fieldName].instance,
+                };
+              }
+            }
           }
         }
       },
