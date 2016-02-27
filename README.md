@@ -81,10 +81,6 @@ preset messages of [async-validator](https://github.com/yiminghe/async-validator
 
 Get new props transfered to WrappedComponent. Defaults to props=>props.
 
-### formOption.refComponent: Boolean
-
-Defaults to false. Whether save component as ref. Can get instance from validateFields's callback parameter by instance member.
-
 ### formOption.onFieldsChange(props, fields)
 
 Called when field changed, you can dispatch fields to redux store.
@@ -166,7 +162,7 @@ Get field value by fieldName.
 
 ### getFieldInstance(fieldName: String)
 
-Get field react public instance by fieldName (if refComponent set to true).
+Get field react public instance by fieldName.
 
 ### setFieldsValue(obj: Object)
 
@@ -217,8 +213,7 @@ Reset specified inputs. Defaults to all.
 
 ## rc-form/lib/createDOMForm(formOption): Function
 
-createForm enhancement, formOption.refComponent is set to true(must be set to true).
-support props.form.validateFieldsAndScroll
+createForm enhancement, support props.form.validateFieldsAndScroll
 
 ### props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))
 
@@ -227,6 +222,32 @@ props.form.validateFields enhancement, support scroll to the first invalid form 
 #### options.container: HTMLElement
 
 Defaults to first scrollable container of form field(until document).
+
+## Notes
+
+- you can not set same prop name as the value of validateTrigger/trigger.
+
+```js
+<input {...getFieldProps('change',{
+  onChange: this.iWantToKnow // you must set onChange here
+})}>
+```
+
+- you can not use ref prop.
+
+```js
+<input {...getFieldProps('ref')} />
+
+this.props.form.getFieldInstance('ref') // use this to get ref
+```
+
+or
+
+```js
+<input {...getFieldProps('ref',{
+  ref: this.saveRef // or use function here
+})} />
+```
 
 ## Test Case
 

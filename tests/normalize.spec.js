@@ -17,7 +17,7 @@ let Test = React.createClass({
     return (<div>
       <input {...getFieldProps('normal', {
         normalize: this.upper,
-      })} ref="normal"
+      })}
       />
     </div>);
   },
@@ -46,9 +46,9 @@ describe('normalize usage', () => {
   });
 
   it('works', () => {
-    component.refs.normal.value = 'a';
-    Simulate.change(component.refs.normal);
+    form.getFieldInstance('normal').value = 'a';
+    Simulate.change(form.getFieldInstance('normal'));
     expect(form.getFieldValue('normal')).to.be('A');
-    expect(component.refs.normal.value).to.be('A');
+    expect(form.getFieldInstance('normal').value).to.be('A');
   });
 });

@@ -80,7 +80,6 @@ const mixin = {
 function createDOMForm(option) {
   return createBaseForm({
     ...option,
-    refComponent: true,
   }, [mixin]);
 }
 

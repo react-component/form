@@ -11,8 +11,7 @@ const defaultTrigger = defaultValidateTrigger;
 function createBaseForm(option = {}, mixins = []) {
   const { mapPropsToFields, onFieldsChange,
     fieldNameProp, fieldMetaProp,
-    validateMessages, refComponent,
-    mapProps = mirror,
+    validateMessages, mapProps = mirror,
     formPropName = 'form', withRef } = option;
 
   function decorate(WrappedComponent) {
@@ -30,10 +29,6 @@ function createBaseForm(option = {}, mixins = []) {
         return {
           submitting: false,
         };
-      },
-
-      componentDidMount() {
-        this.componentDidUpdate();
       },
 
       componentWillReceiveProps(nextProps) {
@@ -54,23 +49,6 @@ function createBaseForm(option = {}, mixins = []) {
             }
           }
         }
-      },
-
-      componentDidUpdate() {
-        const { fields, fieldsMeta } = this;
-        const fieldsMetaKeys = Object.keys(fieldsMeta);
-        fieldsMetaKeys.forEach((s) => {
-          if (fieldsMeta[s].stale) {
-            delete fieldsMeta[s];
-          }
-        });
-        const fieldsKeys = Object.keys(fields);
-        fieldsKeys.forEach((s) => {
-          if (!fieldsMeta[s]) {
-            delete fields[s];
-          }
-        });
-        // do not notify store
       },
 
       onChange(name, action, event) {
@@ -198,15 +176,13 @@ function createBaseForm(option = {}, mixins = []) {
           inputProps[valuePropName] = field.value;
         }
 
-        if (refComponent) {
-          inputProps.ref = this.getCacheBind(name, `${name}__ref`, this.saveRef);
-        }
+
+        inputProps.ref = this.getCacheBind(name, `${name}__ref`, this.saveRef);
 
         const meta = {
           ...fieldMeta,
           ...fieldOption,
           validate: validateRules,
-          stale: 0,
         };
 
         this.fieldsMeta[name] = meta;
@@ -336,6 +312,12 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       saveRef(name, _, component) {
+        if (!component) {
+          // after destroy, delete data
+          delete this.fieldsMeta[name];
+          delete this.fields[name];
+          return;
+        }
         const fieldMeta = this.getFieldMeta(name);
         if (fieldMeta && fieldMeta.ref) {
           if (typeof fieldMeta.ref === 'string') {
@@ -532,12 +514,6 @@ function createBaseForm(option = {}, mixins = []) {
         const formProps = {
           [formPropName]: this.getForm(),
         };
-        const fieldsMeta = this.fieldsMeta;
-        for (const name in fieldsMeta) {
-          if (fieldsMeta.hasOwnProperty(name)) {
-            fieldsMeta[name].stale = 1;
-          }
-        }
         if (withRef) {
           formProps.ref = 'wrappedComponent';
         }

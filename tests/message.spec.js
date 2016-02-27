@@ -34,7 +34,7 @@ describe('message usage', () => {
             rules: [{
               required: true,
             }],
-          })} ref="required"
+          })}
           />
         </div>);
       },
@@ -48,7 +48,7 @@ describe('message usage', () => {
     component = ReactDOM.render(<Test />, container);
     component = component.refs.wrappedComponent;
     form = component.props.form;
-    Simulate.change(component.refs.required);
+    Simulate.change(form.getFieldInstance('required'));
     expect(form.getFieldError('required').length).to.be(1);
     expect(form.getFieldError('required')[0]).to.be('required required!');
   });
@@ -67,7 +67,7 @@ describe('message usage', () => {
               required: true,
               message: <b>1</b>,
             }],
-          })} ref="required"
+          })}
           />
         </div>);
       },
@@ -78,7 +78,7 @@ describe('message usage', () => {
     component = ReactDOM.render(<Test />, container);
     component = component.refs.wrappedComponent;
     form = component.props.form;
-    Simulate.change(component.refs.required);
+    Simulate.change(form.getFieldInstance('required'));
     expect(form.getFieldError('required').length).to.be(1);
     expect(form.getFieldError('required')[0].type).to.be('b');
   });

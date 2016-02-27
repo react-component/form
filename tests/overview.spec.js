@@ -11,13 +11,13 @@ let Test = React.createClass({
   render() {
     const { getFieldProps } = this.props.form;
     return (<div>
-      <input {...getFieldProps('normal')} ref="normal"/>
+      <input {...getFieldProps('normal')} />
 
       <input {...getFieldProps('required', {
         rules: [{
           required: true,
         }],
-      })} ref="required"
+      })}
       />
 
       <input {...getFieldProps('blurRequired', {
@@ -27,7 +27,7 @@ let Test = React.createClass({
             required: true,
           }],
         }],
-      })} ref="blurRequired"
+      })}
       />
     </div>);
   },
@@ -57,20 +57,20 @@ describe('overview usage', () => {
 
   it('collect value', () => {
     expect(form.getFieldValue('normal')).to.be(undefined);
-    Simulate.change(component.refs.normal);
+    Simulate.change(form.getFieldInstance('normal'));
     expect(form.getFieldValue('normal')).to.be('');
-    component.refs.normal.value = '1';
-    Simulate.change(component.refs.normal);
+    form.getFieldInstance('normal').value = '1';
+    Simulate.change(form.getFieldInstance('normal'));
     expect(form.getFieldValue('normal')).to.be('1');
   });
 
   it('validate value', () => {
     expect(form.getFieldValue('required')).to.be(undefined);
-    Simulate.change(component.refs.required);
+    Simulate.change(form.getFieldInstance('required'));
     expect(form.getFieldValue('required')).to.be('');
     expect(form.getFieldError('required')).to.eql(['required is required']);
-    component.refs.required.value = '1';
-    Simulate.change(component.refs.required);
+    form.getFieldInstance('required').value = '1';
+    Simulate.change(form.getFieldInstance('required'));
     expect(form.getFieldValue('required')).to.be('1');
     expect(form.getFieldError('required')).to.be(undefined);
   });
@@ -78,15 +78,15 @@ describe('overview usage', () => {
 
   it('validate trigger value', () => {
     expect(form.getFieldValue('blurRequired')).to.be(undefined);
-    Simulate.change(component.refs.blurRequired);
+    Simulate.change(form.getFieldInstance('blurRequired'));
     expect(form.getFieldValue('blurRequired')).to.be('');
     expect(form.getFieldError('blurRequired')).to.be(undefined);
-    Simulate.blur(component.refs.blurRequired);
+    Simulate.blur(form.getFieldInstance('blurRequired'));
     expect(form.getFieldValue('blurRequired')).to.be('');
     expect(form.getFieldError('blurRequired')).to.eql(['blurRequired is required']);
-    component.refs.blurRequired.value = '1';
-    Simulate.change(component.refs.blurRequired);
-    Simulate.blur(component.refs.blurRequired);
+    form.getFieldInstance('blurRequired').value = '1';
+    Simulate.change(form.getFieldInstance('blurRequired'));
+    Simulate.blur(form.getFieldInstance('blurRequired'));
     expect(form.getFieldValue('blurRequired')).to.be('1');
     expect(form.getFieldError('blurRequired')).to.be(undefined);
   });
@@ -104,10 +104,10 @@ describe('overview usage', () => {
   });
 
   it('validateFields works for ok', (callback) => {
-    component.refs.required.value = '2';
-    component.refs.blurRequired.value = '1';
-    Simulate.change(component.refs.blurRequired);
-    Simulate.change(component.refs.required);
+    form.getFieldInstance('required').value = '2';
+    form.getFieldInstance('blurRequired').value = '1';
+    Simulate.change(form.getFieldInstance('blurRequired'));
+    Simulate.change(form.getFieldInstance('required'));
     form.validateFields((errors, values) => {
       expect(errors).not.to.be.ok();
       expect(values.normal).to.be(undefined);
@@ -118,8 +118,8 @@ describe('overview usage', () => {
   });
 
   it('resetFields works', () => {
-    component.refs.required.value = '1';
-    Simulate.change(component.refs.required);
+    form.getFieldInstance('required').value = '1';
+    Simulate.change(form.getFieldInstance('required'));
     expect(form.getFieldValue('required')).to.be('1');
     expect(form.getFieldError('required')).to.be(undefined);
     form.resetFields();
@@ -131,8 +131,8 @@ describe('overview usage', () => {
     form.setFieldsInitialValue({
       normal: '4',
     });
-    component.refs.normal.value = '2';
-    Simulate.change(component.refs.normal);
+    form.getFieldInstance('normal').value = '2';
+    Simulate.change(form.getFieldInstance('normal'));
     expect(form.getFieldValue('normal')).to.be('2');
     form.resetFields();
     expect(form.getFieldValue('normal')).to.be('4');

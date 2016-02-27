@@ -22,10 +22,10 @@ let Test = React.createClass({
   render() {
     const { getFieldProps } = this.props.form;
     return (<div>
-      <input {...getFieldProps('normal')} ref="normal"/>
+      <input {...getFieldProps('normal')} />
       <input {...getFieldProps('async', {
         rules: [this.check],
-      })} ref="async"
+      })}
       />
     </div>);
   },
@@ -56,7 +56,7 @@ describe('async usage', () => {
   it('works', (done) => {
     async.series([
       (callback) => {
-        Simulate.change(component.refs.async);
+        Simulate.change(form.getFieldInstance('async'));
         expect(form.getFieldValue('async')).to.be('');
         expect(form.getFieldError('async')).not.to.be.ok();
         expect(form.isFieldValidating('async')).to.be(true);
@@ -70,8 +70,8 @@ describe('async usage', () => {
         callback();
       },
       (callback) => {
-        component.refs.async.value = '1';
-        Simulate.change(component.refs.async);
+        form.getFieldInstance('async').value = '1';
+        Simulate.change(form.getFieldInstance('async'));
         expect(form.getFieldValue('async')).to.be('1');
         expect(form.getFieldError('async')).to.be(undefined);
         expect(form.isFieldValidating('async')).to.be(true);
@@ -97,8 +97,8 @@ describe('async usage', () => {
   });
 
   it('validateFields works for ok', (done) => {
-    component.refs.async.value = '1';
-    Simulate.change(component.refs.async);
+    form.getFieldInstance('async').value = '1';
+    Simulate.change(form.getFieldInstance('async'));
     form.validateFields((errors, values) => {
       expect(values.normal).to.be(undefined);
       expect(values.async).to.be('1');
@@ -127,7 +127,7 @@ describe('async usage', () => {
         done();
       }, 500);
     });
-    component.refs.async.value = '1';
-    Simulate.change(component.refs.async);
+    form.getFieldInstance('async').value = '1';
+    Simulate.change(form.getFieldInstance('async'));
   });
 });

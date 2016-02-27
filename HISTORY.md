@@ -1,5 +1,9 @@
 # History
 ----
+## 0.14.0 / 2016-02-27
+
+- remove refComponent prop.(defaults to true), so you must use getFieldInstance method to get instance instead of ref
+
 ## 0.13.0 / 2016-02-14
 
 - support rc-form/lib/createDOMForm

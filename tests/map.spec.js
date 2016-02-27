@@ -12,8 +12,8 @@ const TestComponent = React.createClass({
   render() {
     const { getFieldProps } = this.props.form;
     return (<div>
-      <input {...getFieldProps('normal')} ref="normal"/>
-      <input {...getFieldProps('normal2')} ref="normal2"/>
+      <input {...getFieldProps('normal')} />
+      <input {...getFieldProps('normal2')} />
     </div>);
   },
 });
@@ -54,12 +54,12 @@ describe('map usage', () => {
     component = ReactDOM.render(<Test formState={{ normal: '2' }}/>, container);
     component = component.refs.wrappedComponent;
     form = component.props.form;
-    expect(component.refs.normal.value).to.be('2');
+    expect(form.getFieldInstance('normal').value).to.be('2');
     expect(form.getFieldValue('normal')).to.be('2');
-    expect(component.refs.normal2.value).to.be('');
+    expect(form.getFieldInstance('normal2').value).to.be('');
     expect(form.getFieldValue('normal2')).to.be(undefined);
-    component.refs.normal.value = '3';
-    Simulate.change(component.refs.normal);
+    form.getFieldInstance('normal').value = '3';
+    Simulate.change(form.getFieldInstance('normal'));
     expect(form.getFieldValue('normal')).to.be('3');
   });
 

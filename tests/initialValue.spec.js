@@ -25,7 +25,7 @@ let Test = React.createClass({
         initialValue: '1',
         // test empty rules
         rules: [],
-      })} ref="normal"
+      })}
       />
     </div>);
   },
@@ -54,8 +54,8 @@ describe('initialValue usage', () => {
   });
 
   it('resetFields works', () => {
-    component.refs.normal.value = '2';
-    Simulate.change(component.refs.normal);
+    form.getFieldInstance('normal').value = '2';
+    Simulate.change(form.getFieldInstance('normal'));
     expect(form.getFieldValue('normal')).to.be('2');
     form.resetFields();
     expect(form.getFieldValue('normal')).to.be('1');
