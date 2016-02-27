@@ -1234,9 +1234,7 @@ webpackJsonp([6],{
 	};
 	
 	function createDOMForm(option) {
-	  return (0, _createBaseForm2.default)(_extends({}, option, {
-	    refComponent: true
-	  }), [mixin]);
+	  return (0, _createBaseForm2.default)(_extends({}, option), [mixin]);
 	}
 	
 	exports.default = createDOMForm;

@@ -19777,7 +19777,6 @@
 	  var fieldNameProp = option.fieldNameProp;
 	  var fieldMetaProp = option.fieldMetaProp;
 	  var validateMessages = option.validateMessages;
-	  var refComponent = option.refComponent;
 	  var _option$mapProps = option.mapProps;
 	  var mapProps = _option$mapProps === undefined ? _utils.mirror : _option$mapProps;
 	  var _option$formPropName = option.formPropName;
@@ -19803,9 +19802,6 @@
 	          submitting: false
 	        };
 	      },
-	      componentDidMount: function componentDidMount() {
-	        this.componentDidUpdate();
-	      },
 	      componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        if (mapPropsToFields) {
 	          var fields = mapPropsToFields(nextProps);
@@ -19821,24 +19817,6 @@
 	            }
 	          }
 	        }
-	      },
-	      componentDidUpdate: function componentDidUpdate() {
-	        var fields = this.fields;
-	        var fieldsMeta = this.fieldsMeta;
-	
-	        var fieldsMetaKeys = Object.keys(fieldsMeta);
-	        fieldsMetaKeys.forEach(function (s) {
-	          if (fieldsMeta[s].stale) {
-	            delete fieldsMeta[s];
-	          }
-	        });
-	        var fieldsKeys = Object.keys(fields);
-	        fieldsKeys.forEach(function (s) {
-	          if (!fieldsMeta[s]) {
-	            delete fields[s];
-	          }
-	        });
-	        // do not notify store
 	      },
 	      onChange: function onChange(name, action, event) {
 	        var fieldMeta = this.getFieldMeta(name);
@@ -19961,13 +19939,10 @@
 	          inputProps[valuePropName] = field.value;
 	        }
 	
-	        if (refComponent) {
-	          inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
-	        }
+	        inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
 	
 	        var meta = _extends({}, fieldMeta, fieldOption, {
-	          validate: validateRules,
-	          stale: 0
+	          validate: validateRules
 	        });
 	
 	        this.fieldsMeta[name] = meta;
@@ -20091,6 +20066,12 @@
 	        }
 	      },
 	      saveRef: function saveRef(name, _, component) {
+	        if (!component) {
+	          // after destroy, delete data
+	          delete this.fieldsMeta[name];
+	          delete this.fields[name];
+	          return;
+	        }
 	        var fieldMeta = this.getFieldMeta(name);
 	        if (fieldMeta && fieldMeta.ref) {
 	          if (typeof fieldMeta.ref === 'string') {
@@ -20287,12 +20268,6 @@
 	      },
 	      render: function render() {
 	        var formProps = _defineProperty({}, formPropName, this.getForm());
-	        var fieldsMeta = this.fieldsMeta;
-	        for (var name in fieldsMeta) {
-	          if (fieldsMeta.hasOwnProperty(name)) {
-	            fieldsMeta[name].stale = 1;
-	          }
-	        }
 	        if (withRef) {
 	          formProps.ref = 'wrappedComponent';
 	        }
