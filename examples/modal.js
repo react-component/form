@@ -1213,17 +1213,26 @@ webpackJsonp([6],{
 	
 	    function newCb(error, values) {
 	      if (error) {
+	        var firstNode = undefined;
+	        var firstTop = undefined;
 	        for (var name in error) {
 	          if (error.hasOwnProperty(name) && error[name].instance) {
 	            var node = _reactDom2.default.findDOMNode(error[name].instance);
-	            var c = options.container || getScrollableContainer(node);
-	            (0, _domScrollIntoView2.default)(node, c, {
-	              onlyScrollIfNeeded: true
-	            });
-	            break;
+	            var top = node.getBoundingClientRect().top;
+	            if (firstTop === undefined || firstTop > top) {
+	              firstTop = top;
+	              firstNode = node;
+	            }
 	          }
 	        }
+	        if (firstNode) {
+	          var c = options.container || getScrollableContainer(firstNode);
+	          (0, _domScrollIntoView2.default)(firstNode, c, {
+	            onlyScrollIfNeeded: true
+	          });
+	        }
 	      }
+	
 	      if (typeof callback === 'function') {
 	        callback(error, values);
 	      }

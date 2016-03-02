@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>overview.js - example - rc-form@0.14.0</title>
+  <title>overview.js - example - rc-form@0.14.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,7 +257,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
 <div class="container">
   <div class="header">
-    <h1>rc-form@0.14.0</h1>
+    <h1>rc-form@0.14.1</h1>
 
     <p>React High Order Form Component</p>
   </div>
@@ -470,7 +470,7 @@ NumberInput.propTypes = {
 
   render() {
     <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">const</span> { getFieldProps } = form;
+    <span class="hljs-keyword">const</span> { getFieldProps, getFieldError } = form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>overview<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
@@ -485,9 +485,18 @@ NumberInput.propTypes = {
         <span class="hljs-tag">&lt;<span class="hljs-title">DateInput</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">form</span> }/&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>normal input, no validate<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>normal required input<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal</span>')}/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">input</span>
+              {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal</span>', {
+                <span class="hljs-attribute">rules:</span> [{
+                  <span class="hljs-attribute">required:</span> <span class="hljs-attribute">true</span>,
+                }],
+              })}
+            /&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>
+            {(getFieldError('normal')) ? getFieldError('normal').join(',') : null}
           <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 

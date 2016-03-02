@@ -1375,17 +1375,26 @@ webpackJsonp([8],[
 	
 	    function newCb(error, values) {
 	      if (error) {
+	        var firstNode = undefined;
+	        var firstTop = undefined;
 	        for (var name in error) {
 	          if (error.hasOwnProperty(name) && error[name].instance) {
 	            var node = _reactDom2.default.findDOMNode(error[name].instance);
-	            var c = options.container || getScrollableContainer(node);
-	            (0, _domScrollIntoView2.default)(node, c, {
-	              onlyScrollIfNeeded: true
-	            });
-	            break;
+	            var top = node.getBoundingClientRect().top;
+	            if (firstTop === undefined || firstTop > top) {
+	              firstTop = top;
+	              firstNode = node;
+	            }
 	          }
 	        }
+	        if (firstNode) {
+	          var c = options.container || getScrollableContainer(firstNode);
+	          (0, _domScrollIntoView2.default)(firstNode, c, {
+	            onlyScrollIfNeeded: true
+	          });
+	        }
 	      }
+	
 	      if (typeof callback === 'function') {
 	        callback(error, values);
 	      }
@@ -5673,6 +5682,7 @@ webpackJsonp([8],[
 	    value: function render() {
 	      var form = this.props.form;
 	      var getFieldProps = form.getFieldProps;
+	      var getFieldError = form.getFieldError;
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -5696,12 +5706,21 @@ webpackJsonp([8],[
 	            _react2.default.createElement(
 	              'p',
 	              null,
-	              'normal input, no validate'
+	              'normal required input'
 	            ),
 	            _react2.default.createElement(
 	              'p',
 	              null,
-	              _react2.default.createElement('input', getFieldProps('normal'))
+	              _react2.default.createElement('input', getFieldProps('normal', {
+	                rules: [{
+	                  required: true
+	                }]
+	              }))
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { style: _styles.errorStyle },
+	              getFieldError('normal') ? getFieldError('normal').join(',') : null
 	            )
 	          ),
 	          _react2.default.createElement(
