@@ -204,7 +204,7 @@ class Form extends Component {
 
   render() {
     const { form } = this.props;
-    const { getFieldProps } = form;
+    const { getFieldProps, getFieldError } = form;
     return (<div style={{ margin: 20 }}>
       <h2>overview</h2>
       <form onSubmit={this.onSubmit}>
@@ -219,9 +219,18 @@ class Form extends Component {
         <DateInput form={ form }/>
 
         <div style={ regionStyle }>
-          <p>normal input, no validate</p>
+          <p>normal required input</p>
           <p>
-            <input {...getFieldProps('normal')}/>
+            <input
+              {...getFieldProps('normal', {
+                rules: [{
+                  required: true,
+                }],
+              })}
+            />
+          </p>
+          <p style={errorStyle}>
+            {(getFieldError('normal')) ? getFieldError('normal').join(',') : null}
           </p>
         </div>
 

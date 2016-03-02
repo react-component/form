@@ -57,17 +57,26 @@ const mixin = {
 
     function newCb(error, values) {
       if (error) {
+        let firstNode;
+        let firstTop;
         for (const name in error) {
           if (error.hasOwnProperty(name) && error[name].instance) {
             const node = ReactDOM.findDOMNode(error[name].instance);
-            const c = options.container || getScrollableContainer(node);
-            scrollIntoView(node, c, {
-              onlyScrollIfNeeded: true,
-            });
-            break;
+            const top = node.getBoundingClientRect().top;
+            if (firstTop === undefined || firstTop > top) {
+              firstTop = top;
+              firstNode = node;
+            }
           }
         }
+        if (firstNode) {
+          const c = options.container || getScrollableContainer(firstNode);
+          scrollIntoView(firstNode, c, {
+            onlyScrollIfNeeded: true,
+          });
+        }
       }
+
       if (typeof callback === 'function') {
         callback(error, values);
       }
