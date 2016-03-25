@@ -3,7 +3,7 @@ webpackJsonp([10],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(399);
+	module.exports = __webpack_require__(396);
 
 
 /***/ },
@@ -21,9 +21,9 @@ webpackJsonp([10],{
 	
 	var form = _interopRequireWildcard(_src);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
-	exports.default = form; // export this package's api
+	exports["default"] = form; // export this package's api
 	
 	module.exports = exports['default'];
 
@@ -43,13 +43,13 @@ webpackJsonp([10],{
 	
 	var _createForm2 = _interopRequireDefault(_createForm);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	exports.createForm = _createForm2.default; // export this package's api
+	exports.createForm = _createForm2["default"]; // export this package's api
 
 /***/ },
 
-/***/ 205:
+/***/ 201:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -108,7 +108,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 248:
+/***/ 244:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -130,7 +130,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 399:
+/***/ 396:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -145,17 +145,17 @@ webpackJsonp([10],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _redux = __webpack_require__(400);
+	var _redux = __webpack_require__(397);
 	
-	var _reactRedux = __webpack_require__(410);
+	var _reactRedux = __webpack_require__(407);
 	
 	var _reactDom = __webpack_require__(159);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(248);
+	var _styles = __webpack_require__(244);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -196,24 +196,24 @@ webpackJsonp([10],{
 	      var getFieldError = _props$form.getFieldError;
 	
 	      var errors = getFieldError('email');
-	      return _react2.default.createElement(
+	      return _react2["default"].createElement(
 	        'div',
 	        { style: _styles.regionStyle },
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'p',
 	          null,
 	          'email:'
 	        ),
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'p',
 	          null,
-	          _react2.default.createElement('input', getFieldProps('email', {
+	          _react2["default"].createElement('input', getFieldProps('email', {
 	            rules: [{
 	              type: 'email'
 	            }]
 	          }))
 	        ),
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'p',
 	          { style: _styles.errorStyle },
 	          errors ? errors.join(',') : null
@@ -230,7 +230,7 @@ webpackJsonp([10],{
 	};
 	
 	
-	var Out = _react2.default.createClass({
+	var Out = _react2["default"].createClass({
 	  displayName: 'Out',
 	
 	  propTypes: {
@@ -251,16 +251,16 @@ webpackJsonp([10],{
 	  render: function render() {
 	    var email = this.props.email;
 	
-	    return _react2.default.createElement(
+	    return _react2["default"].createElement(
 	      'div',
 	      { style: _styles.regionStyle },
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        null,
 	        'email: ',
 	        email && email.value
 	      ),
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'button',
 	        { onClick: this.setEmail },
 	        'set'
@@ -313,32 +313,32 @@ webpackJsonp([10],{
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
+	      return _react2["default"].createElement(
 	        _reactRedux.Provider,
 	        { store: store },
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'h2',
 	            null,
 	            'integrate with redux'
 	          ),
-	          _react2.default.createElement(NewForm, null),
-	          _react2.default.createElement(Out, null)
+	          _react2["default"].createElement(NewForm, null),
+	          _react2["default"].createElement(Out, null)
 	        )
 	      );
 	    }
 	  }]);
 	
 	  return App;
-	}(_react2.default.Component);
+	}(_react2["default"].Component);
 	
-	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('__react-content'));
+	_reactDom2["default"].render(_react2["default"].createElement(App, null), document.getElementById('__react-content'));
 
 /***/ },
 
-/***/ 400:
+/***/ 397:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -346,27 +346,27 @@ webpackJsonp([10],{
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 	
-	var _createStore = __webpack_require__(401);
+	var _createStore = __webpack_require__(398);
 	
 	var _createStore2 = _interopRequireDefault(_createStore);
 	
-	var _combineReducers = __webpack_require__(405);
+	var _combineReducers = __webpack_require__(402);
 	
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 	
-	var _bindActionCreators = __webpack_require__(407);
+	var _bindActionCreators = __webpack_require__(404);
 	
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 	
-	var _applyMiddleware = __webpack_require__(408);
+	var _applyMiddleware = __webpack_require__(405);
 	
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 	
-	var _compose = __webpack_require__(409);
+	var _compose = __webpack_require__(406);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
-	var _warning = __webpack_require__(406);
+	var _warning = __webpack_require__(403);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -391,7 +391,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 401:
+/***/ 398:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -400,7 +400,7 @@ webpackJsonp([10],{
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 	
-	var _isPlainObject = __webpack_require__(402);
+	var _isPlainObject = __webpack_require__(399);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
@@ -613,11 +613,11 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 402:
+/***/ 399:
 /***/ function(module, exports, __webpack_require__) {
 
-	var isHostObject = __webpack_require__(403),
-	    isObjectLike = __webpack_require__(404);
+	var isHostObject = __webpack_require__(400),
+	    isObjectLike = __webpack_require__(401);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -668,13 +668,11 @@ webpackJsonp([10],{
 	 * // => true
 	 */
 	function isPlainObject(value) {
-	  if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
+	  if (!isObjectLike(value) ||
+	      objectToString.call(value) != objectTag || isHostObject(value)) {
 	    return false;
 	  }
-	  var proto = objectProto;
-	  if (typeof value.constructor == 'function') {
-	    proto = getPrototypeOf(value);
-	  }
+	  var proto = getPrototypeOf(value);
 	  if (proto === null) {
 	    return true;
 	  }
@@ -688,7 +686,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 403:
+/***/ 400:
 /***/ function(module, exports) {
 
 	/**
@@ -715,7 +713,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 404:
+/***/ 401:
 /***/ function(module, exports) {
 
 	/**
@@ -750,7 +748,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 405:
+/***/ 402:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -758,13 +756,13 @@ webpackJsonp([10],{
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 	
-	var _createStore = __webpack_require__(401);
+	var _createStore = __webpack_require__(398);
 	
-	var _isPlainObject = __webpack_require__(402);
+	var _isPlainObject = __webpack_require__(399);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _warning = __webpack_require__(406);
+	var _warning = __webpack_require__(403);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -884,7 +882,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 406:
+/***/ 403:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -914,7 +912,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 407:
+/***/ 404:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -971,7 +969,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 408:
+/***/ 405:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -981,7 +979,7 @@ webpackJsonp([10],{
 	exports.__esModule = true;
 	exports["default"] = applyMiddleware;
 	
-	var _compose = __webpack_require__(409);
+	var _compose = __webpack_require__(406);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
@@ -1034,7 +1032,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 409:
+/***/ 406:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1069,7 +1067,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 410:
+/***/ 407:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1077,11 +1075,11 @@ webpackJsonp([10],{
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(411);
+	var _Provider = __webpack_require__(408);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connect = __webpack_require__(413);
+	var _connect = __webpack_require__(410);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -1092,7 +1090,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 411:
+/***/ 408:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -1102,7 +1100,7 @@ webpackJsonp([10],{
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(412);
+	var _storeShape = __webpack_require__(409);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
@@ -1177,7 +1175,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 412:
+/***/ 409:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1194,7 +1192,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 413:
+/***/ 410:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -1206,19 +1204,19 @@ webpackJsonp([10],{
 	
 	var _react = __webpack_require__(2);
 	
-	var _storeShape = __webpack_require__(412);
+	var _storeShape = __webpack_require__(409);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _shallowEqual = __webpack_require__(414);
+	var _shallowEqual = __webpack_require__(411);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _wrapActionCreators = __webpack_require__(415);
+	var _wrapActionCreators = __webpack_require__(412);
 	
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 	
-	var _isPlainObject = __webpack_require__(416);
+	var _isPlainObject = __webpack_require__(413);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
@@ -1226,7 +1224,7 @@ webpackJsonp([10],{
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _invariant = __webpack_require__(205);
+	var _invariant = __webpack_require__(201);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
@@ -1523,7 +1521,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 414:
+/***/ 411:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1555,7 +1553,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 415:
+/***/ 412:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1563,7 +1561,7 @@ webpackJsonp([10],{
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 	
-	var _redux = __webpack_require__(400);
+	var _redux = __webpack_require__(397);
 	
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -1573,11 +1571,11 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 416:
+/***/ 413:
 /***/ function(module, exports, __webpack_require__) {
 
-	var isHostObject = __webpack_require__(417),
-	    isObjectLike = __webpack_require__(418);
+	var isHostObject = __webpack_require__(414),
+	    isObjectLike = __webpack_require__(415);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -1628,13 +1626,11 @@ webpackJsonp([10],{
 	 * // => true
 	 */
 	function isPlainObject(value) {
-	  if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
+	  if (!isObjectLike(value) ||
+	      objectToString.call(value) != objectTag || isHostObject(value)) {
 	    return false;
 	  }
-	  var proto = objectProto;
-	  if (typeof value.constructor == 'function') {
-	    proto = getPrototypeOf(value);
-	  }
+	  var proto = getPrototypeOf(value);
 	  if (proto === null) {
 	    return true;
 	  }
@@ -1648,7 +1644,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 417:
+/***/ 414:
 /***/ function(module, exports) {
 
 	/**
@@ -1675,7 +1671,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 418:
+/***/ 415:
 /***/ function(module, exports) {
 
 	/**

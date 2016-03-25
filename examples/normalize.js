@@ -3,7 +3,7 @@ webpackJsonp([7],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(323);
+	module.exports = __webpack_require__(319);
 
 
 /***/ },
@@ -21,9 +21,9 @@ webpackJsonp([7],{
 	
 	var form = _interopRequireWildcard(_src);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
-	exports.default = form; // export this package's api
+	exports["default"] = form; // export this package's api
 	
 	module.exports = exports['default'];
 
@@ -43,13 +43,13 @@ webpackJsonp([7],{
 	
 	var _createForm2 = _interopRequireDefault(_createForm);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	exports.createForm = _createForm2.default; // export this package's api
+	exports.createForm = _createForm2["default"]; // export this package's api
 
 /***/ },
 
-/***/ 248:
+/***/ 244:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71,14 +71,14 @@ webpackJsonp([7],{
 
 /***/ },
 
-/***/ 269:
+/***/ 265:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 323:
+/***/ 319:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -95,11 +95,11 @@ webpackJsonp([7],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	__webpack_require__(269);
+	__webpack_require__(265);
 	
-	var _styles = __webpack_require__(248);
+	var _styles = __webpack_require__(244);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -107,7 +107,7 @@ webpackJsonp([7],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint react/no-multi-comp:0, no-console:0 */
 	
-	var CustomInput = _react2.default.createClass({
+	var CustomInput = _react2["default"].createClass({
 	  displayName: 'CustomInput',
 	
 	  propTypes: {
@@ -137,25 +137,25 @@ webpackJsonp([7],{
 	    var getFieldError = _props$form.getFieldError;
 	
 	    var errors = getFieldError('upper');
-	    return _react2.default.createElement(
+	    return _react2["default"].createElement(
 	      'div',
 	      { style: _styles.regionStyle },
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        null,
 	        'upper normalize'
 	      ),
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('input', getFieldProps('upper', {
+	        _react2["default"].createElement('input', getFieldProps('upper', {
 	          normalize: this.toUpper,
 	          rules: [{
 	            validator: this.checkUpper
 	          }]
 	        }))
 	      ),
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
@@ -164,7 +164,7 @@ webpackJsonp([7],{
 	  }
 	});
 	
-	var MaxMin = _react2.default.createClass({
+	var MaxMin = _react2["default"].createClass({
 	  displayName: 'MaxMin',
 	
 	  propTypes: {
@@ -195,87 +195,87 @@ webpackJsonp([7],{
 	  render: function render() {
 	    var getFieldProps = this.props.form.getFieldProps;
 	
-	    return _react2.default.createElement(
+	    return _react2["default"].createElement(
 	      'div',
 	      { style: _styles.regionStyle },
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'div',
 	        null,
 	        'min: ',
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'select',
 	          getFieldProps('min', {
 	            normalize: this.normalizeMin,
 	            initialValue: ''
 	          }),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '' },
 	            'empty'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '1' },
 	            '1'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '2' },
 	            '2'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '3' },
 	            '3'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '4' },
 	            '4'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '5' },
 	            '5'
 	          )
 	        )
 	      ),
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'div',
 	        null,
 	        'max: ',
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'select',
 	          getFieldProps('max', {
 	            initialValue: '',
 	            normalize: this.normalizeMax
 	          }),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '' },
 	            'empty'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '1' },
 	            '1'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '2' },
 	            '2'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '3' },
 	            '3'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '4' },
 	            '4'
 	          ),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(
 	            'option',
 	            { value: '5' },
 	            '5'
@@ -317,23 +317,23 @@ webpackJsonp([7],{
 	    value: function render() {
 	      var form = this.props.form;
 	
-	      return _react2.default.createElement(
+	      return _react2["default"].createElement(
 	        'div',
 	        { style: { margin: 20 } },
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'h2',
 	          null,
 	          'normalize'
 	        ),
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'form',
 	          { onSubmit: this.onSubmit },
-	          _react2.default.createElement(CustomInput, { form: form }),
-	          _react2.default.createElement(MaxMin, { form: form }),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(CustomInput, { form: form }),
+	          _react2["default"].createElement(MaxMin, { form: form }),
+	          _react2["default"].createElement(
 	            'div',
 	            { style: _styles.regionStyle },
-	            _react2.default.createElement(
+	            _react2["default"].createElement(
 	              'button',
 	              null,
 	              'submit'
@@ -354,7 +354,7 @@ webpackJsonp([7],{
 	
 	var NewForm = (0, _rcForm.createForm)()(Form);
 	
-	_reactDom2.default.render(_react2.default.createElement(NewForm, null), document.getElementById('__react-content'));
+	_reactDom2["default"].render(_react2["default"].createElement(NewForm, null), document.getElementById('__react-content'));
 
 /***/ }
 

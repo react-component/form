@@ -3,7 +3,7 @@ webpackJsonp([16],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(429);
+	module.exports = __webpack_require__(426);
 
 
 /***/ },
@@ -21,9 +21,9 @@ webpackJsonp([16],{
 	
 	var form = _interopRequireWildcard(_src);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 	
-	exports.default = form; // export this package's api
+	exports["default"] = form; // export this package's api
 	
 	module.exports = exports['default'];
 
@@ -43,13 +43,13 @@ webpackJsonp([16],{
 	
 	var _createForm2 = _interopRequireDefault(_createForm);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	exports.createForm = _createForm2.default; // export this package's api
+	exports.createForm = _createForm2["default"]; // export this package's api
 
 /***/ },
 
-/***/ 248:
+/***/ 244:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71,14 +71,14 @@ webpackJsonp([16],{
 
 /***/ },
 
-/***/ 269:
+/***/ 265:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 429:
+/***/ 426:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -95,11 +95,11 @@ webpackJsonp([16],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	__webpack_require__(269);
+	__webpack_require__(265);
 	
-	var _styles = __webpack_require__(248);
+	var _styles = __webpack_require__(244);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -114,18 +114,18 @@ webpackJsonp([16],{
 	  var isFieldValidating = _props$form.isFieldValidating;
 	
 	  var errors = getFieldError('email');
-	  return _react2.default.createElement(
+	  return _react2["default"].createElement(
 	    'div',
 	    { style: _styles.regionStyle },
-	    _react2.default.createElement(
+	    _react2["default"].createElement(
 	      'p',
 	      null,
 	      'email sync validate'
 	    ),
-	    _react2.default.createElement(
+	    _react2["default"].createElement(
 	      'p',
 	      null,
-	      _react2.default.createElement('input', getFieldProps('email', {
+	      _react2["default"].createElement('input', getFieldProps('email', {
 	        validateFirst: true,
 	        rules: [{
 	          required: true
@@ -135,12 +135,12 @@ webpackJsonp([16],{
 	        }]
 	      }))
 	    ),
-	    _react2.default.createElement(
+	    _react2["default"].createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
 	    ),
-	    _react2.default.createElement(
+	    _react2["default"].createElement(
 	      'p',
 	      { style: _styles.errorStyle },
 	      isFieldValidating('email') ? 'validating' : null
@@ -152,7 +152,7 @@ webpackJsonp([16],{
 	  form: _react.PropTypes.object
 	};
 	
-	var User = _react2.default.createClass({
+	var User = _react2["default"].createClass({
 	  displayName: 'User',
 	
 	  propTypes: {
@@ -177,18 +177,18 @@ webpackJsonp([16],{
 	    var isFieldValidating = _props$form2.isFieldValidating;
 	
 	    var errors = getFieldError('user');
-	    return _react2.default.createElement(
+	    return _react2["default"].createElement(
 	      'div',
 	      { style: _styles.regionStyle },
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        null,
 	        'user async validate'
 	      ),
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        null,
-	        _react2.default.createElement('input', getFieldProps('user', {
+	        _react2["default"].createElement('input', getFieldProps('user', {
 	          rules: [{
 	            required: true,
 	            min: 2
@@ -197,12 +197,12 @@ webpackJsonp([16],{
 	          }]
 	        }))
 	      ),
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      ),
-	      _react2.default.createElement(
+	      _react2["default"].createElement(
 	        'p',
 	        { style: _styles.errorStyle },
 	        isFieldValidating('user') ? 'validating' : null
@@ -248,29 +248,29 @@ webpackJsonp([16],{
 	    value: function render() {
 	      var form = this.props.form;
 	
-	      return _react2.default.createElement(
+	      return _react2["default"].createElement(
 	        'div',
 	        { style: { margin: 20 } },
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'h2',
 	          null,
 	          'validateFirst'
 	        ),
-	        _react2.default.createElement(
+	        _react2["default"].createElement(
 	          'form',
 	          { onSubmit: this.onSubmit },
-	          _react2.default.createElement(User, { form: form }),
-	          _react2.default.createElement(Email, { form: form }),
-	          _react2.default.createElement(
+	          _react2["default"].createElement(User, { form: form }),
+	          _react2["default"].createElement(Email, { form: form }),
+	          _react2["default"].createElement(
 	            'div',
 	            { style: _styles.regionStyle },
-	            _react2.default.createElement(
+	            _react2["default"].createElement(
 	              'button',
 	              { onClick: this.reset },
 	              'reset'
 	            ),
 	            ' ',
-	            _react2.default.createElement('input', { type: 'submit', value: 'submit' })
+	            _react2["default"].createElement('input', { type: 'submit', value: 'submit' })
 	          )
 	        )
 	      );
@@ -287,7 +287,7 @@ webpackJsonp([16],{
 	
 	var NewForm = (0, _rcForm.createForm)()(Form);
 	
-	_reactDom2.default.render(_react2.default.createElement(NewForm, null), document.getElementById('__react-content'));
+	_reactDom2["default"].render(_react2["default"].createElement(NewForm, null), document.getElementById('__react-content'));
 
 /***/ }
 
