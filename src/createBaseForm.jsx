@@ -1,18 +1,22 @@
 import React from 'react';
-import { argumentContainer, mirror,
+import {
+  argumentContainer, mirror,
   getValueFromEvent, getErrorStrs,
   hasRules, getParams,
-  isEmptyObject, flattenArray } from './utils';
+  isEmptyObject, flattenArray,
+} from './utils';
 import AsyncValidator from 'async-validator';
 
 const defaultValidateTrigger = 'onChange';
 const defaultTrigger = defaultValidateTrigger;
 
 function createBaseForm(option = {}, mixins = []) {
-  const { mapPropsToFields, onFieldsChange,
+  const {
+    mapPropsToFields, onFieldsChange,
     fieldNameProp, fieldMetaProp,
     validateMessages, mapProps = mirror,
-    formPropName = 'form', withRef } = option;
+    formPropName = 'form', withRef,
+  } = option;
 
   function decorate(WrappedComponent) {
     const Form = React.createClass({
@@ -116,11 +120,17 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       getFieldProps(name, fieldOption = {}) {
-        const { rules,
+        if (!name) {
+          throw new Error('must call getFieldProps with valid name string!');
+        }
+
+        const {
+          rules,
           trigger = defaultTrigger,
           valuePropName = 'value',
           validateTrigger = defaultValidateTrigger,
-          validate = [] } = fieldOption;
+          validate = [],
+        } = fieldOption;
 
         const fieldMeta = this.fieldsMeta[name] || {};
 
@@ -333,7 +343,7 @@ function createBaseForm(option = {}, mixins = []) {
         fieldNames,
         action,
         options = {},
-        }, callback) {
+      }, callback) {
         const allRules = {};
         const allValues = {};
         const allFields = {};
