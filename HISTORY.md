@@ -1,5 +1,11 @@
 # History
 ----
+
+## 0.15.0 / 2016-03-28
+
+- add getValueFromEvent/getValueProps
+
+
 ## 0.14.0 / 2016-02-27
 
 - remove refComponent prop.(defaults to true), so you must use getFieldInstance method to get instance instead of ref

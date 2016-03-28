@@ -61,7 +61,9 @@ function createBaseForm(option = {}, mixins = []) {
         if (fieldMeta[action]) {
           fieldMeta[action](event);
         }
-        const value = getValueFromEvent(event);
+        const value = fieldMeta.getValueFromEvent ?
+          fieldMeta.getValueFromEvent(event) :
+          getValueFromEvent(event);
         const field = this.getField(name, true);
         this.setFields({
           [name]: {
@@ -77,7 +79,9 @@ function createBaseForm(option = {}, mixins = []) {
         if (fieldMeta[action]) {
           fieldMeta[action](event);
         }
-        const value = getValueFromEvent(event);
+        const value = fieldMeta.getValueFromEvent ?
+          fieldMeta.getValueFromEvent(event) :
+          getValueFromEvent(event);
         const field = this.getField(name, true);
         field.value = value;
         field.dirty = true;
@@ -128,6 +132,7 @@ function createBaseForm(option = {}, mixins = []) {
           rules,
           trigger = defaultTrigger,
           valuePropName = 'value',
+          getValueProps,
           validateTrigger = defaultValidateTrigger,
           validate = [],
         } = fieldOption;
@@ -138,9 +143,7 @@ function createBaseForm(option = {}, mixins = []) {
           fieldMeta.initialValue = fieldOption.initialValue;
         }
 
-        const inputProps = {
-          [valuePropName]: fieldMeta.initialValue,
-        };
+        let inputProps = {};
 
         if (fieldNameProp) {
           inputProps[fieldNameProp] = name;
@@ -182,10 +185,18 @@ function createBaseForm(option = {}, mixins = []) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
         const field = this.getField(name);
+        let fieldValue = fieldMeta.initialValue;
         if (field && 'value' in field) {
-          inputProps[valuePropName] = field.value;
+          fieldValue = field.value;
         }
-
+        if (getValueProps) {
+          inputProps = {
+            ...inputProps,
+            ...getValueProps(fieldValue),
+          };
+        } else {
+          inputProps[valuePropName] = fieldValue;
+        }
 
         inputProps.ref = this.getCacheBind(name, `${name}__ref`, this.saveRef);
 

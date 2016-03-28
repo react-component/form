@@ -107,7 +107,31 @@ This input's unique name.
 
 #### option.valuePropName: String
 
-Prop name of component's value field, eg: checkbox should be set ti `checked` ... 
+Prop name of component's value field, eg: checkbox should be set to `checked` ...
+
+#### option.getValueFromEvent
+
+Specify how to get value from event. Defaults to
+
+```js
+function (e) {
+  if (!e || !e.target) {
+    return e;
+  }
+  const { target } = e;
+  return target.type === 'checkbox' ? target.checked : target.value;
+}
+```
+
+#### option.getValueProps
+
+get the component props according to field value. Defaults to
+
+```js
+function (value) {
+  return { value };
+}
+```
 
 #### option.initialValue
 
