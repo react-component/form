@@ -1,9 +1,9 @@
-webpackJsonp([14],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(424);
+	module.exports = __webpack_require__(267);
 
 
 /***/ },
@@ -71,12 +71,14 @@ webpackJsonp([14],{
 
 /***/ },
 
-/***/ 424:
+/***/ 267:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-multi-comp:0, no-console:0 */
 	
 	var _rcForm = __webpack_require__(160);
 	
@@ -96,7 +98,26 @@ webpackJsonp([14],{
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint react/no-multi-comp:0, no-console:0 */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function getFileValueProps(value) {
+	  if (value && value.target) {
+	    return {
+	      value: value.target.value
+	    };
+	  }
+	  return {
+	    value: value
+	  };
+	}
+	
+	function getValueFromFileEvent(_ref) {
+	  var target = _ref.target;
+	
+	  return {
+	    target: target
+	  };
+	}
 	
 	var Form = _react2["default"].createClass({
 	  displayName: 'Form',
@@ -105,33 +126,56 @@ webpackJsonp([14],{
 	    form: _react.PropTypes.object
 	  },
 	
-	  setEmail: function setEmail() {
-	    this.props.form.setFieldsValue({
-	      email: 'yiminghe@gmail.com'
+	  onSubmit: function onSubmit(e) {
+	    e.preventDefault();
+	    this.props.form.validateFields(function (error, values) {
+	      console.log(error, values);
+	      if (!error) {
+	        var data = new FormData();
+	        data.append('file', values.attachment.target.files[0]);
+	        fetch('/post.htm', {
+	          method: 'post',
+	          body: data
+	        });
+	      }
 	    });
+	  },
+	  checkSize: function checkSize(rule, value, callback) {
+	    if (value && value.target) {
+	      var files = value.target.files;
+	      if (files[0]) {
+	        callback(files[0].size > 1000000 ? 'file size must be less than 1M' : undefined);
+	      } else {
+	        callback();
+	      }
+	    } else {
+	      callback();
+	    }
 	  },
 	  render: function render() {
 	    var _props$form = this.props.form;
 	    var getFieldProps = _props$form.getFieldProps;
 	    var getFieldError = _props$form.getFieldError;
 	
-	    var errors = getFieldError('email');
+	    var errors = getFieldError('attachment');
 	    return _react2["default"].createElement(
 	      'div',
-	      { style: _styles.regionStyle },
+	      {
+	        style: _styles.regionStyle
+	      },
 	      _react2["default"].createElement(
 	        'p',
 	        null,
-	        'email:'
+	        'attachment:'
 	      ),
 	      _react2["default"].createElement(
 	        'p',
 	        null,
-	        _react2["default"].createElement('input', getFieldProps('email', {
-	          rules: [{
-	            type: 'email'
-	          }]
-	        }))
+	        _react2["default"].createElement('input', _extends({ type: 'file' }, getFieldProps('attachment', {
+	          getValueProps: getFileValueProps,
+	          getValueFromEvent: getValueFromFileEvent,
+	          rules: [this.checkSize]
+	        })))
 	      ),
 	      _react2["default"].createElement(
 	        'p',
@@ -140,8 +184,8 @@ webpackJsonp([14],{
 	      ),
 	      _react2["default"].createElement(
 	        'button',
-	        { onClick: this.setEmail },
-	        'set'
+	        { onClick: this.onSubmit },
+	        'submit'
 	      )
 	    );
 	  }
@@ -167,7 +211,7 @@ webpackJsonp([14],{
 	        _react2["default"].createElement(
 	          'h2',
 	          null,
-	          'setFieldsValue'
+	          'input[type="file"]'
 	        ),
 	        _react2["default"].createElement(Form, null)
 	      );
@@ -182,4 +226,4 @@ webpackJsonp([14],{
 /***/ }
 
 });
-//# sourceMappingURL=setFieldsValue.js.map
+//# sourceMappingURL=file-input.js.map

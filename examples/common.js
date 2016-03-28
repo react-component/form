@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		18:0
+/******/ 		19:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"input-array","6":"modal","7":"normalize","8":"overview","9":"parallel-form","10":"redux","11":"router","12":"server-validate","13":"setFieldsValue","14":"start-end-date","15":"suggest","16":"validateFirst","17":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"data-binding","3":"data-binding-form","4":"dynamic","5":"file-input","6":"input-array","7":"modal","8":"normalize","9":"overview","10":"parallel-form","11":"redux","12":"router","13":"server-validate","14":"setFieldsValue","15":"start-end-date","16":"suggest","17":"validateFirst","18":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -19825,7 +19825,7 @@
 	        if (fieldMeta[action]) {
 	          fieldMeta[action](event);
 	        }
-	        var value = (0, _utils.getValueFromEvent)(event);
+	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent(event) : (0, _utils.getValueFromEvent)(event);
 	        var field = this.getField(name, true);
 	        this.setFields(_defineProperty({}, name, _extends({}, field, {
 	          value: value,
@@ -19837,7 +19837,7 @@
 	        if (fieldMeta[action]) {
 	          fieldMeta[action](event);
 	        }
-	        var value = (0, _utils.getValueFromEvent)(event);
+	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent(event) : (0, _utils.getValueFromEvent)(event);
 	        var field = this.getField(name, true);
 	        field.value = value;
 	        field.dirty = true;
@@ -19887,6 +19887,7 @@
 	        var trigger = _fieldOption$trigger === undefined ? defaultTrigger : _fieldOption$trigger;
 	        var _fieldOption$valuePro = fieldOption.valuePropName;
 	        var valuePropName = _fieldOption$valuePro === undefined ? 'value' : _fieldOption$valuePro;
+	        var getValueProps = fieldOption.getValueProps;
 	        var _fieldOption$validate = fieldOption.validateTrigger;
 	        var validateTrigger = _fieldOption$validate === undefined ? defaultValidateTrigger : _fieldOption$validate;
 	        var _fieldOption$validate2 = fieldOption.validate;
@@ -19899,7 +19900,7 @@
 	          fieldMeta.initialValue = fieldOption.initialValue;
 	        }
 	
-	        var inputProps = _defineProperty({}, valuePropName, fieldMeta.initialValue);
+	        var inputProps = {};
 	
 	        if (fieldNameProp) {
 	          inputProps[fieldNameProp] = name;
@@ -19940,8 +19941,14 @@
 	          inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
 	        }
 	        var field = this.getField(name);
+	        var fieldValue = fieldMeta.initialValue;
 	        if (field && 'value' in field) {
-	          inputProps[valuePropName] = field.value;
+	          fieldValue = field.value;
+	        }
+	        if (getValueProps) {
+	          inputProps = _extends({}, inputProps, getValueProps(fieldValue));
+	        } else {
+	          inputProps[valuePropName] = fieldValue;
 	        }
 	
 	        inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);

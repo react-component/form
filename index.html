@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@0.14.2 - React High Order Form Component</title>
+  <title>rc-form@0.15.0-beta.0 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@0.14.2</h1>
+  <h1>rc-form@0.15.0-beta.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -753,6 +753,8 @@
       <li><a href="examples/data-binding.html">data-binding</a></li>
       
       <li><a href="examples/dynamic.html">dynamic</a></li>
+      
+      <li><a href="examples/file-input.html">file-input</a></li>
       
       <li><a href="examples/input-array.html">input-array</a></li>
       
@@ -833,8 +835,18 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <h3>getFieldProps(name, option): Object<a id="user-content-getfieldprops(name,-option):-object" name="getfieldprops(name,-option):-object" class="anchor" aria-hidden="true" href="#getfieldprops(name,-option):-object"><span class="octicon octicon-link"></span></a></h3><p>Will create props which can be set on a input/InputComponent which support value and onChange interface.</p>
 <p>After set, this will create a binding with this input.</p>
 <h4>name: String<a id="user-content-name:-string" name="name:-string" class="anchor" aria-hidden="true" href="#name:-string"><span class="octicon octicon-link"></span></a></h4><p>This input&#39;s unique name.</p>
-<h4>option.valuePropName: String<a id="user-content-option.valuepropname:-string" name="option.valuepropname:-string" class="anchor" aria-hidden="true" href="#option.valuepropname:-string"><span class="octicon octicon-link"></span></a></h4><p>Prop name of component&#39;s value field, eg: checkbox should be set ti <code>checked</code> ... </p>
-<h4>option.initialValue<a id="user-content-option.initialvalue" name="option.initialvalue" class="anchor" aria-hidden="true" href="#option.initialvalue"><span class="octicon octicon-link"></span></a></h4><p>Initial value of current component.</p>
+<h4>option.valuePropName: String<a id="user-content-option.valuepropname:-string" name="option.valuepropname:-string" class="anchor" aria-hidden="true" href="#option.valuepropname:-string"><span class="octicon octicon-link"></span></a></h4><p>Prop name of component&#39;s value field, eg: checkbox should be set to <code>checked</code> ...</p>
+<h4>option.getValueFromEvent<a id="user-content-option.getvaluefromevent" name="option.getvaluefromevent" class="anchor" aria-hidden="true" href="#option.getvaluefromevent"><span class="octicon octicon-link"></span></a></h4><p>Specify how to get value from event. Defaults to</p>
+<div class="highlight"><pre><code language="js"><span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+  <span class="hljs-keyword">if</span> (!e || !e.target) {
+    <span class="hljs-keyword">return</span> e;
+  }
+  <span class="hljs-keyword">const</span> { target } = e;
+  <span class="hljs-keyword">return</span> target.type === <span class="hljs-string">'checkbox'</span> ? target.checked : target.value;
+}</code></pre></div><h4>option.getValueProps<a id="user-content-option.getvalueprops" name="option.getvalueprops" class="anchor" aria-hidden="true" href="#option.getvalueprops"><span class="octicon octicon-link"></span></a></h4><p>get the component props according to field value. Defaults to</p>
+<div class="highlight"><pre><code language="js"><span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
+  <span class="hljs-keyword">return</span> { value };
+}</code></pre></div><h4>option.initialValue<a id="user-content-option.initialvalue" name="option.initialvalue" class="anchor" aria-hidden="true" href="#option.initialvalue"><span class="octicon octicon-link"></span></a></h4><p>Initial value of current component.</p>
 <h4>option.normalize(value, prevValue, allValues)<a id="user-content-option.normalize(value,-prevvalue,-allvalues)" name="option.normalize(value,-prevvalue,-allvalues)" class="anchor" aria-hidden="true" href="#option.normalize(value,-prevvalue,-allvalues)"><span class="octicon octicon-link"></span></a></h4><p>Return normalized value </p>
 <h4>option.trigger: String<a id="user-content-option.trigger:-string" name="option.trigger:-string" class="anchor" aria-hidden="true" href="#option.trigger:-string"><span class="octicon octicon-link"></span></a></h4><p>Defaults to <code>onChange</code>. Event which is listened to collect form data.</p>
 <h4>option.validate: Object[]<a id="user-content-option.validate:-object[]" name="option.validate:-object[]" class="anchor" aria-hidden="true" href="#option.validate:-object[]"><span class="octicon octicon-link"></span></a></h4><h5>option.validate[n].trigger: String|String[]<a id="user-content-option.validate[n].trigger:-string|string[]" name="option.validate[n].trigger:-string|string[]" class="anchor" aria-hidden="true" href="#option.validate[n].trigger:-string|string[]"><span class="octicon octicon-link"></span></a></h5><p>Event which is listened to validate. 
