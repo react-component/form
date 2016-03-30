@@ -74,7 +74,7 @@ class Form extends Component {
             this.props.form.setFields({
               user: {
                 value: values.user,
-                errors: ['forbid ha'],
+                errors: [new Error('forbid ha')],
               },
             });
           }

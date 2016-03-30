@@ -23,7 +23,7 @@ export function getValueFromEvent(e) {
 export function getErrorStrs(errors) {
   if (errors) {
     return errors.map((e) => {
-      if ('message' in e) {
+      if (e && e.message) {
         return e.message;
       }
       return e;
