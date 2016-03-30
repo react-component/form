@@ -20345,7 +20345,7 @@
 	function getErrorStrs(errors) {
 	  if (errors) {
 	    return errors.map(function (e) {
-	      if ('message' in e) {
+	      if (e && e.message) {
 	        return e.message;
 	      }
 	      return e;
