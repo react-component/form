@@ -55,15 +55,15 @@ function createBaseForm(option = {}, mixins = []) {
         }
       },
 
-      onChange(name, action, event) {
+      onChange(name, action, ...args) {
         const fieldMeta = this.getFieldMeta(name);
         const { validate } = fieldMeta;
         if (fieldMeta[action]) {
-          fieldMeta[action](event);
+          fieldMeta[action](...args);
         }
         const value = fieldMeta.getValueFromEvent ?
-          fieldMeta.getValueFromEvent(event) :
-          getValueFromEvent(event);
+          fieldMeta.getValueFromEvent(...args) :
+          getValueFromEvent(...args);
         const field = this.getField(name, true);
         this.setFields({
           [name]: {
@@ -74,14 +74,14 @@ function createBaseForm(option = {}, mixins = []) {
         });
       },
 
-      onChangeValidate(name, action, event) {
+      onChangeValidate(name, action, ...args) {
         const fieldMeta = this.getFieldMeta(name);
         if (fieldMeta[action]) {
-          fieldMeta[action](event);
+          fieldMeta[action](...args);
         }
         const value = fieldMeta.getValueFromEvent ?
-          fieldMeta.getValueFromEvent(event) :
-          getValueFromEvent(event);
+          fieldMeta.getValueFromEvent(...args) :
+          getValueFromEvent(...args);
         const field = this.getField(name, true);
         field.value = value;
         field.dirty = true;
