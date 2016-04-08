@@ -19818,26 +19818,35 @@
 	          }
 	        }
 	      },
-	      onChange: function onChange(name, action, event) {
+	      onChange: function onChange(name, action) {
 	        var fieldMeta = this.getFieldMeta(name);
 	        var validate = fieldMeta.validate;
 	
-	        if (fieldMeta[action]) {
-	          fieldMeta[action](event);
+	        for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+	          args[_key - 2] = arguments[_key];
 	        }
-	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent(event) : (0, _utils.getValueFromEvent)(event);
+	
+	        if (fieldMeta[action]) {
+	          fieldMeta[action].apply(fieldMeta, args);
+	        }
+	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent.apply(fieldMeta, args) : _utils.getValueFromEvent.apply(undefined, args);
 	        var field = this.getField(name, true);
 	        this.setFields(_defineProperty({}, name, _extends({}, field, {
 	          value: value,
 	          dirty: (0, _utils.hasRules)(validate)
 	        })));
 	      },
-	      onChangeValidate: function onChangeValidate(name, action, event) {
+	      onChangeValidate: function onChangeValidate(name, action) {
 	        var fieldMeta = this.getFieldMeta(name);
-	        if (fieldMeta[action]) {
-	          fieldMeta[action](event);
+	
+	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+	          args[_key2 - 2] = arguments[_key2];
 	        }
-	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent(event) : (0, _utils.getValueFromEvent)(event);
+	
+	        if (fieldMeta[action]) {
+	          fieldMeta[action].apply(fieldMeta, args);
+	        }
+	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent.apply(fieldMeta, args) : _utils.getValueFromEvent.apply(undefined, args);
 	        var field = this.getField(name, true);
 	        field.value = value;
 	        field.dirty = true;
