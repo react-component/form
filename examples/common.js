@@ -20029,6 +20029,11 @@
 	        var _this3 = this;
 	
 	        var originalFields = this.fields;
+	        // reserve `instance`
+	        Object.keys(fields).forEach(function (key) {
+	          fields[key].instance = originalFields[key].instance;
+	        });
+	
 	        var nowFields = _extends({}, originalFields, fields);
 	        var fieldsMeta = this.fieldsMeta;
 	        var nowValues = {};
@@ -20278,9 +20283,7 @@
 	          var field = fields[name];
 	          if (field && 'value' in field) {
 	            changed = true;
-	            newFields[name] = {
-	              instance: field.instance
-	            };
+	            newFields[name] = {};
 	          }
 	        });
 	        if (changed) {
