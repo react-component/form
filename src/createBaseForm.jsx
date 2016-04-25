@@ -268,6 +268,11 @@ function createBaseForm(option = {}, mixins = []) {
       },
       setFields(fields) {
         const originalFields = this.fields;
+        // reserve `instance`
+        Object.keys(fields).forEach((key) => {
+          fields[key].instance = originalFields[key].instance;
+        });
+
         const nowFields = {
           ...originalFields,
           ...fields,
@@ -521,9 +526,7 @@ function createBaseForm(option = {}, mixins = []) {
           const field = fields[name];
           if (field && 'value' in field) {
             changed = true;
-            newFields[name] = {
-              instance: field.instance,
-            };
+            newFields[name] = {};
           }
         });
         if (changed) {
