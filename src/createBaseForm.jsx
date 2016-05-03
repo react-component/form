@@ -270,6 +270,7 @@ function createBaseForm(option = {}, mixins = []) {
         const originalFields = this.fields;
         // reserve `instance`
         Object.keys(fields).forEach((key) => {
+          if (!originalFields[key]) return;
           fields[key].instance = originalFields[key].instance;
         });
 
