@@ -20031,6 +20031,7 @@
 	        var originalFields = this.fields;
 	        // reserve `instance`
 	        Object.keys(fields).forEach(function (key) {
+	          if (!originalFields[key]) return;
 	          fields[key].instance = originalFields[key].instance;
 	        });
 	
