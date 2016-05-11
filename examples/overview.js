@@ -1384,9 +1384,9 @@ webpackJsonp([9],[
 	        }
 	        if (firstNode) {
 	          var c = options.container || getScrollableContainer(firstNode);
-	          (0, _domScrollIntoView2["default"])(firstNode, c, {
+	          (0, _domScrollIntoView2["default"])(firstNode, c, _extends({
 	            onlyScrollIfNeeded: true
-	          });
+	          }, options.scroll));
 	        }
 	      }
 	
@@ -5663,7 +5663,7 @@ webpackJsonp([9],[
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Form)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onSubmit = function (e) {
 	      console.log('submit');
 	      e.preventDefault();
-	      _this.props.form.validateFieldsAndScroll(function (error, values) {
+	      _this.props.form.validateFieldsAndScroll({ scroll: { offsetTop: 20 } }, function (error, values) {
 	        if (!error) {
 	          console.log('ok', values);
 	        } else {

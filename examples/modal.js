@@ -1225,9 +1225,9 @@ webpackJsonp([7],{
 	        }
 	        if (firstNode) {
 	          var c = options.container || getScrollableContainer(firstNode);
-	          (0, _domScrollIntoView2["default"])(firstNode, c, {
+	          (0, _domScrollIntoView2["default"])(firstNode, c, _extends({
 	            onlyScrollIfNeeded: true
-	          });
+	          }, options.scroll));
 	        }
 	      }
 	
