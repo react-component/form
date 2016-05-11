@@ -73,6 +73,7 @@ const mixin = {
           const c = options.container || getScrollableContainer(firstNode);
           scrollIntoView(firstNode, c, {
             onlyScrollIfNeeded: true,
+            ...options.scroll,
           });
         }
       }

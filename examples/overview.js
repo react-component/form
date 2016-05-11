@@ -188,7 +188,7 @@ class Form extends Component {
   onSubmit = (e) => {
     console.log('submit');
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((error, values) => {
+    this.props.form.validateFieldsAndScroll({ scroll: { offsetTop: 20 } }, (error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {
