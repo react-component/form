@@ -39,7 +39,7 @@ online example: http://react-component.github.io/form/examples/
 
 * support reactjs and even react-native
 
-## install
+## Install
 
 [![rc-form](https://nodei.co/npm/rc-form.png)](https://npmjs.org/package/rc-form)
 
@@ -70,6 +70,10 @@ class Form extends React.Component {
   }
 }
 ```
+
+## Note
+
+Do not use stateless function component inside Form component: https://github.com/facebook/react/pull/6534
 
 ## createForm(formOption): Function
 
