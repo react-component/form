@@ -205,7 +205,7 @@ Set fields by kv object. each field can contain errors and value member.
 Validate and get fields value by fieldNames.
 
 options is the same as validate method of [async-validator](https://github.com/yiminghe/async-validator).
-add a new force member.
+And add `force` and `scroll`. `scroll` is the same as [dom-scroll-into-view's function parameter `config`](https://github.com/yiminghe/dom-scroll-into-view#function-parameter).
 
 #### options.force: Boolean
 
