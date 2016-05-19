@@ -19796,6 +19796,7 @@
 	          fields = mapPropsToFields(this.props);
 	        }
 	        this.fields = fields || {};
+	        this.instances = {};
 	        this.fieldsMeta = {};
 	        this.cachedBind = {};
 	        return {
@@ -19804,18 +19805,7 @@
 	      },
 	      componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        if (mapPropsToFields) {
-	          var fields = mapPropsToFields(nextProps);
-	          if (fields) {
-	            var instanceFields = this.fields = _extends({}, this.fields);
-	            for (var fieldName in fields) {
-	              if (fields.hasOwnProperty(fieldName)) {
-	                instanceFields[fieldName] = _extends({}, fields[fieldName], {
-	                  // keep instance
-	                  instance: instanceFields[fieldName] && instanceFields[fieldName].instance
-	                });
-	              }
-	            }
-	          }
+	          this.fields = mapPropsToFields(nextProps);
 	        }
 	      },
 	      onChange: function onChange(name, action) {
@@ -20003,9 +19993,7 @@
 	        return this.getValueFromFields(name, fields);
 	      },
 	      getFieldInstance: function getFieldInstance(name) {
-	        var fields = this.fields;
-	
-	        return fields[name] && fields[name].instance;
+	        return this.instances[name];
 	      },
 	      getValueFromFields: function getValueFromFields(name, fields) {
 	        var fieldsMeta = this.fieldsMeta;
@@ -20029,12 +20017,6 @@
 	        var _this3 = this;
 	
 	        var originalFields = this.fields;
-	        // reserve `instance`
-	        Object.keys(fields).forEach(function (key) {
-	          if (!originalFields[key]) return;
-	          fields[key].instance = originalFields[key].instance;
-	        });
-	
 	        var nowFields = _extends({}, originalFields, fields);
 	        var fieldsMeta = this.fieldsMeta;
 	        var nowValues = {};
@@ -20097,6 +20079,7 @@
 	          // after destroy, delete data
 	          delete this.fieldsMeta[name];
 	          delete this.fields[name];
+	          delete this.instances[name];
 	          return;
 	        }
 	        var fieldMeta = this.getFieldMeta(name);
@@ -20106,8 +20089,7 @@
 	          }
 	          fieldMeta.ref(component);
 	        }
-	        this.fields[name] = this.fields[name] || {};
-	        this.fields[name].instance = component;
+	        this.instances[name] = component;
 	      },
 	      validateFieldsInternal: function validateFieldsInternal(fields, _ref, callback) {
 	        var _this4 = this;
@@ -20126,8 +20108,7 @@
 	          if (options.force !== true && field.dirty === false) {
 	            if (field.errors) {
 	              alreadyErrors[name] = {
-	                errors: field.errors,
-	                instance: field.instance
+	                errors: field.errors
 	              };
 	            }
 	            return;
@@ -20177,8 +20158,7 @@
 	            // avoid concurrency problems
 	            if (nowField.value !== allValues[name]) {
 	              expired.push({
-	                name: name,
-	                instance: nowField.instance
+	                name: name
 	              });
 	            } else {
 	              nowField.errors = fieldErrors && fieldErrors.errors;
@@ -20187,16 +20167,12 @@
 	              nowField.dirty = false;
 	              nowAllFields[name] = nowField;
 	            }
-	            if (fieldErrors) {
-	              fieldErrors.instance = nowField.instance;
-	            }
 	          });
 	          _this4.setFields(nowAllFields);
 	          if (callback) {
 	            if (expired.length) {
 	              expired.forEach(function (_ref2) {
 	                var name = _ref2.name;
-	                var instance = _ref2.instance;
 	
 	                var fieldErrors = [{
 	                  message: name + ' need to revalidate',
@@ -20204,7 +20180,6 @@
 	                }];
 	                errorsGroup[name] = {
 	                  expired: true,
-	                  instance: instance,
 	                  errors: fieldErrors
 	                };
 	              });

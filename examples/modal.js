@@ -1202,6 +1202,8 @@ webpackJsonp([7],{
 	    });
 	  },
 	  validateFieldsAndScroll: function validateFieldsAndScroll(ns, opt, cb) {
+	    var _this = this;
+	
 	    var _getParams = (0, _utils.getParams)(ns, opt, cb);
 	
 	    var names = _getParams.names;
@@ -1209,17 +1211,20 @@ webpackJsonp([7],{
 	    var options = _getParams.options;
 	
 	
-	    function newCb(error, values) {
+	    var newCb = function newCb(error, values) {
 	      if (error) {
 	        var firstNode = void 0;
 	        var firstTop = void 0;
 	        for (var name in error) {
-	          if (error.hasOwnProperty(name) && error[name].instance) {
-	            var node = _reactDom2["default"].findDOMNode(error[name].instance);
-	            var top = node.getBoundingClientRect().top;
-	            if (firstTop === undefined || firstTop > top) {
-	              firstTop = top;
-	              firstNode = node;
+	          if (error.hasOwnProperty(name)) {
+	            var instance = _this.getFieldInstance(name);
+	            if (instance) {
+	              var node = _reactDom2["default"].findDOMNode(instance);
+	              var top = node.getBoundingClientRect().top;
+	              if (firstTop === undefined || firstTop > top) {
+	                firstTop = top;
+	                firstNode = node;
+	              }
 	            }
 	          }
 	        }
@@ -1234,7 +1239,7 @@ webpackJsonp([7],{
 	      if (typeof callback === 'function') {
 	        callback(error, values);
 	      }
-	    }
+	    };
 	
 	    return this.validateFields(names, options, newCb);
 	  }
