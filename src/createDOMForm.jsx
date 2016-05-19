@@ -55,17 +55,20 @@ const mixin = {
   validateFieldsAndScroll(ns, opt, cb) {
     const { names, callback, options } = getParams(ns, opt, cb);
 
-    function newCb(error, values) {
+    const newCb = (error, values) => {
       if (error) {
         let firstNode;
         let firstTop;
         for (const name in error) {
-          if (error.hasOwnProperty(name) && error[name].instance) {
-            const node = ReactDOM.findDOMNode(error[name].instance);
-            const top = node.getBoundingClientRect().top;
-            if (firstTop === undefined || firstTop > top) {
-              firstTop = top;
-              firstNode = node;
+          if (error.hasOwnProperty(name)) {
+            const instance = this.getFieldInstance(name);
+            if (instance) {
+              const node = ReactDOM.findDOMNode(instance);
+              const top = node.getBoundingClientRect().top;
+              if (firstTop === undefined || firstTop > top) {
+                firstTop = top;
+                firstNode = node;
+              }
             }
           }
         }
@@ -81,7 +84,7 @@ const mixin = {
       if (typeof callback === 'function') {
         callback(error, values);
       }
-    }
+    };
 
     return this.validateFields(names, options, newCb);
   },

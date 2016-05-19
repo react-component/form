@@ -1,6 +1,10 @@
 # History
 ----
 
+## 0.16.0 / 2016-05-19
+
+- move instance to this.instances
+
 ## 0.15.0 / 2016-03-28
 
 - add getValueFromEvent/getValueProps

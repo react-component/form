@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "0.15.4",
+  "version": "0.16.0",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -24,10 +24,7 @@
   "license": "MIT",
   "main": "./lib/index",
   "config": {
-    "port": 8000,
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "port": 8000
   },
   "scripts": {
     "build": "rc-tools run build",
@@ -44,7 +41,6 @@
   "devDependencies": {
     "antd": "^0.12.1",
     "async": "^1.5.2",
-    "cz-conventional-changelog": "^1.1.5",
     "expect.js": "0.3.x",
     "history": "^1.16.0",
     "pre-commit": "1.x",

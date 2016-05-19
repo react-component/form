@@ -28,6 +28,7 @@ function createBaseForm(option = {}, mixins = []) {
           fields = mapPropsToFields(this.props);
         }
         this.fields = fields || {};
+        this.instances = {};
         this.fieldsMeta = {};
         this.cachedBind = {};
         return {
@@ -37,21 +38,7 @@ function createBaseForm(option = {}, mixins = []) {
 
       componentWillReceiveProps(nextProps) {
         if (mapPropsToFields) {
-          const fields = mapPropsToFields(nextProps);
-          if (fields) {
-            const instanceFields = this.fields = {
-              ...this.fields,
-            };
-            for (const fieldName in fields) {
-              if (fields.hasOwnProperty(fieldName)) {
-                instanceFields[fieldName] = {
-                  ...fields[fieldName],
-                  // keep instance
-                  instance: instanceFields[fieldName] && instanceFields[fieldName].instance,
-                };
-              }
-            }
-          }
+          this.fields = mapPropsToFields(nextProps);
         }
       },
 
@@ -246,8 +233,7 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       getFieldInstance(name) {
-        const { fields } = this;
-        return fields[name] && fields[name].instance;
+        return this.instances[name];
       },
 
       getValueFromFields(name, fields) {
@@ -268,12 +254,6 @@ function createBaseForm(option = {}, mixins = []) {
       },
       setFields(fields) {
         const originalFields = this.fields;
-        // reserve `instance`
-        Object.keys(fields).forEach((key) => {
-          if (!originalFields[key]) return;
-          fields[key].instance = originalFields[key].instance;
-        });
-
         const nowFields = {
           ...originalFields,
           ...fields,
@@ -343,6 +323,7 @@ function createBaseForm(option = {}, mixins = []) {
           // after destroy, delete data
           delete this.fieldsMeta[name];
           delete this.fields[name];
+          delete this.instances[name];
           return;
         }
         const fieldMeta = this.getFieldMeta(name);
@@ -352,8 +333,7 @@ function createBaseForm(option = {}, mixins = []) {
           }
           fieldMeta.ref(component);
         }
-        this.fields[name] = this.fields[name] || {};
-        this.fields[name].instance = component;
+        this.instances[name] = component;
       },
 
       validateFieldsInternal(fields, {
@@ -371,7 +351,6 @@ function createBaseForm(option = {}, mixins = []) {
             if (field.errors) {
               alreadyErrors[name] = {
                 errors: field.errors,
-                instance: field.instance,
               };
             }
             return;
@@ -427,7 +406,6 @@ function createBaseForm(option = {}, mixins = []) {
             if (nowField.value !== allValues[name]) {
               expired.push({
                 name,
-                instance: nowField.instance,
               });
             } else {
               nowField.errors = fieldErrors && fieldErrors.errors;
@@ -436,21 +414,17 @@ function createBaseForm(option = {}, mixins = []) {
               nowField.dirty = false;
               nowAllFields[name] = nowField;
             }
-            if (fieldErrors) {
-              fieldErrors.instance = nowField.instance;
-            }
           });
           this.setFields(nowAllFields);
           if (callback) {
             if (expired.length) {
-              expired.forEach(({ name, instance }) => {
+              expired.forEach(({ name }) => {
                 const fieldErrors = [{
                   message: `${name} need to revalidate`,
                   field: name,
                 }];
                 errorsGroup[name] = {
                   expired: true,
-                  instance,
                   errors: fieldErrors,
                 };
               });
