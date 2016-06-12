@@ -53,6 +53,10 @@ export function hasRules(validate) {
   return false;
 }
 
+export function startsWith(str, prefix) {
+  return str.lastIndexOf(prefix, 0) === 0;
+}
+
 export function getParams(ns, opt, cb) {
   let names = ns;
   let callback = cb;
@@ -80,4 +84,53 @@ export function getParams(ns, opt, cb) {
     callback,
     options,
   };
+}
+
+const NAME_KEY_SEP = '.';
+
+export function getNameKeyStr(name, key) {
+  if (key) {
+    return `${name}${NAME_KEY_SEP}${key}`;
+  }
+  return name;
+}
+
+export function getNameKeyObj(str) {
+  const index = str.indexOf(NAME_KEY_SEP);
+  if (str.indexOf(NAME_KEY_SEP) !== -1) {
+    const name = str.slice(0, index);
+    const key = str.slice(index + NAME_KEY_SEP.length);
+    return {
+      name,
+      key,
+    };
+  }
+  return {
+    name: str,
+  };
+}
+
+export function flatFields(fields_, fieldsMeta) {
+  const fields = { ...fields_ };
+  Object.keys(fields).forEach((k) => {
+    if (fieldsMeta[k] && fieldsMeta[k].hasKey) {
+      const value = fields[k];
+      // flatten
+      for (const k2 in value) {
+        if (value.hasOwnProperty(k2)) {
+          fields[getNameKeyStr(k, k2)] = value[k2];
+        }
+      }
+      delete fields[k];
+    }
+  });
+  return fields;
+}
+
+export function flatFieldNames(names) {
+  const ret = {};
+  names.forEach((n) => {
+    ret[getNameKeyObj(n).name] = 1;
+  });
+  return Object.keys(ret);
 }

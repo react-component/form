@@ -1,6 +1,11 @@
 # History
 ----
 
+## 0.17.0 / 2016-06-12
+
+- support checkbox radio https://github.com/react-component/form/pull/21
+- add exclusive config
+
 ## 0.16.0 / 2016-05-19
 
 - move instance to this.instances
