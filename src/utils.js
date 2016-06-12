@@ -86,7 +86,7 @@ export function getParams(ns, opt, cb) {
   };
 }
 
-const NAME_KEY_SEP = '_$_$_';
+const NAME_KEY_SEP = '.';
 
 export function getNameKeyStr(name, key) {
   if (key) {

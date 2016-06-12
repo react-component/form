@@ -16,8 +16,7 @@ let Test = React.createClass({
           a:
           <input
             type="radio"
-            {...getFieldProps('normal', {
-              key: 'a',
+            {...getFieldProps('normal.a', {
               exclusive: true,
               getValueFromEvent(e) {
                 return e.target.checked ? 'a' : '';
@@ -37,8 +36,7 @@ let Test = React.createClass({
           b:
           <input
             type="radio"
-            {...getFieldProps('normal', {
-              key: 'b',
+            {...getFieldProps('normal.b', {
               exclusive: true,
               getValueFromEvent(e) {
                 return e.target.checked ? 'b' : '';
@@ -80,18 +78,18 @@ describe('radio-group usage', () => {
 
   it('collect value', () => {
     expect(form.getFieldValue('normal')).to.eql(undefined);
-    form.getFieldInstance('normal', 'a').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'a'));
+    form.getFieldInstance('normal.a').checked = true;
+    Simulate.change(form.getFieldInstance('normal.a'));
     expect(form.getFieldValue('normal')).to.eql('a');
-    form.getFieldInstance('normal', 'b').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'b'));
+    form.getFieldInstance('normal.b').checked = true;
+    Simulate.change(form.getFieldInstance('normal.b'));
     expect(form.getFieldValue('normal')).to.eql('b');
-    expect(form.getFieldInstance('normal', 'a').checked).to.be(false);
+    expect(form.getFieldInstance('normal.a').checked).to.be(false);
   });
 
   it('validateFields works for ok', (callback) => {
-    form.getFieldInstance('normal', 'a').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'a'));
+    form.getFieldInstance('normal.a').checked = true;
+    Simulate.change(form.getFieldInstance('normal.a'));
     form.validateFields((errors, values) => {
       expect(errors).not.to.be.ok();
       expect(values.normal).to.be('a');
@@ -101,8 +99,8 @@ describe('radio-group usage', () => {
 
   it('resetFields works', () => {
     expect(form.getFieldValue('normal')).to.eql(undefined);
-    form.getFieldInstance('normal', 'a').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'a'));
+    form.getFieldInstance('normal.a').checked = true;
+    Simulate.change(form.getFieldInstance('normal.a'));
     expect(form.getFieldValue('normal')).to.eql('a');
     form.resetFields();
     expect(form.getFieldValue('normal')).to.be(undefined);

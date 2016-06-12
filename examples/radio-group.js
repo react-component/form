@@ -40,8 +40,7 @@ class Form extends Component {
               a:
               <input
                 type="radio"
-                {...getFieldProps('normal', {
-                  key: 'a',
+                {...getFieldProps('normal.a', {
                   exclusive: true,
                   getValueFromEvent(e) {
                     return e.target.checked ? 'a' : '';
@@ -61,8 +60,7 @@ class Form extends Component {
               b:
               <input
                 type="radio"
-                {...getFieldProps('normal', {
-                  key: 'b',
+                {...getFieldProps('normal.b', {
                   exclusive: true,
                   getValueFromEvent(e) {
                     return e.target.checked ? 'b' : '';

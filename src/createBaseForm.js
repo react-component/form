@@ -135,12 +135,13 @@ function createBaseForm(option = {}, mixins = []) {
           trigger = defaultTrigger,
           valuePropName = 'value',
           getValueProps,
-          key,
           exclusive,
           validateTrigger = defaultValidateTrigger,
           validate = [],
         } = fieldOption;
-
+        const nameKeyObj = getNameKeyObj(name);
+        name = nameKeyObj.name;
+        const key = nameKeyObj.key;
         let fieldMeta = this.fieldsMeta[name] = this.fieldsMeta[name] || {};
 
         if (key) {
@@ -231,16 +232,13 @@ function createBaseForm(option = {}, mixins = []) {
         return inputProps;
       },
 
-      getFieldMember(name, member, key) {
-        let field = this.getField(name);
-        if (key && field) {
-          field = field[key];
-        }
+      getFieldMember(name, member) {
+        const field = this.getField(name);
         return field && field[member];
       },
 
-      getFieldError(name, key) {
-        return getErrorStrs(this.getFieldMember(name, 'errors', key));
+      getFieldError(name) {
+        return getErrorStrs(this.getFieldMember(name, 'errors'));
       },
 
       getValidFieldsName() {
@@ -264,8 +262,8 @@ function createBaseForm(option = {}, mixins = []) {
         return this.getValueFromFields(name, fields);
       },
 
-      getFieldInstance(name, key) {
-        return this.instances[getNameKeyStr(name, key)];
+      getFieldInstance(name) {
+        return this.instances[name];
       },
 
       getValueFromFieldsInternal(name, fields) {
@@ -538,8 +536,8 @@ function createBaseForm(option = {}, mixins = []) {
         }, callback);
       },
 
-      isFieldValidating(name, key) {
-        return this.getFieldMember(name, 'validating', key);
+      isFieldValidating(name) {
+        return this.getFieldMember(name, 'validating');
       },
 
       isFieldsValidating(ns) {

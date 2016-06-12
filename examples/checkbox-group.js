@@ -40,8 +40,7 @@ class Form extends Component {
               a:
               <input
                 type="checkbox"
-                {...getFieldProps('normal', {
-                  key: 'a',
+                {...getFieldProps('normal.a', {
                   valuePropName: 'checked',
                 })}
               />
@@ -53,9 +52,15 @@ class Form extends Component {
               b:
               <input
                 type="checkbox"
-                {...getFieldProps('normal', {
-                  key: 'b',
-                  valuePropName: 'checked',
+                {...getFieldProps('normal.b', {
+                  getValueFromEvent(e) {
+                    return e.target.checked ? 'b' : '';
+                  },
+                  getValueProps(value) {
+                    return {
+                      checked: !!value,
+                    };
+                  },
                 })}
               />
             </label>

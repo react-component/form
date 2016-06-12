@@ -109,6 +109,10 @@ After set, this will create a binding with this input.
 
 This input's unique name.
 
+#### option.exclusive: boolean
+
+whether set value exclusively. used with radio.
+
 #### option.valuePropName: String
 
 Prop name of component's value field, eg: checkbox should be set to `checked` ...

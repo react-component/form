@@ -16,8 +16,7 @@ let Test = React.createClass({
           a:
           <input
             type="checkbox"
-            {...getFieldProps('normal', {
-              key: 'a',
+            {...getFieldProps('normal.a', {
               valuePropName: 'checked',
             })}
           />
@@ -29,9 +28,15 @@ let Test = React.createClass({
           b:
           <input
             type="checkbox"
-            {...getFieldProps('normal', {
-              key: 'b',
-              valuePropName: 'checked',
+            {...getFieldProps('normal.b', {
+              getValueFromEvent(e) {
+                return e.target.checked ? 'b' : '';
+              },
+              getValueProps(value) {
+                return {
+                  checked: !!value,
+                };
+              },
             })}
           />
         </label>
@@ -64,18 +69,18 @@ describe('checkbox-group usage', () => {
 
   it('collect value', () => {
     expect(form.getFieldValue('normal')).to.eql({});
-    form.getFieldInstance('normal', 'a').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'a'));
+    form.getFieldInstance('normal.a').checked = true;
+    Simulate.change(form.getFieldInstance('normal.a'));
     expect(form.getFieldValue('normal')).to.eql({ a: true });
-    form.getFieldInstance('normal', 'b').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'b'));
-    expect(form.getFieldValue('normal')).to.eql({ a: true, b: true });
-    expect(form.getFieldInstance('normal', 'a').checked).to.be(true);
+    form.getFieldInstance('normal.b').checked = true;
+    Simulate.change(form.getFieldInstance('normal.b'));
+    expect(form.getFieldValue('normal')).to.eql({ a: true, b: 'b' });
+    expect(form.getFieldInstance('normal.a').checked).to.be(true);
   });
 
   it('validateFields works for ok', (callback) => {
-    form.getFieldInstance('normal', 'a').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'a'));
+    form.getFieldInstance('normal.a').checked = true;
+    Simulate.change(form.getFieldInstance('normal.a'));
     form.validateFields((errors, values) => {
       expect(errors).not.to.be.ok();
       expect(values.normal).to.eql({ a: true });
@@ -85,8 +90,8 @@ describe('checkbox-group usage', () => {
 
   it('resetFields works', () => {
     expect(form.getFieldValue('normal')).to.eql({});
-    form.getFieldInstance('normal', 'a').checked = true;
-    Simulate.change(form.getFieldInstance('normal', 'a'));
+    form.getFieldInstance('normal.a').checked = true;
+    Simulate.change(form.getFieldInstance('normal.a'));
     expect(form.getFieldValue('normal')).to.eql({ a: true });
     form.resetFields();
     expect(form.getFieldValue('normal')).to.eql({ a: undefined });
