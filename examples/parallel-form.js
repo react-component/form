@@ -5,7 +5,7 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { regionStyle } from './styles';
 import Switch from 'antd/lib/switch';
-import 'antd/lib/index.css';
+import 'antd/dist/antd.css';
 
 const TopForm = React.createClass({
   propTypes: {

@@ -10,6 +10,9 @@ let Test = React.createClass({
   },
   render() {
     const { getFieldProps } = this.props.form;
+    getFieldProps('normal', {
+      initialValue: 'b',
+    });
     return (<div>
       <p>
         <label>
@@ -23,7 +26,7 @@ let Test = React.createClass({
               },
               getValueProps(value) {
                 return {
-                  checked: !!value,
+                  checked: value === 'a',
                 };
               },
             })}
@@ -43,7 +46,7 @@ let Test = React.createClass({
               },
               getValueProps(value) {
                 return {
-                  checked: !!value,
+                  checked: value === 'b',
                 };
               },
             })}
@@ -77,7 +80,7 @@ describe('radio-group usage', () => {
   });
 
   it('collect value', () => {
-    expect(form.getFieldValue('normal')).to.eql(undefined);
+    expect(form.getFieldValue('normal')).to.eql('b');
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
     expect(form.getFieldValue('normal')).to.eql('a');
@@ -98,11 +101,11 @@ describe('radio-group usage', () => {
   });
 
   it('resetFields works', () => {
-    expect(form.getFieldValue('normal')).to.eql(undefined);
+    expect(form.getFieldValue('normal')).to.eql('b');
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
     expect(form.getFieldValue('normal')).to.eql('a');
     form.resetFields();
-    expect(form.getFieldValue('normal')).to.be(undefined);
+    expect(form.getFieldValue('normal')).to.be('b');
   });
 });

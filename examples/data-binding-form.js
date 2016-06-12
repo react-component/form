@@ -6,7 +6,7 @@ import { createRootContainer, createContainer } from 'react-data-binding';
 import ReactDOM from 'react-dom';
 import { regionStyle } from './styles';
 import Switch from 'antd/lib/switch';
-import 'antd/lib/index.css';
+import 'antd/dist/antd.css';
 
 const createFormContainer = createContainer((state) => {
   return {

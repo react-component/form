@@ -3,7 +3,7 @@
 import { createForm } from 'rc-form';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import 'antd/lib/index.css';
+import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
 
 function Email(props) {

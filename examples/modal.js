@@ -4,7 +4,7 @@ import createDOMForm from 'rc-form/src/createDOMForm';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'antd/lib/modal';
-import 'antd/lib/index.css';
+import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
 
 class Form extends Component {

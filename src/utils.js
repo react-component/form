@@ -113,7 +113,7 @@ export function getNameKeyObj(str) {
 export function flatFields(fields_, fieldsMeta) {
   const fields = { ...fields_ };
   Object.keys(fields).forEach((k) => {
-    if (fieldsMeta[k] && fieldsMeta[k].hasKey) {
+    if (fieldsMeta[k] && fieldsMeta[k].virtual) {
       const value = fields[k];
       // flatten
       for (const k2 in value) {
@@ -133,4 +133,15 @@ export function flatFieldNames(names) {
     ret[getNameKeyObj(n).name] = 1;
   });
   return Object.keys(ret);
+}
+
+export function clearVirtualField(name, fields, fieldsMeta) {
+  if (fieldsMeta[name] && fieldsMeta[name].virtual) {
+    /* eslint no-loop-func:0 */
+    Object.keys(fields).forEach((ok) => {
+      if (getNameKeyObj(ok).name === name) {
+        delete fields[ok];
+      }
+    });
+  }
 }

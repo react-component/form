@@ -30,6 +30,9 @@ class Form extends Component {
   render() {
     const { form } = this.props;
     const { getFieldProps } = form;
+    getFieldProps('normal', {
+      initialValue: 'b',
+    });
     return (<div style={{ margin: 20 }}>
       <h2>radio-group</h2>
       <form onSubmit={this.onSubmit}>
@@ -47,7 +50,7 @@ class Form extends Component {
                   },
                   getValueProps(value) {
                     return {
-                      checked: !!value,
+                      checked: value === 'a',
                     };
                   },
                 })}
@@ -67,7 +70,7 @@ class Form extends Component {
                   },
                   getValueProps(value) {
                     return {
-                      checked: !!value,
+                      checked: value === 'b',
                     };
                   },
                 })}

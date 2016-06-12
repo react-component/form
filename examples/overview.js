@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Select, { Option } from 'antd/lib/select';
 import DatePicker from 'antd/lib/date-picker';
-import 'antd/lib/index.css';
+import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
 
 function Email(props) {

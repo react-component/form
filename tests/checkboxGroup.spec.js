@@ -17,6 +17,7 @@ let Test = React.createClass({
           <input
             type="checkbox"
             {...getFieldProps('normal.a', {
+              initialValue: false,
               valuePropName: 'checked',
             })}
           />
@@ -68,10 +69,10 @@ describe('checkbox-group usage', () => {
   });
 
   it('collect value', () => {
-    expect(form.getFieldValue('normal')).to.eql({});
+    expect(form.getFieldValue('normal')).to.eql({ a: false, b: undefined });
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
-    expect(form.getFieldValue('normal')).to.eql({ a: true });
+    expect(form.getFieldValue('normal')).to.eql({ a: true, b: undefined });
     form.getFieldInstance('normal.b').checked = true;
     Simulate.change(form.getFieldInstance('normal.b'));
     expect(form.getFieldValue('normal')).to.eql({ a: true, b: 'b' });
@@ -83,17 +84,17 @@ describe('checkbox-group usage', () => {
     Simulate.change(form.getFieldInstance('normal.a'));
     form.validateFields((errors, values) => {
       expect(errors).not.to.be.ok();
-      expect(values.normal).to.eql({ a: true });
+      expect(values.normal).to.eql({ a: true, b: undefined });
       callback();
     });
   });
 
   it('resetFields works', () => {
-    expect(form.getFieldValue('normal')).to.eql({});
+    expect(form.getFieldValue('normal')).to.eql({ a: false, b: undefined });
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
-    expect(form.getFieldValue('normal')).to.eql({ a: true });
+    expect(form.getFieldValue('normal')).to.eql({ a: true, b: undefined });
     form.resetFields();
-    expect(form.getFieldValue('normal')).to.eql({ a: undefined });
+    expect(form.getFieldValue('normal')).to.eql({ a: false, b: undefined });
   });
 });

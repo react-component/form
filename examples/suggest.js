@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Select, { Option } from 'antd/lib/select';
 
-import 'antd/lib/index.css';
+import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
 const emailTpl = ['@gmail.com', '@outlook.com', '@qq.com'];
 
