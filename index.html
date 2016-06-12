@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@0.16.0 - React High Order Form Component</title>
+  <title>rc-form@0.17.0 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@0.16.0</h1>
+  <h1>rc-form@0.17.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -747,6 +747,8 @@
       <li><a href="examples/across-router.html">across-router</a></li>
       
       <li><a href="examples/async-init.html">async-init</a></li>
+      
+      <li><a href="examples/checkbox-group.html">checkbox-group</a></li>
       
       <li><a href="examples/data-binding-form.html">data-binding-form</a></li>
       
@@ -765,6 +767,8 @@
       <li><a href="examples/overview.html">overview</a></li>
       
       <li><a href="examples/parallel-form.html">parallel-form</a></li>
+      
+      <li><a href="examples/radio-group.html">radio-group</a></li>
       
       <li><a href="examples/redux.html">redux</a></li>
       
@@ -836,6 +840,7 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <h3>getFieldProps(name, option): Object<a id="user-content-getfieldprops(name,-option):-object" name="getfieldprops(name,-option):-object" class="anchor" aria-hidden="true" href="#getfieldprops(name,-option):-object"><span class="octicon octicon-link"></span></a></h3><p>Will create props which can be set on a input/InputComponent which support value and onChange interface.</p>
 <p>After set, this will create a binding with this input.</p>
 <h4>name: String<a id="user-content-name:-string" name="name:-string" class="anchor" aria-hidden="true" href="#name:-string"><span class="octicon octicon-link"></span></a></h4><p>This input&#39;s unique name.</p>
+<h4>option.exclusive: boolean<a id="user-content-option.exclusive:-boolean" name="option.exclusive:-boolean" class="anchor" aria-hidden="true" href="#option.exclusive:-boolean"><span class="octicon octicon-link"></span></a></h4><p>whether set value exclusively. used with radio.</p>
 <h4>option.valuePropName: String<a id="user-content-option.valuepropname:-string" name="option.valuepropname:-string" class="anchor" aria-hidden="true" href="#option.valuepropname:-string"><span class="octicon octicon-link"></span></a></h4><p>Prop name of component&#39;s value field, eg: checkbox should be set to <code>checked</code> ...</p>
 <h4>option.getValueFromEvent<a id="user-content-option.getvaluefromevent" name="option.getvaluefromevent" class="anchor" aria-hidden="true" href="#option.getvaluefromevent"><span class="octicon octicon-link"></span></a></h4><p>Specify how to get value from event. Defaults to</p>
 <div class="highlight"><pre><code language="js"><span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
