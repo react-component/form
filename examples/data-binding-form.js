@@ -3,12 +3,12 @@ webpackJsonp([4],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(265);
+	module.exports = __webpack_require__(274);
 
 
 /***/ },
 
-/***/ 160:
+/***/ 169:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,7 +17,7 @@ webpackJsonp([4],{
 	  value: true
 	});
 	
-	var _src = __webpack_require__(161);
+	var _src = __webpack_require__(170);
 	
 	var form = _interopRequireWildcard(_src);
 	
@@ -29,7 +29,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 161:
+/***/ 170:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39,7 +39,7 @@ webpackJsonp([4],{
 	});
 	exports.createForm = undefined;
 	
-	var _createForm = __webpack_require__(162);
+	var _createForm = __webpack_require__(171);
 	
 	var _createForm2 = _interopRequireDefault(_createForm);
 	
@@ -49,7 +49,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 244:
+/***/ 253:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71,7 +71,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 252:
+/***/ 261:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -80,11 +80,11 @@ webpackJsonp([4],{
 	  value: true
 	});
 	
-	var _createContainer = __webpack_require__(253);
+	var _createContainer = __webpack_require__(262);
 	
-	var _createRootContainer = __webpack_require__(263);
+	var _createRootContainer = __webpack_require__(272);
 	
-	var _Store = __webpack_require__(264);
+	var _Store = __webpack_require__(273);
 	
 	exports.createContainer = _createContainer.createContainer;
 	exports.createRootContainer = _createRootContainer.createRootContainer;
@@ -92,7 +92,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 253:
+/***/ 262:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -115,7 +115,7 @@ webpackJsonp([4],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _shallowequal = __webpack_require__(254);
+	var _shallowequal = __webpack_require__(263);
 	
 	var _shallowequal2 = _interopRequireDefault(_shallowequal);
 	
@@ -123,11 +123,11 @@ webpackJsonp([4],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reselect = __webpack_require__(259);
+	var _reselect = __webpack_require__(268);
 	
-	var _utils = __webpack_require__(260);
+	var _utils = __webpack_require__(269);
 	
-	var _createEmptyContainer = __webpack_require__(262);
+	var _createEmptyContainer = __webpack_require__(271);
 	
 	function createSelectGetter(s) {
 	  return function (state) {
@@ -271,12 +271,12 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 254:
+/***/ 263:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var fetchKeys = __webpack_require__(255);
+	var fetchKeys = __webpack_require__(264);
 	
 	module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 	
@@ -325,7 +325,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 255:
+/***/ 264:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -336,9 +336,9 @@ webpackJsonp([4],{
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(256),
-	    isArguments = __webpack_require__(257),
-	    isArray = __webpack_require__(258);
+	var getNative = __webpack_require__(265),
+	    isArguments = __webpack_require__(266),
+	    isArray = __webpack_require__(267);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -568,7 +568,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 256:
+/***/ 265:
 /***/ function(module, exports) {
 
 	/**
@@ -712,7 +712,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 257:
+/***/ 266:
 /***/ function(module, exports) {
 
 	/**
@@ -962,7 +962,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 258:
+/***/ 267:
 /***/ function(module, exports) {
 
 	/**
@@ -1149,7 +1149,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 259:
+/***/ 268:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1266,7 +1266,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 260:
+/***/ 269:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1280,11 +1280,11 @@ webpackJsonp([4],{
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	var _hoistNonReactStatics = __webpack_require__(165);
+	var _hoistNonReactStatics = __webpack_require__(174);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _constants = __webpack_require__(261);
+	var _constants = __webpack_require__(270);
 	
 	function getDisplayName(WrappedComponent) {
 	  return WrappedComponent.displayName || WrappedComponent.name || 'WrappedComponent';
@@ -1300,7 +1300,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 261:
+/***/ 270:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1316,7 +1316,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 262:
+/***/ 271:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1343,7 +1343,7 @@ webpackJsonp([4],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(260);
+	var _utils = __webpack_require__(269);
 	
 	function createEmptyContainer(mapStoreProps, storeName) {
 	  return function create(WrappedComponent) {
@@ -1373,7 +1373,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 263:
+/***/ 272:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1396,13 +1396,13 @@ webpackJsonp([4],{
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _Store = __webpack_require__(264);
+	var _Store = __webpack_require__(273);
 	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _constants = __webpack_require__(261);
+	var _constants = __webpack_require__(270);
 	
 	function createRootContainerWrapper(WrappedComponent, store, storeName) {
 	  var RootContainer = (function (_Component) {
@@ -1448,7 +1448,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 264:
+/***/ 273:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1465,7 +1465,7 @@ webpackJsonp([4],{
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _reactDom = __webpack_require__(159);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -1556,7 +1556,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 265:
+/***/ 274:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1565,25 +1565,25 @@ webpackJsonp([4],{
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint react/no-multi-comp:0, no-console:0 */
 	
-	var _rcForm = __webpack_require__(160);
+	var _rcForm = __webpack_require__(169);
 	
 	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDataBinding = __webpack_require__(252);
+	var _reactDataBinding = __webpack_require__(261);
 	
-	var _reactDom = __webpack_require__(159);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(244);
+	var _styles = __webpack_require__(253);
 	
-	var _switch = __webpack_require__(266);
+	var _switch = __webpack_require__(275);
 	
 	var _switch2 = _interopRequireDefault(_switch);
 	
-	__webpack_require__(270);
+	__webpack_require__(279);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
@@ -1762,7 +1762,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 266:
+/***/ 275:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1770,10 +1770,13 @@ webpackJsonp([4],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports["default"] = undefined;
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _rcSwitch = __webpack_require__(267);
+	var _class, _temp;
+	
+	var _rcSwitch = __webpack_require__(276);
 	
 	var _rcSwitch2 = _interopRequireDefault(_rcSwitch);
 	
@@ -1781,22 +1784,32 @@ webpackJsonp([4],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(269);
+	var _classnames = __webpack_require__(278);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	exports.default = _react2.default.createClass({
-	  displayName: 'switch',
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      prefixCls: 'ant-switch'
-	    };
-	  },
-	  render: function render() {
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
+	
+	var Switch = (_temp = _class = function (_React$Component) {
+	  _inherits(Switch, _React$Component);
+	
+	  function Switch() {
+	    _classCallCheck(this, Switch);
+	
+	    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+	  }
+	
+	  Switch.prototype.render = function render() {
 	    var _classNames;
 	
 	    var _props = this.props;
@@ -1804,32 +1817,41 @@ webpackJsonp([4],{
 	    var size = _props.size;
 	    var className = _props.className;
 	
-	    var cls = (0, _classnames2.default)((_classNames = {}, _defineProperty(_classNames, className, !!className), _defineProperty(_classNames, prefixCls + '-small', size === 'small'), _classNames));
-	    return _react2.default.createElement(_rcSwitch2.default, _extends({ className: cls }, this.props));
-	  }
-	});
+	    var cls = (0, _classnames2["default"])((_classNames = {}, _defineProperty(_classNames, className, !!className), _defineProperty(_classNames, prefixCls + '-small', size === 'small'), _classNames));
+	    return _react2["default"].createElement(_rcSwitch2["default"], _extends({ className: cls }, this.props));
+	  };
+	
+	  return Switch;
+	}(_react2["default"].Component), _class.defaultProps = {
+	  prefixCls: 'ant-switch'
+	}, _temp);
+	exports["default"] = Switch;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 267:
+/***/ 276:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(268);
+	module.exports = __webpack_require__(277);
 
 /***/ },
 
-/***/ 268:
+/***/ 277:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	var React = __webpack_require__(2);
-	var classNames = __webpack_require__(269);
+	var classNames = __webpack_require__(278);
 	
 	function noop() {}
 	
@@ -1840,15 +1862,14 @@ webpackJsonp([4],{
 	    className: React.PropTypes.string,
 	    prefixCls: React.PropTypes.string,
 	    disabled: React.PropTypes.bool,
-	    style: React.PropTypes.object,
 	    checkedChildren: React.PropTypes.any,
 	    unCheckedChildren: React.PropTypes.any,
-	    onChange: React.PropTypes.func
+	    onChange: React.PropTypes.func,
+	    onMouseUp: React.PropTypes.func
 	  },
 	  getDefaultProps: function getDefaultProps() {
 	    return {
 	      prefixCls: 'rc-switch',
-	      style: {},
 	      checkedChildren: null,
 	      unCheckedChildren: null,
 	      className: '',
@@ -1875,14 +1896,34 @@ webpackJsonp([4],{
 	      });
 	    }
 	  },
-	  toggle: function toggle() {
-	    var checked = !this.state.checked;
+	  setChecked: function setChecked(checked) {
 	    if (!('checked' in this.props)) {
 	      this.setState({
 	        checked: checked
 	      });
 	    }
 	    this.props.onChange(checked);
+	  },
+	  toggle: function toggle() {
+	    var checked = !this.state.checked;
+	    this.setChecked(checked);
+	  },
+	  handleKeyDown: function handleKeyDown(e) {
+	    if (e.keyCode === 37) {
+	      this.setChecked(false);
+	    }
+	    if (e.keyCode === 39) {
+	      this.setChecked(true);
+	    }
+	  },
+	  // Handle auto focus when click switch in Chrome
+	  handleMouseUp: function handleMouseUp(e) {
+	    if (this.refs.node) {
+	      this.refs.node.blur();
+	    }
+	    if (this.props.onMouseUp) {
+	      this.props.onMouseUp(e);
+	    }
 	  },
 	  render: function render() {
 	    var _classNames;
@@ -1891,17 +1932,22 @@ webpackJsonp([4],{
 	    var className = _props.className;
 	    var prefixCls = _props.prefixCls;
 	    var disabled = _props.disabled;
-	    var style = _props.style;
 	    var checkedChildren = _props.checkedChildren;
 	    var unCheckedChildren = _props.unCheckedChildren;
+	
+	    var restProps = _objectWithoutProperties(_props, ['className', 'prefixCls', 'disabled', 'checkedChildren', 'unCheckedChildren']);
 	
 	    var checked = this.state.checked;
 	    var switchClassName = classNames((_classNames = {}, _defineProperty(_classNames, className, !!className), _defineProperty(_classNames, prefixCls, true), _defineProperty(_classNames, prefixCls + '-checked', checked), _defineProperty(_classNames, prefixCls + '-disabled', disabled), _classNames));
 	    return React.createElement(
 	      'span',
-	      { className: switchClassName,
+	      _extends({}, restProps, {
+	        className: switchClassName,
+	        tabIndex: '0',
+	        ref: 'node',
+	        onKeyDown: this.handleKeyDown,
 	        onClick: disabled ? noop : this.toggle,
-	        style: style },
+	        onMouseUp: this.handleMouseUp }),
 	      React.createElement(
 	        'span',
 	        { className: prefixCls + '-inner' },
@@ -1915,7 +1961,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 269:
+/***/ 278:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -1970,7 +2016,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 270:
+/***/ 279:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

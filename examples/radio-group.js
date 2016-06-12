@@ -3,12 +3,12 @@ webpackJsonp([12],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(398);
+	module.exports = __webpack_require__(413);
 
 
 /***/ },
 
-/***/ 244:
+/***/ 253:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30,7 +30,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 247:
+/***/ 256:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41,19 +41,19 @@ webpackJsonp([12],{
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createBaseForm = __webpack_require__(163);
+	var _createBaseForm = __webpack_require__(172);
 	
 	var _createBaseForm2 = _interopRequireDefault(_createBaseForm);
 	
-	var _createForm = __webpack_require__(162);
+	var _createForm = __webpack_require__(171);
 	
-	var _utils = __webpack_require__(164);
+	var _utils = __webpack_require__(173);
 	
-	var _reactDom = __webpack_require__(159);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _domScrollIntoView = __webpack_require__(248);
+	var _domScrollIntoView = __webpack_require__(257);
 	
 	var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
 	
@@ -156,21 +156,21 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 248:
+/***/ 257:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(249);
+	module.exports = __webpack_require__(258);
 
 /***/ },
 
-/***/ 249:
+/***/ 258:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var util = __webpack_require__(250);
+	var util = __webpack_require__(259);
 	
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
@@ -300,7 +300,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 250:
+/***/ 259:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -745,7 +745,7 @@ webpackJsonp([12],{
 
 /***/ },
 
-/***/ 398:
+/***/ 413:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -754,7 +754,7 @@ webpackJsonp([12],{
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _createDOMForm = __webpack_require__(247);
+	var _createDOMForm = __webpack_require__(256);
 	
 	var _createDOMForm2 = _interopRequireDefault(_createDOMForm);
 	
@@ -762,11 +762,11 @@ webpackJsonp([12],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(159);
+	var _reactDom = __webpack_require__(39);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(244);
+	var _styles = __webpack_require__(253);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
@@ -812,6 +812,9 @@ webpackJsonp([12],{
 	      var form = this.props.form;
 	      var getFieldProps = form.getFieldProps;
 	
+	      getFieldProps('normal', {
+	        initialValue: 'b'
+	      });
 	      return _react2["default"].createElement(
 	        'div',
 	        { style: { margin: 20 } },
@@ -847,7 +850,7 @@ webpackJsonp([12],{
 	                  },
 	                  getValueProps: function getValueProps(value) {
 	                    return {
-	                      checked: !!value
+	                      checked: value === 'a'
 	                    };
 	                  }
 	                })))
@@ -866,7 +869,7 @@ webpackJsonp([12],{
 	                  },
 	                  getValueProps: function getValueProps(value) {
 	                    return {
-	                      checked: !!value
+	                      checked: value === 'b'
 	                    };
 	                  }
 	                })))

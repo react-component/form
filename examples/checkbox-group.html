@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>checkbox-group.js - example - rc-form@0.17.0</title>
+  <title>checkbox-group.js - example - rc-form@0.17.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -258,7 +258,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@0.17.0</h1>
+      <h1>rc-form@0.17.1</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -307,6 +307,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
               <span class="hljs-tag">&lt;<span class="hljs-title">input</span>
                 <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span>
                 {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal.a</span>', {
+                  <span class="hljs-attribute">initialValue:</span> <span class="hljs-attribute">false</span>,
                   <span class="hljs-attribute">valuePropName:</span> '<span class="hljs-attribute">checked</span>',
                 })}
               /&gt;</span>
@@ -319,6 +320,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
               <span class="hljs-tag">&lt;<span class="hljs-title">input</span>
                 <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span>
                 {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">normal.b</span>', {
+                  <span class="hljs-attribute">initialValue:</span> '<span class="hljs-attribute">b</span>',
                   <span class="hljs-attribute">getValueFromEvent</span>(<span class="hljs-attribute">e</span>) {
                     <span class="hljs-attribute">return</span> <span class="hljs-attribute">e.target.checked</span> ? '<span class="hljs-attribute">b</span>' <span class="hljs-attribute">:</span> '';
                   },
