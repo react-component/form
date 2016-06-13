@@ -299,7 +299,9 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-keyword">const</span> { location } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">style</span> <span class="hljs-attribute">dangerouslySetInnerHTML</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">__html:</span> <span class="hljs-attribute">style</span> }}/&gt;</span><span class="css">
-      &lt;<span class="hljs-tag">p</span>&gt;<span class="hljs-tag">header</span> <span class="hljs-rules">{location.pathname === '/' ? <span class="hljs-rule"><span class="hljs-attribute">null </span>:<span class="hljs-value"> &lt;a href=<span class="hljs-string">"#"</span> onClick={this.onClick</span></span></span>}&gt;<span class="hljs-tag">back</span>&lt;/<span class="hljs-tag">a</span>&gt;}&lt;/<span class="hljs-tag">p</span>&gt;
+      &lt;<span class="hljs-tag">div</span>&gt;<span class="hljs-tag">header</span> <span class="hljs-rules">{location.pathname === '/' ? <span class="hljs-rule"><span class="hljs-attribute">null </span>:<span class="hljs-value">
+        &lt;a href=<span class="hljs-string">"#"</span> onClick={this.onClick</span></span></span>}&gt;<span class="hljs-tag">back</span>&lt;/<span class="hljs-tag">a</span>&gt;}
+      &lt;/<span class="hljs-tag">div</span>&gt;
       &lt;<span class="hljs-tag">div</span>&gt;
         <span class="hljs-rules">{this.props.children}</span>
       &lt;/<span class="hljs-tag">div</span>&gt;
@@ -334,12 +336,12 @@ App = createRootContainer()(App);
   },
   render() {
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="css">&lt;<span class="hljs-tag">div</span> <span class="hljs-tag">className</span>="<span class="hljs-tag">region</span>"&gt;
-      &lt;<span class="hljs-tag">p</span> <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{onClick.bind(this, 'sh')}</span>&gt;
+      &lt;<span class="hljs-tag">div</span> <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{onClick.bind(this, 'sh')}</span>&gt;
         <span class="hljs-tag">shanghai</span>
-      &lt;/<span class="hljs-tag">p</span>&gt;
-      &lt;<span class="hljs-tag">p</span> <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{onClick.bind(this, 'hz')}</span>&gt;
+      &lt;/<span class="hljs-tag">div</span>&gt;
+      &lt;<span class="hljs-tag">div</span> <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{onClick.bind(this, 'hz')}</span>&gt;
         <span class="hljs-tag">hangzhou</span>
-      &lt;/<span class="hljs-tag">p</span>&gt;
+      &lt;/<span class="hljs-tag">div</span>&gt;
     &lt;/<span class="hljs-tag">div</span>&gt;)</span></span>;
   },
 });
@@ -374,17 +376,19 @@ CitySelector = createContainer()(CitySelector);
     <span class="hljs-keyword">const</span> { getFieldProps, getFieldError } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="css">&lt;<span class="hljs-tag">div</span> <span class="hljs-tag">className</span>="<span class="hljs-tag">region</span>"&gt;
       &lt;<span class="hljs-tag">div</span>&gt;
-        &lt;<span class="hljs-tag">p</span>&gt;<span class="hljs-tag">user</span>:
+        &lt;<span class="hljs-tag">div</span>&gt;<span class="hljs-tag">user</span>:
           &lt;<span class="hljs-tag">input</span> <span class="hljs-rules">{...getFieldProps('user', {
             <span class="hljs-rule"><span class="hljs-attribute">rules</span>:<span class="hljs-value"> [{
               required: true,
             </span></span></span>}],
           })}
-          /&gt;&lt;/<span class="hljs-tag">p</span>&gt;
-        <span class="hljs-rules">{getFieldError('user') ? &lt;p className="error"&gt;{getFieldError('user').join(',')}</span>&lt;/<span class="hljs-tag">p</span>&gt; : <span class="hljs-tag">null</span>}
+          /&gt;&lt;/<span class="hljs-tag">div</span>&gt;
+        <span class="hljs-rules">{getFieldError('user') ?
+          &lt;div className="error"&gt;{getFieldError('user').join(',')}</span>&lt;/<span class="hljs-tag">div</span>&gt; :
+          <span class="hljs-tag">null</span>}
       &lt;/<span class="hljs-tag">div</span>&gt;
       &lt;<span class="hljs-tag">div</span>&gt;
-        &lt;<span class="hljs-tag">p</span>&gt;<span class="hljs-tag">city</span>:
+        &lt;<span class="hljs-tag">div</span>&gt;<span class="hljs-tag">city</span>:
           &lt;<span class="hljs-tag">CityInput</span> <span class="hljs-rules">{...getFieldProps('city', {
             <span class="hljs-rule"><span class="hljs-attribute">rules</span>:<span class="hljs-value"> [{
               required: true,
@@ -392,12 +396,14 @@ CitySelector = createContainer()(CitySelector);
             <span class="hljs-tag">validatorTrigger</span>: <span class="hljs-tag">false</span>,
             <span class="hljs-tag">trigger</span>: <span class="hljs-tag">false</span>,
           })}
-          /&gt;&lt;/<span class="hljs-tag">p</span>&gt;
-        <span class="hljs-rules">{getFieldError('city') ? &lt;p className="error"&gt;{getFieldError('city').join(',')}</span>&lt;/<span class="hljs-tag">p</span>&gt; : <span class="hljs-tag">null</span>}
+          /&gt;&lt;/<span class="hljs-tag">div</span>&gt;
+        <span class="hljs-rules">{getFieldError('city') ?
+          &lt;div className="error"&gt;{getFieldError('city').join(',')}</span>&lt;/<span class="hljs-tag">div</span>&gt; :
+          <span class="hljs-tag">null</span>}
       &lt;/<span class="hljs-tag">div</span>&gt;
-      &lt;<span class="hljs-tag">p</span>&gt;
+      &lt;<span class="hljs-tag">div</span>&gt;
         &lt;<span class="hljs-tag">button</span> <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{this.onSubmit}</span>&gt;<span class="hljs-tag">submit</span>&lt;/<span class="hljs-tag">button</span>&gt;
-      &lt;/<span class="hljs-tag">p</span>&gt;
+      &lt;/<span class="hljs-tag">div</span>&gt;
     &lt;/<span class="hljs-tag">div</span>&gt;)</span></span>;
   },
 });

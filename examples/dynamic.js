@@ -115,7 +115,7 @@ webpackJsonp([5],{
 	    'div',
 	    { style: style },
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      'email:',
 	      _react2["default"].createElement('input', getFieldProps('email', {
@@ -129,12 +129,12 @@ webpackJsonp([5],{
 	      }))
 	    ),
 	    errors ? _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      errors.join(',')
 	    ) : null,
 	    isFieldValidating('email') ? _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      'validating'
 	    ) : null
@@ -164,7 +164,7 @@ webpackJsonp([5],{
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'user:',
 	        _react2["default"].createElement('input', getFieldProps('user', {
@@ -175,12 +175,12 @@ webpackJsonp([5],{
 	        }))
 	      ),
 	      errors ? _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors.join(',')
 	      ) : null,
 	      isFieldValidating('user') ? _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        'validating'
 	      ) : null
@@ -236,7 +236,7 @@ webpackJsonp([5],{
 	            'div',
 	            { style: _styles.regionStyle },
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              _react2["default"].createElement(
 	                'label',
@@ -256,7 +256,7 @@ webpackJsonp([5],{
 	            'div',
 	            { style: _styles.regionStyle },
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              _react2["default"].createElement(
 	                'label',

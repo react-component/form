@@ -5960,7 +5960,7 @@ webpackJsonp([14],{
 	      null,
 	      _react2["default"].createElement('style', { dangerouslySetInnerHTML: { __html: style } }),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'header ',
 	        location.pathname === '/' ? null : _react2["default"].createElement(
@@ -6008,12 +6008,12 @@ webpackJsonp([14],{
 	      'div',
 	      { className: 'region' },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { onClick: onClick.bind(this, 'sh') },
 	        'shanghai'
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { onClick: onClick.bind(this, 'hz') },
 	        'hangzhou'
 	      )
@@ -6067,7 +6067,7 @@ webpackJsonp([14],{
 	        'div',
 	        null,
 	        _react2["default"].createElement(
-	          'p',
+	          'div',
 	          null,
 	          'user:',
 	          _react2["default"].createElement('input', getFieldProps('user', {
@@ -6077,7 +6077,7 @@ webpackJsonp([14],{
 	          }))
 	        ),
 	        getFieldError('user') ? _react2["default"].createElement(
-	          'p',
+	          'div',
 	          { className: 'error' },
 	          getFieldError('user').join(',')
 	        ) : null
@@ -6086,7 +6086,7 @@ webpackJsonp([14],{
 	        'div',
 	        null,
 	        _react2["default"].createElement(
-	          'p',
+	          'div',
 	          null,
 	          'city:',
 	          _react2["default"].createElement(CityInput, getFieldProps('city', {
@@ -6098,13 +6098,13 @@ webpackJsonp([14],{
 	          }))
 	        ),
 	        getFieldError('city') ? _react2["default"].createElement(
-	          'p',
+	          'div',
 	          { className: 'error' },
 	          getFieldError('city').join(',')
 	        ) : null
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement(
 	          'button',

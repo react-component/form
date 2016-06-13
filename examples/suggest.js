@@ -9481,7 +9481,7 @@ webpackJsonp([18],{
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'custom select sync validate'
 	      ),
@@ -9515,7 +9515,7 @@ webpackJsonp([18],{
 	        )
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : _react2["default"].createElement(
 	          'b',
@@ -9528,7 +9528,7 @@ webpackJsonp([18],{
 	        )
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        isFieldValidating('select') ? 'validating' : _react2["default"].createElement(
 	          'b',

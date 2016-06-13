@@ -109,12 +109,12 @@ webpackJsonp([20],{
 	    'div',
 	    { style: _styles.regionStyle },
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      'email validate onBlur && onChange'
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2["default"].createElement('input', getFieldProps('email', {
 	        validate: [{
@@ -132,12 +132,12 @@ webpackJsonp([20],{
 	      }))
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      isFieldValidating('email') ? 'validating' : null
 	    )
@@ -166,12 +166,12 @@ webpackJsonp([20],{
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'user validate on submit'
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement('input', getFieldProps('user', {
 	          rules: [{
@@ -184,12 +184,12 @@ webpackJsonp([20],{
 	        }))
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        isFieldValidating('user') ? 'validating' : null
 	      )

@@ -120,12 +120,12 @@ webpackJsonp([16],{
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'email:'
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement('input', getFieldProps('email', {
 	          rules: [{
@@ -134,7 +134,7 @@ webpackJsonp([16],{
 	        }))
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      ),

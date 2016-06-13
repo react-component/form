@@ -4401,12 +4401,12 @@ webpackJsonp([10],[
 	    'div',
 	    { style: _styles.regionStyle },
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      'email sync validate'
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2["default"].createElement('input', getFieldProps('email', {
 	        rules: [{
@@ -4420,12 +4420,12 @@ webpackJsonp([10],[
 	      }))
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      errors
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      isFieldValidating('email') ? 'validating' : null
 	    )
@@ -4464,7 +4464,7 @@ webpackJsonp([10],[
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement(
 	          'span',
@@ -4474,7 +4474,7 @@ webpackJsonp([10],[
 	        ' user async validate'
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement('input', getFieldProps('user', {
 	          validateFirst: true,
@@ -4486,12 +4486,12 @@ webpackJsonp([10],[
 	        }))
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        isFieldValidating('user') ? 'validating' : null
 	      )
@@ -4510,7 +4510,7 @@ webpackJsonp([10],[
 	    'div',
 	    { style: _styles.regionStyle },
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2["default"].createElement(
 	        'span',
@@ -4520,7 +4520,7 @@ webpackJsonp([10],[
 	      ' custom select sync validate'
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2["default"].createElement(
 	        _select2["default"],
@@ -4545,12 +4545,12 @@ webpackJsonp([10],[
 	      )
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      isFieldValidating('select') ? 'validating' : null
 	    )
@@ -4571,7 +4571,7 @@ webpackJsonp([10],[
 	    'div',
 	    { style: _styles.regionStyle },
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2["default"].createElement(
 	        'span',
@@ -4581,7 +4581,7 @@ webpackJsonp([10],[
 	      ' DateInput sync validate'
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: { width: 200 } },
 	      _react2["default"].createElement(_datePicker2["default"], _extends({
 	        placeholder: 'please select'
@@ -4593,7 +4593,7 @@ webpackJsonp([10],[
 	      })))
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
 	    )
@@ -4627,12 +4627,12 @@ webpackJsonp([10],[
 	    'div',
 	    { style: _styles.regionStyle },
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      'number input'
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2["default"].createElement('input', getFieldProps('number', {
 	        initialValue: '1',
@@ -4643,7 +4643,7 @@ webpackJsonp([10],[
 	      }))
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
 	    )
@@ -4711,12 +4711,12 @@ webpackJsonp([10],[
 	            'div',
 	            { style: _styles.regionStyle },
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              'normal required input'
 	            ),
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              _react2["default"].createElement('input', getFieldProps('normal', {
 	                rules: [{
@@ -4725,7 +4725,7 @@ webpackJsonp([10],[
 	              }))
 	            ),
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              { style: _styles.errorStyle },
 	              getFieldError('normal') ? getFieldError('normal').join(',') : null
 	            )

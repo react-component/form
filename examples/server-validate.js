@@ -108,12 +108,12 @@ webpackJsonp([15],{
 	    'div',
 	    { style: _styles.regionStyle },
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      'email sync validate'
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2["default"].createElement('input', getFieldProps('email', {
 	        rules: [{
@@ -125,7 +125,7 @@ webpackJsonp([15],{
 	      }))
 	    ),
 	    _react2["default"].createElement(
-	      'p',
+	      'div',
 	      { style: _styles.errorStyle },
 	      errors ? errors.join(',') : null
 	    )
@@ -153,12 +153,12 @@ webpackJsonp([15],{
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'user async validate'
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement('input', getFieldProps('user', {
 	          rules: [{
@@ -167,7 +167,7 @@ webpackJsonp([15],{
 	        }))
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      )

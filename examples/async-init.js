@@ -125,12 +125,12 @@ webpackJsonp([1],{
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'email validate onBlur'
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement('input', getFieldProps('email', {
 	          validateFirst: true,
@@ -144,12 +144,12 @@ webpackJsonp([1],{
 	        }))
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        isFieldValidating('email') ? 'validating' : null
 	      )

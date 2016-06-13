@@ -164,12 +164,12 @@ webpackJsonp([6],{
 	        style: _styles.regionStyle
 	      },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'attachment:'
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        _react2["default"].createElement('input', _extends({ type: 'file' }, getFieldProps('attachment', {
 	          getValueProps: getFileValueProps,
@@ -178,7 +178,7 @@ webpackJsonp([6],{
 	        })))
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      ),

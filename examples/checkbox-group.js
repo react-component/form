@@ -112,12 +112,12 @@ webpackJsonp([2],{
 	            'div',
 	            { style: _styles.regionStyle },
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              'checkbox-group'
 	            ),
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              _react2["default"].createElement(
 	                'label',

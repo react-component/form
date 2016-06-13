@@ -830,12 +830,12 @@ webpackJsonp([12],{
 	            'div',
 	            { style: _styles.regionStyle },
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              'radio-group'
 	            ),
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              _react2["default"].createElement(
 	                'label',

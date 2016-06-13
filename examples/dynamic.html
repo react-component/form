@@ -280,7 +280,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     display: hidden ? <span class="hljs-string">'none'</span> : <span class="hljs-string">''</span>,
   };
   <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">style</span> }&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>email:
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>email:
       <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">email</span>', {
         <span class="hljs-attribute">rules:</span> [
           {
@@ -293,11 +293,11 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         ],
         <span class="hljs-attribute">hidden</span>,
       })}
-      /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+      /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
-    {errors ? <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>{errors.join(',')}<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span> : null}
+    {errors ? <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>{errors.join(',')}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span> : null}
 
-    {isFieldValidating('email') ? <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>validating<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span> : null}
+    {isFieldValidating('email') ? <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>validating<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span> : null}
   <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
 }
 
@@ -315,7 +315,7 @@ Email.propTypes = {
     <span class="hljs-keyword">const</span> { getFieldProps, getFieldError, isFieldValidating } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'user'</span>);
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>user:
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>user:
         <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">user</span>', {
           <span class="hljs-attribute">initialValue:</span> '<span class="hljs-attribute">x</span>',
           <span class="hljs-attribute">rules:</span> [
@@ -325,10 +325,10 @@ Email.propTypes = {
           ],
         })}
         /&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-      {errors ? <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>{errors.join(',')}<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span> : null}
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      {errors ? <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>{errors.join(',')}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span> : null}
 
-      {isFieldValidating('user') ? <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>validating<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span> : null}
+      {isFieldValidating('user') ? <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{errorStyle}</span>&gt;</span>validating<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span> : null}
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
   },
 });
@@ -356,7 +356,7 @@ Email.propTypes = {
       <span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>overview<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>remove/add user:
               <span class="hljs-tag">&lt;<span class="hljs-title">input</span>
                 <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span>
@@ -366,13 +366,13 @@ Email.propTypes = {
                 })}
               /&gt;</span>
             <span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
         { getFieldValue('remove_user') ? null : <span class="hljs-tag">&lt;<span class="hljs-title">User</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">form</span> }/&gt;</span>}
 
         <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>hide/show email:
               <span class="hljs-tag">&lt;<span class="hljs-title">input</span>
                 <span class="hljs-attribute">type</span>=<span class="hljs-value">"checkbox"</span>
@@ -381,7 +381,7 @@ Email.propTypes = {
                   <span class="hljs-attribute">valuePropName:</span> '<span class="hljs-attribute">checked</span>',
                 })}
               /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
         <span class="hljs-tag">&lt;<span class="hljs-title">Email</span> <span class="hljs-attribute">form</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">form</span> } <span class="hljs-attribute">hidden</span>=<span class="hljs-value">{!!getFieldValue('hide_email')}</span>/&gt;</span>

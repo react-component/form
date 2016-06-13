@@ -141,7 +141,7 @@ webpackJsonp([9],{
 	      'div',
 	      { style: _styles.regionStyle },
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        null,
 	        'upper normalize'
 	      ),
@@ -156,7 +156,7 @@ webpackJsonp([9],{
 	        }))
 	      ),
 	      _react2["default"].createElement(
-	        'p',
+	        'div',
 	        { style: _styles.errorStyle },
 	        errors ? errors.join(',') : null
 	      )

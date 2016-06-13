@@ -14403,12 +14403,12 @@ webpackJsonp([17],[
 	            'div',
 	            { style: _styles.regionStyle },
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              'start: '
 	            ),
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              _react2["default"].createElement(_datePicker2["default"], getFieldProps('start', {
 	                rules: [this.checkStart]
@@ -14419,12 +14419,12 @@ webpackJsonp([17],[
 	            'div',
 	            { style: _styles.regionStyle },
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              'end: '
 	            ),
 	            _react2["default"].createElement(
-	              'p',
+	              'div',
 	              null,
 	              _react2["default"].createElement(_datePicker2["default"], getFieldProps('end', {
 	                rules: [this.checkEnd]
@@ -14432,7 +14432,7 @@ webpackJsonp([17],[
 	            )
 	          ),
 	          _react2["default"].createElement(
-	            'p',
+	            'div',
 	            { style: _styles.errorStyle },
 	            getFieldError('end') ? getFieldError('end').join(',') : ''
 	          ),

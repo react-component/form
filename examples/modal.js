@@ -1796,7 +1796,7 @@ webpackJsonp([8],{
 	                }]
 	              })),
 	              _react2["default"].createElement(
-	                'p',
+	                'div',
 	                { style: _styles.errorStyle },
 	                getFieldError('required') ? getFieldError('required').join(',') : _react2["default"].createElement(
 	                  'b',
