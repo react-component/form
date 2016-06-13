@@ -37,8 +37,8 @@ class Form extends Component {
       <h2>radio-group</h2>
       <form onSubmit={this.onSubmit}>
         <div style={ regionStyle }>
-          <p>radio-group</p>
-          <p>
+          <div>radio-group</div>
+          <div>
             <label>
               a:
               <input
@@ -76,7 +76,7 @@ class Form extends Component {
                 })}
               />
             </label>
-          </p>
+          </div>
         </div>
 
         <div style={ regionStyle }>

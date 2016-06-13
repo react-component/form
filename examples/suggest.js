@@ -33,7 +33,7 @@ const CustomInput = React.createClass({
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('select');
     return (<div style={ regionStyle }>
-      <p>custom select sync validate</p>
+      <div>custom select sync validate</div>
       <div>
         <Select
           placeholder="please select"
@@ -59,7 +59,7 @@ const CustomInput = React.createClass({
           })}
         </Select>
       </div>
-      <p style={errorStyle}>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') :
           <b
             style={{
@@ -68,8 +68,8 @@ const CustomInput = React.createClass({
           >
             1
           </b>}
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {isFieldValidating('select') ? 'validating' : <b
           style={{
             visibility: 'hidden',
@@ -77,7 +77,7 @@ const CustomInput = React.createClass({
         >
           1
         </b>}
-      </p>
+      </div>
     </div>);
   },
 });

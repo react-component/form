@@ -34,8 +34,8 @@ class Form extends Component {
       <h2>checkbox-group</h2>
       <form onSubmit={this.onSubmit}>
         <div style={ regionStyle }>
-          <p>checkbox-group</p>
-          <p>
+          <div>checkbox-group</div>
+          <div>
             <label>
               a:
               <input
@@ -66,7 +66,7 @@ class Form extends Component {
                 })}
               />
             </label>
-          </p>
+          </div>
         </div>
 
         <div style={ regionStyle }>

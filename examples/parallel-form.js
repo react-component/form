@@ -15,14 +15,14 @@ const TopForm = React.createClass({
   render() {
     const { getFieldProps } = this.props.form;
     return (<div style={ regionStyle }>
-      <p>has email? </p>
-      <p>
+      <div>has email? </div>
+      <div>
         <Switch {...getFieldProps('on', {
           initialValue: true,
           valuePropName: 'checked',
         })}
         />
-      </p>
+      </div>
     </div>);
   },
 });
@@ -41,8 +41,8 @@ const BottomForm = React.createClass({
       display: on ? 'block' : 'none',
     };
     return (<div style={ style }>
-      <p>email: </p>
-      <p>
+      <div>email: </div>
+      <div>
         <input {...form.getFieldProps('email', {
           rules: [{
             type: 'email',
@@ -50,7 +50,7 @@ const BottomForm = React.createClass({
           hidden: !on,
         })}
         />
-      </p>
+      </div>
     </div>);
   },
 });

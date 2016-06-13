@@ -12,8 +12,8 @@ function Email(props) {
   const { getFieldProps, getFieldError, isFieldValidating } = props.form;
   const errors = getFieldError('email');
   return (<div style={ regionStyle }>
-    <p>email sync validate</p>
-    <p>
+    <div>email sync validate</div>
+    <div>
       <input {...getFieldProps('email', {
         rules: [
           {
@@ -22,13 +22,13 @@ function Email(props) {
           },
         ],
       })}
-      /></p>
-    <p style={errorStyle}>
+      /></div>
+    <div style={errorStyle}>
       {errors}
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {isFieldValidating('email') ? 'validating' : null}
-    </p>
+    </div>
   </div>);
 }
 
@@ -56,8 +56,8 @@ const User = React.createClass({
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('user');
     return (<div style={ regionStyle }>
-      <p><span style={{ color: 'red' }}>*</span> user async validate</p>
-      <p>
+      <div><span style={{ color: 'red' }}>*</span> user async validate</div>
+      <div>
         <input {...getFieldProps('user', {
           validateFirst: true,
           rules: [
@@ -69,13 +69,13 @@ const User = React.createClass({
             },
           ],
         })}
-        /></p>
-      <p style={errorStyle}>
+        /></div>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {isFieldValidating('user') ? 'validating' : null}
-      </p>
+      </div>
     </div>);
   },
 });
@@ -85,8 +85,8 @@ function CustomInput(props) {
   const { getFieldProps, getFieldError, isFieldValidating } = props.form;
   const errors = getFieldError('select');
   return (<div style={ regionStyle }>
-    <p><span style={{ color: 'red' }}>*</span> custom select sync validate</p>
-    <p><Select
+    <div><span style={{ color: 'red' }}>*</span> custom select sync validate</div>
+    <div><Select
       placeholder="please select"
       style={{ width: 200 }}
       {...getFieldProps('select', {
@@ -99,13 +99,13 @@ function CustomInput(props) {
     >
       <Option value="1">1</Option>
       <Option value="2">2</Option>
-    </Select></p>
-    <p style={errorStyle}>
+    </Select></div>
+    <div style={errorStyle}>
       {(errors) ? errors.join(',') : null}
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {isFieldValidating('select') ? 'validating' : null}
-    </p>
+    </div>
   </div>);
 }
 
@@ -117,8 +117,8 @@ function DateInput(props) {
   const { getFieldProps, getFieldError } = props.form;
   const errors = getFieldError('date');
   return (<div style={ regionStyle }>
-    <p><span style={{ color: 'red' }}>*</span> DateInput sync validate</p>
-    <p style={{ width: 200 }}>
+    <div><span style={{ color: 'red' }}>*</span> DateInput sync validate</div>
+    <div style={{ width: 200 }}>
       <DatePicker
         placeholder="please select"
         {...getFieldProps('date', {
@@ -130,10 +130,10 @@ function DateInput(props) {
           ],
         })}
       />
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {(errors) ? errors.join(',') : null}
-    </p>
+    </div>
   </div>);
 }
 
@@ -158,8 +158,8 @@ function NumberInput(props) {
   const { getFieldProps, getFieldError } = props.form;
   const errors = getFieldError('number');
   return (<div style={ regionStyle }>
-    <p>number input</p>
-    <p>
+    <div>number input</div>
+    <div>
       <input
         {...getFieldProps('number', {
           initialValue: '1',
@@ -169,10 +169,10 @@ function NumberInput(props) {
           }],
         })}
       />
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {(errors) ? errors.join(',') : null}
-    </p>
+    </div>
   </div>);
 }
 
@@ -219,8 +219,8 @@ class Form extends Component {
         <DateInput form={ form }/>
 
         <div style={ regionStyle }>
-          <p>normal required input</p>
-          <p>
+          <div>normal required input</div>
+          <div>
             <input
               {...getFieldProps('normal', {
                 rules: [{
@@ -228,10 +228,10 @@ class Form extends Component {
                 }],
               })}
             />
-          </p>
-          <p style={errorStyle}>
+          </div>
+          <div style={errorStyle}>
             {(getFieldError('normal')) ? getFieldError('normal').join(',') : null}
-          </p>
+          </div>
         </div>
 
         <div style={ regionStyle }>

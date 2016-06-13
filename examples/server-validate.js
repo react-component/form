@@ -9,8 +9,8 @@ function Email(props) {
   const { getFieldProps, getFieldError } = props.form;
   const errors = getFieldError('email');
   return (<div style={ regionStyle }>
-    <p>email sync validate</p>
-    <p>
+    <div>email sync validate</div>
+    <div>
       <input {...getFieldProps('email', {
         rules: [
           {
@@ -22,10 +22,10 @@ function Email(props) {
           },
         ],
       })}
-      /></p>
-    <p style={errorStyle}>
+      /></div>
+    <div style={errorStyle}>
       {errors ? errors.join(',') : null}
-    </p>
+    </div>
   </div>);
 }
 
@@ -42,18 +42,18 @@ const User = React.createClass({
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('user');
     return (<div style={ regionStyle }>
-      <p>user async validate</p>
-      <p>
+      <div>user async validate</div>
+      <div>
         <input {...getFieldProps('user', {
           rules: [{
             required: true,
           }],
         })}
         />
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
-      </p>
+      </div>
     </div>);
   },
 });

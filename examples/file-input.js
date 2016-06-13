@@ -61,18 +61,18 @@ let Form = React.createClass({
     return (<div
       style={ regionStyle }
     >
-      <p>attachment:</p>
-      <p>
+      <div>attachment:</div>
+      <div>
         <input type="file" {...getFieldProps('attachment', {
           getValueProps: getFileValueProps,
           getValueFromEvent: getValueFromFileEvent,
           rules: [this.checkSize],
         })}
         />
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
-      </p>
+      </div>
       <button onClick={this.onSubmit}>submit</button>
     </div>);
   },

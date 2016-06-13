@@ -10,8 +10,8 @@ function Email(props) {
   const { getFieldProps, getFieldError, isFieldValidating } = props.form;
   const errors = getFieldError('email');
   return (<div style={ regionStyle }>
-    <p>email sync validate</p>
-    <p>
+    <div>email sync validate</div>
+    <div>
       <input {...getFieldProps('email', {
         validateFirst: true,
         rules: [
@@ -25,13 +25,13 @@ function Email(props) {
         ],
       })}
       />
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {errors ? errors.join(',') : null}
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {isFieldValidating('email') ? 'validating' : null}
-    </p>
+    </div>
   </div>);
 }
 
@@ -60,8 +60,8 @@ const User = React.createClass({
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('user');
     return (<div style={ regionStyle }>
-      <p>user async validate</p>
-      <p>
+      <div>user async validate</div>
+      <div>
         <input {...getFieldProps('user', {
           rules: [
             {
@@ -74,13 +74,13 @@ const User = React.createClass({
           ],
         })}
         />
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {isFieldValidating('user') ? 'validating' : null}
-      </p>
+      </div>
     </div>);
   },
 });

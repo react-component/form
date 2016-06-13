@@ -20,18 +20,18 @@ let Form = React.createClass({
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('email');
     return (<div style={ regionStyle }>
-      <p>email:</p>
-      <p>
+      <div>email:</div>
+      <div>
         <input {...getFieldProps('email', {
           rules: [{
             type: 'email',
           }],
         })}
         />
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
-      </p>
+      </div>
 
       <button onClick={this.setEmail}>set</button>
     </div>);

@@ -14,7 +14,7 @@ function Email(props) {
     display: hidden ? 'none' : '',
   };
   return (<div style={ style }>
-    <p>email:
+    <div>email:
       <input {...getFieldProps('email', {
         rules: [
           {
@@ -27,11 +27,11 @@ function Email(props) {
         ],
         hidden,
       })}
-      /></p>
+      /></div>
 
-    {errors ? <p style={errorStyle}>{errors.join(',')}</p> : null}
+    {errors ? <div style={errorStyle}>{errors.join(',')}</div> : null}
 
-    {isFieldValidating('email') ? <p style={errorStyle}>validating</p> : null}
+    {isFieldValidating('email') ? <div style={errorStyle}>validating</div> : null}
   </div>);
 }
 
@@ -49,7 +49,7 @@ const User = React.createClass({
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('user');
     return (<div style={ regionStyle }>
-      <p>user:
+      <div>user:
         <input {...getFieldProps('user', {
           initialValue: 'x',
           rules: [
@@ -59,10 +59,10 @@ const User = React.createClass({
           ],
         })}
         />
-      </p>
-      {errors ? <p style={errorStyle}>{errors.join(',')}</p> : null}
+      </div>
+      {errors ? <div style={errorStyle}>{errors.join(',')}</div> : null}
 
-      {isFieldValidating('user') ? <p style={errorStyle}>validating</p> : null}
+      {isFieldValidating('user') ? <div style={errorStyle}>validating</div> : null}
     </div>);
   },
 });
@@ -90,7 +90,7 @@ class Form extends Component {
       <h2>overview</h2>
       <form onSubmit={this.onSubmit}>
         <div style={ regionStyle }>
-          <p>
+          <div>
             <label>remove/add user:
               <input
                 type="checkbox"
@@ -100,13 +100,13 @@ class Form extends Component {
                 })}
               />
             </label>
-          </p>
+          </div>
         </div>
 
         { getFieldValue('remove_user') ? null : <User form={ form }/>}
 
         <div style={ regionStyle }>
-          <p>
+          <div>
             <label>hide/show email:
               <input
                 type="checkbox"
@@ -115,7 +115,7 @@ class Form extends Component {
                   valuePropName: 'checked',
                 })}
               /></label>
-          </p>
+          </div>
         </div>
 
         <Email form={ form } hidden={!!getFieldValue('hide_email')}/>

@@ -24,8 +24,8 @@ const Email = React.createClass({
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('email');
     return (<div style={ regionStyle }>
-      <p>email validate onBlur</p>
-      <p>
+      <div>email validate onBlur</div>
+      <div>
         <input {...getFieldProps('email', {
           validateFirst: true,
           rules: [
@@ -40,13 +40,13 @@ const Email = React.createClass({
           ],
           validateTrigger: 'onBlur',
         })}
-        /></p>
-      <p style={errorStyle}>
+        /></div>
+      <div style={errorStyle}>
         {errors ? errors.join(',') : null}
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {isFieldValidating('email') ? 'validating' : null}
-      </p>
+      </div>
     </div>);
   },
 });

@@ -9,8 +9,8 @@ function Email(props) {
   const { getFieldProps, getFieldError, isFieldValidating } = props.form;
   const errors = getFieldError('email');
   return (<div style={ regionStyle }>
-    <p>email validate onBlur && onChange</p>
-    <p>
+    <div>email validate onBlur && onChange</div>
+    <div>
       <input {...getFieldProps('email', {
         validate: [{
           trigger: 'onBlur',
@@ -26,13 +26,13 @@ function Email(props) {
         }],
       })}
       />
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {errors ? errors.join(',') : null}
-    </p>
-    <p style={errorStyle}>
+    </div>
+    <div style={errorStyle}>
       {isFieldValidating('email') ? 'validating' : null}
-    </p>
+    </div>
   </div>);
 }
 
@@ -49,8 +49,8 @@ const User = React.createClass({
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('user');
     return (<div style={ regionStyle }>
-      <p>user validate on submit</p>
-      <p>
+      <div>user validate on submit</div>
+      <div>
         <input {...getFieldProps('user', {
           rules: [
             {
@@ -64,13 +64,13 @@ const User = React.createClass({
           validateTrigger: null,
         })}
         />
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
-      </p>
-      <p style={errorStyle}>
+      </div>
+      <div style={errorStyle}>
         {isFieldValidating('user') ? 'validating' : null}
-      </p>
+      </div>
     </div>);
   },
 });

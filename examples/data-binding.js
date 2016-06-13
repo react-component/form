@@ -21,22 +21,22 @@ class Form extends Component {
     const { formInitialState } = this.props;
     const errors = getFieldError('email');
     return (<div style={ regionStyle }>
-      <p>email:</p>
-      <p>
+      <div>email:</div>
+      <div>
         <input {...getFieldProps('email', {
           initialValue: formInitialState.email.value,
           rules: [{
             type: 'email',
           }],
         })}
-        /></p>
-      <p style={errorStyle}>
+        /></div>
+      <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
-      </p>
+      </div>
 
-      <p>
+      <div>
         <button onClick={this.reset}>reset</button>
-      </p>
+      </div>
     </div>);
   }
 }
@@ -62,9 +62,9 @@ let Out = React.createClass({
   render() {
     const { email } = this.props;
     return (<div style={ regionStyle }>
-      <p>
+      <div>
         email: {email && email.value}
-      </p>
+      </div>
       <button onClick={this.setEmail}>set</button>
     </div>);
   },

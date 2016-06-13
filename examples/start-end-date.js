@@ -57,28 +57,28 @@ class Form extends Component {
       <h2>startTime and endTime validation</h2>
       <form onSubmit={this.onSubmit}>
         <div style={ regionStyle }>
-          <p>start: </p>
-          <p>
+          <div>start: </div>
+          <div>
             <DatePicker {...getFieldProps('start', {
               rules: [this.checkStart],
             })}
             />
-          </p>
+          </div>
         </div>
 
         <div style={ regionStyle }>
-          <p>end: </p>
-          <p>
+          <div>end: </div>
+          <div>
             <DatePicker {...getFieldProps('end', {
               rules: [this.checkEnd],
             })}
             />
-          </p>
+          </div>
         </div>
 
-        <p style={errorStyle}>
+        <div style={errorStyle}>
           {getFieldError('end') ? getFieldError('end').join(',') : ''}
-        </p>
+        </div>
 
         <div style={ regionStyle }>
           <button onClick={this.reset}>reset</button>

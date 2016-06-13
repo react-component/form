@@ -33,7 +33,9 @@ let App = React.createClass({
     const { location } = this.props;
     return (<div>
       <style dangerouslySetInnerHTML={{ __html: style }}/>
-      <p>header {location.pathname === '/' ? null : <a href="#" onClick={this.onClick}>back</a>}</p>
+      <div>header {location.pathname === '/' ? null :
+        <a href="#" onClick={this.onClick}>back</a>}
+      </div>
       <div>
         {this.props.children}
       </div>
@@ -68,12 +70,12 @@ let CitySelector = React.createClass({
   },
   render() {
     return (<div className="region">
-      <p onClick={onClick.bind(this, 'sh')}>
+      <div onClick={onClick.bind(this, 'sh')}>
         shanghai
-      </p>
-      <p onClick={onClick.bind(this, 'hz')}>
+      </div>
+      <div onClick={onClick.bind(this, 'hz')}>
         hangzhou
-      </p>
+      </div>
     </div>);
   },
 });
@@ -108,17 +110,19 @@ let Form = React.createClass({
     const { getFieldProps, getFieldError } = this.props.form;
     return (<div className="region">
       <div>
-        <p>user:
+        <div>user:
           <input {...getFieldProps('user', {
             rules: [{
               required: true,
             }],
           })}
-          /></p>
-        {getFieldError('user') ? <p className="error">{getFieldError('user').join(',')}</p> : null}
+          /></div>
+        {getFieldError('user') ?
+          <div className="error">{getFieldError('user').join(',')}</div> :
+          null}
       </div>
       <div>
-        <p>city:
+        <div>city:
           <CityInput {...getFieldProps('city', {
             rules: [{
               required: true,
@@ -126,12 +130,14 @@ let Form = React.createClass({
             validatorTrigger: false,
             trigger: false,
           })}
-          /></p>
-        {getFieldError('city') ? <p className="error">{getFieldError('city').join(',')}</p> : null}
+          /></div>
+        {getFieldError('city') ?
+          <div className="error">{getFieldError('city').join(',')}</div> :
+          null}
       </div>
-      <p>
+      <div>
         <button onClick={this.onSubmit}>submit</button>
-      </p>
+      </div>
     </div>);
   },
 });
