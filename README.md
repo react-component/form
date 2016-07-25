@@ -93,6 +93,10 @@ Called when field changed, you can dispatch fields to redux store.
 
 convert value from props to fields. used for read fields from redux store.
 
+### formOption.withRef: boolean
+
+Maintain an ref for wrapped component instance, use `refs.wrappedComponent` to access.
+
 createForm() will return another function:
 
 ### function(WrappedComponent: React.Component): React.Component
