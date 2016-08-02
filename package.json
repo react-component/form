@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -30,7 +30,7 @@
     "build": "rc-tools run build",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
-    "pub": "rc-tools run pub",
+    "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
     "karma": "rc-tools run karma",
     "saucelabs": "rc-tools run saucelabs",
@@ -57,6 +57,7 @@
     "lint"
   ],
   "dependencies": {
+    "babel-runtime": "6.x",
     "async-validator": "1.x",
     "dom-scroll-into-view": "1.x",
     "hoist-non-react-statics": "1.x"
