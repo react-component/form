@@ -103,11 +103,27 @@ createForm() will return another function:
 
 Will pass a object as prop form with the following members to WrappedComponent:
 
+### getFormControl(fieldElem: ReactNode, option: Object): ReactNode
+
+Similar to `getFieldProps`:
+
+```jsx
+<form>
+  {getFormControl(<input />, { name: 'name', ...otherOptions })}
+</form>
+```
+
 ### getFieldProps(name, option): Object
 
 Will create props which can be set on a input/InputComponent which support value and onChange interface.
 
 After set, this will create a binding with this input.
+
+```jsx
+<form>
+  <input {...getFieldProps('name', { ...options })} />
+</form>
+```
 
 #### name: String
 
