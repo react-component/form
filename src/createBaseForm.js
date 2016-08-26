@@ -115,7 +115,7 @@ function createBaseForm(option = {}, mixins = []) {
         };
       },
 
-      getFormControl(fieldElem, fieldOption = {}) {
+      getFormControl(fieldOption = {}, fieldElem) {
         if (process.env.NODE_ENV !== 'production') {
           const valuePropName = fieldOption.valuePropName || 'value';
           if (valuePropName in fieldElem.props) {

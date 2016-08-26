@@ -103,13 +103,13 @@ createForm() will return another function:
 
 Will pass a object as prop form with the following members to WrappedComponent:
 
-### getFormControl(fieldElem: ReactNode, option: Object): ReactNode
+### getFormControl(option: Object, fieldElem: ReactNode): ReactNode
 
-Similar to `getFieldProps`:
+Similar to `getFieldProps`, but `option.name` is required:
 
 ```jsx
 <form>
-  {getFormControl(<input />, { name: 'name', ...otherOptions })}
+  {getFormControl({ name: 'name', ...otherOptions }, <input />)}
 </form>
 ```
 

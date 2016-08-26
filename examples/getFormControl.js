@@ -23,14 +23,18 @@ class Form extends React.Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        {getFormControl(<input onChange={console.log.bind(console)} />, {
+        {getFormControl({
           name: 'name',
           initialValue: '',
           rules: [{
             required: true,
             message: 'What\'s your name?',
           }],
-        })}
+        },
+          <input
+            onChange={console.log.bind(console)}
+          />
+        )}
         <div style={{ color: 'red' }}>
           {(getFieldError('name') || []).join(', ')}
         </div>
