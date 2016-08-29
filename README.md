@@ -48,7 +48,6 @@ online example: http://react-component.github.io/form/examples/
 ```js
 import { createForm } from 'rc-form';
 
-@createForm()
 class Form extends React.Component {
   submit = () => {
     this.props.form.validateFields((error, value) => {
@@ -58,10 +57,11 @@ class Form extends React.Component {
 
   render() {
     let errors;
-    const {getFieldProps, getFieldError} = this.props.form;
+    const { getFieldProps, getFieldError } = this.props.form;
     return (<div>
       <input {...getFieldProps('normal')}/>
       <input {...getFieldProps('required', {
+        onChange(){}, // have to write original onChange here if you need
         rules: [{required: true}],
       })}/>
       {(errors = getFieldError('required')) ? errors.join(',') : null}
@@ -69,11 +69,45 @@ class Form extends React.Component {
     </div>)
   }
 }
+
+export createForm()(Form);
 ```
 
-## Note
+or a quicker version:
 
-Do not use stateless function component inside Form component: https://github.com/facebook/react/pull/6534
+```js
+import { createForm } from 'rc-form';
+
+class Form extends React.Component {
+  componentWillMount() {
+    this.requiredDecorator = this.props.form.getFieldDecorator({
+        name: 'required',
+        rules: [{required: true}],
+    });
+  },
+
+  submit = () => {
+    this.props.form.validateFields((error, value) => {
+      console.log(error, value);
+    });
+  }
+
+  render() {
+    let errors;
+    const { getFieldError } = this.props.form;
+    return (<div>
+      {this.requiredDecorator(
+      <input onChange={
+      // can still write your own onChange }
+      />)}
+      {(errors = getFieldError('required')) ? errors.join(',') : null}
+      <button onClick={this.submit}>submit</button>
+    </div>)
+  }
+}
+
+export createForm()(Form);
+```
 
 ## createForm(formOption): Function
 
@@ -102,16 +136,6 @@ createForm() will return another function:
 ### function(WrappedComponent: React.Component): React.Component
 
 Will pass a object as prop form with the following members to WrappedComponent:
-
-### getFormControl(option: Object, fieldElem: ReactNode): ReactNode
-
-Similar to `getFieldProps`, but `option.name` is required:
-
-```jsx
-<form>
-  {getFormControl({ name: 'name', ...otherOptions }, <input />)}
-</form>
-```
 
 ### getFieldProps(name, option): Object
 
@@ -204,6 +228,16 @@ Validator rules. see: [async-validator](https://github.com/yiminghe/async-valida
 
 Defaults to false. whether stop validate on first rule of error for this field.
 
+### getFieldDecorator(name:String, option: Object): (React.Node): React.Node
+
+Similar to `getFieldProps`, but add some helper warnings and you can write onXX directly inside React.Node props:
+
+```jsx
+<form>
+  {getFieldDecorator('name', otherOptions)(<input />)}
+</form>
+```
+
 ### getFieldsValue([fieldNames: String[]])
 
 Get fields value by fieldNames.
@@ -263,6 +297,7 @@ Cause isSubmitting to return true, after callback called, isSubmitting return fa
 
 Reset specified inputs. Defaults to all.
 
+
 ## rc-form/lib/createDOMForm(formOption): Function
 
 createForm enhancement, support props.form.validateFieldsAndScroll
@@ -275,17 +310,20 @@ props.form.validateFields enhancement, support scroll to the first invalid form 
 
 Defaults to first scrollable container of form field(until document).
 
+
 ## Notes
 
-- you can not set same prop name as the value of validateTrigger/trigger.
+- Do not use stateless function component inside Form component: https://github.com/facebook/react/pull/6534
+
+- you can not set same prop name as the value of validateTrigger/trigger for getFieldProps
 
 ```js
 <input {...getFieldProps('change',{
-  onChange: this.iWantToKnow // you must set onChange here
+  onChange: this.iWantToKnow // you must set onChange here or use getFieldDecorator to write inside <input>
 })}>
 ```
 
-- you can not use ref prop.
+- you can not use ref prop for getFieldProps
 
 ```js
 <input {...getFieldProps('ref')} />
@@ -297,7 +335,7 @@ or
 
 ```js
 <input {...getFieldProps('ref',{
-  ref: this.saveRef // or use function here
+  ref: this.saveRef // use function here or use getFieldDecorator to write inside <input> (only allow function)
 })} />
 ```
 

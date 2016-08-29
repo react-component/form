@@ -1,5 +1,8 @@
 # History
 ----
+## 1.0.0 / 2016-08-29
+
+- support getFieldDecorator. stable.
 
 ## 0.17.0 / 2016-06-12
 

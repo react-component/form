@@ -9,8 +9,8 @@ import {
 } from './utils';
 import AsyncValidator from 'async-validator';
 
-const defaultValidateTrigger = 'onChange';
-const defaultTrigger = defaultValidateTrigger;
+const DEFAULT_VALIDATE_TRIGGER = 'onChange';
+const DEFAULT_TRIGGER = DEFAULT_VALIDATE_TRIGGER;
 const atom = {};
 
 function createBaseForm(option = {}, mixins = []) {
@@ -51,6 +51,8 @@ function createBaseForm(option = {}, mixins = []) {
         const { validate } = fieldMeta;
         if (fieldMeta[action]) {
           fieldMeta[action](...args);
+        } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
+          fieldMeta.originalProps[action](...args);
         }
         const value = fieldMeta.getValueFromEvent ?
           fieldMeta.getValueFromEvent(...args) :
@@ -76,6 +78,8 @@ function createBaseForm(option = {}, mixins = []) {
         const fieldMeta = this.getFieldMeta(name);
         if (fieldMeta[action]) {
           fieldMeta[action](...args);
+        } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
+          fieldMeta.originalProps[action](...args);
         }
         const value = fieldMeta.getValueFromEvent ?
           fieldMeta.getValueFromEvent(...args) :
@@ -115,54 +119,64 @@ function createBaseForm(option = {}, mixins = []) {
         };
       },
 
-      getFormControl(fieldOption = {}, fieldElem) {
-        if (process.env.NODE_ENV !== 'production') {
-          const valuePropName = fieldOption.valuePropName || 'value';
-          if (valuePropName in fieldElem.props) {
-            throw new Error(
-              `\`getFormControl\` will override \`${valuePropName}\`, ` +
+      getFieldDecorator(name, fieldOption) {
+        const props = this.getFieldProps(name, fieldOption);
+        return (fieldElem) => {
+          const fieldMeta = this.getFieldMeta(name);
+          const originalProps = fieldElem.props;
+          if (process.env.NODE_ENV !== 'production') {
+            const valuePropName = fieldMeta.valuePropName;
+            if (valuePropName in originalProps) {
+              throw new Error(
+                `\`getFieldDecorator\` will override \`${valuePropName}\`, ` +
                 `so please don't set \`${valuePropName}\` directly ` +
                 `and use \`setFieldsValue\` to set it.`
-            );
-          }
-          const defaultValuePropName =
-                  `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
-          if (defaultValuePropName in fieldElem.props) {
-            throw new Error(
-              `\`${defaultValuePropName}\` is invalid ` +
-                `for \`getFormControl\` will set \`${valuePropName}\`,` +
+              );
+            }
+            const defaultValuePropName =
+              `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
+            if (defaultValuePropName in originalProps) {
+              throw new Error(
+                `\`${defaultValuePropName}\` is invalid ` +
+                `for \`getFieldDecorator\` will set \`${valuePropName}\`,` +
                 ` please use \`option.initialValue\` instead.`
-            );
+              );
+            }
           }
-        }
-
-        const { name, ...restOptions } = fieldOption;
-        const trigger = fieldOption.trigger || defaultTrigger;
-        const validateTrigger = fieldOption.validateTrigger || defaultValidateTrigger;
-        restOptions[trigger] = fieldElem.props[trigger];
-        restOptions[validateTrigger] = fieldElem.props[validateTrigger];
-
-        return React.cloneElement(fieldElem, this.getFieldProps(name, restOptions));
+          fieldMeta.originalProps = originalProps;
+          fieldMeta.ref = fieldElem.ref;
+          return React.cloneElement(fieldElem, {
+            ...props,
+            ...this.getFieldValuePropValue(fieldMeta),
+          });
+        };
       },
 
       getFieldProps(name, fieldOption = {}) {
-        if (process.env.NODE_ENV !== 'production') {
-          if (!name) {
-            throw new Error('Must call `getFieldProps` with valid name string!');
-          }
+        if (!name) {
+          throw new Error('Must call `getFieldProps` with valid name string!');
         }
+
+        fieldOption.valuePropName = fieldOption.valuePropName || 'value';
+        fieldOption.validate = fieldOption.validate || [];
 
         const {
           rules,
-          trigger = defaultTrigger,
-          valuePropName = 'value',
-          getValueProps,
+          trigger = DEFAULT_TRIGGER,
           exclusive,
-          validateTrigger = defaultValidateTrigger,
-          validate = [],
+          validateTrigger = DEFAULT_VALIDATE_TRIGGER,
+          validate,
         } = fieldOption;
+
+        fieldOption.trigger = trigger;
+        fieldOption.validateTrigger = validateTrigger;
+
         const nameKeyObj = getNameKeyObj(name);
         const leadingName = nameKeyObj.name;
+
+        fieldOption.leadingName = leadingName;
+        fieldOption.name = name;
+
         const key = nameKeyObj.key;
         const { fieldsMeta } = this;
         let fieldMeta;
@@ -229,22 +243,11 @@ function createBaseForm(option = {}, mixins = []) {
         if (trigger && validateRules.every(checkRule)) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
-        const field = exclusive ? this.getField(leadingName) : this.getField(name);
-        let fieldValue = atom;
-        if (field && 'value' in field) {
-          fieldValue = field.value;
-        }
-        if (fieldValue === atom) {
-          fieldValue = exclusive ? fieldsMeta[leadingName].initialValue : fieldMeta.initialValue;
-        }
-        if (getValueProps) {
-          inputProps = {
-            ...inputProps,
-            ...getValueProps(fieldValue),
-          };
-        } else {
-          inputProps[valuePropName] = fieldValue;
-        }
+
+        inputProps = {
+          ...inputProps,
+          ... this.getFieldValuePropValue(fieldOption),
+        };
 
         inputProps.ref = this.getCacheBind(name, `${name}__ref`, this.saveRef);
 
@@ -261,6 +264,23 @@ function createBaseForm(option = {}, mixins = []) {
         }
 
         return inputProps;
+      },
+
+      getFieldValuePropValue(fieldMeta) {
+        const { exclusive, leadingName, name, getValueProps, valuePropName } = fieldMeta;
+        const { fieldsMeta } = this;
+        const field = exclusive ? this.getField(leadingName) : this.getField(name);
+        let fieldValue = atom;
+        if (field && 'value' in field) {
+          fieldValue = field.value;
+        }
+        if (fieldValue === atom) {
+          fieldValue = exclusive ? fieldsMeta[leadingName].initialValue : fieldMeta.initialValue;
+        }
+        if (getValueProps) {
+          return getValueProps(fieldValue);
+        }
+        return { [valuePropName]: fieldValue };
       },
 
       getFieldMember(name, member) {
@@ -417,11 +437,14 @@ function createBaseForm(option = {}, mixins = []) {
           return;
         }
         const fieldMeta = this.getFieldMeta(name);
-        if (fieldMeta && fieldMeta.ref) {
-          if (typeof fieldMeta.ref === 'string') {
-            throw new Error(`can not set ref string for ${name}`);
+        if (fieldMeta) {
+          const ref = fieldMeta.ref;
+          if (ref) {
+            if (typeof ref === 'string') {
+              throw new Error(`can not set ref string for ${name}`);
+            }
+            ref(component);
           }
-          fieldMeta.ref(component);
         }
         this.instances[name] = component;
       },

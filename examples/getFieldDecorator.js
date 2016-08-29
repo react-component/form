@@ -7,7 +7,18 @@ import { createForm } from 'rc-form';
 class Form extends React.Component {
   static propTypes = {
     form: PropTypes.object,
+  };
+
+  componentWillMount() {
+    this.nameDecorator = this.props.form.getFieldDecorator('name', {
+      initialValue: '',
+      rules: [{
+        required: true,
+        message: 'What\'s your name?',
+      }],
+    });
   }
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((error, values) => {
@@ -17,22 +28,20 @@ class Form extends React.Component {
         console.log('error', error, values);
       }
     });
+  };
+
+  onChange(e) {
+    console.log(e.target.value);
   }
+
   render() {
-    const { getFormControl, getFieldError } = this.props.form;
+    const { getFieldError } = this.props.form;
 
     return (
       <form onSubmit={this.onSubmit}>
-        {getFormControl({
-          name: 'name',
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s your name?',
-          }],
-        },
+        {this.nameDecorator(
           <input
-            onChange={console.log.bind(console)}
+            onChange={this.onChange}
           />
         )}
         <div style={{ color: 'red' }}>
