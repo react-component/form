@@ -1,9 +1,9 @@
-webpackJsonp([16],{
+webpackJsonp([7],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(532);
+	module.exports = __webpack_require__(373);
 
 
 /***/ },
@@ -46,28 +46,6 @@ webpackJsonp([16],{
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.createForm = _createForm2.default; // export this package's api
-
-/***/ },
-
-/***/ 299:
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var regionStyle = exports.regionStyle = {
-	  border: '1px solid red',
-	  marginTop: 10,
-	  padding: 10
-	};
-	
-	var errorStyle = exports.errorStyle = {
-	  color: 'red',
-	  marginTop: 10,
-	  padding: 10
-	};
 
 /***/ },
 
@@ -1103,7 +1081,7 @@ webpackJsonp([16],{
 
 /***/ },
 
-/***/ 532:
+/***/ 373:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1120,8 +1098,6 @@ webpackJsonp([16],{
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _rcForm = __webpack_require__(207);
-	
 	var _react = __webpack_require__(40);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -1130,91 +1106,12 @@ webpackJsonp([16],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(299);
+	var _rcForm = __webpack_require__(207);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
-	function Email(props) {
-	  var _props$form = props.form;
-	  var getFieldProps = _props$form.getFieldProps;
-	  var getFieldError = _props$form.getFieldError;
-	
-	  var errors = getFieldError('email');
-	  return _react2.default.createElement(
-	    'div',
-	    { style: _styles.regionStyle },
-	    _react2.default.createElement(
-	      'div',
-	      null,
-	      'email sync validate'
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement('input', getFieldProps('email', {
-	        rules: [{
-	          required: true
-	        }, {
-	          type: 'email',
-	          message: '错误的 email 格式'
-	        }]
-	      }))
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { style: _styles.errorStyle },
-	      errors ? errors.join(',') : null
-	    )
-	  );
-	}
-	
-	Email.propTypes = {
-	  form: _react.PropTypes.object
-	};
-	
-	var User = _react2.default.createClass({
-	  displayName: 'User',
-	
-	  propTypes: {
-	    form: _react.PropTypes.object
-	  },
-	
-	  render: function render() {
-	    var _props$form2 = this.props.form;
-	    var getFieldProps = _props$form2.getFieldProps;
-	    var getFieldError = _props$form2.getFieldError;
-	
-	    var errors = getFieldError('user');
-	    return _react2.default.createElement(
-	      'div',
-	      { style: _styles.regionStyle },
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        'user async validate'
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement('input', getFieldProps('user', {
-	          rules: [{
-	            required: true
-	          }]
-	        }))
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { style: _styles.errorStyle },
-	        errors ? errors.join(',') : null
-	      )
-	    );
-	  }
-	});
-	
-	var Form = function (_Component) {
-	  (0, _inherits3.default)(Form, _Component);
+	var Form = function (_React$Component) {
+	  (0, _inherits3.default)(Form, _React$Component);
 	
 	  function Form() {
 	    var _temp, _this, _ret;
@@ -1225,22 +1122,11 @@ webpackJsonp([16],{
 	      args[_key] = arguments[_key];
 	    }
 	
-	    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.onSubmit = function (e) {
+	    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.onSubmit = function (e) {
 	      e.preventDefault();
 	      _this.props.form.validateFields(function (error, values) {
 	        if (!error) {
 	          console.log('ok', values);
-	          setTimeout(function () {
-	            // server validate
-	            if (values.user === 'yiminghe') {
-	              _this.props.form.setFields({
-	                user: {
-	                  value: values.user,
-	                  errors: [new Error('forbid ha')]
-	                }
-	              });
-	            }
-	          }, 500);
 	        } else {
 	          console.log('error', error, values);
 	        }
@@ -1248,48 +1134,55 @@ webpackJsonp([16],{
 	    }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
+	  Form.prototype.componentWillMount = function componentWillMount() {
+	    this.nameDecorator = this.props.form.getFieldDecorator('name', {
+	      initialValue: '',
+	      rules: [{
+	        required: true,
+	        message: 'What\'s your name?'
+	      }]
+	    });
+	  };
+	
+	  Form.prototype.onChange = function onChange(e) {
+	    console.log(e.target.value);
+	  };
+	
 	  Form.prototype.render = function render() {
-	    var form = this.props.form;
+	    var getFieldError = this.props.form.getFieldError;
+	
 	
 	    return _react2.default.createElement(
-	      'div',
-	      { style: { margin: 20 } },
+	      'form',
+	      { onSubmit: this.onSubmit },
+	      this.nameDecorator(_react2.default.createElement('input', {
+	        onChange: this.onChange
+	      })),
 	      _react2.default.createElement(
-	        'h2',
-	        null,
-	        'setFields'
+	        'div',
+	        { style: { color: 'red' } },
+	        (getFieldError('name') || []).join(', ')
 	      ),
 	      _react2.default.createElement(
-	        'form',
-	        { onSubmit: this.onSubmit },
-	        _react2.default.createElement(User, { form: form }),
-	        _react2.default.createElement(Email, { form: form }),
-	        _react2.default.createElement(
-	          'div',
-	          { style: _styles.regionStyle },
-	          _react2.default.createElement(
-	            'button',
-	            null,
-	            'submit'
-	          )
-	        )
+	        'button',
+	        null,
+	        'Submit'
 	      )
 	    );
 	  };
 	
 	  return Form;
-	}(_react.Component);
+	}(_react2.default.Component); /* eslint react/no-multi-comp:0, no-console:0 */
 	
 	Form.propTypes = {
 	  form: _react.PropTypes.object
 	};
 	
 	
-	var NewForm = (0, _rcForm.createForm)()(Form);
-	
-	_reactDom2.default.render(_react2.default.createElement(NewForm, null), document.getElementById('__react-content'));
+	var WrappedForm = (0, _rcForm.createForm)()(Form);
+	_reactDom2.default.render(_react2.default.createElement(WrappedForm, null), document.getElementById('__react-content'));
 
 /***/ }
 
 });
-//# sourceMappingURL=server-validate.js.map
+//# sourceMappingURL=getFieldDecorator.js.map

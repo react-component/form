@@ -51,7 +51,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		21:0
+/******/ 		22:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -97,7 +97,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"checkbox-group","3":"data-binding","4":"data-binding-form","5":"dynamic","6":"file-input","7":"input-array","8":"modal","9":"normalize","10":"overview","11":"parallel-form","12":"radio-group","13":"redux","14":"router","15":"server-validate","16":"setFieldsValue","17":"start-end-date","18":"suggest","19":"validateFirst","20":"validateTrigger"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"across-router","1":"async-init","2":"checkbox-group","3":"data-binding","4":"data-binding-form","5":"dynamic","6":"file-input","7":"getFieldDecorator","8":"input-array","9":"modal","10":"normalize","11":"overview","12":"parallel-form","13":"radio-group","14":"redux","15":"router","16":"server-validate","17":"setFieldsValue","18":"start-end-date","19":"suggest","20":"validateFirst","21":"validateTrigger"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -20963,6 +20963,7 @@
 	      setFieldsValue: this.setFieldsValue,
 	      setFields: this.setFields,
 	      setFieldsInitialValue: this.setFieldsInitialValue,
+	      getFieldDecorator: this.getFieldDecorator,
 	      getFieldProps: this.getFieldProps,
 	      getFieldError: this.getFieldError,
 	      isFieldValidating: this.isFieldValidating,
@@ -20985,7 +20986,7 @@
 /* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21015,8 +21016,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var defaultValidateTrigger = 'onChange';
-	var defaultTrigger = defaultValidateTrigger;
+	var DEFAULT_VALIDATE_TRIGGER = 'onChange';
+	var DEFAULT_TRIGGER = DEFAULT_VALIDATE_TRIGGER;
 	var atom = {};
 	
 	function createBaseForm() {
@@ -21069,6 +21070,10 @@
 	
 	        if (fieldMeta[action]) {
 	          fieldMeta[action].apply(fieldMeta, args);
+	        } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
+	          var _fieldMeta$originalPr;
+	
+	          (_fieldMeta$originalPr = fieldMeta.originalProps)[action].apply(_fieldMeta$originalPr, args);
 	        }
 	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent.apply(fieldMeta, args) : _utils.getValueFromEvent.apply(undefined, args);
 	        var fieldContent = void 0;
@@ -21093,6 +21098,10 @@
 	
 	        if (fieldMeta[action]) {
 	          fieldMeta[action].apply(fieldMeta, args);
+	        } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
+	          var _fieldMeta$originalPr2;
+	
+	          (_fieldMeta$originalPr2 = fieldMeta.originalProps)[action].apply(_fieldMeta$originalPr2, args);
 	        }
 	        var value = fieldMeta.getValueFromEvent ? fieldMeta.getValueFromEvent.apply(fieldMeta, args) : _utils.getValueFromEvent.apply(undefined, args);
 	        var nameKeyObj = (0, _utils.getNameKeyObj)(name);
@@ -21126,29 +21135,58 @@
 	          name: name
 	        });
 	      },
-	      getFieldProps: function getFieldProps(name) {
+	      getFieldDecorator: function getFieldDecorator(name, fieldOption) {
 	        var _this = this;
+	
+	        var props = this.getFieldProps(name, fieldOption);
+	        return function (fieldElem) {
+	          var fieldMeta = _this.getFieldMeta(name);
+	          var originalProps = fieldElem.props;
+	          if (process.env.NODE_ENV !== 'production') {
+	            var valuePropName = fieldMeta.valuePropName;
+	            if (valuePropName in originalProps) {
+	              throw new Error('`getFieldDecorator` will override `' + valuePropName + '`, ' + ('so please don\'t set `' + valuePropName + '` directly ') + 'and use `setFieldsValue` to set it.');
+	            }
+	            var defaultValuePropName = 'default' + valuePropName[0].toUpperCase() + valuePropName.slice(1);
+	            if (defaultValuePropName in originalProps) {
+	              throw new Error('`' + defaultValuePropName + '` is invalid ' + ('for `getFieldDecorator` will set `' + valuePropName + '`,') + ' please use `option.initialValue` instead.');
+	            }
+	          }
+	          fieldMeta.originalProps = originalProps;
+	          fieldMeta.ref = fieldElem.ref;
+	          return _react2.default.cloneElement(fieldElem, (0, _extends3.default)({}, props, _this.getFieldValuePropValue(fieldMeta)));
+	        };
+	      },
+	      getFieldProps: function getFieldProps(name) {
+	        var _this2 = this;
 	
 	        var fieldOption = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	
 	        if (!name) {
-	          throw new Error('must call getFieldProps with valid name string!');
+	          throw new Error('Must call `getFieldProps` with valid name string!');
 	        }
+	
+	        fieldOption.valuePropName = fieldOption.valuePropName || 'value';
+	        fieldOption.validate = fieldOption.validate || [];
 	
 	        var rules = fieldOption.rules;
 	        var _fieldOption$trigger = fieldOption.trigger;
-	        var trigger = _fieldOption$trigger === undefined ? defaultTrigger : _fieldOption$trigger;
-	        var _fieldOption$valuePro = fieldOption.valuePropName;
-	        var valuePropName = _fieldOption$valuePro === undefined ? 'value' : _fieldOption$valuePro;
-	        var getValueProps = fieldOption.getValueProps;
+	        var trigger = _fieldOption$trigger === undefined ? DEFAULT_TRIGGER : _fieldOption$trigger;
 	        var exclusive = fieldOption.exclusive;
 	        var _fieldOption$validate = fieldOption.validateTrigger;
-	        var validateTrigger = _fieldOption$validate === undefined ? defaultValidateTrigger : _fieldOption$validate;
-	        var _fieldOption$validate2 = fieldOption.validate;
-	        var validate = _fieldOption$validate2 === undefined ? [] : _fieldOption$validate2;
+	        var validateTrigger = _fieldOption$validate === undefined ? DEFAULT_VALIDATE_TRIGGER : _fieldOption$validate;
+	        var validate = fieldOption.validate;
+	
+	
+	        fieldOption.trigger = trigger;
+	        fieldOption.validateTrigger = validateTrigger;
 	
 	        var nameKeyObj = (0, _utils.getNameKeyObj)(name);
 	        var leadingName = nameKeyObj.name;
+	
+	        fieldOption.leadingName = leadingName;
+	        fieldOption.name = name;
+	
 	        var key = nameKeyObj.key;
 	        var fieldsMeta = this.fieldsMeta;
 	
@@ -21205,7 +21243,7 @@
 	        }).reduce(function (pre, curr) {
 	          return pre.concat(curr);
 	        }, []).forEach(function (action) {
-	          inputProps[action] = _this.getCacheBind(name, action, _this.onChangeValidate);
+	          inputProps[action] = _this2.getCacheBind(name, action, _this2.onChangeValidate);
 	        });
 	
 	        function checkRule(item) {
@@ -21215,19 +21253,8 @@
 	        if (trigger && validateRules.every(checkRule)) {
 	          inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
 	        }
-	        var field = exclusive ? this.getField(leadingName) : this.getField(name);
-	        var fieldValue = atom;
-	        if (field && 'value' in field) {
-	          fieldValue = field.value;
-	        }
-	        if (fieldValue === atom) {
-	          fieldValue = exclusive ? fieldsMeta[leadingName].initialValue : fieldMeta.initialValue;
-	        }
-	        if (getValueProps) {
-	          inputProps = (0, _extends3.default)({}, inputProps, getValueProps(fieldValue));
-	        } else {
-	          inputProps[valuePropName] = fieldValue;
-	        }
+	
+	        inputProps = (0, _extends3.default)({}, inputProps, this.getFieldValuePropValue(fieldOption));
 	
 	        inputProps.ref = this.getCacheBind(name, name + '__ref', this.saveRef);
 	
@@ -21243,6 +21270,27 @@
 	
 	        return inputProps;
 	      },
+	      getFieldValuePropValue: function getFieldValuePropValue(fieldMeta) {
+	        var exclusive = fieldMeta.exclusive;
+	        var leadingName = fieldMeta.leadingName;
+	        var name = fieldMeta.name;
+	        var getValueProps = fieldMeta.getValueProps;
+	        var valuePropName = fieldMeta.valuePropName;
+	        var fieldsMeta = this.fieldsMeta;
+	
+	        var field = exclusive ? this.getField(leadingName) : this.getField(name);
+	        var fieldValue = atom;
+	        if (field && 'value' in field) {
+	          fieldValue = field.value;
+	        }
+	        if (fieldValue === atom) {
+	          fieldValue = exclusive ? fieldsMeta[leadingName].initialValue : fieldMeta.initialValue;
+	        }
+	        if (getValueProps) {
+	          return getValueProps(fieldValue);
+	        }
+	        return (0, _defineProperty3.default)({}, valuePropName, fieldValue);
+	      },
 	      getFieldMember: function getFieldMember(name, member) {
 	        var field = this.getField(name);
 	        return field && field[member];
@@ -21257,12 +21305,12 @@
 	        }) : [];
 	      },
 	      getFieldsValue: function getFieldsValue(names) {
-	        var _this2 = this;
+	        var _this3 = this;
 	
 	        var fields = names || (0, _utils.flatFieldNames)(this.getValidFieldsName());
 	        var allValues = {};
 	        fields.forEach(function (f) {
-	          allValues[f] = _this2.getFieldValue(f);
+	          allValues[f] = _this3.getFieldValue(f);
 	        });
 	        return allValues;
 	      },
@@ -21308,7 +21356,7 @@
 	        return (0, _utils.flattenArray)(actionRules);
 	      },
 	      setFields: function setFields(fields_) {
-	        var _this3 = this;
+	        var _this4 = this;
 	
 	        var fieldsMeta = this.fieldsMeta;
 	        var fields = fields_;
@@ -21323,14 +21371,14 @@
 	          if (key && fieldsMeta[name].exclusive) {
 	            return;
 	          }
-	          nowValues[f] = _this3.getValueFromFields(f, nowFields);
+	          nowValues[f] = _this4.getValueFromFields(f, nowFields);
 	        });
 	        var changedFieldsName = (0, _keys2.default)(fields);
 	        (0, _keys2.default)(nowValues).forEach(function (f) {
 	          var value = nowValues[f];
 	          var fieldMeta = fieldsMeta[f];
 	          if (fieldMeta && fieldMeta.normalize) {
-	            var nowValue = fieldMeta.normalize(value, _this3.getValueFromFields(f, _this3.fields), nowValues);
+	            var nowValue = fieldMeta.normalize(value, _this4.getValueFromFields(f, _this4.fields), nowValues);
 	            if (nowValue !== value) {
 	              nowFields[f] = (0, _extends3.default)({}, nowFields[f], {
 	                value: nowValue
@@ -21343,9 +21391,9 @@
 	          (function () {
 	            var changedFields = {};
 	            changedFieldsName.forEach(function (f) {
-	              changedFields[f] = _this3.getField(f);
+	              changedFields[f] = _this4.getField(f);
 	            });
-	            onFieldsChange(_this3.props, changedFields);
+	            onFieldsChange(_this4.props, changedFields);
 	          })();
 	        }
 	        this.forceUpdate();
@@ -21396,21 +21444,24 @@
 	          return;
 	        }
 	        var fieldMeta = this.getFieldMeta(name);
-	        if (fieldMeta && fieldMeta.ref) {
-	          if (typeof fieldMeta.ref === 'string') {
-	            throw new Error('can not set ref string for ' + name);
+	        if (fieldMeta) {
+	          var ref = fieldMeta.ref;
+	          if (ref) {
+	            if (typeof ref === 'string') {
+	              throw new Error('can not set ref string for ' + name);
+	            }
+	            ref(component);
 	          }
-	          fieldMeta.ref(component);
 	        }
 	        this.instances[name] = component;
 	      },
-	      validateFieldsInternal: function validateFieldsInternal(fields, _ref, callback) {
-	        var _this4 = this;
+	      validateFieldsInternal: function validateFieldsInternal(fields, _ref2, callback) {
+	        var _this5 = this;
 	
-	        var fieldNames = _ref.fieldNames;
-	        var action = _ref.action;
-	        var _ref$options = _ref.options;
-	        var options = _ref$options === undefined ? {} : _ref$options;
+	        var fieldNames = _ref2.fieldNames;
+	        var action = _ref2.action;
+	        var _ref2$options = _ref2.options;
+	        var options = _ref2$options === undefined ? {} : _ref2$options;
 	
 	        var allRules = {};
 	        var allValues = {};
@@ -21426,19 +21477,19 @@
 	            }
 	            return;
 	          }
-	          var fieldMeta = _this4.getFieldMeta(name);
+	          var fieldMeta = _this5.getFieldMeta(name);
 	          var newField = (0, _extends3.default)({}, field);
 	          newField.errors = undefined;
 	          newField.validating = true;
 	          newField.dirty = true;
-	          allRules[name] = _this4.getRules(fieldMeta, action);
+	          allRules[name] = _this5.getRules(fieldMeta, action);
 	          allValues[name] = newField.value;
 	          allFields[name] = newField;
 	        });
 	        this.setFields(allFields);
 	        // in case normalize
 	        (0, _keys2.default)(allValues).forEach(function (f) {
-	          allValues[f] = _this4.getFieldValue(f);
+	          allValues[f] = _this5.getFieldValue(f);
 	        });
 	        if (callback && (0, _utils.isEmptyObject)(allFields)) {
 	          callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue((0, _utils.flatFieldNames)(fieldNames)));
@@ -21466,7 +21517,7 @@
 	          var nowAllFields = {};
 	          (0, _keys2.default)(allRules).forEach(function (name) {
 	            var fieldErrors = errorsGroup[name];
-	            var nowField = _this4.getField(name);
+	            var nowField = _this5.getField(name);
 	            // avoid concurrency problems
 	            if (nowField.value !== allValues[name]) {
 	              expired.push({
@@ -21480,11 +21531,11 @@
 	              nowAllFields[name] = nowField;
 	            }
 	          });
-	          _this4.setFields(nowAllFields);
+	          _this5.setFields(nowAllFields);
 	          if (callback) {
 	            if (expired.length) {
-	              expired.forEach(function (_ref2) {
-	                var name = _ref2.name;
+	              expired.forEach(function (_ref3) {
+	                var name = _ref3.name;
 	
 	                var fieldErrors = [{
 	                  message: name + ' need to revalidate',
@@ -21496,12 +21547,12 @@
 	                };
 	              });
 	            }
-	            callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this4.getFieldsValue((0, _utils.flatFieldNames)(fieldNames)));
+	            callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this5.getFieldsValue((0, _utils.flatFieldNames)(fieldNames)));
 	          }
 	        });
 	      },
 	      validateFields: function validateFields(ns, opt, cb) {
-	        var _this5 = this;
+	        var _this6 = this;
 	
 	        var _getParams = (0, _utils.getParams)(ns, opt, cb);
 	
@@ -21511,12 +21562,12 @@
 	
 	        var fieldNames = names || this.getValidFieldsName();
 	        var fields = fieldNames.map(function (name) {
-	          var fieldMeta = _this5.getFieldMeta(name);
+	          var fieldMeta = _this6.getFieldMeta(name);
 	          if (!(0, _utils.hasRules)(fieldMeta.validate)) {
 	            return null;
 	          }
-	          var field = _this5.getField(name);
-	          field.value = _this5.getFieldValue(name);
+	          var field = _this6.getField(name);
+	          field.value = _this6.getFieldValue(name);
 	          return field;
 	        }).filter(function (f) {
 	          return !!f;
@@ -21529,7 +21580,7 @@
 	        }
 	        if (!('firstFields' in options)) {
 	          options.firstFields = fieldNames.filter(function (name) {
-	            var fieldMeta = _this5.getFieldMeta(name);
+	            var fieldMeta = _this6.getFieldMeta(name);
 	            return !!fieldMeta.validateFirst;
 	          });
 	        }
@@ -21542,21 +21593,21 @@
 	        return this.getFieldMember(name, 'validating');
 	      },
 	      isFieldsValidating: function isFieldsValidating(ns) {
-	        var _this6 = this;
+	        var _this7 = this;
 	
 	        var names = ns || this.getValidFieldsName();
 	        return names.some(function (n) {
-	          return _this6.isFieldValidating(n);
+	          return _this7.isFieldValidating(n);
 	        });
 	      },
 	      isSubmitting: function isSubmitting() {
 	        return this.state.submitting;
 	      },
 	      submit: function submit(callback) {
-	        var _this7 = this;
+	        var _this8 = this;
 	
 	        var fn = function fn() {
-	          _this7.setState({
+	          _this8.setState({
 	            submitting: false
 	          });
 	        };
@@ -21600,6 +21651,7 @@
 	
 	exports.default = createBaseForm;
 	module.exports = exports['default'];
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42)))
 
 /***/ },
 /* 211 */
