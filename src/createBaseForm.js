@@ -115,9 +115,41 @@ function createBaseForm(option = {}, mixins = []) {
         };
       },
 
+      getFormControl(fieldOption = {}, fieldElem) {
+        if (process.env.NODE_ENV !== 'production') {
+          const valuePropName = fieldOption.valuePropName || 'value';
+          if (valuePropName in fieldElem.props) {
+            throw new Error(
+              `\`getFormControl\` will override \`${valuePropName}\`, ` +
+                `so please don't set \`${valuePropName}\` directly ` +
+                `and use \`setFieldsValue\` to set it.`
+            );
+          }
+          const defaultValuePropName =
+                  `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
+          if (defaultValuePropName in fieldElem.props) {
+            throw new Error(
+              `\`${defaultValuePropName}\` is invalid ` +
+                `for \`getFormControl\` will set \`${valuePropName}\`,` +
+                ` please use \`option.initialValue\` instead.`
+            );
+          }
+        }
+
+        const { name, ...restOptions } = fieldOption;
+        const trigger = fieldOption.trigger || defaultTrigger;
+        const validateTrigger = fieldOption.validateTrigger || defaultValidateTrigger;
+        restOptions[trigger] = fieldElem.props[trigger];
+        restOptions[validateTrigger] = fieldElem.props[validateTrigger];
+
+        return React.cloneElement(fieldElem, this.getFieldProps(name, restOptions));
+      },
+
       getFieldProps(name, fieldOption = {}) {
-        if (!name) {
-          throw new Error('must call getFieldProps with valid name string!');
+        if (process.env.NODE_ENV !== 'production') {
+          if (!name) {
+            throw new Error('Must call `getFieldProps` with valid name string!');
+          }
         }
 
         const {
