@@ -208,7 +208,7 @@ Defaults to `onChange`, set to falsy to only validate when call props.validateFi
 
 Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator)
 
-### option.validateTrigger && option.rules
+#### option.validateTrigger && option.rules
 
 ```js
 {
@@ -227,6 +227,14 @@ Validator rules. see: [async-validator](https://github.com/yiminghe/async-valida
 #### option.validateFirst: Boolean
 
 Defaults to false. whether stop validate on first rule of error for this field.
+
+#### option.fieldNameProp
+
+Where to store the `name` argument of `getFieldProps`.
+
+#### option.fieldMetaProp
+
+Where to store the meta data of `getFieldProps`.
 
 ### getFieldDecorator(name:String, option: Object): (React.Node): React.Node
 
