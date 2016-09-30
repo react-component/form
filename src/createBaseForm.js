@@ -8,6 +8,7 @@ import {
   flatFieldNames, clearVirtualField,
 } from './utils';
 import AsyncValidator from 'async-validator';
+import warning from 'warning';
 
 const DEFAULT_VALIDATE_TRIGGER = 'onChange';
 const DEFAULT_TRIGGER = DEFAULT_VALIDATE_TRIGGER;
@@ -126,22 +127,20 @@ function createBaseForm(option = {}, mixins = []) {
           const originalProps = fieldElem.props;
           if (process.env.NODE_ENV !== 'production') {
             const valuePropName = fieldMeta.valuePropName;
-            if (valuePropName in originalProps) {
-              throw new Error(
-                `\`getFieldDecorator\` will override \`${valuePropName}\`, ` +
+            warning(
+              !(valuePropName in originalProps),
+              `\`getFieldDecorator\` will override \`${valuePropName}\`, ` +
                 `so please don't set \`${valuePropName}\` directly ` +
                 `and use \`setFieldsValue\` to set it.`
-              );
-            }
+            );
             const defaultValuePropName =
               `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
-            if (defaultValuePropName in originalProps) {
-              throw new Error(
-                `\`${defaultValuePropName}\` is invalid ` +
+            warning(
+              !(defaultValuePropName in originalProps),
+              `\`${defaultValuePropName}\` is invalid ` +
                 `for \`getFieldDecorator\` will set \`${valuePropName}\`,` +
                 ` please use \`option.initialValue\` instead.`
-              );
-            }
+            );
           }
           fieldMeta.originalProps = originalProps;
           fieldMeta.ref = fieldElem.ref;
