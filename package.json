@@ -57,9 +57,10 @@
     "lint"
   ],
   "dependencies": {
-    "babel-runtime": "6.x",
     "async-validator": "1.x",
+    "babel-runtime": "6.x",
     "dom-scroll-into-view": "1.x",
-    "hoist-non-react-statics": "1.x"
+    "hoist-non-react-statics": "1.x",
+    "warning": "^3.0.0"
   }
 }
