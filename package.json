@@ -1,6 +1,6 @@
 {
   "name": "rc-form",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React High Order Form Component",
   "keywords": [
     "react",
@@ -19,6 +19,7 @@
   },
   "files": [
     "lib",
+    "dist",
     "assets/*.css"
   ],
   "license": "MIT",
@@ -30,7 +31,7 @@
     "build": "rc-tools run build",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
-    "pub": "rc-tools run pub --babel-runtime",
+    "pub": "webpack --config=scripts/webpack.config.js && rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
     "karma": "rc-tools run karma",
     "saucelabs": "rc-tools run saucelabs",
