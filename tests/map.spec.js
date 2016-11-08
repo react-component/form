@@ -37,11 +37,13 @@ describe('map usage', () => {
   it('onFieldsChange works', () => {
     const Test = createForm({
       withRef: true,
-      onFieldsChange(props, fields) {
+      onFieldsChange(props, fields, allFields) {
         expect(Object.keys(fields).length).to.be(1);
         const field = fields.normal;
         expect(field.name).to.be('normal');
         expect(field.value).to.be('3');
+        expect(allFields.normal).to.be('3');
+        expect(allFields.normal2).to.be(undefined);
       },
       mapPropsToFields(props) {
         return {

@@ -119,7 +119,7 @@ preset messages of [async-validator](https://github.com/yiminghe/async-validator
 
 Get new props transfered to WrappedComponent. Defaults to props=>props.
 
-### formOption.onFieldsChange(props, fields)
+### formOption.onFieldsChange(props, fields, allFieldsValue)
 
 Called when field changed, you can dispatch fields to redux store.
 
