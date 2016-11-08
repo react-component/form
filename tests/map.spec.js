@@ -42,8 +42,8 @@ describe('map usage', () => {
         const field = fields.normal;
         expect(field.name).to.be('normal');
         expect(field.value).to.be('3');
-        expect(allFields['normal']).to.be('3');
-        expect(allFields['normal2']).to.be(undefined);
+        expect(allFields.normal).to.be('3');
+        expect(allFields.normal2).to.be(undefined);
       },
       mapPropsToFields(props) {
         return {
