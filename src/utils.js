@@ -111,13 +111,19 @@ export function getNameKeyObj(str) {
 }
 
 export function setObject(str, value, context) {
-  var parts = str.split(NAME_KEY_SEP),
-  p = parts.pop();
+  const parts = str.split(NAME_KEY_SEP);
+  const p = parts.pop();
+  let i;
+  let j;
+
   // if object && string has another part && we've looped less than 100 times
-  for(var i=0, j; context && (j=parts[i]) && i<100; i++){
-    context = (j in context ? context[j] : context[j]={});
+  if (parts[i]) {
+    j = parts[i];
+    for (i = 0; context && i < 100; i++) {
+      context = (j in context ? context[j] : context[j] = {});
+    }
   }
-  return context && p ? (context[p]=value) : undefined; // Object
+  return context && p ? (context[p] = value) : undefined; // Object
 }
 
 export function flatFields(fields_, fieldsMeta) {

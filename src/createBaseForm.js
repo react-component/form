@@ -334,7 +334,7 @@ function createBaseForm(option = {}, mixins = []) {
             if (fieldsMeta.hasOwnProperty(fieldKey)) {
               const nameKeyObj = getNameKeyObj(fieldKey);
               if (nameKeyObj.name === name && nameKeyObj.key) {
-                setObject(nameKeyObj.key, this.getValueFromFieldsInternal(fieldKey, fields), ret)
+                setObject(nameKeyObj.key, this.getValueFromFieldsInternal(fieldKey, fields), ret);
               }
             }
           }
