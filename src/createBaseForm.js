@@ -6,6 +6,7 @@ import {
   isEmptyObject, flattenArray,
   getNameKeyObj, getNameKeyStr,
   flatFieldNames, clearVirtualField,
+  setObject,
 } from './utils';
 import AsyncValidator from 'async-validator';
 import warning from 'warning';
@@ -333,8 +334,7 @@ function createBaseForm(option = {}, mixins = []) {
             if (fieldsMeta.hasOwnProperty(fieldKey)) {
               const nameKeyObj = getNameKeyObj(fieldKey);
               if (nameKeyObj.name === name && nameKeyObj.key) {
-                ret[nameKeyObj.key] =
-                  this.getValueFromFieldsInternal(fieldKey, fields);
+                setObject(nameKeyObj.key, this.getValueFromFieldsInternal(fieldKey, fields), ret)
               }
             }
           }
