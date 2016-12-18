@@ -44,6 +44,7 @@
     "async": "^1.5.2",
     "expect.js": "0.3.x",
     "history": "^1.16.0",
+    "lodash.isequal": "^4.4.0",
     "pre-commit": "1.x",
     "rc-tools": "5.x",
     "react": "15.x",
@@ -62,6 +63,9 @@
     "babel-runtime": "6.x",
     "dom-scroll-into-view": "1.x",
     "hoist-non-react-statics": "1.x",
+    "lodash.get": "^4.4.2",
+    "lodash.has": "^4.5.2",
+    "lodash.set": "^4.3.2",
     "warning": "^3.0.0"
   }
 }

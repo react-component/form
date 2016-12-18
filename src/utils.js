@@ -87,44 +87,44 @@ export function getParams(ns, opt, cb) {
 }
 
 const NAME_KEY_SEP = '.';
+const NAME_INDEX_OPEN_SEP = '[';
+const NAME_INDEX_CLOSE_SEP = ']';
 
-export function getNameKeyStr(name, key) {
-  if (key) {
-    return `${name}${NAME_KEY_SEP}${key}`;
-  }
-  return name;
-}
-
-export function getNameKeyObj(str) {
+function getNameKey(str) {
   const index = str.indexOf(NAME_KEY_SEP);
-  if (str.indexOf(NAME_KEY_SEP) !== -1) {
-    const name = str.slice(0, index);
-    const key = str.slice(index + NAME_KEY_SEP.length);
-    return {
-      name,
-      key,
-    };
-  }
   return {
-    name: str,
+    name: str.slice(0, index),
+    key: str.slice(index + NAME_KEY_SEP.length),
   };
 }
 
-export function flatFields(fields_, fieldsMeta) {
-  const fields = { ...fields_ };
-  Object.keys(fields).forEach((k) => {
-    if (fieldsMeta[k] && fieldsMeta[k].virtual) {
-      const value = fields[k];
-      // flatten
-      for (const k2 in value) {
-        if (value.hasOwnProperty(k2)) {
-          fields[getNameKeyStr(k, k2)] = value[k2];
-        }
-      }
-      delete fields[k];
+function getNameIndex(str) {
+  const start = str.indexOf(NAME_INDEX_OPEN_SEP);
+  const end = str.indexOf(NAME_INDEX_CLOSE_SEP);
+  return {
+    name: str.slice(0, start),
+    index: str.slice(start + NAME_INDEX_OPEN_SEP.length, end),
+  };
+}
+
+export function getNameKeyObj(str) {
+  const keyIndex = str.indexOf(NAME_KEY_SEP);
+  const arrayIndex = str.indexOf(NAME_INDEX_OPEN_SEP);
+  if (keyIndex === -1 && arrayIndex === -1) {
+    return {
+      name: str,
+    };
+  } else if (keyIndex !== -1 && arrayIndex !== -1) {
+    if (keyIndex < arrayIndex) {
+      return getNameKey(str);
+    } else if (keyIndex >= arrayIndex) {
+      return getNameIndex(str);
     }
-  });
-  return fields;
+  } else if (arrayIndex === -1) {
+    return getNameKey(str);
+  } else if (keyIndex === -1) {
+    return getNameIndex(str);
+  }
 }
 
 export function flatFieldNames(names) {
@@ -144,4 +144,21 @@ export function clearVirtualField(name, fields, fieldsMeta) {
       }
     });
   }
+}
+
+export function getVirtualPaths(fieldsMeta) {
+  const virtualPaths = {};
+  for (const name in fieldsMeta) {
+    if (fieldsMeta.hasOwnProperty(name)) {
+      const leadingName = fieldsMeta[name].leadingName;
+      if (leadingName && fieldsMeta[leadingName].virtual) {
+        if (leadingName in virtualPaths) {
+          virtualPaths[leadingName].push(name);
+        } else {
+          virtualPaths[leadingName] = [name];
+        }
+      }
+    }
+  }
+  return virtualPaths;
 }
