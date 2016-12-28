@@ -88,49 +88,35 @@ export function getParams(ns, opt, cb) {
 
 const NAME_KEY_SEP = '.';
 const NAME_INDEX_OPEN_SEP = '[';
-const NAME_INDEX_CLOSE_SEP = ']';
 
-function getNameKey(str) {
-  const index = str.indexOf(NAME_KEY_SEP);
-  return {
-    name: str.slice(0, index),
-    key: str.slice(index + NAME_KEY_SEP.length),
-  };
-}
-
-function getNameIndex(str) {
-  const start = str.indexOf(NAME_INDEX_OPEN_SEP);
-  const end = str.indexOf(NAME_INDEX_CLOSE_SEP);
-  return {
-    name: str.slice(0, start),
-    index: str.slice(start + NAME_INDEX_OPEN_SEP.length, end),
-  };
-}
-
-export function getNameKeyObj(str) {
+export function getNameIfNested(str) {
   const keyIndex = str.indexOf(NAME_KEY_SEP);
   const arrayIndex = str.indexOf(NAME_INDEX_OPEN_SEP);
+
+  let index;
+
   if (keyIndex === -1 && arrayIndex === -1) {
     return {
       name: str,
     };
-  } else if (keyIndex !== -1 && arrayIndex !== -1) {
-    if (keyIndex < arrayIndex) {
-      return getNameKey(str);
-    } else if (keyIndex >= arrayIndex) {
-      return getNameIndex(str);
-    }
-  } else if (arrayIndex === -1) {
-    return getNameKey(str);
   } else if (keyIndex === -1) {
-    return getNameIndex(str);
+    index = arrayIndex;
+  } else if (arrayIndex === -1) {
+    index = keyIndex;
+  } else {
+    index = Math.min(keyIndex, arrayIndex);
   }
+
+  return {
+    name: str.slice(0, index),
+    isNested: true,
+  };
 }
 
 export function flatFieldNames(names) {
   const ret = {};
   names.forEach((n) => {
-    ret[getNameKeyObj(n).name] = 1;
+    ret[getNameIfNested(n).name] = 1;
   });
   return Object.keys(ret);
 }
@@ -139,7 +125,7 @@ export function clearVirtualField(name, fields, fieldsMeta) {
   if (fieldsMeta[name] && fieldsMeta[name].virtual) {
     /* eslint no-loop-func:0 */
     Object.keys(fields).forEach((ok) => {
-      if (getNameKeyObj(ok).name === name) {
+      if (getNameIfNested(ok).name === name) {
         delete fields[ok];
       }
     });
