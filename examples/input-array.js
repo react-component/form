@@ -3,12 +3,12 @@ webpackJsonp([8],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(371);
+	module.exports = __webpack_require__(380);
 
 
 /***/ },
 
-/***/ 211:
+/***/ 217:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17,7 +17,7 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _src = __webpack_require__(212);
+	var _src = __webpack_require__(218);
 	
 	var form = _interopRequireWildcard(_src);
 	
@@ -29,7 +29,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 212:
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39,7 +39,7 @@ webpackJsonp([8],{
 	});
 	exports.createForm = undefined;
 	
-	var _createForm = __webpack_require__(213);
+	var _createForm = __webpack_require__(219);
 	
 	var _createForm2 = _interopRequireDefault(_createForm);
 	
@@ -49,7 +49,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 295:
+/***/ 304:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71,22 +71,22 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 371:
+/***/ 380:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _rcForm = __webpack_require__(211);
+	var _rcForm = __webpack_require__(217);
 	
 	var _react = __webpack_require__(40);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(73);
+	var _reactDom = __webpack_require__(71);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(295);
+	var _styles = __webpack_require__(304);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -133,9 +133,9 @@ webpackJsonp([8],{
 	  render: function render() {
 	    var _this = this;
 	
-	    var _props$form = this.props.form;
-	    var getFieldProps = _props$form.getFieldProps;
-	    var getFieldValue = _props$form.getFieldValue;
+	    var _props$form = this.props.form,
+	        getFieldProps = _props$form.getFieldProps,
+	        getFieldValue = _props$form.getFieldValue;
 	
 	    getFieldProps('keys', {
 	      initialValue: []

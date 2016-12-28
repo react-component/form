@@ -1,9 +1,9 @@
-webpackJsonp([22],{
+webpackJsonp([10],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(554);
+	module.exports = __webpack_require__(408);
 
 
 /***/ },
@@ -46,28 +46,6 @@ webpackJsonp([22],{
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.createForm = _createForm2.default; // export this package's api
-
-/***/ },
-
-/***/ 304:
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var regionStyle = exports.regionStyle = {
-	  border: '1px solid red',
-	  marginTop: 10,
-	  padding: 10
-	};
-	
-	var errorStyle = exports.errorStyle = {
-	  color: 'red',
-	  marginTop: 10,
-	  padding: 10
-	};
 
 /***/ },
 
@@ -1103,7 +1081,7 @@ webpackJsonp([22],{
 
 /***/ },
 
-/***/ 554:
+/***/ 408:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1120,8 +1098,6 @@ webpackJsonp([22],{
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _rcForm = __webpack_require__(217);
-	
 	var _react = __webpack_require__(40);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -1130,177 +1106,237 @@ webpackJsonp([22],{
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _styles = __webpack_require__(304);
+	var _rcForm = __webpack_require__(217);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
-	function Email(props) {
-	  var _props$form = props.form,
-	      getFieldProps = _props$form.getFieldProps,
-	      getFieldError = _props$form.getFieldError,
-	      isFieldValidating = _props$form.isFieldValidating;
-	
-	  var errors = getFieldError('email');
-	  return _react2.default.createElement(
-	    'div',
-	    { style: _styles.regionStyle },
-	    _react2.default.createElement(
-	      'div',
-	      null,
-	      'email validate onBlur && onChange'
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement('input', getFieldProps('email', {
-	        validate: [{
-	          trigger: 'onBlur',
-	          rules: [{
-	            required: true
-	          }]
-	        }, {
-	          trigger: ['onBlur', 'onChange'],
-	          rules: [{
-	            type: 'email',
-	            message: '错误的 email 格式'
-	          }]
-	        }]
-	      }))
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { style: _styles.errorStyle },
-	      errors ? errors.join(',') : null
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { style: _styles.errorStyle },
-	      isFieldValidating('email') ? 'validating' : null
-	    )
-	  );
-	}
-	
-	Email.propTypes = {
-	  form: _react.PropTypes.object
-	};
-	
-	var User = _react2.default.createClass({
-	  displayName: 'User',
+	var Form = _react2.default.createClass({
+	  displayName: 'Form',
 	
 	  propTypes: {
 	    form: _react.PropTypes.object
 	  },
 	
-	  render: function render() {
-	    var _props$form2 = this.props.form,
-	        getFieldProps = _props$form2.getFieldProps,
-	        getFieldError = _props$form2.getFieldError,
-	        isFieldValidating = _props$form2.isFieldValidating;
+	  onSubmit: function onSubmit(e) {
+	    e.preventDefault();
+	    console.log('Values of member[0].name.firstname and a[0][1].b.c[0]');
+	    console.log(this.props.form.getFieldsValue(['member[0].name.firstname', 'a[0][1].b.c[0]']));
+	    console.log('Values of all fields');
+	    console.log(this.props.form.getFieldsValue());
 	
-	    var errors = getFieldError('user');
+	    this.props.form.validateFields(function (error, values) {
+	      if (!error) {
+	        console.log('ok', values);
+	      } else {
+	        console.log('error', error, values);
+	      }
+	    });
+	  },
+	  onChange: function onChange(e) {
+	    console.log(e.target.value);
+	  },
+	  setField: function setField() {
+	    this.props.form.setFieldsValue({
+	      member: [{
+	        name: {
+	          firstname: 'm1 first',
+	          lastname: 'm1 last'
+	        }
+	      }, {
+	        name: {
+	          firstname: 'm2 first',
+	          lastname: 'm2 last'
+	        }
+	      }],
+	      a: [[undefined, {
+	        b: {
+	          c: ['Value of a[0][1].b.c[0]']
+	        }
+	      }]],
+	      w: {
+	        x: {
+	          y: {
+	            z: ['Value of w.x.y.z[0]']
+	          }
+	        }
+	      }
+	    });
+	  },
+	  resetFields: function resetFields() {
+	    console.log('reset');
+	    this.props.form.resetFields();
+	  },
+	  render: function render() {
+	    var _props$form = this.props.form,
+	        getFieldDecorator = _props$form.getFieldDecorator,
+	        getFieldError = _props$form.getFieldError;
+	
+	
 	    return _react2.default.createElement(
-	      'div',
-	      { style: _styles.regionStyle },
+	      'form',
+	      { onSubmit: this.onSubmit },
 	      _react2.default.createElement(
 	        'div',
 	        null,
-	        'user validate on submit'
+	        'Member 0 firstname'
+	      ),
+	      getFieldDecorator('member[0].name.firstname', {
+	        initialValue: '',
+	        rules: [{
+	          required: true,
+	          message: 'What\'s the member_0 firstname?'
+	        }]
+	      })(_react2.default.createElement('input', {
+	        onChange: this.onChange
+	      })),
+	      _react2.default.createElement(
+	        'div',
+	        { style: { color: 'red' } },
+	        (getFieldError('member[0].name.firstname') || []).join(', ')
 	      ),
 	      _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('input', getFieldProps('user', {
-	          rules: [{
-	            required: true
-	          }, {
-	            type: 'string',
-	            min: 5
-	          }],
-	          validateTrigger: null
-	        }))
+	        'Member 0 lastname'
+	      ),
+	      getFieldDecorator('member[0].name.lastname', {
+	        initialValue: '',
+	        rules: [{
+	          required: true,
+	          message: 'What\'s the member_0 lastname?'
+	        }]
+	      })(_react2.default.createElement('input', {
+	        onChange: this.onChange
+	      })),
+	      _react2.default.createElement(
+	        'div',
+	        { style: { color: 'red' } },
+	        (getFieldError('member[0].name.firstname') || []).join(', ')
 	      ),
 	      _react2.default.createElement(
 	        'div',
-	        { style: _styles.errorStyle },
-	        errors ? errors.join(',') : null
+	        null,
+	        'Member 1 firstname'
+	      ),
+	      getFieldDecorator('member[1].name.firstname', {
+	        initialValue: '',
+	        rules: [{
+	          required: true,
+	          message: 'What\'s the member_1 fistname?'
+	        }]
+	      })(_react2.default.createElement('input', {
+	        onChange: this.onChange
+	      })),
+	      _react2.default.createElement(
+	        'div',
+	        { style: { color: 'red' } },
+	        (getFieldError('member[1].name.firstname') || []).join(', ')
 	      ),
 	      _react2.default.createElement(
 	        'div',
-	        { style: _styles.errorStyle },
-	        isFieldValidating('user') ? 'validating' : null
+	        null,
+	        'Member 1 lastname'
+	      ),
+	      getFieldDecorator('member[1].name.lastname', {
+	        initialValue: '',
+	        rules: [{
+	          required: true,
+	          message: 'What\'s the member_1 lastname?'
+	        }]
+	      })(_react2.default.createElement('input', {
+	        onChange: this.onChange
+	      })),
+	      _react2.default.createElement(
+	        'div',
+	        { style: { color: 'red' } },
+	        (getFieldError('member[1].name.firstname') || []).join(', ')
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        null,
+	        'a[0][1].b.c[0]'
+	      ),
+	      getFieldDecorator('a[0][1].b.c[0]', {
+	        initialValue: '',
+	        rules: [{
+	          required: true,
+	          message: 'What\'s a[0][1].b.c[0]?'
+	        }]
+	      })(_react2.default.createElement('input', {
+	        onChange: this.onChange
+	      })),
+	      _react2.default.createElement(
+	        'div',
+	        { style: { color: 'red' } },
+	        (getFieldError('a[0][1].b.c[0]') || []).join(', ')
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        null,
+	        'w.x.y.z[0]'
+	      ),
+	      getFieldDecorator('w.x.y.z[0]', {
+	        initialValue: '',
+	        rules: [{
+	          required: true,
+	          message: 'What\'s w.x.y.z[0]?'
+	        }]
+	      })(_react2.default.createElement('input', {
+	        onChange: this.onChange
+	      })),
+	      _react2.default.createElement(
+	        'div',
+	        { style: { color: 'red' } },
+	        (getFieldError('w.x.y.z[0]') || []).join(', ')
+	      ),
+	      _react2.default.createElement(
+	        'button',
+	        { onClick: this.setField },
+	        'Set field'
+	      ),
+	      _react2.default.createElement(
+	        'button',
+	        { onClick: this.resetFields },
+	        'Reset fields'
+	      ),
+	      _react2.default.createElement(
+	        'button',
+	        null,
+	        'Submit'
 	      )
 	    );
 	  }
-	});
+	}); /* eslint react/no-multi-comp:0, no-console:0 */
 	
-	var Form = function (_Component) {
-	  (0, _inherits3.default)(Form, _Component);
+	Form = (0, _rcForm.createForm)()(Form);
 	
-	  function Form() {
-	    var _temp, _this, _ret;
+	var App = function (_React$Component) {
+	  (0, _inherits3.default)(App, _React$Component);
 	
-	    (0, _classCallCheck3.default)(this, Form);
-	
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-	
-	    return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.onSubmit = function (e) {
-	      e.preventDefault();
-	      _this.props.form.validateFields(function (error, values) {
-	        if (!error) {
-	          console.log('ok', values);
-	        } else {
-	          console.log('error', error, values);
-	        }
-	      });
-	    }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+	  function App() {
+	    (0, _classCallCheck3.default)(this, App);
+	    return (0, _possibleConstructorReturn3.default)(this, _React$Component.apply(this, arguments));
 	  }
 	
-	  Form.prototype.render = function render() {
-	    var form = this.props.form;
-	
+	  App.prototype.render = function render() {
 	    return _react2.default.createElement(
 	      'div',
-	      { style: { margin: 20 } },
+	      null,
 	      _react2.default.createElement(
 	        'h2',
 	        null,
-	        'use validateTrigger config'
+	        'setFieldsValue'
 	      ),
-	      _react2.default.createElement(
-	        'form',
-	        { onSubmit: this.onSubmit },
-	        _react2.default.createElement(User, { form: form }),
-	        _react2.default.createElement(Email, { form: form }),
-	        _react2.default.createElement(
-	          'div',
-	          { style: _styles.regionStyle },
-	          _react2.default.createElement(
-	            'button',
-	            null,
-	            'submit'
-	          )
-	        )
-	      )
+	      _react2.default.createElement(Form, null)
 	    );
 	  };
 	
-	  return Form;
-	}(_react.Component);
+	  return App;
+	}(_react2.default.Component);
 	
-	Form.propTypes = {
-	  form: _react.PropTypes.object
-	};
-	
-	
-	var NewForm = (0, _rcForm.createForm)()(Form);
-	
-	_reactDom2.default.render(_react2.default.createElement(NewForm, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('__react-content'));
 
 /***/ }
 
 });
-//# sourceMappingURL=validateTrigger.js.map
+//# sourceMappingURL=nested-field.js.map

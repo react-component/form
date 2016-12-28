@@ -1,5 +1,5 @@
 /*!
- * antd v1.11.2
+ * antd v1.11.4
  * 
  * Copyright 2015-present, Alipay, Inc.
  * All rights reserved.
@@ -6052,19 +6052,16 @@ span.ant-radio + * {
 .ant-row-flex-top {
   -webkit-box-align: start;
       -ms-flex-align: start;
-              -ms-grid-row-align: flex-start;
           align-items: flex-start;
 }
 .ant-row-flex-middle {
   -webkit-box-align: center;
       -ms-flex-align: center;
-              -ms-grid-row-align: center;
           align-items: center;
 }
 .ant-row-flex-bottom {
   -webkit-box-align: end;
       -ms-flex-align: end;
-              -ms-grid-row-align: flex-end;
           align-items: flex-end;
 }
 .ant-col {
