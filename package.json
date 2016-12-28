@@ -17,6 +17,11 @@
   "bugs": {
     "url": "https://github.com/react-component/form/issues"
   },
+  "entry": {
+    "rc-form": [
+      "./scripts/index.js"
+    ]
+  },
   "files": [
     "lib",
     "dist",
@@ -31,7 +36,7 @@
     "build": "rc-tools run build",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
-    "pub": "node ./node_modules/webpack/bin/webpack --config=scripts/webpack.config.js && rc-tools run pub --babel-runtime",
+    "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
     "karma": "rc-tools run karma",
     "saucelabs": "rc-tools run saucelabs",
