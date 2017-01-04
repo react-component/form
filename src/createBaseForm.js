@@ -7,6 +7,7 @@ import {
   getNameIfNested,
   flatFieldNames, clearVirtualField,
   getVirtualPaths,
+  normalizeValidateRules,
 } from './utils';
 import AsyncValidator from 'async-validator';
 import warning from 'warning';
@@ -155,35 +156,39 @@ function createBaseForm(option = {}, mixins = []) {
         };
       },
 
-      getFieldProps(name, fieldOption = {}) {
+      getFieldProps(name, usersFieldOption = {}) {
         if (!name) {
           throw new Error('Must call `getFieldProps` with valid name string!');
         }
 
-        fieldOption.valuePropName = fieldOption.valuePropName || 'value';
-        fieldOption.validate = fieldOption.validate || [];
+        const nameIfNested = getNameIfNested(name);
+        const leadingName = nameIfNested.name;
+        const fieldOption = {
+          valuePropName: 'value',
+          validate: [],
+          trigger: DEFAULT_TRIGGER,
+          validateTrigger: DEFAULT_VALIDATE_TRIGGER,
+          leadingName,
+          name,
+          ...usersFieldOption,
+        };
 
         const {
           rules,
-          trigger = DEFAULT_TRIGGER,
+          trigger,
           exclusive,
-          validateTrigger = DEFAULT_VALIDATE_TRIGGER,
+          validateTrigger,
           validate,
         } = fieldOption;
 
-        fieldOption.trigger = trigger;
-        fieldOption.validateTrigger = validateTrigger;
-
-        const nameIfNested = getNameIfNested(name);
-        const leadingName = nameIfNested.name;
-
-        fieldOption.leadingName = leadingName;
-        fieldOption.name = name;
-
         const { fieldsMeta } = this;
         let fieldMeta;
-        let leadingFieldMeta = fieldsMeta[leadingName];
+        fieldMeta = fieldsMeta[name] = fieldsMeta[name] || {};
+        if ('initialValue' in fieldOption) {
+          fieldMeta.initialValue = fieldOption.initialValue;
+        }
 
+        let leadingFieldMeta = fieldsMeta[leadingName];
         if (nameIfNested.isNested) {
           leadingFieldMeta = fieldsMeta[leadingName] = fieldsMeta[leadingName] || {};
           leadingFieldMeta.virtual = !exclusive;
@@ -191,72 +196,37 @@ function createBaseForm(option = {}, mixins = []) {
           // non-exclusive does not allow getFieldProps('x', {initialValue})
           leadingFieldMeta.hidden = !exclusive;
           leadingFieldMeta.exclusive = exclusive;
-          fieldMeta = fieldsMeta[name] = fieldsMeta[name] || {};
-        } else {
-          fieldMeta = fieldsMeta[name] = fieldsMeta[name] || {};
         }
 
-        if ('initialValue' in fieldOption) {
-          fieldMeta.initialValue = fieldOption.initialValue;
-        }
-
-        let inputProps = {};
-
+        const inputProps = {
+          ...this.getFieldValuePropValue(fieldOption),
+          ref: this.getCacheBind(name, `${name}__ref`, this.saveRef),
+        };
         if (fieldNameProp) {
           inputProps[fieldNameProp] = name;
         }
 
-        const validateRules = validate.map((item) => {
-          const newItem = {
-            ...item,
-            trigger: item.trigger || [],
-          };
-          if (typeof newItem.trigger === 'string') {
-            newItem.trigger = [newItem.trigger];
-          }
-          return newItem;
-        });
-
-        if (rules) {
-          validateRules.push({
-            trigger: validateTrigger ? [].concat(validateTrigger) : [],
-            rules,
-          });
-        }
-
-        validateRules.filter((item) => {
-          return !!item.rules && item.rules.length;
-        }).map((item) => {
-          return item.trigger;
-        }).reduce((pre, curr) => {
-          return pre.concat(curr);
-        }, []).forEach((action) => {
+        const validateRules = normalizeValidateRules(validate, rules, validateTrigger);
+        const validateTriggers = validateRules
+                .filter(item => !!item.rules && item.rules.length)
+                .map(item => item.trigger)
+                .reduce((pre, curr) => pre.concat(curr), []);
+        validateTriggers.forEach((action) => {
+          if (inputProps[action]) return;
           inputProps[action] = this.getCacheBind(name, action, this.onChangeValidate);
         });
 
-        function checkRule(item) {
-          return item.trigger.indexOf(trigger) === -1 || !item.rules || !item.rules.length;
-        }
-
-        if (trigger && validateRules.every(checkRule)) {
+        // make sure that the value will be collect
+        if (trigger && validateTriggers.indexOf(trigger) === -1) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
         }
-
-        inputProps = {
-          ...inputProps,
-          ... this.getFieldValuePropValue(fieldOption),
-        };
-
-        inputProps.ref = this.getCacheBind(name, `${name}__ref`, this.saveRef);
 
         const meta = {
           ...fieldMeta,
           ...fieldOption,
           validate: validateRules,
         };
-
         fieldsMeta[name] = meta;
-
         if (fieldMetaProp) {
           inputProps[fieldMetaProp] = meta;
         }
