@@ -51,10 +51,9 @@ function createBaseForm(option = {}, mixins = []) {
         }
       },
 
-      onChange(name_, action, ...args) {
+      onChangeCommon(name_, action, args, callback) {
         let name = name_;
         const fieldMeta = this.getFieldMeta(name);
-        const { validate } = fieldMeta;
         if (fieldMeta[action]) {
           fieldMeta[action](...args);
         } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
@@ -63,45 +62,41 @@ function createBaseForm(option = {}, mixins = []) {
         const value = fieldMeta.getValueFromEvent ?
           fieldMeta.getValueFromEvent(...args) :
           getValueFromEvent(...args);
-        let fieldContent;
         const nameKeyObj = getNameIfNested(name);
         if (this.getFieldMeta(nameKeyObj.name).exclusive) {
           name = nameKeyObj.name;
         }
         const field = this.getField(name);
-        fieldContent = {
-          ...field,
-          value,
-          dirty: hasRules(validate),
-        };
-        this.setFields({
-          [name]: fieldContent,
+        callback({ name, field, fieldMeta, value });
+      },
+
+      onChange(name_, action, ...args) {
+        this.onChangeCommon(name_, action, args, ({ name, field, fieldMeta, value }) => {
+          const { validate } = fieldMeta;
+          const fieldContent = {
+            ...field,
+            value,
+            dirty: hasRules(validate),
+          };
+          this.setFields({
+            [name]: fieldContent,
+          });
         });
       },
 
       onChangeValidate(name_, action, ...args) {
-        let name = name_;
-        const fieldMeta = this.getFieldMeta(name);
-        if (fieldMeta[action]) {
-          fieldMeta[action](...args);
-        } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
-          fieldMeta.originalProps[action](...args);
-        }
-        const value = fieldMeta.getValueFromEvent ?
-          fieldMeta.getValueFromEvent(...args) :
-          getValueFromEvent(...args);
-        const nameKeyObj = getNameIfNested(name);
-        if (this.getFieldMeta(nameKeyObj.name).exclusive) {
-          name = nameKeyObj.name;
-        }
-        const field = this.getField(name);
-        field.value = value;
-        field.dirty = true;
-        this.validateFieldsInternal([field], {
-          action,
-          options: {
-            firstFields: !!fieldMeta.validateFirst,
-          },
+        this.onChangeCommon(name_, action, args, ({ field, fieldMeta, value }) => {
+          const fieldContent = {
+            ...field,
+            value,
+            dirty: true,
+          };
+          this.validateFieldsInternal([fieldContent], {
+            action,
+            options: {
+              firstFields: !!fieldMeta.validateFirst,
+            },
+          });
         });
       },
 
@@ -361,28 +356,26 @@ function createBaseForm(option = {}, mixins = []) {
         const newFields = {};
         const { fieldsMeta, fields } = this;
         const virtualPaths = getVirtualPaths(fieldsMeta);
-        for (const name in fieldsValue) {
-          if (fieldsValue.hasOwnProperty(name)) {
-            const value = fieldsValue[name];
-            if (fieldsMeta[name] && fieldsMeta[name].virtual) {
-              clearVirtualField(name, fields, fieldsMeta);
-              for (let i = 0, len = virtualPaths[name].length; i < len; i++) {
-                const path = virtualPaths[name][i];
-                if (has(fieldsValue, path)) {
-                  newFields[path] = {
-                    name: path,
-                    value: get(fieldsValue, path),
-                  };
-                }
+        Object.keys(fieldsValue).forEach((name) => {
+          const value = fieldsValue[name];
+          if (fieldsMeta[name] && fieldsMeta[name].virtual) {
+            clearVirtualField(name, fields, fieldsMeta);
+            for (let i = 0, len = virtualPaths[name].length; i < len; i++) {
+              const path = virtualPaths[name][i];
+              if (has(fieldsValue, path)) {
+                newFields[path] = {
+                  name: path,
+                  value: get(fieldsValue, path),
+                };
               }
-            } else if (fieldsMeta[name]) {
-              newFields[name] = {
-                name,
-                value,
-              };
             }
+          } else if (fieldsMeta[name]) {
+            newFields[name] = {
+              name,
+              value,
+            };
           }
-        }
+        });
         this.setFields(newFields);
       },
 
