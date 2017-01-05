@@ -134,17 +134,35 @@ export function clearVirtualField(name, fields, fieldsMeta) {
 
 export function getVirtualPaths(fieldsMeta) {
   const virtualPaths = {};
-  for (const name in fieldsMeta) {
-    if (fieldsMeta.hasOwnProperty(name)) {
-      const leadingName = fieldsMeta[name].leadingName;
-      if (leadingName && fieldsMeta[leadingName].virtual) {
-        if (leadingName in virtualPaths) {
-          virtualPaths[leadingName].push(name);
-        } else {
-          virtualPaths[leadingName] = [name];
-        }
+  Object.keys(fieldsMeta).forEach((name) => {
+    const leadingName = fieldsMeta[name].leadingName;
+    if (leadingName && fieldsMeta[leadingName].virtual) {
+      if (leadingName in virtualPaths) {
+        virtualPaths[leadingName].push(name);
+      } else {
+        virtualPaths[leadingName] = [name];
       }
     }
-  }
+  });
   return virtualPaths;
+}
+
+export function normalizeValidateRules(validate, rules, validateTrigger) {
+  const validateRules = validate.map((item) => {
+    const newItem = {
+      ...item,
+      trigger: item.trigger || [],
+    };
+    if (typeof newItem.trigger === 'string') {
+      newItem.trigger = [newItem.trigger];
+    }
+    return newItem;
+  });
+  if (rules) {
+    validateRules.push({
+      trigger: validateTrigger ? [].concat(validateTrigger) : [],
+      rules,
+    });
+  }
+  return validateRules;
 }
