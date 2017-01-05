@@ -293,14 +293,12 @@ function createBaseForm(option = {}, mixins = []) {
         const { fieldsMeta } = this;
         if (fieldsMeta[name] && fieldsMeta[name].virtual) {
           const ret = {};
-          for (const fieldKey in fieldsMeta) {
-            if (fieldsMeta.hasOwnProperty(fieldKey)) {
-              const nameIfNested = getNameIfNested(fieldKey);
-              if (nameIfNested.name === name && nameIfNested.isNested) {
-                set(ret, fieldKey, this.getValueFromFieldsInternal(fieldKey, fields));
-              }
+          Object.keys(fieldsMeta).forEach(fieldKey => {
+            const nameIfNested = getNameIfNested(fieldKey);
+            if (nameIfNested.name === name && nameIfNested.isNested) {
+              set(ret, fieldKey, this.getValueFromFieldsInternal(fieldKey, fields));
             }
-          }
+          });
           return ret[name];
         }
         return this.getValueFromFieldsInternal(name, fields);
@@ -382,26 +380,24 @@ function createBaseForm(option = {}, mixins = []) {
       setFieldsInitialValue(initialValues) {
         const fieldsMeta = this.fieldsMeta;
         const virtualPaths = getVirtualPaths(fieldsMeta);
-        for (const name in initialValues) {
-          if (initialValues.hasOwnProperty(name)) {
-            if (fieldsMeta[name] && fieldsMeta[name].virtual) {
-              for (let i = 0, len = virtualPaths[name].length; i < len; i++) {
-                const path = virtualPaths[name][i];
-                if (has(initialValues, path)) {
-                  fieldsMeta[path] = {
-                    ...fieldsMeta[path],
-                    initialValue: get(initialValues, path),
-                  };
-                }
+        Object.keys(initialValues).forEach(name => {
+          if (fieldsMeta[name] && fieldsMeta[name].virtual) {
+            for (let i = 0, len = virtualPaths[name].length; i < len; i++) {
+              const path = virtualPaths[name][i];
+              if (has(initialValues, path)) {
+                fieldsMeta[path] = {
+                  ...fieldsMeta[path],
+                  initialValue: get(initialValues, path),
+                };
               }
-            } else if (fieldsMeta[name]) {
-              fieldsMeta[name] = {
-                ...fieldsMeta[name],
-                initialValue: initialValues[name],
-              };
             }
+          } else if (fieldsMeta[name]) {
+            fieldsMeta[name] = {
+              ...fieldsMeta[name],
+              initialValue: initialValues[name],
+            };
           }
-        }
+        });
       },
 
       saveRef(name, _, component) {
@@ -524,17 +520,15 @@ function createBaseForm(option = {}, mixins = []) {
       validateFields(ns, opt, cb) {
         const { names, callback, options } = getParams(ns, opt, cb);
         const fieldNames = names || this.getValidFieldsName();
-        const fields = fieldNames.map((name) => {
-          const fieldMeta = this.getFieldMeta(name);
-          if (!hasRules(fieldMeta.validate)) {
-            return null;
-          }
-          const field = this.getField(name);
-          field.value = this.getFieldValue(name);
-          return field;
-        }).filter((f) => {
-          return !!f;
-        });
+        const fields = fieldNames
+                .filter(name => {
+                  const fieldMeta = this.getFieldMeta(name);
+                  return hasRules(fieldMeta.validate);
+                }).map((name) => {
+                  const field = this.getField(name);
+                  field.value = this.getFieldValue(name);
+                  return field;
+                });
         if (!fields.length) {
           if (callback) {
             callback(null, this.getFieldsValue(flatFieldNames(fieldNames)));
