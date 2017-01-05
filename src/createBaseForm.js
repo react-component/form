@@ -254,6 +254,15 @@ function createBaseForm(option = {}, mixins = []) {
         return field && field[member];
       },
 
+      getFieldsError(names) {
+        const fields = names || flatFieldNames(this.getValidFieldsName());
+        const allErrors = {};
+        fields.forEach((f) => {
+          set(allErrors, f, this.getFieldError(f));
+        });
+        return allErrors;
+      },
+
       getFieldError(name) {
         return getErrorStrs(this.getFieldMember(name, 'errors'));
       },

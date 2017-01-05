@@ -11,6 +11,7 @@ export const mixin = {
       setFieldsInitialValue: this.setFieldsInitialValue,
       getFieldDecorator: this.getFieldDecorator,
       getFieldProps: this.getFieldProps,
+      getFieldsError: this.getFieldsError,
       getFieldError: this.getFieldError,
       isFieldValidating: this.isFieldValidating,
       isFieldsValidating: this.isFieldsValidating,
