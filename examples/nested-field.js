@@ -176,7 +176,14 @@ let Form = React.createClass({
   },
 });
 
-Form = createForm()(Form);
+Form = createForm({
+  onFieldsChange(_, changedFields) {
+    console.log('onFieldsChange: ', changedFields);
+  },
+  onValuesChange(_, changedValues) {
+    console.log('onValuesChange: ', changedValues);
+  },
+})(Form);
 
 class App extends React.Component {
   render() {
