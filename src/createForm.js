@@ -15,6 +15,8 @@ export const mixin = {
       getFieldError: this.getFieldError,
       isFieldValidating: this.isFieldValidating,
       isFieldsValidating: this.isFieldsValidating,
+      isFieldsTouched: this.isFieldsTouched,
+      isFieldTouched: this.isFieldTouched,
       isSubmitting: this.isSubmitting,
       submit: this.submit,
       validateFields: this.validateFields,

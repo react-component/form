@@ -301,6 +301,14 @@ Whether this input is validating.
 
 Whether one of the inputs is validating.
 
+### isFieldTouched(name: String): Bool
+
+Whether this input's value had been change.
+
+### isFieldsTouched(names: String[]): Bool
+
+Whether one of the inputs' values had been change.
+
 ### isSubmitting(): Bool
 
 Whether the form is submitting.
