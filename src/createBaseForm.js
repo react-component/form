@@ -21,7 +21,7 @@ const atom = {};
 
 function createBaseForm(option = {}, mixins = []) {
   const {
-    mapPropsToFields, onFieldsChange,
+    mapPropsToFields, onFieldsChange, onValuesChange,
     fieldNameProp, fieldMetaProp,
     validateMessages, mapProps = mirror,
     formPropName = 'form', withRef,
@@ -51,7 +51,7 @@ function createBaseForm(option = {}, mixins = []) {
         }
       },
 
-      onChangeCommon(name_, action, args, callback) {
+      onCollectCommon(name_, action, args, callback) {
         let name = name_;
         const fieldMeta = this.getFieldMeta(name);
         if (fieldMeta[action]) {
@@ -60,8 +60,11 @@ function createBaseForm(option = {}, mixins = []) {
           fieldMeta.originalProps[action](...args);
         }
         const value = fieldMeta.getValueFromEvent ?
-          fieldMeta.getValueFromEvent(...args) :
-          getValueFromEvent(...args);
+                fieldMeta.getValueFromEvent(...args) :
+                getValueFromEvent(...args);
+        if (onValuesChange) {
+          onValuesChange(this.props, set({}, name, value));
+        }
         const nameKeyObj = getNameIfNested(name);
         if (this.getFieldMeta(nameKeyObj.name).exclusive) {
           name = nameKeyObj.name;
@@ -70,8 +73,8 @@ function createBaseForm(option = {}, mixins = []) {
         callback({ name, field, fieldMeta, value });
       },
 
-      onChange(name_, action, ...args) {
-        this.onChangeCommon(name_, action, args, ({ name, field, fieldMeta, value }) => {
+      onCollect(name_, action, ...args) {
+        this.onCollectCommon(name_, action, args, ({ name, field, fieldMeta, value }) => {
           const { validate } = fieldMeta;
           const fieldContent = {
             ...field,
@@ -84,8 +87,8 @@ function createBaseForm(option = {}, mixins = []) {
         });
       },
 
-      onChangeValidate(name_, action, ...args) {
-        this.onChangeCommon(name_, action, args, ({ field, fieldMeta, value }) => {
+      onCollectValidate(name_, action, ...args) {
+        this.onCollectCommon(name_, action, args, ({ field, fieldMeta, value }) => {
           const fieldContent = {
             ...field,
             value,
@@ -208,12 +211,12 @@ function createBaseForm(option = {}, mixins = []) {
                 .reduce((pre, curr) => pre.concat(curr), []);
         validateTriggers.forEach((action) => {
           if (inputProps[action]) return;
-          inputProps[action] = this.getCacheBind(name, action, this.onChangeValidate);
+          inputProps[action] = this.getCacheBind(name, action, this.onCollectValidate);
         });
 
         // make sure that the value will be collect
         if (trigger && validateTriggers.indexOf(trigger) === -1) {
-          inputProps[trigger] = this.getCacheBind(name, trigger, this.onChange);
+          inputProps[trigger] = this.getCacheBind(name, trigger, this.onCollect);
         }
 
         const meta = {
@@ -324,7 +327,6 @@ function createBaseForm(option = {}, mixins = []) {
           }
           nowValues[f] = this.getValueFromFields(f, nowFields);
         });
-        const changedFieldsName = Object.keys(fields);
         Object.keys(nowValues).forEach((f) => {
           const value = nowValues[f];
           const fieldMeta = fieldsMeta[f];
@@ -341,6 +343,7 @@ function createBaseForm(option = {}, mixins = []) {
         });
         this.fields = nowFields;
         if (onFieldsChange) {
+          const changedFieldsName = Object.keys(fields);
           const changedFields = {};
           changedFieldsName.forEach((f) => {
             changedFields[f] = this.getField(f);
@@ -351,6 +354,9 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       setFieldsValue(fieldsValue) {
+        if (onValuesChange) {
+          onValuesChange(this.props, fieldsValue);
+        }
         const newFields = {};
         const { fieldsMeta, fields } = this;
         const virtualPaths = getVirtualPaths(fieldsMeta);
