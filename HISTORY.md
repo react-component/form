@@ -1,5 +1,9 @@
 # History
 ----
+## 1.2.0 / 2017-01-05
+
+- support onValuesChange: https://github.com/react-component/form/pull/55
+
 ## 1.1.0 / 2016-12-28
 
 - support nested field: https://github.com/react-component/form/pull/48
