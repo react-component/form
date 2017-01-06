@@ -21629,9 +21629,12 @@
 	      setFieldsInitialValue: this.setFieldsInitialValue,
 	      getFieldDecorator: this.getFieldDecorator,
 	      getFieldProps: this.getFieldProps,
+	      getFieldsError: this.getFieldsError,
 	      getFieldError: this.getFieldError,
 	      isFieldValidating: this.isFieldValidating,
 	      isFieldsValidating: this.isFieldsValidating,
+	      isFieldsTouched: this.isFieldsTouched,
+	      isFieldTouched: this.isFieldTouched,
 	      isSubmitting: this.isSubmitting,
 	      submit: this.submit,
 	      validateFields: this.validateFields,
@@ -21744,7 +21747,7 @@
 	          this.fields = mapPropsToFields(nextProps);
 	        }
 	      },
-	      onCollectCommon: function onCollectCommon(name_, action, args, callback) {
+	      onCollectCommon: function onCollectCommon(name_, action, args) {
 	        var name = name_;
 	        var fieldMeta = this.getFieldMeta(name);
 	        if (fieldMeta[action]) {
@@ -21763,51 +21766,42 @@
 	          name = nameKeyObj.name;
 	        }
 	        var field = this.getField(name);
-	        callback({ name: name, field: field, fieldMeta: fieldMeta, value: value });
+	        return { name: name, field: (0, _extends3.default)({}, field, { value: value, touched: true }), fieldMeta: fieldMeta };
 	      },
 	      onCollect: function onCollect(name_, action) {
-	        var _this = this;
-	
 	        for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
 	          args[_key - 2] = arguments[_key];
 	        }
 	
-	        this.onCollectCommon(name_, action, args, function (_ref) {
-	          var name = _ref.name,
-	              field = _ref.field,
-	              fieldMeta = _ref.fieldMeta,
-	              value = _ref.value;
-	          var validate = fieldMeta.validate;
+	        var _onCollectCommon = this.onCollectCommon(name_, action, args),
+	            name = _onCollectCommon.name,
+	            field = _onCollectCommon.field,
+	            fieldMeta = _onCollectCommon.fieldMeta;
 	
-	          var fieldContent = (0, _extends3.default)({}, field, {
-	            value: value,
-	            dirty: (0, _utils.hasRules)(validate)
-	          });
-	          _this.setFields((0, _defineProperty3.default)({}, name, fieldContent));
+	        var validate = fieldMeta.validate;
+	
+	        var fieldContent = (0, _extends3.default)({}, field, {
+	          dirty: (0, _utils.hasRules)(validate)
 	        });
+	        this.setFields((0, _defineProperty3.default)({}, name, fieldContent));
 	      },
 	      onCollectValidate: function onCollectValidate(name_, action) {
-	        var _this2 = this;
-	
 	        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
 	          args[_key2 - 2] = arguments[_key2];
 	        }
 	
-	        this.onCollectCommon(name_, action, args, function (_ref2) {
-	          var field = _ref2.field,
-	              fieldMeta = _ref2.fieldMeta,
-	              value = _ref2.value;
+	        var _onCollectCommon2 = this.onCollectCommon(name_, action, args),
+	            field = _onCollectCommon2.field,
+	            fieldMeta = _onCollectCommon2.fieldMeta;
 	
-	          var fieldContent = (0, _extends3.default)({}, field, {
-	            value: value,
-	            dirty: true
-	          });
-	          _this2.validateFieldsInternal([fieldContent], {
-	            action: action,
-	            options: {
-	              firstFields: !!fieldMeta.validateFirst
-	            }
-	          });
+	        var fieldContent = (0, _extends3.default)({}, field, {
+	          dirty: true
+	        });
+	        this.validateFieldsInternal([fieldContent], {
+	          action: action,
+	          options: {
+	            firstFields: !!fieldMeta.validateFirst
+	          }
 	        });
 	      },
 	      getCacheBind: function getCacheBind(name, action, fn) {
@@ -21828,11 +21822,11 @@
 	        });
 	      },
 	      getFieldDecorator: function getFieldDecorator(name, fieldOption) {
-	        var _this3 = this;
+	        var _this = this;
 	
 	        var props = this.getFieldProps(name, fieldOption);
 	        return function (fieldElem) {
-	          var fieldMeta = _this3.getFieldMeta(name);
+	          var fieldMeta = _this.getFieldMeta(name);
 	          var originalProps = fieldElem.props;
 	          if (process.env.NODE_ENV !== 'production') {
 	            var valuePropName = fieldMeta.valuePropName;
@@ -21842,11 +21836,11 @@
 	          }
 	          fieldMeta.originalProps = originalProps;
 	          fieldMeta.ref = fieldElem.ref;
-	          return _react2.default.cloneElement(fieldElem, (0, _extends3.default)({}, props, _this3.getFieldValuePropValue(fieldMeta)));
+	          return _react2.default.cloneElement(fieldElem, (0, _extends3.default)({}, props, _this.getFieldValuePropValue(fieldMeta)));
 	        };
 	      },
 	      getFieldProps: function getFieldProps(name) {
-	        var _this4 = this;
+	        var _this2 = this;
 	
 	        var usersFieldOption = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
@@ -21905,7 +21899,7 @@
 	        }, []);
 	        validateTriggers.forEach(function (action) {
 	          if (inputProps[action]) return;
-	          inputProps[action] = _this4.getCacheBind(name, action, _this4.onCollectValidate);
+	          inputProps[action] = _this2.getCacheBind(name, action, _this2.onCollectValidate);
 	        });
 	
 	        // make sure that the value will be collect
@@ -21948,6 +21942,16 @@
 	        var field = this.getField(name);
 	        return field && field[member];
 	      },
+	      getFieldsError: function getFieldsError(names) {
+	        var _this3 = this;
+	
+	        var fields = names || (0, _utils.flatFieldNames)(this.getValidFieldsName());
+	        var allErrors = {};
+	        fields.forEach(function (f) {
+	          (0, _lodash6.default)(allErrors, f, _this3.getFieldError(f));
+	        });
+	        return allErrors;
+	      },
 	      getFieldError: function getFieldError(name) {
 	        return (0, _utils.getErrorStrs)(this.getFieldMember(name, 'errors'));
 	      },
@@ -21958,12 +21962,12 @@
 	        }) : [];
 	      },
 	      getFieldsValue: function getFieldsValue(names) {
-	        var _this5 = this;
+	        var _this4 = this;
 	
 	        var fields = names || (0, _utils.flatFieldNames)(this.getValidFieldsName());
 	        var allValues = {};
 	        fields.forEach(function (f) {
-	          (0, _lodash6.default)(allValues, f, _this5.getFieldValue(f));
+	          (0, _lodash6.default)(allValues, f, _this4.getFieldValue(f));
 	        });
 	        return allValues;
 	      },
@@ -21984,7 +21988,7 @@
 	        return fieldMeta && fieldMeta.initialValue;
 	      },
 	      getValueFromFields: function getValueFromFields(name, fields) {
-	        var _this6 = this;
+	        var _this5 = this;
 	
 	        var fieldsMeta = this.fieldsMeta;
 	
@@ -21994,7 +21998,7 @@
 	            Object.keys(fieldsMeta).forEach(function (fieldKey) {
 	              var nameIfNested = (0, _utils.getNameIfNested)(fieldKey);
 	              if (nameIfNested.name === name && nameIfNested.isNested) {
-	                (0, _lodash6.default)(ret, fieldKey, _this6.getValueFromFieldsInternal(fieldKey, fields));
+	                (0, _lodash6.default)(ret, fieldKey, _this5.getValueFromFieldsInternal(fieldKey, fields));
 	              }
 	            });
 	            return {
@@ -22015,7 +22019,7 @@
 	        return (0, _utils.flattenArray)(actionRules);
 	      },
 	      setFields: function setFields(fields_) {
-	        var _this7 = this;
+	        var _this6 = this;
 	
 	        var fieldsMeta = this.fieldsMeta;
 	        var fields = fields_;
@@ -22029,13 +22033,13 @@
 	          if (isNested && fieldsMeta[name].exclusive) {
 	            return;
 	          }
-	          nowValues[f] = _this7.getValueFromFields(f, nowFields);
+	          nowValues[f] = _this6.getValueFromFields(f, nowFields);
 	        });
 	        Object.keys(nowValues).forEach(function (f) {
 	          var value = nowValues[f];
 	          var fieldMeta = fieldsMeta[f];
 	          if (fieldMeta && fieldMeta.normalize) {
-	            var nowValue = fieldMeta.normalize(value, _this7.getValueFromFields(f, _this7.fields), nowValues);
+	            var nowValue = fieldMeta.normalize(value, _this6.getValueFromFields(f, _this6.fields), nowValues);
 	            if (nowValue !== value) {
 	              nowFields[f] = (0, _extends3.default)({}, nowFields[f], {
 	                value: nowValue
@@ -22049,9 +22053,9 @@
 	            var changedFieldsName = Object.keys(fields);
 	            var changedFields = {};
 	            changedFieldsName.forEach(function (f) {
-	              changedFields[f] = _this7.getField(f);
+	              changedFields[f] = _this6.getField(f);
 	            });
-	            onFieldsChange(_this7.props, changedFields);
+	            onFieldsChange(_this6.props, changedFields);
 	          })();
 	        }
 	        this.forceUpdate();
@@ -22128,13 +22132,13 @@
 	        }
 	        this.instances[name] = component;
 	      },
-	      validateFieldsInternal: function validateFieldsInternal(fields, _ref4, callback) {
-	        var _this8 = this;
+	      validateFieldsInternal: function validateFieldsInternal(fields, _ref2, callback) {
+	        var _this7 = this;
 	
-	        var fieldNames = _ref4.fieldNames,
-	            action = _ref4.action,
-	            _ref4$options = _ref4.options,
-	            options = _ref4$options === undefined ? {} : _ref4$options;
+	        var fieldNames = _ref2.fieldNames,
+	            action = _ref2.action,
+	            _ref2$options = _ref2.options,
+	            options = _ref2$options === undefined ? {} : _ref2$options;
 	
 	        var allRules = {};
 	        var allValues = {};
@@ -22148,19 +22152,19 @@
 	            }
 	            return;
 	          }
-	          var fieldMeta = _this8.getFieldMeta(name);
+	          var fieldMeta = _this7.getFieldMeta(name);
 	          var newField = (0, _extends3.default)({}, field);
 	          newField.errors = undefined;
 	          newField.validating = true;
 	          newField.dirty = true;
-	          allRules[name] = _this8.getRules(fieldMeta, action);
+	          allRules[name] = _this7.getRules(fieldMeta, action);
 	          allValues[name] = newField.value;
 	          allFields[name] = newField;
 	        });
 	        this.setFields(allFields);
 	        // in case normalize
 	        Object.keys(allValues).forEach(function (f) {
-	          allValues[f] = _this8.getFieldValue(f);
+	          allValues[f] = _this7.getFieldValue(f);
 	        });
 	        if (callback && (0, _utils.isEmptyObject)(allFields)) {
 	          callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue((0, _utils.flatFieldNames)(fieldNames)));
@@ -22186,7 +22190,7 @@
 	          var nowAllFields = {};
 	          Object.keys(allRules).forEach(function (name) {
 	            var fieldErrors = (0, _lodash2.default)(errorsGroup, name);
-	            var nowField = _this8.getField(name);
+	            var nowField = _this7.getField(name);
 	            // avoid concurrency problems
 	            if (nowField.value !== allValues[name]) {
 	              expired.push({
@@ -22200,11 +22204,11 @@
 	              nowAllFields[name] = nowField;
 	            }
 	          });
-	          _this8.setFields(nowAllFields);
+	          _this7.setFields(nowAllFields);
 	          if (callback) {
 	            if (expired.length) {
-	              expired.forEach(function (_ref5) {
-	                var name = _ref5.name;
+	              expired.forEach(function (_ref3) {
+	                var name = _ref3.name;
 	
 	                var fieldErrors = [{
 	                  message: name + ' need to revalidate',
@@ -22217,12 +22221,12 @@
 	              });
 	            }
 	
-	            callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this8.getFieldsValue((0, _utils.flatFieldNames)(fieldNames)));
+	            callback((0, _utils.isEmptyObject)(errorsGroup) ? null : errorsGroup, _this7.getFieldsValue((0, _utils.flatFieldNames)(fieldNames)));
 	          }
 	        });
 	      },
 	      validateFields: function validateFields(ns, opt, cb) {
-	        var _this9 = this;
+	        var _this8 = this;
 	
 	        var _getParams = (0, _utils.getParams)(ns, opt, cb),
 	            names = _getParams.names,
@@ -22231,11 +22235,11 @@
 	
 	        var fieldNames = names || this.getValidFieldsName();
 	        var fields = fieldNames.filter(function (name) {
-	          var fieldMeta = _this9.getFieldMeta(name);
+	          var fieldMeta = _this8.getFieldMeta(name);
 	          return (0, _utils.hasRules)(fieldMeta.validate);
 	        }).map(function (name) {
-	          var field = _this9.getField(name);
-	          field.value = _this9.getFieldValue(name);
+	          var field = _this8.getField(name);
+	          field.value = _this8.getFieldValue(name);
 	          return field;
 	        });
 	        if (!fields.length) {
@@ -22246,7 +22250,7 @@
 	        }
 	        if (!('firstFields' in options)) {
 	          options.firstFields = fieldNames.filter(function (name) {
-	            var fieldMeta = _this9.getFieldMeta(name);
+	            var fieldMeta = _this8.getFieldMeta(name);
 	            return !!fieldMeta.validateFirst;
 	          });
 	        }
@@ -22259,11 +22263,22 @@
 	        return this.getFieldMember(name, 'validating');
 	      },
 	      isFieldsValidating: function isFieldsValidating(ns) {
+	        var _this9 = this;
+	
+	        var names = ns || this.getValidFieldsName();
+	        return names.some(function (n) {
+	          return _this9.isFieldValidating(n);
+	        });
+	      },
+	      isFieldTouched: function isFieldTouched(name) {
+	        return this.getFieldMember(name, 'touched');
+	      },
+	      isFieldsTouched: function isFieldsTouched(ns) {
 	        var _this10 = this;
 	
 	        var names = ns || this.getValidFieldsName();
 	        return names.some(function (n) {
-	          return _this10.isFieldValidating(n);
+	          return _this10.isFieldTouched(n);
 	        });
 	      },
 	      isSubmitting: function isSubmitting() {
