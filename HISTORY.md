@@ -1,5 +1,9 @@
 # History
 ----
+## 1.3.0 / 2017-01-07
+
+- support touch checking: https://github.com/react-component/form/pull/56
+
 ## 1.2.0 / 2017-01-05
 
 - support onValuesChange: https://github.com/react-component/form/pull/55

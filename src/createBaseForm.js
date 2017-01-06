@@ -51,7 +51,7 @@ function createBaseForm(option = {}, mixins = []) {
         }
       },
 
-      onCollectCommon(name_, action, args, callback) {
+      onCollectCommon(name_, action, args) {
         let name = name_;
         const fieldMeta = this.getFieldMeta(name);
         if (fieldMeta[action]) {
@@ -60,8 +60,8 @@ function createBaseForm(option = {}, mixins = []) {
           fieldMeta.originalProps[action](...args);
         }
         const value = fieldMeta.getValueFromEvent ?
-                fieldMeta.getValueFromEvent(...args) :
-                getValueFromEvent(...args);
+          fieldMeta.getValueFromEvent(...args) :
+          getValueFromEvent(...args);
         if (onValuesChange) {
           onValuesChange(this.props, set({}, name, value));
         }
@@ -70,34 +70,32 @@ function createBaseForm(option = {}, mixins = []) {
           name = nameKeyObj.name;
         }
         const field = this.getField(name);
-        callback({ name, field: { ...field, value, touched: true }, fieldMeta });
+        return ({ name, field: { ...field, value, touched: true }, fieldMeta });
       },
 
       onCollect(name_, action, ...args) {
-        this.onCollectCommon(name_, action, args, ({ name, field, fieldMeta }) => {
-          const { validate } = fieldMeta;
-          const fieldContent = {
-            ...field,
-            dirty: hasRules(validate),
-          };
-          this.setFields({
-            [name]: fieldContent,
-          });
+        const { name, field, fieldMeta } = this.onCollectCommon(name_, action, args);
+        const { validate } = fieldMeta;
+        const fieldContent = {
+          ...field,
+          dirty: hasRules(validate),
+        };
+        this.setFields({
+          [name]: fieldContent,
         });
       },
 
       onCollectValidate(name_, action, ...args) {
-        this.onCollectCommon(name_, action, args, ({ field, fieldMeta }) => {
-          const fieldContent = {
-            ...field,
-            dirty: true,
-          };
-          this.validateFieldsInternal([fieldContent], {
-            action,
-            options: {
-              firstFields: !!fieldMeta.validateFirst,
-            },
-          });
+        const { field, fieldMeta } = this.onCollectCommon(name_, action, args);
+        const fieldContent = {
+          ...field,
+          dirty: true,
+        };
+        this.validateFieldsInternal([fieldContent], {
+          action,
+          options: {
+            firstFields: !!fieldMeta.validateFirst,
+          },
         });
       },
 
@@ -204,9 +202,9 @@ function createBaseForm(option = {}, mixins = []) {
 
         const validateRules = normalizeValidateRules(validate, rules, validateTrigger);
         const validateTriggers = validateRules
-                .filter(item => !!item.rules && item.rules.length)
-                .map(item => item.trigger)
-                .reduce((pre, curr) => pre.concat(curr), []);
+          .filter(item => !!item.rules && item.rules.length)
+          .map(item => item.trigger)
+          .reduce((pre, curr) => pre.concat(curr), []);
         validateTriggers.forEach((action) => {
           if (inputProps[action]) return;
           inputProps[action] = this.getCacheBind(name, action, this.onCollectValidate);
@@ -534,14 +532,14 @@ function createBaseForm(option = {}, mixins = []) {
         const { names, callback, options } = getParams(ns, opt, cb);
         const fieldNames = names || this.getValidFieldsName();
         const fields = fieldNames
-                .filter(name => {
-                  const fieldMeta = this.getFieldMeta(name);
-                  return hasRules(fieldMeta.validate);
-                }).map((name) => {
-                  const field = this.getField(name);
-                  field.value = this.getFieldValue(name);
-                  return field;
-                });
+          .filter(name => {
+            const fieldMeta = this.getFieldMeta(name);
+            return hasRules(fieldMeta.validate);
+          }).map((name) => {
+            const field = this.getField(name);
+            field.value = this.getFieldValue(name);
+            return field;
+          });
         if (!fields.length) {
           if (callback) {
             callback(null, this.getFieldsValue(flatFieldNames(fieldNames)));
