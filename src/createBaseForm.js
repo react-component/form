@@ -70,15 +70,14 @@ function createBaseForm(option = {}, mixins = []) {
           name = nameKeyObj.name;
         }
         const field = this.getField(name);
-        callback({ name, field, fieldMeta, value });
+        callback({ name, field: { ...field, value, touched: true }, fieldMeta });
       },
 
       onCollect(name_, action, ...args) {
-        this.onCollectCommon(name_, action, args, ({ name, field, fieldMeta, value }) => {
+        this.onCollectCommon(name_, action, args, ({ name, field, fieldMeta }) => {
           const { validate } = fieldMeta;
           const fieldContent = {
             ...field,
-            value,
             dirty: hasRules(validate),
           };
           this.setFields({
@@ -88,10 +87,9 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       onCollectValidate(name_, action, ...args) {
-        this.onCollectCommon(name_, action, args, ({ field, fieldMeta, value }) => {
+        this.onCollectCommon(name_, action, args, ({ field, fieldMeta }) => {
           const fieldContent = {
             ...field,
-            value,
             dirty: true,
           };
           this.validateFieldsInternal([fieldContent], {
@@ -252,6 +250,15 @@ function createBaseForm(option = {}, mixins = []) {
       getFieldMember(name, member) {
         const field = this.getField(name);
         return field && field[member];
+      },
+
+      getFieldsError(names) {
+        const fields = names || flatFieldNames(this.getValidFieldsName());
+        const allErrors = {};
+        fields.forEach((f) => {
+          set(allErrors, f, this.getFieldError(f));
+        });
+        return allErrors;
       },
 
       getFieldError(name) {
@@ -561,6 +568,17 @@ function createBaseForm(option = {}, mixins = []) {
         const names = ns || this.getValidFieldsName();
         return names.some((n) => {
           return this.isFieldValidating(n);
+        });
+      },
+
+      isFieldTouched(name) {
+        return this.getFieldMember(name, 'touched');
+      },
+
+      isFieldsTouched(ns) {
+        const names = ns || this.getValidFieldsName();
+        return names.some((n) => {
+          return this.isFieldTouched(n);
         });
       },
 

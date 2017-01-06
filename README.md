@@ -285,6 +285,10 @@ And add `force` and `scroll`. `scroll` is the same as [dom-scroll-into-view's fu
 
 Defaults to false. Whether to validate fields which have been validated(caused by validateTrigger).
 
+### getFieldsError(names): Object{ [name]: String[] }
+
+Get inputs' validate errors.
+
 ### getFieldError(name): String[]
 
 Get input's validate errors.
@@ -296,6 +300,14 @@ Whether this input is validating.
 ### isFieldsValidating(names: String[]): Bool
 
 Whether one of the inputs is validating.
+
+### isFieldTouched(name: String): Bool
+
+Whether this input's value had been change.
+
+### isFieldsTouched(names: String[]): Bool
+
+Whether one of the inputs' values had been change.
 
 ### isSubmitting(): Bool
 
