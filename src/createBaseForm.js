@@ -383,6 +383,12 @@ function createBaseForm(option = {}, mixins = []) {
               name,
               value,
             };
+          } else {
+            warning(
+              false,
+              'Cannot use `setFieldsValue` until ' +
+                'you use `getFieldDecorator` or `getFieldProps` to register it.'
+            );
           }
         });
         this.setFields(newFields);
