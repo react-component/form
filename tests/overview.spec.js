@@ -1,9 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
-import isEqual from 'lodash.isequal';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -11,35 +11,38 @@ let Test = React.createClass({
   },
   render() {
     const { getFieldProps } = this.props.form;
-    return (<div>
-      <input {...getFieldProps('normal')} />
+    return (
+      <div>
+        <input {...getFieldProps('normal')} />
+        <input
+          {...getFieldProps('required', {
+            rules: [{
+              required: true,
+            }],
+          })}
+        />
 
-      <input {...getFieldProps('required', {
-        rules: [{
-          required: true,
-        }],
-      })}
-      />
+        <input
+          {...getFieldProps('blurRequired', {
+            validate: [{
+              trigger: 'onBlur',
+              rules: [{
+                required: true,
+              }],
+            }],
+          })}
+        />
 
-      <input {...getFieldProps('blurRequired', {
-        validate: [{
-          trigger: 'onBlur',
-          rules: [{
-            required: true,
-          }],
-        }],
-      })}
-      />
+        <input {...getFieldProps('foo.a.x')} />
+        <input {...getFieldProps('foo.a.y')} />
+        <input {...getFieldProps('foo.b[0]')} />
+        <input {...getFieldProps('foo.b[1]')} />
 
-      <input {...getFieldProps('foo.a.x')} />
-      <input {...getFieldProps('foo.a.y')} />
-      <input {...getFieldProps('foo.b[0]')} />
-      <input {...getFieldProps('foo.b[1]')} />
+        <input {...getFieldProps('a[0][1].b.c[0]')} />
+        <input {...getFieldProps('a[0][1].b.c[1]')} />
 
-      <input {...getFieldProps('a[0][1].b.c[0]')} />
-      <input {...getFieldProps('a[0][1].b.c[1]')} />
-
-    </div>);
+      </div>
+    );
   },
 });
 
@@ -66,12 +69,12 @@ describe('overview usage', () => {
   });
 
   it('collect value', () => {
-    expect(form.getFieldValue('normal')).to.be(undefined);
+    expect(form.getFieldValue('normal')).toBe(undefined);
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('');
+    expect(form.getFieldValue('normal')).toBe('');
     form.getFieldInstance('normal').value = '1';
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('1');
+    expect(form.getFieldValue('normal')).toBe('1');
   });
 
   it('collect nested array value', () => {
@@ -79,15 +82,15 @@ describe('overview usage', () => {
     form.getFieldInstance('a[0][1].b.c[1]').value = '1';
     Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
     Simulate.change(form.getFieldInstance('a[0][1].b.c[1]'));
-    expect(isEqual(form.getFieldValue('a'), [
-        [undefined, {
-          b: {
-            c: ['0', '1'],
-          },
-        }],
-    ])).to.be(true);
-    expect(form.getFieldValue('a[0][1].b.c[0]')).to.be('0');
-    expect(form.getFieldValue('a[0][1].b.c[1]')).to.be('1');
+    expect(form.getFieldValue('a')).toEqual([
+      [undefined, {
+        b: {
+          c: ['0', '1'],
+        },
+      }],
+    ]);
+    expect(form.getFieldValue('a[0][1].b.c[0]')).toBe('0');
+    expect(form.getFieldValue('a[0][1].b.c[1]')).toBe('1');
   });
 
   it('collect nested value', () => {
@@ -99,54 +102,54 @@ describe('overview usage', () => {
     Simulate.change(form.getFieldInstance('foo.a.y'));
     Simulate.change(form.getFieldInstance('foo.b[0]'));
     Simulate.change(form.getFieldInstance('foo.b[1]'));
-    expect(isEqual(form.getFieldValue('foo'), {
+    expect(form.getFieldValue('foo')).toEqual({
       a: {
         x: '1',
         y: '2',
       },
       b: ['3', '4'],
-    })).to.be(true);
-    expect(form.getFieldValue('foo.a.x')).to.be('1');
-    expect(form.getFieldValue('foo.a.y')).to.be('2');
-    expect(form.getFieldValue('foo.b[0]')).to.be('3');
-    expect(form.getFieldValue('foo.b[1]')).to.be('4');
+    });
+    expect(form.getFieldValue('foo.a.x')).toBe('1');
+    expect(form.getFieldValue('foo.a.y')).toBe('2');
+    expect(form.getFieldValue('foo.b[0]')).toBe('3');
+    expect(form.getFieldValue('foo.b[1]')).toBe('4');
   });
 
   it('validate value', () => {
-    expect(form.getFieldValue('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe(undefined);
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).to.be('');
-    expect(form.getFieldError('required')).to.eql(['required is required']);
+    expect(form.getFieldValue('required')).toBe('');
+    expect(form.getFieldError('required')).toEqual(['required is required']);
     form.getFieldInstance('required').value = '1';
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).to.be('1');
-    expect(form.getFieldError('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe('1');
+    expect(form.getFieldError('required')).toBe(undefined);
   });
 
 
   it('validate trigger value', () => {
-    expect(form.getFieldValue('blurRequired')).to.be(undefined);
+    expect(form.getFieldValue('blurRequired')).toBe(undefined);
     Simulate.change(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).to.be('');
-    expect(form.getFieldError('blurRequired')).to.be(undefined);
+    expect(form.getFieldValue('blurRequired')).toBe('');
+    expect(form.getFieldError('blurRequired')).toBe(undefined);
     Simulate.blur(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).to.be('');
-    expect(form.getFieldError('blurRequired')).to.eql(['blurRequired is required']);
+    expect(form.getFieldValue('blurRequired')).toBe('');
+    expect(form.getFieldError('blurRequired')).toEqual(['blurRequired is required']);
     form.getFieldInstance('blurRequired').value = '1';
     Simulate.change(form.getFieldInstance('blurRequired'));
     Simulate.blur(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).to.be('1');
-    expect(form.getFieldError('blurRequired')).to.be(undefined);
+    expect(form.getFieldValue('blurRequired')).toBe('1');
+    expect(form.getFieldError('blurRequired')).toBe(undefined);
   });
 
   it('validateFields works for error', (callback) => {
     form.validateFields((errors, values) => {
-      expect(Object.keys(errors).length).to.be(2);
-      expect(errors.required.errors.map(e => e.message)).to.eql(['required is required']);
-      expect(errors.blurRequired.errors.map(e => e.message)).to.eql(['blurRequired is required']);
-      expect(values.normal).to.be(undefined);
-      expect(values.blurRequired).to.be(undefined);
-      expect(values.required).to.be(undefined);
+      expect(Object.keys(errors).length).toBe(2);
+      expect(errors.required.errors.map(e => e.message)).toEqual(['required is required']);
+      expect(errors.blurRequired.errors.map(e => e.message)).toEqual(['blurRequired is required']);
+      expect(values.normal).toBe(undefined);
+      expect(values.blurRequired).toBe(undefined);
+      expect(values.required).toBe(undefined);
       callback();
     });
   });
@@ -157,14 +160,14 @@ describe('overview usage', () => {
     Simulate.change(form.getFieldInstance('blurRequired'));
     Simulate.change(form.getFieldInstance('required'));
     form.validateFields((errors, values) => {
-      expect(errors).not.to.be.ok();
-      expect(values.normal).to.be(undefined);
-      expect(values.blurRequired).to.be('1');
-      expect(values.required).to.be('2');
-      expect(values.foo.a.x).to.be(undefined);
-      expect(values.foo.a.y).to.be(undefined);
-      expect(values.foo.b[0]).to.be(undefined);
-      expect(values.foo.b[1]).to.be(undefined);
+      expect(errors).toBeFalsy();
+      expect(values.normal).toBe(undefined);
+      expect(values.blurRequired).toBe('1');
+      expect(values.required).toBe('2');
+      expect(values.foo.a.x).toBe(undefined);
+      expect(values.foo.a.y).toBe(undefined);
+      expect(values.foo.b[0]).toBe(undefined);
+      expect(values.foo.b[1]).toBe(undefined);
       callback();
     });
   });
@@ -172,11 +175,11 @@ describe('overview usage', () => {
   it('resetFields works', () => {
     form.getFieldInstance('required').value = '1';
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).to.be('1');
-    expect(form.getFieldError('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe('1');
+    expect(form.getFieldError('required')).toBe(undefined);
     form.resetFields();
-    expect(form.getFieldValue('required')).to.be(undefined);
-    expect(form.getFieldError('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe(undefined);
+    expect(form.getFieldError('required')).toBe(undefined);
   });
 
   it('setFieldsInitialValue works', () => {
@@ -185,9 +188,9 @@ describe('overview usage', () => {
     });
     form.getFieldInstance('normal').value = '2';
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('2');
+    expect(form.getFieldValue('normal')).toBe('2');
     form.resetFields();
-    expect(form.getFieldValue('normal')).to.be('4');
+    expect(form.getFieldValue('normal')).toBe('4');
   });
 
   it('setFieldsValue and setFieldsInitialValue for nested field works', () => {
@@ -213,76 +216,76 @@ describe('overview usage', () => {
     Simulate.change(form.getFieldInstance('foo.a.y'));
     Simulate.change(form.getFieldInstance('foo.b[0]'));
     Simulate.change(form.getFieldInstance('foo.b[1]'));
-    expect(isEqual(form.getFieldValue('foo'), {
+    expect(form.getFieldValue('foo')).toEqual({
       a: {
         x: '5',
         y: '6',
       },
       b: ['7', '8'],
-    })).to.be(true);
+    });
     form.setFieldsValue({ 'foo.a.x': '9' });
     Simulate.change(form.getFieldInstance('foo.a.x'));
-    expect(isEqual(form.getFieldValue('foo'), {
+    expect(form.getFieldValue('foo')).toEqual({
       a: {
         x: '9',
         y: '6',
       },
       b: ['7', '8'],
-    })).to.be(true);
+    });
     form.resetFields();
-    expect(isEqual(form.getFieldValue('foo'), {
+    expect(form.getFieldValue('foo')).toEqual({
       a: {
         x: '1',
         y: '2',
       },
       b: ['3', '4'],
-    })).to.be(true);
+    });
   });
 
   it('setFieldsValue and setFieldsInitialValue for nested array works', () => {
     form.setFieldsInitialValue({
       a: [
-          [undefined, {
-            b: {
-              c: ['0', '1'],
-            },
-          }],
-      ],
-    });
-    form.setFieldsValue({
-      a: [
-          [undefined, {
-            b: {
-              c: ['2', '3'],
-            },
-          }],
-      ],
-    });
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[1]'));
-    expect(isEqual(form.getFieldValue('a'), [
-        [undefined, {
-          b: {
-            c: ['2', '3'],
-          },
-        }],
-    ])).to.be(true);
-    form.setFieldsValue({ 'a[0][1].b.c[0]': '9' });
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
-    expect(isEqual(form.getFieldValue('a'), [
-        [undefined, {
-          b: {
-            c: ['9', '3'],
-          },
-        }],
-    ])).to.be(true);
-    form.resetFields();
-    expect(isEqual(form.getFieldValue('a'), [
         [undefined, {
           b: {
             c: ['0', '1'],
           },
         }],
-    ])).to.be(true);
+      ],
+    });
+    form.setFieldsValue({
+      a: [
+        [undefined, {
+          b: {
+            c: ['2', '3'],
+          },
+        }],
+      ],
+    });
+    Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
+    Simulate.change(form.getFieldInstance('a[0][1].b.c[1]'));
+    expect(form.getFieldValue('a')).toEqual([
+      [undefined, {
+        b: {
+          c: ['2', '3'],
+        },
+      }],
+    ]);
+    form.setFieldsValue({ 'a[0][1].b.c[0]': '9' });
+    Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
+    expect(form.getFieldValue('a')).toEqual([
+      [undefined, {
+        b: {
+          c: ['9', '3'],
+        },
+      }],
+    ]);
+    form.resetFields();
+    expect(form.getFieldValue('a')).toEqual([
+      [undefined, {
+        b: {
+          c: ['0', '1'],
+        },
+      }],
+    ]);
   });
 });

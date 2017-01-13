@@ -1,8 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -69,32 +70,32 @@ describe('checkbox-group usage', () => {
   });
 
   it('collect value', () => {
-    expect(form.getFieldValue('normal')).to.eql({ a: false, b: undefined });
+    expect(form.getFieldValue('normal')).toEqual({ a: false, b: undefined });
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
-    expect(form.getFieldValue('normal')).to.eql({ a: true, b: undefined });
+    expect(form.getFieldValue('normal')).toEqual({ a: true, b: undefined });
     form.getFieldInstance('normal.b').checked = true;
     Simulate.change(form.getFieldInstance('normal.b'));
-    expect(form.getFieldValue('normal')).to.eql({ a: true, b: 'b' });
-    expect(form.getFieldInstance('normal.a').checked).to.be(true);
+    expect(form.getFieldValue('normal')).toEqual({ a: true, b: 'b' });
+    expect(form.getFieldInstance('normal.a').checked).toBe(true);
   });
 
   it('validateFields works for ok', (callback) => {
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
     form.validateFields((errors, values) => {
-      expect(errors).not.to.be.ok();
-      expect(values.normal).to.eql({ a: true, b: undefined });
+      expect(errors).toBeFalsy();
+      expect(values.normal).toEqual({ a: true, b: undefined });
       callback();
     });
   });
 
   it('resetFields works', () => {
-    expect(form.getFieldValue('normal')).to.eql({ a: false, b: undefined });
+    expect(form.getFieldValue('normal')).toEqual({ a: false, b: undefined });
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
-    expect(form.getFieldValue('normal')).to.eql({ a: true, b: undefined });
+    expect(form.getFieldValue('normal')).toEqual({ a: true, b: undefined });
     form.resetFields();
-    expect(form.getFieldValue('normal')).to.eql({ a: false, b: undefined });
+    expect(form.getFieldValue('normal')).toEqual({ a: false, b: undefined });
   });
 });

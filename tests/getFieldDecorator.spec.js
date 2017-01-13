@@ -1,8 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -66,49 +67,49 @@ describe('getFieldDecorator', () => {
   });
 
   it('collect value', () => {
-    expect(form.getFieldValue('normal')).to.be(undefined);
+    expect(form.getFieldValue('normal')).toBe(undefined);
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('');
+    expect(form.getFieldValue('normal')).toBe('');
     form.getFieldInstance('normal').value = '1';
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('1');
+    expect(form.getFieldValue('normal')).toBe('1');
   });
 
   it('validate value', () => {
-    expect(form.getFieldValue('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe(undefined);
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).to.be('');
-    expect(form.getFieldError('required')).to.eql(['required is required']);
+    expect(form.getFieldValue('required')).toBe('');
+    expect(form.getFieldError('required')).toEqual(['required is required']);
     form.getFieldInstance('required').value = '1';
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).to.be('1');
-    expect(form.getFieldError('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe('1');
+    expect(form.getFieldError('required')).toBe(undefined);
   });
 
 
   it('validate trigger value', () => {
-    expect(form.getFieldValue('blurRequired')).to.be(undefined);
+    expect(form.getFieldValue('blurRequired')).toBe(undefined);
     Simulate.change(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).to.be('');
-    expect(form.getFieldError('blurRequired')).to.be(undefined);
+    expect(form.getFieldValue('blurRequired')).toBe('');
+    expect(form.getFieldError('blurRequired')).toBe(undefined);
     Simulate.blur(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).to.be('');
-    expect(form.getFieldError('blurRequired')).to.eql(['blurRequired is required']);
+    expect(form.getFieldValue('blurRequired')).toBe('');
+    expect(form.getFieldError('blurRequired')).toEqual(['blurRequired is required']);
     form.getFieldInstance('blurRequired').value = '1';
     Simulate.change(form.getFieldInstance('blurRequired'));
     Simulate.blur(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).to.be('1');
-    expect(form.getFieldError('blurRequired')).to.be(undefined);
+    expect(form.getFieldValue('blurRequired')).toBe('1');
+    expect(form.getFieldError('blurRequired')).toBe(undefined);
   });
 
   it('validateFields works for error', (callback) => {
     form.validateFields((errors, values) => {
-      expect(Object.keys(errors).length).to.be(2);
-      expect(errors.required.errors.map(e => e.message)).to.eql(['required is required']);
-      expect(errors.blurRequired.errors.map(e => e.message)).to.eql(['blurRequired is required']);
-      expect(values.normal).to.be(undefined);
-      expect(values.blurRequired).to.be(undefined);
-      expect(values.required).to.be(undefined);
+      expect(Object.keys(errors).length).toBe(2);
+      expect(errors.required.errors.map(e => e.message)).toEqual(['required is required']);
+      expect(errors.blurRequired.errors.map(e => e.message)).toEqual(['blurRequired is required']);
+      expect(values.normal).toBe(undefined);
+      expect(values.blurRequired).toBe(undefined);
+      expect(values.required).toBe(undefined);
       callback();
     });
   });
@@ -119,10 +120,10 @@ describe('getFieldDecorator', () => {
     Simulate.change(form.getFieldInstance('blurRequired'));
     Simulate.change(form.getFieldInstance('required'));
     form.validateFields((errors, values) => {
-      expect(errors).not.to.be.ok();
-      expect(values.normal).to.be(undefined);
-      expect(values.blurRequired).to.be('1');
-      expect(values.required).to.be('2');
+      expect(errors).toBeFalsy();
+      expect(values.normal).toBe(undefined);
+      expect(values.blurRequired).toBe('1');
+      expect(values.required).toBe('2');
       callback();
     });
   });
@@ -130,11 +131,11 @@ describe('getFieldDecorator', () => {
   it('resetFields works', () => {
     form.getFieldInstance('required').value = '1';
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).to.be('1');
-    expect(form.getFieldError('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe('1');
+    expect(form.getFieldError('required')).toBe(undefined);
     form.resetFields();
-    expect(form.getFieldValue('required')).to.be(undefined);
-    expect(form.getFieldError('required')).to.be(undefined);
+    expect(form.getFieldValue('required')).toBe(undefined);
+    expect(form.getFieldError('required')).toBe(undefined);
   });
 
   it('setFieldsInitialValue works', () => {
@@ -143,8 +144,8 @@ describe('getFieldDecorator', () => {
     });
     form.getFieldInstance('normal').value = '2';
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('2');
+    expect(form.getFieldValue('normal')).toBe('2');
     form.resetFields();
-    expect(form.getFieldValue('normal')).to.be('4');
+    expect(form.getFieldValue('normal')).toBe('4');
   });
 });

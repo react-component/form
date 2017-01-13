@@ -1,8 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -48,7 +49,7 @@ describe('normalize usage', () => {
   it('works', () => {
     form.getFieldInstance('normal').value = 'a';
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('A');
-    expect(form.getFieldInstance('normal').value).to.be('A');
+    expect(form.getFieldValue('normal')).toBe('A');
+    expect(form.getFieldInstance('normal').value).toBe('A');
   });
 });

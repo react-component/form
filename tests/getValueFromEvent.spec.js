@@ -1,8 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -53,10 +54,10 @@ describe('getValueFromEvent usage', () => {
   it('works', () => {
     form.getFieldInstance('normal').value = '3';
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('32');
-    expect(form.getFieldInstance('normal').value).to.be('321');
+    expect(form.getFieldValue('normal')).toBe('32');
+    expect(form.getFieldInstance('normal').value).toBe('321');
     form.resetFields();
-    expect(form.getFieldValue('normal')).to.be('0');
-    expect(form.getFieldInstance('normal').value).to.be('01');
+    expect(form.getFieldValue('normal')).toBe('0');
+    expect(form.getFieldInstance('normal').value).toBe('01');
   });
 });

@@ -1,9 +1,10 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
 import async from 'async';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -57,41 +58,41 @@ describe('async usage', () => {
     async.series([
       (callback) => {
         Simulate.change(form.getFieldInstance('async'));
-        expect(form.getFieldValue('async')).to.be('');
-        expect(form.getFieldError('async')).not.to.be.ok();
-        expect(form.isFieldValidating('async')).to.be(true);
-        expect(form.isFieldsValidating()).to.be(true);
+        expect(form.getFieldValue('async')).toBe('');
+        expect(form.getFieldError('async')).toBeFalsy();
+        expect(form.isFieldValidating('async')).toBe(true);
+        expect(form.isFieldsValidating()).toBe(true);
         setTimeout(callback, 200);
       },
       (callback) => {
-        expect(form.getFieldError('async')).to.eql(['must be 1']);
-        expect(form.isFieldValidating('async')).to.be(false);
-        expect(form.isFieldsValidating()).to.be(false);
+        expect(form.getFieldError('async')).toEqual(['must be 1']);
+        expect(form.isFieldValidating('async')).toBe(false);
+        expect(form.isFieldsValidating()).toBe(false);
         callback();
       },
       (callback) => {
         form.getFieldInstance('async').value = '1';
         Simulate.change(form.getFieldInstance('async'));
-        expect(form.getFieldValue('async')).to.be('1');
-        expect(form.getFieldError('async')).to.be(undefined);
-        expect(form.isFieldValidating('async')).to.be(true);
-        expect(form.isFieldsValidating()).to.be(true);
+        expect(form.getFieldValue('async')).toBe('1');
+        expect(form.getFieldError('async')).toBe(undefined);
+        expect(form.isFieldValidating('async')).toBe(true);
+        expect(form.isFieldsValidating()).toBe(true);
         setTimeout(callback, 200);
       },
       (callback) => {
-        expect(form.getFieldError('async')).not.to.be.ok();
-        expect(form.isFieldValidating('async')).to.be(false);
-        expect(form.isFieldsValidating()).to.be(false);
+        expect(form.getFieldError('async')).toBeFalsy();
+        expect(form.isFieldValidating('async')).toBe(false);
+        expect(form.isFieldsValidating()).toBe(false);
         callback();
       },
     ], done);
   });
   it('validateFields works for error', (done) => {
     form.validateFields((errors, values) => {
-      expect(values.normal).to.be(undefined);
-      expect(values.async).to.be(undefined);
-      expect(Object.keys(errors).length).to.be(1);
-      expect(errors.async.errors.map(e => e.message)).to.eql(['must be 1']);
+      expect(values.normal).toBe(undefined);
+      expect(values.async).toBe(undefined);
+      expect(Object.keys(errors).length).toBe(1);
+      expect(errors.async.errors.map(e => e.message)).toEqual(['must be 1']);
       done();
     });
   });
@@ -100,20 +101,20 @@ describe('async usage', () => {
     form.getFieldInstance('async').value = '1';
     Simulate.change(form.getFieldInstance('async'));
     form.validateFields((errors, values) => {
-      expect(values.normal).to.be(undefined);
-      expect(values.async).to.be('1');
-      expect(errors).not.to.be.ok();
+      expect(values.normal).toBe(undefined);
+      expect(values.async).toBe('1');
+      expect(errors).toBeFalsy();
       done();
     });
   });
 
   it('submit works', (done) => {
-    expect(form.isSubmitting()).to.be(false);
+    expect(form.isSubmitting()).toBe(false);
     form.submit((callback) => {
-      expect(form.isSubmitting()).to.be(true);
+      expect(form.isSubmitting()).toBe(true);
       setTimeout(() => {
         callback();
-        expect(form.isSubmitting()).to.be(false);
+        expect(form.isSubmitting()).toBe(false);
         done();
       }, 100);
     });
@@ -121,8 +122,8 @@ describe('async usage', () => {
 
   it('will error if change when validating', (done) => {
     form.validateFields((errors) => {
-      expect(Object.keys(errors).length).to.be(1);
-      expect(errors.async.errors.map(e => e.message)).to.eql(['async need to revalidate']);
+      expect(Object.keys(errors).length).toBe(1);
+      expect(errors.async.errors.map(e => e.message)).toEqual(['async need to revalidate']);
       setTimeout(() => {
         done();
       }, 500);

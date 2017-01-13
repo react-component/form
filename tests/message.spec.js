@@ -1,10 +1,10 @@
 /* eslint react/no-multi-comp:0 */
+/* eslint-disable no-undef */
 
-import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 describe('message usage', () => {
   let container;
@@ -49,8 +49,8 @@ describe('message usage', () => {
     component = component.refs.wrappedComponent;
     form = component.props.form;
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldError('required').length).to.be(1);
-    expect(form.getFieldError('required')[0]).to.be('required required!');
+    expect(form.getFieldError('required').length).toBe(1);
+    expect(form.getFieldError('required')[0]).toBe('required required!');
   });
 
   it('jsx works', () => {
@@ -79,7 +79,7 @@ describe('message usage', () => {
     component = component.refs.wrappedComponent;
     form = component.props.form;
     Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldError('required').length).to.be(1);
-    expect(form.getFieldError('required')[0].type).to.be('b');
+    expect(form.getFieldError('required').length).toBe(1);
+    expect(form.getFieldError('required')[0].type).toBe('b');
   });
 });

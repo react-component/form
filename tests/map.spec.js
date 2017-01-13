@@ -1,8 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 const TestComponent = React.createClass({
   propTypes: {
@@ -38,10 +39,10 @@ describe('map usage', () => {
     const Test = createForm({
       withRef: true,
       onFieldsChange(props, fields) {
-        expect(Object.keys(fields).length).to.be(1);
+        expect(Object.keys(fields).length).toBe(1);
         const field = fields.normal;
-        expect(field.name).to.be('normal');
-        expect(field.value).to.be('3');
+        expect(field.name).toBe('normal');
+        expect(field.value).toBe('3');
       },
       mapPropsToFields(props) {
         return {
@@ -54,13 +55,13 @@ describe('map usage', () => {
     component = ReactDOM.render(<Test formState={{ normal: '2' }}/>, container);
     component = component.refs.wrappedComponent;
     form = component.props.form;
-    expect(form.getFieldInstance('normal').value).to.be('2');
-    expect(form.getFieldValue('normal')).to.be('2');
-    expect(form.getFieldInstance('normal2').value).to.be('');
-    expect(form.getFieldValue('normal2')).to.be(undefined);
+    expect(form.getFieldInstance('normal').value).toBe('2');
+    expect(form.getFieldValue('normal')).toBe('2');
+    expect(form.getFieldInstance('normal2').value).toBe('');
+    expect(form.getFieldValue('normal2')).toBe(undefined);
     form.getFieldInstance('normal').value = '3';
     Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).to.be('3');
+    expect(form.getFieldValue('normal')).toBe('3');
   });
 
 
@@ -76,6 +77,6 @@ describe('map usage', () => {
     })(TestComponent);
     component = ReactDOM.render(<Test x={2}/>, container);
     component = component.refs.wrappedComponent;
-    expect(component.props.x).to.be(3);
+    expect(component.props.x).toBe(3);
   });
 });

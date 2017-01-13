@@ -1,8 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -76,16 +77,16 @@ describe('async usage', () => {
   it('forceValidate works', (done) => {
     form.getFieldInstance('check').value = '1';
     Simulate.change(form.getFieldInstance('check'));
-    expect(form.getFieldError('check')).not.to.be.ok();
+    expect(form.getFieldError('check')).toBeFalsy();
     form.getFieldInstance('force').value = '11';
     Simulate.change(form.getFieldInstance('force'));
-    expect(form.getFieldError('check')).not.to.be.ok();
+    expect(form.getFieldError('check')).toBeFalsy();
     form.validateFields((errors) => {
-      expect(errors).to.be.ok();
-      expect(Object.keys(errors).length).to.be(1);
-      expect(form.getFieldError('check')).to.eql(['error']);
-      expect(errors.check.errors.map(e => e.message)).to.eql(['error']);
-      expect(form.getFieldError('force')).not.to.be.ok();
+      expect(errors).toBeTruthy();
+      expect(Object.keys(errors).length).toBe(1);
+      expect(form.getFieldError('check')).toEqual(['error']);
+      expect(errors.check.errors.map(e => e.message)).toEqual(['error']);
+      expect(form.getFieldError('force')).toBeFalsy();
       done();
     });
   });

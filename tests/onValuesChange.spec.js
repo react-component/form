@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import expect from 'expect.js';
 import { Simulate } from 'react-addons-test-utils';
 import createForm from '../src/createForm';
 
@@ -42,11 +43,11 @@ describe('onValuesChange', () => {
 
   it('should trigger `onValuesChange` when value change', () => {
     Simulate.change(form.getFieldInstance('employee.name'), { target: { value: 'Benjy' } });
-    expect(values).to.be.eql({ employee: { name: 'Benjy' } });
+    expect(values).toEqual({ employee: { name: 'Benjy' } });
   });
 
   it('should trigger `onValuesChange` when `setFieldsValue`', () => {
     form.setFieldsValue({ employee: { name: 'Benjy' } });
-    expect(values).to.be.eql({ employee: { name: 'Benjy' } });
+    expect(values).toEqual({ employee: { name: 'Benjy' } });
   });
 });

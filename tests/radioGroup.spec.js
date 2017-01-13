@@ -1,8 +1,9 @@
-import expect from 'expect.js';
+/* eslint-disable no-undef */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
+import createForm from '../src/createForm';
 
 let Test = React.createClass({
   propTypes: {
@@ -80,32 +81,32 @@ describe('radio-group usage', () => {
   });
 
   it('collect value', () => {
-    expect(form.getFieldValue('normal')).to.eql('b');
+    expect(form.getFieldValue('normal')).toEqual('b');
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
-    expect(form.getFieldValue('normal')).to.eql('a');
+    expect(form.getFieldValue('normal')).toEqual('a');
     form.getFieldInstance('normal.b').checked = true;
     Simulate.change(form.getFieldInstance('normal.b'));
-    expect(form.getFieldValue('normal')).to.eql('b');
-    expect(form.getFieldInstance('normal.a').checked).to.be(false);
+    expect(form.getFieldValue('normal')).toEqual('b');
+    expect(form.getFieldInstance('normal.a').checked).toBe(false);
   });
 
   it('validateFields works for ok', (callback) => {
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
     form.validateFields((errors, values) => {
-      expect(errors).not.to.be.ok();
-      expect(values.normal).to.be('a');
+      expect(errors).toBeFalsy();
+      expect(values.normal).toBe('a');
       callback();
     });
   });
 
   it('resetFields works', () => {
-    expect(form.getFieldValue('normal')).to.eql('b');
+    expect(form.getFieldValue('normal')).toEqual('b');
     form.getFieldInstance('normal.a').checked = true;
     Simulate.change(form.getFieldInstance('normal.a'));
-    expect(form.getFieldValue('normal')).to.eql('a');
+    expect(form.getFieldValue('normal')).toEqual('a');
     form.resetFields();
-    expect(form.getFieldValue('normal')).to.be('b');
+    expect(form.getFieldValue('normal')).toBe('b');
   });
 });
