@@ -3,7 +3,7 @@
 import expect from 'expect.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createForm } from '../';
+import createForm from '../src/createForm';
 import { Simulate } from 'react-addons-test-utils';
 
 describe('message usage', () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import expect from 'expect.js';
 import { Simulate } from 'react-addons-test-utils';
-import { createForm } from '../';
+import createForm from '../src/createForm';
 
 const TestComponent = React.createClass({
   propTypes: {
