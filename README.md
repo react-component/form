@@ -80,8 +80,7 @@ import { createForm } from 'rc-form';
 
 class Form extends React.Component {
   componentWillMount() {
-    this.requiredDecorator = this.props.form.getFieldDecorator({
-        name: 'required',
+    this.requiredDecorator = this.props.form.getFieldDecorator('required', {
         rules: [{required: true}],
     });
   },
