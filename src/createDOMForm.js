@@ -36,7 +36,7 @@ function getScrollableContainer(n) {
   /* eslint no-cond-assign:0 */
   while ((nodeName = node.nodeName.toLowerCase()) !== 'body') {
     const overflowY = computedStyle(node, 'overflowY');
-    if (overflowY === 'auto' || overflowY === 'scroll') {
+    if (node !== n && (overflowY === 'auto' || overflowY === 'scroll')) {
       return node;
     }
     node = node.parentNode;
