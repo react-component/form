@@ -54,7 +54,7 @@
     "async": "^1.5.2",
     "coveralls": "^2.11.15",
     "history": "^1.16.0",
-    "jest": "^18.1.0",
+    "jest": "^19.0.2",
     "pre-commit": "1.x",
     "rc-tools": "5.x",
     "react": "15.x",
