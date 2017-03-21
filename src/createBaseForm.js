@@ -452,7 +452,7 @@ function createBaseForm(option = {}, mixins = []) {
           const name = field.name;
           if (options.force !== true && field.dirty === false) {
             if (field.errors) {
-              set(alreadyErrors, name, { errors: field.errors });
+              alreadyErrors[name] = { errors: field.errors };
             }
             return;
           }
