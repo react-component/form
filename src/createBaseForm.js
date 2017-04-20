@@ -34,7 +34,7 @@ function createBaseForm(option = {}, mixins = []) {
       getInitialState() {
         let fields;
         if (mapPropsToFields) {
-          fields = mapPropsToFields(this.props, this.context);
+          fields = mapPropsToFields(this.props);
         }
         this.fields = fields || {};
         this.instances = {};
@@ -45,9 +45,9 @@ function createBaseForm(option = {}, mixins = []) {
         };
       },
 
-      componentWillReceiveProps(nextProps, nextContext) {
+      componentWillReceiveProps(nextProps) {
         if (mapPropsToFields) {
-          this.fields = mapPropsToFields(nextProps, nextContext);
+          this.fields = mapPropsToFields(nextProps);
         }
       },
 

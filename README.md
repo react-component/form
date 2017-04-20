@@ -126,9 +126,9 @@ Called when field changed, you can dispatch fields to redux store.
 
 Called when value changed.
 
-### formOption.mapPropsToFields(props, context)
+### formOption.mapPropsToFields(props)
 
-convert value from props/context to fields. used for read fields from redux store.
+convert value from props to fields. used for read fields from redux store.
 
 ### formOption.withRef: boolean
 
