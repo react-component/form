@@ -15,6 +15,7 @@ function Email(props) {
     <div>email sync validate</div>
     <div>
       <input {...getFieldProps('email', {
+        initialValue: '',
         rules: [
           {
             type: 'email',
@@ -59,6 +60,7 @@ const User = React.createClass({
       <div><span style={{ color: 'red' }}>*</span> user async validate</div>
       <div>
         <input {...getFieldProps('user', {
+          initialValue: '',
           validateFirst: true,
           rules: [
             {
@@ -223,6 +225,7 @@ class Form extends Component {
           <div>
             <input
               {...getFieldProps('normal', {
+                initialValue: '',
                 rules: [{
                   required: true,
                 }],

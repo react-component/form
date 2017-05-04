@@ -27,6 +27,7 @@ const Email = React.createClass({
       <div>email validate onBlur</div>
       <div>
         <input {...getFieldProps('email', {
+          initialValue: '',
           validateFirst: true,
           rules: [
             {

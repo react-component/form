@@ -13,6 +13,7 @@ function Email(props) {
     <div>email sync validate</div>
     <div>
       <input {...getFieldProps('email', {
+        initialValue: '',
         validateFirst: true,
         rules: [
           {
@@ -63,6 +64,7 @@ const User = React.createClass({
       <div>user async validate</div>
       <div>
         <input {...getFieldProps('user', {
+          initialValue: '',
           rules: [
             {
               required: true,
