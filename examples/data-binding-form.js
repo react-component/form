@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { createRootContainer, createContainer } from 'react-data-binding';
 import ReactDOM from 'react-dom';
 import { regionStyle } from './styles';

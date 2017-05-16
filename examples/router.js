@@ -1,6 +1,7 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { createForm } from 'rc-form';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
