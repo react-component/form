@@ -41,10 +41,10 @@ Email.propTypes = {
   hidden: PropTypes.bool,
 };
 
-const User = React.createClass({
-  propTypes: {
+class User extends Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
+  };
 
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
@@ -65,8 +65,8 @@ const User = React.createClass({
 
       {isFieldValidating('user') ? <div style={errorStyle}>validating</div> : null}
     </div>);
-  },
-});
+  }
+}
 
 class Form extends Component {
   static propTypes = {

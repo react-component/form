@@ -21,12 +21,12 @@ class Form extends Component {
         console.log('error', error, values);
       }
     });
-  };
+  }
 
   reset = (e) => {
     e.preventDefault();
     this.props.form.resetFields();
-  };
+  }
 
   render() {
     const { form } = this.props;

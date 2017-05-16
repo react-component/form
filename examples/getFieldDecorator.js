@@ -31,7 +31,7 @@ class Form extends React.Component {
     });
   };
 
-  onChange(e) {
+  onChange = (e) => {
     console.log(e.target.value);
   }
 

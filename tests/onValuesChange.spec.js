@@ -5,12 +5,12 @@ import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-const TestComponent = React.createClass({
+class TestComponent extends React.Component {
   render() {
     const { getFieldProps } = this.props.form;
     return <input {...getFieldProps('employee.name', { initialValue: '' })} />;
-  },
-});
+  }
+}
 
 describe('onValuesChange', () => {
   let container;

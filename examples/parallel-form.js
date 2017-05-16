@@ -8,11 +8,10 @@ import { regionStyle } from './styles';
 import Switch from 'antd/lib/switch';
 import 'antd/dist/antd.css';
 
-const TopForm = React.createClass({
-  propTypes: {
+class TopForm extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-
+  };
   render() {
     const { getFieldProps } = this.props.form;
     return (<div style={ regionStyle }>
@@ -25,15 +24,14 @@ const TopForm = React.createClass({
         />
       </div>
     </div>);
-  },
-});
+  }
+}
 
-const BottomForm = React.createClass({
-  propTypes: {
+class BottomForm extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
     on: PropTypes.bool,
-  },
-
+  };
   render() {
     const { form } = this.props;
     const on = form.getFieldValue('on');
@@ -53,17 +51,17 @@ const BottomForm = React.createClass({
         />
       </div>
     </div>);
-  },
-});
+  }
+}
 
-let Form = React.createClass({
-  propTypes: {
+class Form extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  onSubmit(e) {
+  };
+  onSubmit = (e) => {
     e.preventDefault();
     console.log(this.props.form.getFieldsValue());
-  },
+  }
   render() {
     const { form } = this.props;
     return (<div>
@@ -73,8 +71,8 @@ let Form = React.createClass({
         <button onClick={this.onSubmit}>submit</button>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 Form = createForm()(Form);
 

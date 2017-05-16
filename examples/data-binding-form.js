@@ -15,12 +15,11 @@ const createFormContainer = createContainer((state) => {
   };
 });
 
-let TopForm = React.createClass({
-  propTypes: {
+class TopForm extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
     on: PropTypes.bool,
-  },
-
+  };
   render() {
     const { form, on } = this.props;
     const { getFieldProps } = form;
@@ -33,16 +32,16 @@ let TopForm = React.createClass({
         })}
         /></div>
     </div>);
-  },
-});
+  }
+}
+
 TopForm = createFormContainer(TopForm);
 
-let BottomForm = React.createClass({
-  propTypes: {
+class BottomForm extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
     on: PropTypes.bool,
-  },
-
+  };
   render() {
     const { form, on } = this.props;
     const style = {
@@ -60,19 +59,19 @@ let BottomForm = React.createClass({
         })}
         /></div>
     </div>);
-  },
-});
+  }
+}
 
 BottomForm = createFormContainer(BottomForm);
 
-let Form = React.createClass({
-  propTypes: {
+class Form extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  onSubmit(e) {
+  };
+  onSubmit = (e) => {
     e.preventDefault();
     console.log(this.props.form.getFieldsValue());
-  },
+  }
   render() {
     const { form } = this.props;
     return (<div>
@@ -82,8 +81,8 @@ let Form = React.createClass({
         <button onClick={this.onSubmit}>submit</button>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 Form = createForm({
   mapPropsToFields(props) {

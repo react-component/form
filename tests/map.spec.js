@@ -5,15 +5,15 @@ import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-const TestComponent = React.createClass({
+class TestComponent extends React.Component {
   render() {
     const { getFieldProps } = this.props.form;
     return (<div>
       <input {...getFieldProps('normal')} />
       <input {...getFieldProps('normal2')} />
     </div>);
-  },
-});
+  }
+}
 
 
 describe('map usage', () => {

@@ -49,13 +49,12 @@ class Form extends Component {
   }
 }
 
-let Out = React.createClass({
-  propTypes: {
+class Out extends React.Component {
+  static propTypes = {
     email: PropTypes.object,
     dispatch: PropTypes.func,
-  },
-
-  setEmail() {
+  };
+  setEmail = () => {
     this.props.dispatch({
       type: 'save_fields',
       payload: {
@@ -64,8 +63,7 @@ let Out = React.createClass({
         },
       },
     });
-  },
-
+  }
   render() {
     const { email } = this.props;
     return (<div style={ regionStyle }>
@@ -74,8 +72,8 @@ let Out = React.createClass({
       </div>
       <button onClick={this.setEmail}>set</button>
     </div>);
-  },
-});
+  }
+}
 
 Out = connect((state) => {
   return {
