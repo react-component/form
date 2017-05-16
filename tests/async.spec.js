@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/prop-types */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -7,9 +7,6 @@ import async from 'async';
 import createForm from '../src/createForm';
 
 let Test = React.createClass({
-  propTypes: {
-    form: React.PropTypes.object,
-  },
   check(rule, value, callback) {
     setTimeout(() => {
       if (value === '1') {

@@ -1,5 +1,4 @@
-/* eslint react/no-multi-comp:0 */
-/* eslint-disable no-undef */
+/* eslint-disable react/no-multi-comp, no-undef, react/prop-types */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -23,10 +22,6 @@ describe('message usage', () => {
 
   it('validateMessages works', () => {
     let Test = React.createClass({
-      propTypes: {
-        form: React.PropTypes.object,
-      },
-
       render() {
         const { getFieldProps } = this.props.form;
         return (<div>
@@ -55,10 +50,6 @@ describe('message usage', () => {
 
   it('jsx works', () => {
     let Test = React.createClass({
-      propTypes: {
-        form: React.PropTypes.object,
-      },
-
       render() {
         const { getFieldProps } = this.props.form;
         return (<div>

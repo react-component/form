@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/prop-types */
 jest.mock('dom-scroll-into-view', () => jest.fn());
 
 import React from 'react';
@@ -7,9 +7,6 @@ import createDOMForm from '../src/createDOMForm';
 import scrollIntoView from 'dom-scroll-into-view';
 
 let Test = React.createClass({
-  propTypes: {
-    form: React.PropTypes.object,
-  },
   render() {
     const { getFieldDecorator } = this.props.form;
     return (

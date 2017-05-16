@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/prop-types */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,9 +6,6 @@ import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
 let Test = React.createClass({
-  propTypes: {
-    form: React.PropTypes.object,
-  },
   componentWillMount() {
     const { getFieldDecorator } = this.props.form;
     this.normalInput = getFieldDecorator('normal');
