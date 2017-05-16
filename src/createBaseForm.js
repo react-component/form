@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import {
   argumentContainer, mirror,
   getValueFromEvent, getErrorStrs,
@@ -28,7 +29,7 @@ function createBaseForm(option = {}, mixins = []) {
   } = option;
 
   function decorate(WrappedComponent) {
-    const Form = React.createClass({
+    const Form = createReactClass({
       mixins,
 
       getInitialState() {
