@@ -58,7 +58,6 @@
     "pre-commit": "1.x",
     "rc-tools": "5.x",
     "react": "15.x",
-    "react-addons-test-utils": "15.x",
     "react-data-binding": "^0.4.0",
     "react-dom": "15.x",
     "react-redux": "^4.0.0",
