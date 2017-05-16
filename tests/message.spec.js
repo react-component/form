@@ -21,7 +21,7 @@ describe('message usage', () => {
   });
 
   it('validateMessages works', () => {
-    let Test = React.createClass({
+    class Test extends React.Component {
       render() {
         const { getFieldProps } = this.props.form;
         return (<div>
@@ -32,8 +32,8 @@ describe('message usage', () => {
           })}
           />
         </div>);
-      },
-    });
+      }
+    }
     Test = createForm({
       withRef: true,
       validateMessages: {
@@ -49,7 +49,7 @@ describe('message usage', () => {
   });
 
   it('jsx works', () => {
-    let Test = React.createClass({
+    class Test extends React.Component {
       render() {
         const { getFieldProps } = this.props.form;
         return (<div>
@@ -61,8 +61,8 @@ describe('message usage', () => {
           })}
           />
         </div>);
-      },
-    });
+      }
+    }
     Test = createForm({
       withRef: true,
     })(Test);

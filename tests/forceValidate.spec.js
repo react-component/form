@@ -5,8 +5,8 @@ import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-let Test = React.createClass({
-  force(rule, value, callback) {
+class Test extends React.Component {
+  force = (rule, value, callback) => {
     this.props.form.validateFields(['check'], {
       force: true,
     }, (errors) => {
@@ -21,15 +21,15 @@ let Test = React.createClass({
         callback();
       }
     });
-  },
+  }
 
-  check(rule, value, callback) {
+  check = (rule, value, callback) => {
     if ((value || '').length < (this.props.form.getFieldValue('force') || '').length) {
       callback('error');
     } else {
       callback();
     }
-  },
+  }
 
   render() {
     const { getFieldProps } = this.props.form;
@@ -45,8 +45,8 @@ let Test = React.createClass({
       })}
       />
     </div>);
-  },
-});
+  }
+}
 
 Test = createForm({
   withRef: true,

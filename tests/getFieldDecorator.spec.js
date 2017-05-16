@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-let Test = React.createClass({
+class Test extends React.Component {
   componentWillMount() {
     const { getFieldDecorator } = this.props.form;
     this.normalInput = getFieldDecorator('normal');
@@ -22,7 +22,7 @@ let Test = React.createClass({
         }],
       }],
     });
-  },
+  }
   render() {
     return (<div>
       {this.normalInput(
@@ -38,8 +38,8 @@ let Test = React.createClass({
       )}
       />
     </div>);
-  },
-});
+  }
+}
 
 Test = createForm({
   withRef: true,
