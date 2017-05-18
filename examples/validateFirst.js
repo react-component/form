@@ -14,6 +14,7 @@ function Email(props) {
     <div>email sync validate</div>
     <div>
       <input {...getFieldProps('email', {
+        initialValue: '',
         validateFirst: true,
         rules: [
           {
@@ -62,6 +63,7 @@ class User extends React.Component {
       <div>user async validate</div>
       <div>
         <input {...getFieldProps('user', {
+          initialValue: '',
           rules: [
             {
               required: true,

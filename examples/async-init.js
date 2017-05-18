@@ -28,6 +28,7 @@ class Email extends React.Component {
       <div>email validate onBlur</div>
       <div>
         <input {...getFieldProps('email', {
+          initialValue: '',
           validateFirst: true,
           rules: [
             {
