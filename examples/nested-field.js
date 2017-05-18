@@ -1,15 +1,16 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { createForm } from 'rc-form';
 
-let Form = React.createClass({
-  propTypes: {
+class Form extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
+  };
 
-  onSubmit(e) {
+  onSubmit = (e) => {
     e.preventDefault();
     console.log('Values of member[0].name.firstname and a[0][1].b.c[0]');
     console.log(this.props.form.getFieldsValue(['member[0].name.firstname', 'a[0][1].b.c[0]']));
@@ -23,13 +24,13 @@ let Form = React.createClass({
         console.log('error', error, values);
       }
     });
-  },
+  }
 
-  onChange(e) {
+  onChange = (e) => {
     console.log(e.target.value);
-  },
+  }
 
-  setField() {
+  setField = () => {
     this.props.form.setFieldsValue({
       member: [
         {
@@ -60,12 +61,12 @@ let Form = React.createClass({
         },
       },
     });
-  },
+  }
 
-  resetFields() {
+  resetFields = () => {
     console.log('reset');
     this.props.form.resetFields();
-  },
+  }
 
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
@@ -173,8 +174,8 @@ let Form = React.createClass({
         <button>Submit</button>
       </form>
     );
-  },
-});
+  }
+}
 
 Form = createForm({
   onFieldsChange(_, changedFields) {

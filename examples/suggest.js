@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Select, { Option } from 'antd/lib/select';
 
@@ -9,16 +10,14 @@ import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
 const emailTpl = ['@gmail.com', '@outlook.com', '@qq.com'];
 
-const CustomInput = React.createClass({
-  propTypes: {
+class CustomInput extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  getInitialState() {
-    return {
-      data: [],
-    };
-  },
-  onChange(v) {
+  };
+  state = {
+    data: [],
+  };
+  onChange = (v) => {
     if (v.indexOf('@') === -1) {
       this.setState({
         data: emailTpl.map(m => v + m),
@@ -28,7 +27,7 @@ const CustomInput = React.createClass({
         data: [],
       });
     }
-  },
+  }
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('select');
@@ -79,8 +78,8 @@ const CustomInput = React.createClass({
         </b>}
       </div>
     </div>);
-  },
-});
+  }
+}
 
 class Form extends Component {
   static propTypes = {

@@ -1,16 +1,17 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { regionStyle, errorStyle } from './styles';
 
-const Email = React.createClass({
-  propTypes: {
+class Email extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
+  };
 
-  checkSpecial(rule, value, callback) {
+  checkSpecial = (rule, value, callback) => {
     setTimeout(() => {
       if (value === 'yiminghe@gmail.com') {
         callback('can not be!');
@@ -18,7 +19,7 @@ const Email = React.createClass({
         callback();
       }
     }, 1000);
-  },
+  }
 
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
@@ -48,8 +49,8 @@ const Email = React.createClass({
         {isFieldValidating('email') ? 'validating' : null}
       </div>
     </div>);
-  },
-});
+  }
+}
 
 class Form extends Component {
   static propTypes = {
@@ -81,12 +82,12 @@ class Form extends Component {
         });
       }, 1000);
     });
-  };
+  }
 
   reset = (e) => {
     e.preventDefault();
     this.props.form.resetFields();
-  };
+  }
 
   render() {
     if (!this.state || this.state.loading !== false) {

@@ -1,17 +1,19 @@
 /* eslint no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { regionStyle } from './styles';
 
 let uuid = 0;
 
-let Form = React.createClass({
-  propTypes: {
+
+class Form extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  remove(k) {
+  };
+  remove = (k) => {
     const { form } = this.props;
     // can use data-binding to get
     let keys = form.getFieldValue('keys');
@@ -22,8 +24,8 @@ let Form = React.createClass({
     form.setFieldsValue({
       keys,
     });
-  },
-  add() {
+  }
+  add = () => {
     uuid++;
     const { form } = this.props;
     // can use data-binding to get
@@ -34,11 +36,11 @@ let Form = React.createClass({
     form.setFieldsValue({
       keys,
     });
-  },
-  submit(e) {
+  }
+  submit = (e) => {
     e.preventDefault();
     console.log(this.props.form.getFieldsValue());
-  },
+  }
   render() {
     const { getFieldProps, getFieldValue } = this.props.form;
     getFieldProps('keys', {
@@ -59,8 +61,8 @@ let Form = React.createClass({
         <button onClick={this.add}>add</button>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 Form = createForm()(Form);
 

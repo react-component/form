@@ -1,15 +1,12 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/prop-types */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Simulate } from 'react-addons-test-utils';
+import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-let Test = React.createClass({
-  propTypes: {
-    form: React.PropTypes.object,
-  },
-  check(rule, value, callback) {
+class Test extends React.Component {
+  check = (rule, value, callback) => {
     setTimeout(() => {
       if (value === '1') {
         callback();
@@ -17,7 +14,7 @@ let Test = React.createClass({
         callback('must be 1');
       }
     }, 100);
-  },
+  }
 
   render() {
     const { getFieldProps } = this.props.form;
@@ -29,8 +26,8 @@ let Test = React.createClass({
       })}
       />
     </div>);
-  },
-});
+  }
+}
 
 Test = createForm({
   withRef: true,

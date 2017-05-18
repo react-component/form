@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { regionStyle, errorStyle } from './styles';
 
@@ -40,10 +41,10 @@ Email.propTypes = {
   hidden: PropTypes.bool,
 };
 
-const User = React.createClass({
-  propTypes: {
+class User extends Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
+  };
 
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
@@ -64,8 +65,8 @@ const User = React.createClass({
 
       {isFieldValidating('user') ? <div style={errorStyle}>validating</div> : null}
     </div>);
-  },
-});
+  }
+}
 
 class Form extends Component {
   static propTypes = {

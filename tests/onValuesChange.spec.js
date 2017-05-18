@@ -1,19 +1,16 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/prop-types */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Simulate } from 'react-addons-test-utils';
+import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-const TestComponent = React.createClass({
-  propTypes: {
-    form: React.PropTypes.object,
-  },
+class TestComponent extends React.Component {
   render() {
     const { getFieldProps } = this.props.form;
     return <input {...getFieldProps('employee.name', { initialValue: '' })} />;
-  },
-});
+  }
+}
 
 describe('onValuesChange', () => {
   let container;

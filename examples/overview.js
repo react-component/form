@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Select, { Option } from 'antd/lib/select';
 import DatePicker from 'antd/lib/date-picker';
@@ -36,11 +37,11 @@ Email.propTypes = {
   form: PropTypes.object,
 };
 
-const User = React.createClass({
-  propTypes: {
+class User extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  userExists(rule, value, callback) {
+  };
+  userExists = (rule, value, callback) => {
     setTimeout(() => {
       if (value === '1') {
         callback([new Error('are you kidding?')]);
@@ -50,8 +51,7 @@ const User = React.createClass({
         callback();
       }
     }, 300);
-  },
-
+  }
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const errors = getFieldError('user');
@@ -77,9 +77,8 @@ const User = React.createClass({
         {isFieldValidating('user') ? 'validating' : null}
       </div>
     </div>);
-  },
-});
-
+  }
+}
 
 function CustomInput(props) {
   const { getFieldProps, getFieldError, isFieldValidating } = props.form;

@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Modal from 'antd/lib/modal';
 import 'antd/dist/antd.css';

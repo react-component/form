@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { createRootContainer, createContainer } from 'react-data-binding';
 import ReactDOM from 'react-dom';
 import { regionStyle, errorStyle } from './styles';
@@ -14,7 +15,7 @@ class Form extends Component {
 
   reset = () => {
     this.props.form.resetFields();
-  };
+  }
 
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
@@ -41,14 +42,14 @@ class Form extends Component {
   }
 }
 
-let Out = React.createClass({
-  propTypes: {
+class Out extends React.Component {
+  static propTypes = {
     email: PropTypes.object,
     setStoreState: PropTypes.func,
     getStoreState: PropTypes.func,
-  },
+  };
 
-  setEmail() {
+  setEmail = () => {
     this.props.setStoreState({
       formState: {
         ...this.props.getStoreState().formState,
@@ -57,7 +58,7 @@ let Out = React.createClass({
         },
       },
     });
-  },
+  }
 
   render() {
     const { email } = this.props;
@@ -67,8 +68,8 @@ let Out = React.createClass({
       </div>
       <button onClick={this.setEmail}>set</button>
     </div>);
-  },
-});
+  }
+}
 
 Out = createContainer((state) => {
   return {

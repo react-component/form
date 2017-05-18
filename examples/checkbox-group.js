@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { regionStyle } from './styles';
 
@@ -20,12 +21,12 @@ class Form extends Component {
         console.log('error', error, values);
       }
     });
-  };
+  }
 
   reset = (e) => {
     e.preventDefault();
     this.props.form.resetFields();
-  };
+  }
 
   render() {
     const { form } = this.props;

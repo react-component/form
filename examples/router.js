@@ -1,6 +1,7 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { createForm } from 'rc-form';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
@@ -20,15 +21,15 @@ const style = `
 }
 `;
 
-let App = React.createClass({
-  propTypes: {
+class App extends React.Component {
+  static propTypes = {
     location: PropTypes.object,
     children: PropTypes.object,
-  },
-  onClick(e) {
+  };
+  onClick = (e) => {
     e.preventDefault();
     history.goBack();
-  },
+  }
   render() {
     const { location } = this.props;
     return (<div>
@@ -40,8 +41,8 @@ let App = React.createClass({
         {this.props.children}
       </div>
     </div>);
-  },
-});
+  }
+}
 
 App = createRootContainer()(App);
 
@@ -57,17 +58,14 @@ function onClick(name) {
   history.pushState('/');
 }
 
-let CitySelector = React.createClass({
-  propTypes: {
+class CitySelector extends React.Component {
+  static propTypes = {
     setStoreState: PropTypes.func,
     getStoreState: PropTypes.func,
-  },
-  getDefaultProps() {
-    return {
-      onChange() {
-      },
-    };
-  },
+  };
+  static defaultProps = {
+    onChange: () => {},
+  };
   render() {
     return (<div className="region">
       <div onClick={onClick.bind(this, 'sh')}>
@@ -77,35 +75,35 @@ let CitySelector = React.createClass({
         hangzhou
       </div>
     </div>);
-  },
-});
+  }
+}
 
 CitySelector = createContainer()(CitySelector);
 
-const CityInput = React.createClass({
-  propTypes: {
+class CityInput extends React.Component {
+  static propTypes = {
     value: PropTypes.any,
-  },
-  onClick(e) {
+  };
+  onClick = (e) => {
     e.preventDefault();
     history.pushState({}, '/city-selector');
-  },
+  }
   render() {
     return (<a href="#" onClick={this.onClick}>{this.props.value || 'please select'}</a>);
-  },
-});
+  }
+}
 
-let Form = React.createClass({
-  propTypes: {
+class Form extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  onSubmit(e) {
+  };
+  onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((error, values) => {
       console.log(error || 'ok', values);
     });
     // console.log(this.props.form.getFieldsValue());
-  },
+  }
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     return (<div className="region">
@@ -139,8 +137,8 @@ let Form = React.createClass({
         <button onClick={this.onSubmit}>submit</button>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 Form = createForm({
   mapPropsToFields(props) {

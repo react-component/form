@@ -1,6 +1,7 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { createForm } from 'rc-form';
 
@@ -30,7 +31,7 @@ class Form extends React.Component {
     });
   };
 
-  onChange(e) {
+  onChange = (e) => {
     console.log(e.target.value);
   }
 

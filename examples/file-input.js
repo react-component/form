@@ -1,7 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { regionStyle, errorStyle } from './styles';
 
@@ -22,12 +23,11 @@ function getValueFromFileEvent({ target }) {
   };
 }
 
-let Form = React.createClass({
-  propTypes: {
+class Form extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-
-  onSubmit(e) {
+  };
+  onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((error, values) => {
       console.log(error, values);
@@ -40,9 +40,8 @@ let Form = React.createClass({
         });
       }
     });
-  },
-
-  checkSize(rule, value, callback) {
+  }
+  checkSize = (rule, value, callback) => {
     if (value && value.target) {
       const files = value.target.files;
       if (files[0]) {
@@ -53,8 +52,7 @@ let Form = React.createClass({
     } else {
       callback();
     }
-  },
-
+  }
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('attachment');
@@ -75,8 +73,8 @@ let Form = React.createClass({
       </div>
       <button onClick={this.onSubmit}>submit</button>
     </div>);
-  },
-});
+  }
+}
 
 Form = createForm()(Form);
 

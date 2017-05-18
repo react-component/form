@@ -1,23 +1,24 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { createForm } from 'rc-form';
 import { Router, Route } from 'react-router';
 import { regionStyle } from './styles';
 
-let ChildForm = React.createClass({
-  propTypes: {
+class ChildForm extends React.Component {
+  static propTypes = {
     initialValue: PropTypes.object,
     form: PropTypes.object,
     onDestroy: PropTypes.func,
-  },
+  };
   componentWillUnmount() {
     this.props.onDestroy(this.props.form.getFieldsValue());
-  },
-  onClick() {
+  }
+  onClick = () => {
     window.history.back();
-  },
+  }
   render() {
     const { getFieldProps } = this.props.form;
     return (<div
@@ -42,20 +43,20 @@ let ChildForm = React.createClass({
         <button onClick={this.onClick}>submit</button>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 ChildForm = createForm()(ChildForm);
 
-const Picker = React.createClass({
-  propTypes: {
+class Picker extends React.Component {
+  static propTypes = {
     childForm: PropTypes.object,
     onChange: PropTypes.func,
     value: PropTypes.object,
-  },
-  onClick() {
+  };
+  onClick = () => {
     window.location.hash = '/open';
-  },
+  }
   render() {
     const { value, childForm } = this.props;
     const valueEl = value ?
@@ -68,18 +69,18 @@ const Picker = React.createClass({
         initialValue: value || {},
       }) : null}
     </div>);
-  },
-});
+  }
+}
 
-let ParentForm = React.createClass({
-  propTypes: {
+class ParentForm extends React.Component {
+  static propTypes = {
     initialValue: PropTypes.object,
     form: PropTypes.object,
     children: PropTypes.any,
-  },
-  onClick() {
+  };
+  onClick = () => {
     console.log(this.props.form.getFieldsValue());
-  },
+  }
   render() {
     const { getFieldProps } = this.props.form;
     return (<div>
@@ -95,8 +96,8 @@ let ParentForm = React.createClass({
         <button onClick={this.onClick}>submit</button>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 ParentForm = createForm()(ParentForm);
 

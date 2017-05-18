@@ -1,14 +1,11 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, react/prop-types */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Simulate } from 'react-addons-test-utils';
+import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-let Test = React.createClass({
-  propTypes: {
-    form: React.PropTypes.object,
-  },
+class Test extends React.Component {
   render() {
     const { getFieldProps } = this.props.form;
     return (<div>
@@ -44,8 +41,8 @@ let Test = React.createClass({
         </label>
       </p>
     </div>);
-  },
-});
+  }
+}
 
 Test = createForm({
   withRef: true,

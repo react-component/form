@@ -1,33 +1,32 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import { createForm } from 'rc-form';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
 
-const CustomInput = React.createClass({
-  propTypes: {
+class CustomInput extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  getInitialState() {
-    return {
-      data: [],
-    };
-  },
-  checkUpper(rule, value, callback) {
+  };
+  state = {
+    data: [],
+  };
+  checkUpper = (rule, value, callback) => {
     if (value !== value.toUpperCase()) {
       callback(new Error('need to be upper!'));
     } else {
       callback();
     }
-  },
-  toUpper(v, prev) {
+  }
+  toUpper = (v, prev) => {
     if (v === prev) {
       return v;
     }
     return v.toUpperCase();
-  },
+  }
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('upper');
@@ -46,14 +45,14 @@ const CustomInput = React.createClass({
         {(errors) ? errors.join(',') : null}
       </div>
     </div>);
-  },
-});
+  }
+}
 
-const MaxMin = React.createClass({
-  propTypes: {
+class MaxMin extends React.Component {
+  static propTypes = {
     form: PropTypes.object,
-  },
-  normalizeMin(value, prevValue, allValues) {
+  };
+  normalizeMin = (value, prevValue, allValues) => {
     console.log('normalizeMin', allValues.min, allValues.max);
     const previousAllValues = this.props.form.getFieldsValue();
     if (allValues.max !== previousAllValues.max) {
@@ -63,8 +62,8 @@ const MaxMin = React.createClass({
       }
     }
     return value;
-  },
-  normalizeMax(value, prevValue, allValues) {
+  }
+  normalizeMax = (value, prevValue, allValues) => {
     console.log('normalizeMax', allValues.min, allValues.max);
     const previousAllValues = this.props.form.getFieldsValue();
     if (allValues.min !== previousAllValues.min) {
@@ -74,7 +73,7 @@ const MaxMin = React.createClass({
       }
     }
     return value;
-  },
+  }
   render() {
     const { getFieldProps } = this.props.form;
     return (<div style={ regionStyle }>
@@ -107,8 +106,8 @@ const MaxMin = React.createClass({
       </select>
       </div>
     </div>);
-  },
-});
+  }
+}
 
 class Form extends Component {
   static propTypes = {
