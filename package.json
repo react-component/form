@@ -17,20 +17,22 @@
   "bugs": {
     "url": "https://github.com/react-component/form/issues"
   },
-  "entry": {
-    "rc-form": [
-      "./scripts/index.js"
-    ]
-  },
   "files": [
     "lib",
+    "es",
     "dist",
     "assets/*.css"
   ],
   "license": "MIT",
   "main": "./lib/index",
+  "module": "./es/index",
   "config": {
-    "port": 8000
+    "port": 8000,
+    "entry": {
+      "rc-form": [
+        "./scripts/index.js"
+      ]
+    }
   },
   "scripts": {
     "build": "rc-tools run build",
@@ -38,10 +40,7 @@
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
-    "karma": "rc-tools run karma",
-    "saucelabs": "rc-tools run saucelabs",
     "test": "jest",
-    "chrome-test": "rc-tools run chrome-test",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "jest": {
@@ -50,14 +49,14 @@
     ]
   },
   "devDependencies": {
-    "antd": "1.x",
+    "antd": "2.x",
     "async": "^1.5.2",
     "coveralls": "^2.11.15",
     "history": "^1.16.0",
     "jest": "^19.0.2",
     "pre-commit": "1.x",
     "prop-types": "^15.5.10",
-    "rc-tools": "5.x",
+    "rc-tools": "^6.2.0",
     "react": "15.x",
     "react-data-binding": "^0.4.0",
     "react-dom": "15.x",
@@ -68,6 +67,15 @@
   "pre-commit": [
     "lint"
   ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/*"
+    ],
+    "transform": {
+      "\\.tsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js",
+      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
+    }
+  },
   "dependencies": {
     "async-validator": "1.x",
     "babel-runtime": "6.x",
