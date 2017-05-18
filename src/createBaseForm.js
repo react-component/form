@@ -421,10 +421,12 @@ function createBaseForm(option = {}, mixins = []) {
       saveRef(name, _, component) {
         if (!component) {
           // after destroy, delete data
-          delete this.fieldsMeta[name];
-          delete this.fields[name];
-          delete this.instances[name];
-          delete this.cachedBind[name];
+          try{
+            delete this.fieldsMeta[name];
+            delete this.fields[name];
+            delete this.instances[name];
+            delete this.cachedBind[name];
+          }catch(e){}
           return;
         }
         const fieldMeta = this.getFieldMeta(name);
