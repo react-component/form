@@ -1,186 +1,197 @@
-webpackJsonp([8],{
+webpackJsonp([17],{
 
-/***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 14:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-	module.exports = __webpack_require__(390);
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return regionStyle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return errorStyle; });
+var regionStyle = {
+  border: '1px solid red',
+  marginTop: 10,
+  padding: 10
+};
+
+var errorStyle = {
+  color: 'red',
+  marginTop: 10,
+  padding: 10
+};
+
+/***/ }),
+
+/***/ 15:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(16);
+// export this package's api
+
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0__src___);
+
+/***/ }),
+
+/***/ 16:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createForm__ = __webpack_require__(21);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createForm", function() { return __WEBPACK_IMPORTED_MODULE_0__createForm__["a"]; });
+// export this package's api
 
 
-/***/ },
 
-/***/ 217:
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _src = __webpack_require__(218);
-	
-	var form = _interopRequireWildcard(_src);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	exports.default = form; // export this package's api
-	
-	module.exports = exports['default'];
+/***/ 354:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/***/ },
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_form__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__styles__ = __webpack_require__(14);
 
-/***/ 218:
-/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.createForm = undefined;
-	
-	var _createForm = __webpack_require__(219);
-	
-	var _createForm2 = _interopRequireDefault(_createForm);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.createForm = _createForm2.default; // export this package's api
 
-/***/ },
 
-/***/ 349:
-/***/ function(module, exports) {
+/* eslint no-console:0 */
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var regionStyle = exports.regionStyle = {
-	  border: '1px solid red',
-	  marginTop: 10,
-	  padding: 10
-	};
-	
-	var errorStyle = exports.errorStyle = {
-	  color: 'red',
-	  marginTop: 10,
-	  padding: 10
-	};
 
-/***/ },
 
-/***/ 390:
-/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	var _rcForm = __webpack_require__(217);
-	
-	var _react = __webpack_require__(40);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(71);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _styles = __webpack_require__(349);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/* eslint no-console:0 */
-	
-	var uuid = 0;
-	
-	var Form = _react2.default.createClass({
-	  displayName: 'Form',
-	
-	  propTypes: {
-	    form: _react.PropTypes.object
-	  },
-	  remove: function remove(k) {
-	    var form = this.props.form;
-	    // can use data-binding to get
-	
-	    var keys = form.getFieldValue('keys');
-	    keys = keys.filter(function (key) {
-	      return key !== k;
-	    });
-	    // can use data-binding to set
-	    form.setFieldsValue({
-	      keys: keys
-	    });
-	  },
-	  add: function add() {
-	    uuid++;
-	    var form = this.props.form;
-	    // can use data-binding to get
-	
-	    var keys = form.getFieldValue('keys');
-	    keys = keys.concat(uuid);
-	    // can use data-binding to set
-	    // important! notify form to detect changes
-	    form.setFieldsValue({
-	      keys: keys
-	    });
-	  },
-	  submit: function submit(e) {
-	    e.preventDefault();
-	    console.log(this.props.form.getFieldsValue());
-	  },
-	  render: function render() {
-	    var _this = this;
-	
-	    var _props$form = this.props.form,
-	        getFieldProps = _props$form.getFieldProps,
-	        getFieldValue = _props$form.getFieldValue;
-	
-	    getFieldProps('keys', {
-	      initialValue: []
-	    });
-	    var inputs = getFieldValue('keys').map(function (k) {
-	      return _react2.default.createElement(
-	        'div',
-	        { key: k, style: _styles.regionStyle },
-	        _react2.default.createElement('input', getFieldProps('name' + k)),
-	        _react2.default.createElement(
-	          'a',
-	          {
-	            onClick: _this.remove.bind(_this, k)
-	          },
-	          'delete'
-	        )
-	      );
-	    });
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      inputs,
-	      _react2.default.createElement(
-	        'div',
-	        { style: _styles.regionStyle },
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.submit },
-	          'submit'
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.add },
-	          'add'
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	Form = (0, _rcForm.createForm)()(Form);
-	
-	_reactDom2.default.render(_react2.default.createElement(Form, null), document.getElementById('__react-content'));
 
-/***/ }
 
-});
+
+var uuid = 0;
+
+var Form = function (_React$Component) {
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Form, _React$Component);
+
+  function Form() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Form);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref, [this].concat(args))), _this), _this.remove = function (k) {
+      var form = _this.props.form;
+      // can use data-binding to get
+
+      var keys = form.getFieldValue('keys');
+      keys = keys.filter(function (key) {
+        return key !== k;
+      });
+      // can use data-binding to set
+      form.setFieldsValue({
+        keys: keys
+      });
+    }, _this.add = function () {
+      uuid++;
+      var form = _this.props.form;
+      // can use data-binding to get
+
+      var keys = form.getFieldValue('keys');
+      keys = keys.concat(uuid);
+      // can use data-binding to set
+      // important! notify form to detect changes
+      form.setFieldsValue({
+        keys: keys
+      });
+    }, _this.submit = function (e) {
+      e.preventDefault();
+      console.log(_this.props.form.getFieldsValue());
+    }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Form, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var _props$form = this.props.form,
+          getFieldProps = _props$form.getFieldProps,
+          getFieldValue = _props$form.getFieldValue;
+
+      getFieldProps('keys', {
+        initialValue: []
+      });
+      var inputs = getFieldValue('keys').map(function (k) {
+        return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+          'div',
+          { key: k, style: __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* regionStyle */] },
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('input', getFieldProps('name' + k)),
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            'a',
+            {
+              onClick: _this2.remove.bind(_this2, k)
+            },
+            'delete'
+          )
+        );
+      });
+      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+        'div',
+        null,
+        inputs,
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+          'div',
+          { style: __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* regionStyle */] },
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            'button',
+            { onClick: this.submit },
+            'submit'
+          ),
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+            'button',
+            { onClick: this.add },
+            'add'
+          )
+        )
+      );
+    }
+  }]);
+
+  return Form;
+}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
+
+Form.propTypes = {
+  form: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.object
+};
+
+
+Form = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_rc_form__["createForm"])()(Form);
+
+__WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(Form, null), document.getElementById('__react-content'));
+
+/***/ }),
+
+/***/ 588:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(354);
+
+
+/***/ })
+
+},[588]);
 //# sourceMappingURL=input-array.js.map

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>across-router.js - example - rc-form@1.3.1</title>
+  <title>across-router.js - example - rc-form@1.3.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@1.3.1</h1>
+      <h1>rc-form@1.3.2</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -271,24 +271,25 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-<span class="hljs-keyword">import</span> React, { PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
 <span class="hljs-keyword">import</span> { Router, Route } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-router'</span>;
 <span class="hljs-keyword">import</span> { regionStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
-<span class="hljs-keyword">let</span> ChildForm = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChildForm</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     initialValue: PropTypes.object,
     form: PropTypes.object,
     onDestroy: PropTypes.func,
-  },
+  };
   componentWillUnmount() {
     <span class="hljs-keyword">this</span>.props.onDestroy(<span class="hljs-keyword">this</span>.props.form.getFieldsValue());
-  },
-  onClick() {
+  }
+  onClick = () =&gt; {
     <span class="hljs-built_in">window</span>.history.back();
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { getFieldProps } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>
@@ -313,20 +314,20 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onClick}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
 ChildForm = createForm()(ChildForm);
 
-<span class="hljs-keyword">const</span> Picker = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Picker</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     childForm: PropTypes.object,
     onChange: PropTypes.func,
     value: PropTypes.object,
-  },
-  onClick() {
+  };
+  onClick = () =&gt; {
     <span class="hljs-built_in">window</span>.location.hash = <span class="hljs-string">'/open'</span>;
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { value, childForm } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-keyword">const</span> valueEl = value ?
@@ -339,18 +340,18 @@ ChildForm = createForm()(ChildForm);
         initialValue: value || {},
       }) : null}
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
-<span class="hljs-keyword">let</span> ParentForm = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ParentForm</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     initialValue: PropTypes.object,
     form: PropTypes.object,
     children: PropTypes.any,
-  },
-  onClick() {
+  };
+  onClick = () =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.props.form.getFieldsValue());
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { getFieldProps } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
@@ -366,8 +367,8 @@ ChildForm = createForm()(ChildForm);
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onClick}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
 ParentForm = createForm()(ParentForm);
 

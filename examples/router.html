@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>router.js - example - rc-form@1.3.1</title>
+  <title>router.js - example - rc-form@1.3.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@1.3.1</h1>
+      <h1>rc-form@1.3.2</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -271,7 +271,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
-<span class="hljs-keyword">import</span> React, { PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
 <span class="hljs-keyword">import</span> { render } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> { Router } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-router'</span>;
@@ -291,15 +292,15 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 }
 `</span>;
 
-<span class="hljs-keyword">let</span> App = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     location: PropTypes.object,
     children: PropTypes.object,
-  },
-  onClick(e) {
+  };
+  onClick = (e) =&gt; {
     e.preventDefault();
     history.goBack();
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { location } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
@@ -311,8 +312,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-rules">{this.props.children}</span>
       &lt;/<span class="hljs-tag">div</span>&gt;
     &lt;/<span class="hljs-tag">div</span>&gt;)</span></span>;
-  },
-});
+  }
+}
 
 App = createRootContainer()(App);
 
@@ -328,17 +329,14 @@ App = createRootContainer()(App);
   history.pushState(<span class="hljs-string">'/'</span>);
 }
 
-<span class="hljs-keyword">let</span> CitySelector = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CitySelector</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     setStoreState: PropTypes.func,
     getStoreState: PropTypes.func,
-  },
-  getDefaultProps() {
-    <span class="hljs-keyword">return</span> {
-      onChange() {
-      },
-    };
-  },
+  };
+  static defaultProps = {
+    onChange: () =&gt; {},
+  };
   render() {
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="css">&lt;<span class="hljs-tag">div</span> <span class="hljs-tag">className</span>="<span class="hljs-tag">region</span>"&gt;
       &lt;<span class="hljs-tag">div</span> <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{onClick.bind(this, 'sh')}</span>&gt;
@@ -348,35 +346,35 @@ App = createRootContainer()(App);
         <span class="hljs-tag">hangzhou</span>
       &lt;/<span class="hljs-tag">div</span>&gt;
     &lt;/<span class="hljs-tag">div</span>&gt;)</span></span>;
-  },
-});
+  }
+}
 
 CitySelector = createContainer()(CitySelector);
 
-<span class="hljs-keyword">const</span> CityInput = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CityInput</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     value: PropTypes.any,
-  },
-  onClick(e) {
+  };
+  onClick = (e) =&gt; {
     e.preventDefault();
     history.pushState({}, <span class="hljs-string">'/city-selector'</span>);
-  },
+  }
   render() {
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="css">&lt;<span class="hljs-tag">a</span> <span class="hljs-tag">href</span>="#" <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{this.onClick}</span>&gt;<span class="hljs-rules">{this.props.value || 'please select'}</span>&lt;/<span class="hljs-tag">a</span>&gt;)</span></span>;
-  },
-});
+  }
+}
 
-<span class="hljs-keyword">let</span> Form = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     form: PropTypes.object,
-  },
-  onSubmit(e) {
+  };
+  onSubmit = (e) =&gt; {
     e.preventDefault();
     <span class="hljs-keyword">this</span>.props.form.validateFields((error, values) =&gt; {
       <span class="hljs-built_in">console</span>.log(error || <span class="hljs-string">'ok'</span>, values);
     });
     <span class="hljs-comment">// console.log(this.props.form.getFieldsValue());</span>
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { getFieldProps, getFieldError } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="css">&lt;<span class="hljs-tag">div</span> <span class="hljs-tag">className</span>="<span class="hljs-tag">region</span>"&gt;
@@ -410,8 +408,8 @@ CitySelector = createContainer()(CitySelector);
         &lt;<span class="hljs-tag">button</span> <span class="hljs-tag">onClick</span>=<span class="hljs-rules">{this.onSubmit}</span>&gt;<span class="hljs-tag">submit</span>&lt;/<span class="hljs-tag">button</span>&gt;
       &lt;/<span class="hljs-tag">div</span>&gt;
     &lt;/<span class="hljs-tag">div</span>&gt;)</span></span>;
-  },
-});
+  }
+}
 
 Form = createForm({
   mapPropsToFields(props) {

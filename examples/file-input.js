@@ -1,392 +1,235 @@
-webpackJsonp([6],{
+webpackJsonp([18],{
 
-/***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ 14:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-	module.exports = __webpack_require__(388);
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return regionStyle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return errorStyle; });
+var regionStyle = {
+  border: '1px solid red',
+  marginTop: 10,
+  padding: 10
+};
+
+var errorStyle = {
+  color: 'red',
+  marginTop: 10,
+  padding: 10
+};
+
+/***/ }),
+
+/***/ 15:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(16);
+// export this package's api
+
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0__src___);
+
+/***/ }),
+
+/***/ 16:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createForm__ = __webpack_require__(21);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createForm", function() { return __WEBPACK_IMPORTED_MODULE_0__createForm__["a"]; });
+// export this package's api
 
 
-/***/ },
 
-/***/ 217:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _src = __webpack_require__(218);
-	
-	var form = _interopRequireWildcard(_src);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	exports.default = form; // export this package's api
-	
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 218:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.createForm = undefined;
-	
-	var _createForm = __webpack_require__(219);
-	
-	var _createForm2 = _interopRequireDefault(_createForm);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.createForm = _createForm2.default; // export this package's api
-
-/***/ },
-
-/***/ 349:
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var regionStyle = exports.regionStyle = {
-	  border: '1px solid red',
-	  marginTop: 10,
-	  padding: 10
-	};
-	
-	var errorStyle = exports.errorStyle = {
-	  color: 'red',
-	  marginTop: 10,
-	  padding: 10
-	};
-
-/***/ },
-
-/***/ 351:
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	exports.__esModule = true;
-	
-	exports.default = function (instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	};
-
-/***/ },
+/***/ }),
 
 /***/ 352:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-	"use strict";
-	
-	exports.__esModule = true;
-	
-	var _typeof2 = __webpack_require__(221);
-	
-	var _typeof3 = _interopRequireDefault(_typeof2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (self, call) {
-	  if (!self) {
-	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	  }
-	
-	  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
-	};
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_form__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__styles__ = __webpack_require__(14);
 
-/***/ },
 
-/***/ 353:
-/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	exports.__esModule = true;
-	
-	var _setPrototypeOf = __webpack_require__(354);
-	
-	var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
-	
-	var _create = __webpack_require__(358);
-	
-	var _create2 = _interopRequireDefault(_create);
-	
-	var _typeof2 = __webpack_require__(221);
-	
-	var _typeof3 = _interopRequireDefault(_typeof2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (subClass, superClass) {
-	  if (typeof superClass !== "function" && superClass !== null) {
-	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
-	  }
-	
-	  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
-	    constructor: {
-	      value: subClass,
-	      enumerable: false,
-	      writable: true,
-	      configurable: true
-	    }
-	  });
-	  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
-	};
 
-/***/ },
 
-/***/ 354:
-/***/ function(module, exports, __webpack_require__) {
+/* eslint react/no-multi-comp:0, no-console:0 */
 
-	module.exports = { "default": __webpack_require__(355), __esModule: true };
 
-/***/ },
 
-/***/ 355:
-/***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(356);
-	module.exports = __webpack_require__(8).Object.setPrototypeOf;
 
-/***/ },
 
-/***/ 356:
-/***/ function(module, exports, __webpack_require__) {
 
-	// 19.1.3.19 Object.setPrototypeOf(O, proto)
-	var $export = __webpack_require__(6);
-	$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(357).set});
+function getFileValueProps(value) {
+  if (value && value.target) {
+    return {
+      value: value.target.value
+    };
+  }
+  return {
+    value: value
+  };
+}
 
-/***/ },
+function getValueFromFileEvent(_ref) {
+  var target = _ref.target;
 
-/***/ 357:
-/***/ function(module, exports, __webpack_require__) {
+  return {
+    target: target
+  };
+}
 
-	// Works with __proto__ only. Old v8 can't work with null proto objects.
-	/* eslint-disable no-proto */
-	var isObject = __webpack_require__(14)
-	  , anObject = __webpack_require__(13);
-	var check = function(O, proto){
-	  anObject(O);
-	  if(!isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
-	};
-	module.exports = {
-	  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-	    function(test, buggy, set){
-	      try {
-	        set = __webpack_require__(9)(Function.call, __webpack_require__(252).f(Object.prototype, '__proto__').set, 2);
-	        set(test, []);
-	        buggy = !(test instanceof Array);
-	      } catch(e){ buggy = true; }
-	      return function setPrototypeOf(O, proto){
-	        check(O, proto);
-	        if(buggy)O.__proto__ = proto;
-	        else set(O, proto);
-	        return O;
-	      };
-	    }({}, false) : undefined),
-	  check: check
-	};
+var Form = function (_React$Component) {
+  __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(Form, _React$Component);
 
-/***/ },
+  function Form() {
+    var _ref2;
 
-/***/ 358:
-/***/ function(module, exports, __webpack_require__) {
+    var _temp, _this, _ret;
 
-	module.exports = { "default": __webpack_require__(359), __esModule: true };
+    __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, Form);
 
-/***/ },
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-/***/ 359:
-/***/ function(module, exports, __webpack_require__) {
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref2 = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref2, [this].concat(args))), _this), _this.onSubmit = function (e) {
+      e.preventDefault();
+      _this.props.form.validateFields(function (error, values) {
+        console.log(error, values);
+        if (!error) {
+          var data = new FormData();
+          data.append('file', values.attachment.target.files[0]);
+          fetch('/post.htm', {
+            method: 'post',
+            body: data
+          });
+        }
+      });
+    }, _this.checkSize = function (rule, value, callback) {
+      if (value && value.target) {
+        var files = value.target.files;
+        if (files[0]) {
+          callback(files[0].size > 1000000 ? 'file size must be less than 1M' : undefined);
+        } else {
+          callback();
+        }
+      } else {
+        callback();
+      }
+    }, _temp), __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+  }
 
-	__webpack_require__(360);
-	var $Object = __webpack_require__(8).Object;
-	module.exports = function create(P, D){
-	  return $Object.create(P, D);
-	};
+  __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(Form, [{
+    key: 'render',
+    value: function render() {
+      var _props$form = this.props.form,
+          getFieldProps = _props$form.getFieldProps,
+          getFieldError = _props$form.getFieldError;
 
-/***/ },
+      var errors = getFieldError('attachment');
+      return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
+        'div',
+        {
+          style: __WEBPACK_IMPORTED_MODULE_9__styles__["a" /* regionStyle */]
+        },
+        __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
+          'div',
+          null,
+          'attachment:'
+        ),
+        __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
+          'div',
+          null,
+          __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement('input', __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({ type: 'file' }, getFieldProps('attachment', {
+            getValueProps: getFileValueProps,
+            getValueFromEvent: getValueFromFileEvent,
+            rules: [this.checkSize]
+          })))
+        ),
+        __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
+          'div',
+          { style: __WEBPACK_IMPORTED_MODULE_9__styles__["b" /* errorStyle */] },
+          errors ? errors.join(',') : null
+        ),
+        __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
+          'button',
+          { onClick: this.onSubmit },
+          'submit'
+        )
+      );
+    }
+  }]);
 
-/***/ 360:
-/***/ function(module, exports, __webpack_require__) {
+  return Form;
+}(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Component);
 
-	var $export = __webpack_require__(6)
-	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-	$export($export.S, 'Object', {create: __webpack_require__(231)});
+Form.propTypes = {
+  form: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.object
+};
 
-/***/ },
 
-/***/ 388:
-/***/ function(module, exports, __webpack_require__) {
+Form = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_rc_form__["createForm"])()(Form);
 
-	'use strict';
-	
-	var _classCallCheck2 = __webpack_require__(351);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(352);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(353);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _extends2 = __webpack_require__(2);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
-	
-	var _rcForm = __webpack_require__(217);
-	
-	var _react = __webpack_require__(40);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactDom = __webpack_require__(71);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-	var _styles = __webpack_require__(349);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/* eslint react/no-multi-comp:0, no-console:0 */
-	
-	function getFileValueProps(value) {
-	  if (value && value.target) {
-	    return {
-	      value: value.target.value
-	    };
-	  }
-	  return {
-	    value: value
-	  };
-	}
-	
-	function getValueFromFileEvent(_ref) {
-	  var target = _ref.target;
-	
-	  return {
-	    target: target
-	  };
-	}
-	
-	var Form = _react2.default.createClass({
-	  displayName: 'Form',
-	
-	  propTypes: {
-	    form: _react.PropTypes.object
-	  },
-	
-	  onSubmit: function onSubmit(e) {
-	    e.preventDefault();
-	    this.props.form.validateFields(function (error, values) {
-	      console.log(error, values);
-	      if (!error) {
-	        var data = new FormData();
-	        data.append('file', values.attachment.target.files[0]);
-	        fetch('/post.htm', {
-	          method: 'post',
-	          body: data
-	        });
-	      }
-	    });
-	  },
-	  checkSize: function checkSize(rule, value, callback) {
-	    if (value && value.target) {
-	      var files = value.target.files;
-	      if (files[0]) {
-	        callback(files[0].size > 1000000 ? 'file size must be less than 1M' : undefined);
-	      } else {
-	        callback();
-	      }
-	    } else {
-	      callback();
-	    }
-	  },
-	  render: function render() {
-	    var _props$form = this.props.form,
-	        getFieldProps = _props$form.getFieldProps,
-	        getFieldError = _props$form.getFieldError;
-	
-	    var errors = getFieldError('attachment');
-	    return _react2.default.createElement(
-	      'div',
-	      {
-	        style: _styles.regionStyle
-	      },
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        'attachment:'
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement('input', (0, _extends3.default)({ type: 'file' }, getFieldProps('attachment', {
-	          getValueProps: getFileValueProps,
-	          getValueFromEvent: getValueFromFileEvent,
-	          rules: [this.checkSize]
-	        })))
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { style: _styles.errorStyle },
-	        errors ? errors.join(',') : null
-	      ),
-	      _react2.default.createElement(
-	        'button',
-	        { onClick: this.onSubmit },
-	        'submit'
-	      )
-	    );
-	  }
-	});
-	
-	Form = (0, _rcForm.createForm)()(Form);
-	
-	var App = function (_React$Component) {
-	  (0, _inherits3.default)(App, _React$Component);
-	
-	  function App() {
-	    (0, _classCallCheck3.default)(this, App);
-	    return (0, _possibleConstructorReturn3.default)(this, _React$Component.apply(this, arguments));
-	  }
-	
-	  App.prototype.render = function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(
-	        'h2',
-	        null,
-	        'input[type="file"]'
-	      ),
-	      _react2.default.createElement(Form, null)
-	    );
-	  };
-	
-	  return App;
-	}(_react2.default.Component);
-	
-	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('__react-content'));
+var App = function (_React$Component2) {
+  __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(App, _React$Component2);
 
-/***/ }
+  function App() {
+    __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, App);
 
-});
+    return __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+  }
+
+  __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(App, [{
+    key: 'render',
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
+          'h2',
+          null,
+          'input[type="file"]'
+        ),
+        __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(Form, null)
+      );
+    }
+  }]);
+
+  return App;
+}(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Component);
+
+__WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(App, null), document.getElementById('__react-content'));
+
+/***/ }),
+
+/***/ 586:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(352);
+
+
+/***/ })
+
+},[586]);
 //# sourceMappingURL=file-input.js.map

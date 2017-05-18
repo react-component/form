@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>input-array.js - example - rc-form@1.3.1</title>
+  <title>input-array.js - example - rc-form@1.3.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@1.3.1</h1>
+      <h1>rc-form@1.3.2</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -272,17 +272,19 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint no-console:0 */</span>
 
 <span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> React, { PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> { regionStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
 <span class="hljs-keyword">let</span> uuid = <span class="hljs-number">0</span>;
 
-<span class="hljs-keyword">let</span> Form = React.createClass({
-  propTypes: {
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     form: PropTypes.object,
-  },
-  remove(k) {
+  };
+  remove = (k) =&gt; {
     <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-comment">// can use data-binding to get</span>
     <span class="hljs-keyword">let</span> keys = form.getFieldValue(<span class="hljs-string">'keys'</span>);
@@ -293,8 +295,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     form.setFieldsValue({
       keys,
     });
-  },
-  add() {
+  }
+  add = () =&gt; {
     uuid++;
     <span class="hljs-keyword">const</span> { form } = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-comment">// can use data-binding to get</span>
@@ -305,11 +307,11 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     form.setFieldsValue({
       keys,
     });
-  },
-  submit(e) {
+  }
+  submit = (e) =&gt; {
     e.preventDefault();
     <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.props.form.getFieldsValue());
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { getFieldProps, getFieldValue } = <span class="hljs-keyword">this</span>.props.form;
     getFieldProps(<span class="hljs-string">'keys'</span>, {
@@ -330,8 +332,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.add}</span>&gt;</span>add<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
 Form = createForm()(Form);
 

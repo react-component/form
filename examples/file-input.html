@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>file-input.js - example - rc-form@1.3.1</title>
+  <title>file-input.js - example - rc-form@1.3.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@1.3.1</h1>
+      <h1>rc-form@1.3.2</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -272,7 +272,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
 <span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> React, { PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> { regionStyle, errorStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
@@ -293,12 +294,11 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   };
 }
 
-<span class="hljs-keyword">let</span> Form = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     form: PropTypes.object,
-  },
-
-  onSubmit(e) {
+  };
+  onSubmit = (e) =&gt; {
     e.preventDefault();
     <span class="hljs-keyword">this</span>.props.form.validateFields((error, values) =&gt; {
       <span class="hljs-built_in">console</span>.log(error, values);
@@ -311,9 +311,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         });
       }
     });
-  },
-
-  checkSize(rule, value, callback) {
+  }
+  checkSize = (rule, value, callback) =&gt; {
     <span class="hljs-keyword">if</span> (value &amp;&amp; value.target) {
       <span class="hljs-keyword">const</span> files = value.target.files;
       <span class="hljs-keyword">if</span> (files[<span class="hljs-number">0</span>]) {
@@ -324,8 +323,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     } <span class="hljs-keyword">else</span> {
       callback();
     }
-  },
-
+  }
   render() {
     <span class="hljs-keyword">const</span> { getFieldProps, getFieldError } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'attachment'</span>);
@@ -346,8 +344,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
 Form = createForm()(Form);
 

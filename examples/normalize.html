@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>normalize.js - example - rc-form@1.3.1</title>
+  <title>normalize.js - example - rc-form@1.3.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@1.3.1</h1>
+      <h1>rc-form@1.3.2</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -272,33 +272,32 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
 
 <span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> React, { Component, PropTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/dist/antd.css'</span>;
 <span class="hljs-keyword">import</span> { regionStyle, errorStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
-<span class="hljs-keyword">const</span> CustomInput = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomInput</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     form: PropTypes.object,
-  },
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      data: [],
-    };
-  },
-  checkUpper(rule, value, callback) {
+  };
+  state = {
+    data: [],
+  };
+  checkUpper = (rule, value, callback) =&gt; {
     <span class="hljs-keyword">if</span> (value !== value.toUpperCase()) {
       callback(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'need to be upper!'</span>));
     } <span class="hljs-keyword">else</span> {
       callback();
     }
-  },
-  toUpper(v, prev) {
+  }
+  toUpper = (v, prev) =&gt; {
     <span class="hljs-keyword">if</span> (v === prev) {
       <span class="hljs-keyword">return</span> v;
     }
     <span class="hljs-keyword">return</span> v.toUpperCase();
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { getFieldProps, getFieldError } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">const</span> errors = getFieldError(<span class="hljs-string">'upper'</span>);
@@ -317,14 +316,14 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         {(errors) ? errors.join(',') : null}
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
-<span class="hljs-keyword">const</span> MaxMin = React.createClass({
-  propTypes: {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MaxMin</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  static propTypes = {
     form: PropTypes.object,
-  },
-  normalizeMin(value, prevValue, allValues) {
+  };
+  normalizeMin = (value, prevValue, allValues) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'normalizeMin'</span>, allValues.min, allValues.max);
     <span class="hljs-keyword">const</span> previousAllValues = <span class="hljs-keyword">this</span>.props.form.getFieldsValue();
     <span class="hljs-keyword">if</span> (allValues.max !== previousAllValues.max) {
@@ -334,8 +333,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       }
     }
     <span class="hljs-keyword">return</span> value;
-  },
-  normalizeMax(value, prevValue, allValues) {
+  }
+  normalizeMax = (value, prevValue, allValues) =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'normalizeMax'</span>, allValues.min, allValues.max);
     <span class="hljs-keyword">const</span> previousAllValues = <span class="hljs-keyword">this</span>.props.form.getFieldsValue();
     <span class="hljs-keyword">if</span> (allValues.min !== previousAllValues.min) {
@@ -345,7 +344,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       }
     }
     <span class="hljs-keyword">return</span> value;
-  },
+  }
   render() {
     <span class="hljs-keyword">const</span> { getFieldProps } = <span class="hljs-keyword">this</span>.props.form;
     <span class="hljs-keyword">return</span> (<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{</span> <span class="hljs-attribute">regionStyle</span> }&gt;</span>
@@ -378,8 +377,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       <span class="hljs-tag">&lt;/<span class="hljs-title">select</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>)</span>;
-  },
-});
+  }
+}
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
   static propTypes = {
