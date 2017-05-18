@@ -58,13 +58,20 @@ class Form extends Component {
     form: PropTypes.object,
   };
 
+  state = {
+    loading: true,
+  };
+
   componentDidMount() {
     setTimeout(() => {
-      this.props.form.setFieldsInitialValue({
-        email: 'xx@gmail.com',
-      });
       this.setState({
         loading: false,
+      }, () => {
+        setTimeout(() => {
+          this.props.form.setFieldsInitialValue({
+            email: 'xx@gmail.com',
+          });
+        }, 1000);
       });
     }, 1000);
   }
@@ -91,7 +98,7 @@ class Form extends Component {
   }
 
   render() {
-    if (!this.state || this.state.loading !== false) {
+    if (this.state.loading) {
       return <b>loading</b>;
     }
     const { form } = this.props;
