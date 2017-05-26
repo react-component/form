@@ -44,7 +44,7 @@ class Form extends Component {
     const start = getFieldValue('start');
     if (!end || !start) {
       callback('please select both start and end time');
-    } else if (end.getTime() < start.getTime()) {
+    } else if (end.valueOf() < start.valueOf()) {
       callback('start time should be less than end time');
     } else {
       callback();

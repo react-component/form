@@ -126,7 +126,7 @@ function DateInput(props) {
           rules: [
             {
               required: true,
-              type: 'date',
+              type: 'object',
             },
           ],
         })}
