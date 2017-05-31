@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { createForm } from 'rc-form';
+import createForm from '../src/createDOMForm';
 
 class Form extends React.Component {
   static propTypes = {
@@ -17,7 +17,7 @@ class Form extends React.Component {
     console.log('Values of all fields');
     console.log(this.props.form.getFieldsValue());
 
-    this.props.form.validateFields((error, values) => {
+    this.props.form.validateFieldsAndScroll((error, values) => {
       if (!error) {
         console.log('ok', values);
       } else {

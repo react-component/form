@@ -46,18 +46,24 @@
   "jest": {
     "collectCoverageFrom": [
       "src/*"
-    ]
+    ],
+    "transform": {
+      "\\.tsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js",
+      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
+    }
   },
   "devDependencies": {
     "antd": "2.x",
     "async": "^1.5.2",
     "coveralls": "^2.11.15",
+    "enzyme": "^2.8.2",
     "history": "^1.16.0",
     "jest": "^19.0.2",
     "pre-commit": "1.x",
     "prop-types": "^15.5.10",
     "rc-tools": "^6.2.0",
     "react": "15.x",
+    "react-addons-test-utils": "^15.5.1",
     "react-data-binding": "^0.4.0",
     "react-dom": "15.x",
     "react-redux": "^4.0.0",
@@ -67,15 +73,6 @@
   "pre-commit": [
     "lint"
   ],
-  "jest": {
-    "collectCoverageFrom": [
-      "src/*"
-    ],
-    "transform": {
-      "\\.tsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js",
-      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
-    }
-  },
   "dependencies": {
     "async-validator": "1.x",
     "babel-runtime": "6.x",
