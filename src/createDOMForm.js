@@ -1,8 +1,9 @@
+import ReactDOM from 'react-dom';
+import scrollIntoView from 'dom-scroll-into-view';
+import has from 'lodash.has';
 import createBaseForm from './createBaseForm';
 import { mixin as formMixin } from './createForm';
 import { getParams } from './utils';
-import ReactDOM from 'react-dom';
-import scrollIntoView from 'dom-scroll-into-view';
 
 function computedStyle(el, prop) {
   const getComputedStyle = window.getComputedStyle;
@@ -57,10 +58,11 @@ const mixin = {
 
     const newCb = (error, values) => {
       if (error) {
+        const validNames = this.fieldsStore.getValidFieldsName();
         let firstNode;
         let firstTop;
-        for (const name in error) {
-          if (error.hasOwnProperty(name)) {
+        for (const name of validNames) {
+          if (has(error, name)) {
             const instance = this.getFieldInstance(name);
             if (instance) {
               const node = ReactDOM.findDOMNode(instance);

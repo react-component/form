@@ -2,16 +2,17 @@
 jest.mock('dom-scroll-into-view', () => jest.fn());
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import createDOMForm from '../src/createDOMForm';
 import scrollIntoView from 'dom-scroll-into-view';
+import { mount } from 'enzyme';
+import createDOMForm from '../src/createDOMForm';
 
 class Test extends React.Component {
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form, name } = this.props;
+    const { getFieldDecorator } = form;
     return (
       <div>
-        {getFieldDecorator('normal', {
+        {getFieldDecorator(name, {
           rules: [{
             required: true,
           }],
@@ -26,26 +27,25 @@ Test = createDOMForm({
 })(Test);
 
 describe('validateFieldsAndScroll', () => {
-  let container;
-  let component;
-  let form;
-
   beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-    component = ReactDOM.render(<Test />, container);
-    component = component.refs.wrappedComponent;
-    form = component.props.form;
+    scrollIntoView.mockClear();
   });
-
-  afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-    document.body.removeChild(container);
-  });
-
-  it('validateFieldsAndScroll works on overflowY auto element', (done) => {
+  it('works on overflowY auto element', (done) => {
+    const wrapper = mount(<Test name="normal" />, { attachTo: document.body });
+    const form = wrapper.ref('wrappedComponent').prop('form');
     form.validateFieldsAndScroll(() => {
       expect(scrollIntoView.mock.calls[0][1].tagName).not.toBe('TEXTAREA');
+      wrapper.detach();
+      done();
+    });
+  });
+
+  it('works with nested fields', (done) => {
+    const wrapper = mount(<Test name="a.b.c" />, { attachTo: document.body });
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    form.validateFieldsAndScroll(() => {
+      expect(scrollIntoView).toHaveBeenCalled();
+      wrapper.detach();
       done();
     });
   });
