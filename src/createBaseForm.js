@@ -38,6 +38,16 @@ function createBaseForm(option = {}, mixins = []) {
 
         this.instances = {};
         this.cachedBind = {};
+        // HACK: https://github.com/ant-design/ant-design/issues/6406
+        ['getFieldsValue',
+         'getFieldValue',
+         'setFieldsInitialValue',
+         'getFieldsError',
+         'getFieldError',
+         'isFieldValidating',
+         'isFieldsValidating',
+         'isFieldsTouched',
+         'isFieldTouched'].forEach(key => this[key] = this.fieldsStore[key]);
 
         return {
           submitting: false,
