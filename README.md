@@ -27,17 +27,13 @@ React High Order Form Component.
 ```
 npm install
 npm start
+open http://localhost:8000/examples/
 ```
-
-## Example
-
-http://localhost:8000/examples/
-
-online example: http://react-component.github.io/form/examples/
 
 ## Feature
 
-* support reactjs and even react-native
+* Support react.js and even react-native
+* Validate fields with [async-validator](https://github.com/yiminghe/async-validator/)
 
 ## Install
 
@@ -58,22 +54,24 @@ class Form extends React.Component {
   render() {
     let errors;
     const { getFieldProps, getFieldError } = this.props.form;
-    return (<div>
-      <input {...getFieldProps('normal')}/>
-      <input {...getFieldProps('required', {
-        onChange(){}, // have to write original onChange here if you need
-        rules: [{required: true}],
-      })}/>
-      {(errors = getFieldError('required')) ? errors.join(',') : null}
-      <button onClick={this.submit}>submit</button>
-    </div>)
+    return (
+      <div>
+        <input {...getFieldProps('normal')}/>
+        <input {...getFieldProps('required', {
+          onChange(){}, // have to write original onChange here if you need
+          rules: [{required: true}],
+        })}/>
+        {(errors = getFieldError('required')) ? errors.join(',') : null}
+        <button onClick={this.submit}>submit</button>
+      </div>
+    );
   }
 }
 
 export createForm()(Form);
 ```
 
-or a quicker version:
+Or a quicker version:
 
 ```js
 import { createForm } from 'rc-form';
@@ -81,9 +79,9 @@ import { createForm } from 'rc-form';
 class Form extends React.Component {
   componentWillMount() {
     this.requiredDecorator = this.props.form.getFieldDecorator('required', {
-        rules: [{required: true}],
+      rules: [{required: true}],
     });
-  },
+  }
 
   submit = () => {
     this.props.form.validateFields((error, value) => {
@@ -94,14 +92,17 @@ class Form extends React.Component {
   render() {
     let errors;
     const { getFieldError } = this.props.form;
-    return (<div>
-      {this.requiredDecorator(
-      <input onChange={
-      // can still write your own onChange }
-      />)}
-      {(errors = getFieldError('required')) ? errors.join(',') : null}
-      <button onClick={this.submit}>submit</button>
-    </div>)
+    return (
+      <div>
+        {this.requiredDecorator(
+          <input onChange={
+            // can still write your own onChange
+          />
+        )}
+        {(errors = getFieldError('required')) ? errors.join(',') : null}
+        <button onClick={this.submit}>submit</button>
+      </div>
+    );
   }
 }
 
@@ -110,35 +111,20 @@ export createForm()(Form);
 
 ## createForm(formOption): Function
 
-### formOption.validateMessages: Object
-
-preset messages of [async-validator](https://github.com/yiminghe/async-validator)
-
-### formOption.mapProps: Function(props): Object
-
-Get new props transfered to WrappedComponent. Defaults to props=>props.
-
-### formOption.onFieldsChange(props, changedFields)
-
-Called when field changed, you can dispatch fields to redux store.
-
-### formOption.onValuesChange(props, changedValues)
-
-Called when value changed.
-
-### formOption.mapPropsToFields(props)
-
-convert value from props to fields. used for read fields from redux store.
-
-### formOption.withRef: boolean
-
-Maintain an ref for wrapped component instance, use `refs.wrappedComponent` to access.
+| Option    | Description                              | Type       | Default |
+|-----------|------------------------------------------|------------|---------|
+| formOption.validateMessages | Preseted messages of [async-validator](https://github.com/yiminghe/async-validator) | Object | {} |
+| formOption.mapProps | Get new props transfered to WrappedComponent. | (props): Object | props => props |
+| formOption.onFieldsChange | Called when field changed, you can dispatch fields to redux store. | (props, changedFields): void | NOOP |
+| formOption.onValuesChange | Called when value changed. | (props, changedValues): void | NOOP |
+| formOption.mapPropsToFields | Convert value from props to fields. Used for read fields from redux store. | (props): Object | NOOP |
+| formOption.withRef(deprecated) | Maintain an ref for wrapped component instance, use `refs.wrappedComponent` to access. | boolean | false |
 
 createForm() will return another function:
 
 ### function(WrappedComponent: React.Component): React.Component
 
-Will pass a object as prop form with the following members to WrappedComponent:
+Will pass an object as prop form with the following members to WrappedComponent:
 
 ### getFieldProps(name, option): Object
 
