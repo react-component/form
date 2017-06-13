@@ -142,17 +142,25 @@ After set, this will create a binding with this input.
 
 This input's unique name.
 
-#### option.exclusive: boolean
+#### option: Object
 
-whether set value exclusively. used with radio.
-
-#### option.valuePropName: String
-
-Prop name of component's value field, eg: checkbox should be set to `checked` ...
-
-#### option.getValueFromEvent
-
-Specify how to get value from event. Defaults to
+| Option    | Description                              | Type       | Default |
+|-----------|------------------------------------------|------------|---------|
+| option.exclusive(deprecated) | Whether set value exclusively. Used with radio. | boolean | false |
+| option.valuePropName | Prop name of component's value field, eg: checkbox should be set to `checked` ... | String | 'value' |
+| option.getValueProps | Get the component props according to field value. | (value): Object | (value) => ({ value }) |
+| option.initialValue | Initial value of current component. | any | - |
+| option.normalize | Return normalized value. | (value, prevValue, allValues): Object | - |
+| option.trigger | Event which is listened to collect form data. | String | 'onChange' |
+| option.validateTrigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
+| option.rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
+| option.validateFirst | Whether stop validate on first rule of error for this field. | boolean | false |
+| option.fieldNameProp | Where to store the `name` argument of `getFieldProps`. | String | - |
+| option.fieldMetaProp | Where to store the meta data of `getFieldProps`. | String | - |
+| option.validate | | Object[] | - |
+| option.validate[n].trigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
+| option.validate[n].rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
+| option.getValueFromEvent | Specify how to get value from event. | (e): any | See below |
 
 ```js
 function (e) {
@@ -164,40 +172,7 @@ function (e) {
 }
 ```
 
-#### option.getValueProps
-
-get the component props according to field value. Defaults to
-
-```js
-function (value) {
-  return { value };
-}
-```
-
-#### option.initialValue
-
-Initial value of current component.
-
-#### option.normalize(value, prevValue, allValues)
-
-Return normalized value 
-
-#### option.trigger: String
-
-Defaults to `onChange`. Event which is listened to collect form data.
-
-#### option.validate: Object[]
-
-##### option.validate[n].trigger: String|String[]
-
-Event which is listened to validate. 
-Defaults to `onChange`, set to falsy to only validate when call props.validateFields.
-
-##### option.validate[n].rules: Object[]
-
-Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator)
-
-#### option.validateTrigger && option.rules
+##### Tips
 
 ```js
 {
@@ -212,18 +187,6 @@ Validator rules. see: [async-validator](https://github.com/yiminghe/async-valida
   }],
 }
 ```
-
-#### option.validateFirst: Boolean
-
-Defaults to false. whether stop validate on first rule of error for this field.
-
-#### option.fieldNameProp
-
-Where to store the `name` argument of `getFieldProps`.
-
-#### option.fieldMetaProp
-
-Where to store the meta data of `getFieldProps`.
 
 ### getFieldDecorator(name:String, option: Object): (React.Node): React.Node
 
