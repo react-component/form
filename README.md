@@ -120,7 +120,23 @@ export createForm()(Form);
 | formOption.mapPropsToFields | Convert value from props to fields. Used for read fields from redux store. | (props): Object | NOOP |
 | formOption.withRef(deprecated) | Maintain an ref for wrapped component instance, use `refs.wrappedComponent` to access. | boolean | false |
 
-createForm() will return another function:
+### Note: use wrappedComponentRef instead of withRef after rc-form@1.4.0
+
+```jsx
+class Form extends React.Component { ... }
+
+// deprecated
+const EnhancedForm = createForm({ withRef: true })(Form);
+<EnhancedForm ref="form" />
+this.refs.form.refs.wrappedComponent // => The instance of Form
+
+// Recommended
+const EnhancedForm = createForm()(Form);
+<EnhancedForm wrappedComponentRef={(inst) => this.formRef = inst} />
+this.formRef // => The instance of Form
+```
+
+## createForm() will return another function
 
 ### function(WrappedComponent: React.Component): React.Component
 
@@ -272,7 +288,7 @@ Reset specified inputs. Defaults to all.
 
 ## rc-form/lib/createDOMForm(formOption): Function
 
-createForm enhancement, support props.form.validateFieldsAndScroll
+createDOMForm enhancement, support props.form.validateFieldsAndScroll
 
 ### props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))
 
