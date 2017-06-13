@@ -47,7 +47,14 @@ function createBaseForm(option = {}, mixins = []) {
          'isFieldValidating',
          'isFieldsValidating',
          'isFieldsTouched',
-         'isFieldTouched'].forEach(key => this[key] = this.fieldsStore[key]);
+         'isFieldTouched'].forEach(key => this[key] = (...args) => {
+           warning(
+             false,
+             'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
+               'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
+           );
+           return this.fieldsStore[key](...args);
+         });
 
         return {
           submitting: false,
@@ -456,6 +463,11 @@ function createBaseForm(option = {}, mixins = []) {
           [formPropName]: this.getForm(),
         };
         if (withRef) {
+          warning(
+            false,
+            '`withRef` is deprecated, please use `wrappedComponentRef` instead. ' +
+              'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
+          );
           formProps.ref = 'wrappedComponent';
         } else if (wrappedComponentRef) {
           formProps.ref = wrappedComponentRef;

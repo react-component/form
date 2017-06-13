@@ -1,5 +1,10 @@
 # History
 ----
+
+## 1.4.0 / 2017-06-13
+
+- support wrappedComponentRef and deprecate withRef [#87](https://github.com/react-component/form/pull/87)
+
 ## 1.3.0 / 2017-01-07
 
 - support touch checking: https://github.com/react-component/form/pull/56
