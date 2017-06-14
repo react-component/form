@@ -2,9 +2,9 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import AsyncValidator from 'async-validator';
 import warning from 'warning';
-import get from 'lodash.get';
-import has from 'lodash.has';
-import set from 'lodash.set';
+import get from 'lodash/get';
+import has from 'lodash/has';
+import set from 'lodash/set';
 import createFieldsStore from './createFieldsStore';
 import {
   argumentContainer, mirror,
