@@ -1,6 +1,6 @@
 webpackJsonp([9],{
 
-/***/ 15:
+/***/ 14:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44,7 +44,7 @@ var errorStyle = {
 
 /***/ }),
 
-/***/ 184:
+/***/ 189:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86,7 +86,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _rcSwitch = __webpack_require__(266);
+var _rcSwitch = __webpack_require__(278);
 
 var _rcSwitch2 = _interopRequireDefault(_rcSwitch);
 
@@ -136,7 +136,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 265:
+/***/ 277:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -315,10 +315,10 @@ Switch.defaultProps = {
 
 /***/ }),
 
-/***/ 266:
+/***/ 278:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(265);
+module.exports = __webpack_require__(277);
 
 /***/ }),
 
@@ -329,7 +329,7 @@ module.exports = __webpack_require__(265);
 
 /***/ }),
 
-/***/ 377:
+/***/ 393:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -351,8 +351,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__styles__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__styles__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__);
@@ -545,10 +545,10 @@ __WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 611:
+/***/ 666:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(377);
+module.exports = __webpack_require__(393);
 
 
 /***/ }),
@@ -609,5 +609,5 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ })
 
-},[611]);
+},[666]);
 //# sourceMappingURL=parallel-form.js.map
