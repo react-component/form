@@ -17,8 +17,7 @@ import {
   normalizeValidateRules,
 } from './utils';
 
-const DEFAULT_VALIDATE_TRIGGER = 'onChange';
-const DEFAULT_TRIGGER = DEFAULT_VALIDATE_TRIGGER;
+const DEFAULT_TRIGGER = 'onChange';
 
 function createBaseForm(option = {}, mixins = []) {
   const {
@@ -165,7 +164,6 @@ function createBaseForm(option = {}, mixins = []) {
           valuePropName: 'value',
           validate: [],
           trigger: DEFAULT_TRIGGER,
-          validateTrigger: DEFAULT_VALIDATE_TRIGGER,
           leadingName,
           name,
           ...usersFieldOption,
@@ -174,8 +172,8 @@ function createBaseForm(option = {}, mixins = []) {
         const {
           rules,
           trigger,
+          validateTrigger = trigger,
           exclusive,
-          validateTrigger,
           validate,
         } = fieldOption;
 
