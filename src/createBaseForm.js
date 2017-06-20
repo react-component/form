@@ -77,7 +77,7 @@ function createBaseForm(option = {}, mixins = []) {
         const value = fieldMeta.getValueFromEvent ?
           fieldMeta.getValueFromEvent(...args) :
           getValueFromEvent(...args);
-        if (onValuesChange) {
+        if (onValuesChange && value !== this.fieldsStore.getFieldValue(name)) {
           onValuesChange(this.props, set({}, name, value));
         }
         const nameKeyObj = getNameIfNested(name);
