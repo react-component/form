@@ -2177,9 +2177,10 @@ var Popup = function (_Component) {
 
     return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Popup.__proto__ || Object.getPrototypeOf(Popup)).call.apply(_ref, [this].concat(args))), _this), _this.onAlign = function (popupDomNode, align) {
       var props = _this.props;
-      var alignClassName = props.getClassNameFromAlign(props.align);
       var currentAlignClassName = props.getClassNameFromAlign(align);
-      if (alignClassName !== currentAlignClassName) {
+      // FIX: https://github.com/react-component/trigger/issues/56
+      // FIX: https://github.com/react-component/tooltip/issues/79
+      if (_this.currentAlignClassName !== currentAlignClassName) {
         _this.currentAlignClassName = currentAlignClassName;
         popupDomNode.className = _this.getClassName(currentAlignClassName);
       }

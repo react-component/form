@@ -204,6 +204,9 @@ var Switch = function (_Component) {
   }, {
     key: 'setChecked',
     value: function setChecked(checked) {
+      if (this.props.disabled) {
+        return;
+      }
       if (!('checked' in this.props)) {
         this.setState({
           checked: checked
@@ -257,23 +260,23 @@ var _initialiseProps = function _initialiseProps() {
   var _this2 = this;
 
   this.toggle = function () {
-    var _props2 = _this2.props,
-        disabled = _props2.disabled,
-        onClick = _props2.onClick;
+    var onClick = _this2.props.onClick;
 
     var checked = !_this2.state.checked;
-    if (!disabled) {
-      _this2.setChecked(checked);
-    }
+    _this2.setChecked(checked);
     onClick(checked);
   };
 
   this.handleKeyDown = function (e) {
     if (e.keyCode === 37) {
+      // Left
       _this2.setChecked(false);
-    }
-    if (e.keyCode === 39) {
+    } else if (e.keyCode === 39) {
+      // Right
       _this2.setChecked(true);
+    } else if (e.keyCode === 32 || e.keyCode === 13) {
+      // Space, Enter
+      _this2.toggle();
     }
   };
 

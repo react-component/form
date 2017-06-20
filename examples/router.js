@@ -3386,7 +3386,7 @@ function loopAsync(turns, work, callback) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(319);
+var strictUriEncode = __webpack_require__(320);
 
 exports.extract = function (str) {
 	return str.split('?')[1] || '';
@@ -4961,20 +4961,6 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 319:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-};
-
-
-/***/ }),
-
 /***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5027,7 +5013,21 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 338:
+/***/ 320:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
+};
+
+
+/***/ }),
+
+/***/ 339:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5744,7 +5744,7 @@ var _deprecate = __webpack_require__(46);
 
 var _deprecate2 = _interopRequireDefault(_deprecate);
 
-var _useBeforeUnload = __webpack_require__(338);
+var _useBeforeUnload = __webpack_require__(339);
 
 var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -5818,7 +5818,7 @@ var _useBasename3 = _interopRequireDefault(_useBasename2);
 
 exports.useBasename = _useBasename3['default'];
 
-var _useBeforeUnload2 = __webpack_require__(338);
+var _useBeforeUnload2 = __webpack_require__(339);
 
 var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 

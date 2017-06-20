@@ -2037,7 +2037,7 @@ function loopAsync(turns, work, callback) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(319);
+var strictUriEncode = __webpack_require__(320);
 
 exports.extract = function (str) {
 	return str.split('?')[1] || '';
@@ -3612,20 +3612,6 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 319:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-};
-
-
-/***/ }),
-
 /***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3675,6 +3661,20 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+
+/***/ 320:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
+};
+
 
 /***/ }),
 
