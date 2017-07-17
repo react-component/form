@@ -41,6 +41,7 @@ function createBaseForm(option = {}, mixins = []) {
         ['getFieldsValue',
          'getFieldValue',
          'setFieldsInitialValue',
+         'getFieldInitialValue',
          'getFieldsError',
          'getFieldError',
          'isFieldValidating',
@@ -68,6 +69,7 @@ function createBaseForm(option = {}, mixins = []) {
 
       onCollectCommon(name_, action, args) {
         let name = name_;
+        let touched = false;
         const fieldMeta = this.fieldsStore.getFieldMeta(name);
         if (fieldMeta[action]) {
           fieldMeta[action](...args);
@@ -77,6 +79,11 @@ function createBaseForm(option = {}, mixins = []) {
         const value = fieldMeta.getValueFromEvent ?
           fieldMeta.getValueFromEvent(...args) :
           getValueFromEvent(...args);
+
+        if (value !== this.fieldsStore.getFieldInitialValue(name)) {
+          touched = true;
+        }
+
         if (onValuesChange && value !== this.fieldsStore.getFieldValue(name)) {
           onValuesChange(this.props, set({}, name, value));
         }
@@ -85,7 +92,7 @@ function createBaseForm(option = {}, mixins = []) {
           name = nameKeyObj.name;
         }
         const field = this.fieldsStore.getField(name);
-        return ({ name, field: { ...field, value, touched: true }, fieldMeta });
+        return ({ name, field: { ...field, value, touched }, fieldMeta });
       },
 
       onCollect(name_, action, ...args) {
