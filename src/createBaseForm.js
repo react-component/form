@@ -460,6 +460,12 @@ function createBaseForm(option = {}, mixins = []) {
         const formProps = {
           [formPropName]: this.getForm(),
         };
+        function innerestWrappedComponentRef(...args) {
+          if (wrappedComponentRef && !innerestWrappedComponentRef.called) {
+            wrappedComponentRef(...args);
+            innerestWrappedComponentRef.called = true;
+          }
+        }
         if (withRef) {
           warning(
             false,
@@ -468,18 +474,12 @@ function createBaseForm(option = {}, mixins = []) {
           );
           formProps.ref = 'wrappedComponent';
         } else if (wrappedComponentRef) {
-          let called = false;
-          formProps.ref = (...args) => {
-            if (!called) {
-              wrappedComponentRef(...args);
-              called = true;
-            }
-          };
+          formProps.ref = innerestWrappedComponentRef;
         }
         const props = mapProps.call(this, {
           ...formProps,
           ...restProps,
-          wrappedComponentRef,
+          wrappedComponentRef: innerestWrappedComponentRef,
         });
         return <WrappedComponent {...props}/>;
       },
