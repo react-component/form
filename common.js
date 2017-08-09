@@ -3513,7 +3513,13 @@ function createBaseForm() {
           __WEBPACK_IMPORTED_MODULE_7_warning___default()(false, '`withRef` is deprecated, please use `wrappedComponentRef` instead. ' + 'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140');
           formProps.ref = 'wrappedComponent';
         } else if (wrappedComponentRef) {
-          formProps.ref = wrappedComponentRef;
+          var called = false;
+          formProps.ref = function () {
+            if (!called) {
+              wrappedComponentRef.apply(undefined, arguments);
+              called = true;
+            }
+          };
         }
         var props = mapProps.call(this, __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, formProps, restProps, {
           wrappedComponentRef: wrappedComponentRef
