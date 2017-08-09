@@ -468,7 +468,13 @@ function createBaseForm(option = {}, mixins = []) {
           );
           formProps.ref = 'wrappedComponent';
         } else if (wrappedComponentRef) {
-          formProps.ref = wrappedComponentRef;
+          let called = false;
+          formProps.ref = (...args) => {
+            if (!called) {
+              wrappedComponentRef(...args);
+              called = true;
+            }
+          };
         }
         const props = mapProps.call(this, {
           ...formProps,
