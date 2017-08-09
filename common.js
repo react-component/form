@@ -3509,20 +3509,20 @@ function createBaseForm() {
             restProps = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['wrappedComponentRef']);
 
         var formProps = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()({}, formPropName, this.getForm());
+        function innerestWrappedComponentRef() {
+          if (wrappedComponentRef && !innerestWrappedComponentRef.called) {
+            wrappedComponentRef.apply(undefined, arguments);
+            innerestWrappedComponentRef.called = true;
+          }
+        }
         if (withRef) {
           __WEBPACK_IMPORTED_MODULE_7_warning___default()(false, '`withRef` is deprecated, please use `wrappedComponentRef` instead. ' + 'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140');
           formProps.ref = 'wrappedComponent';
         } else if (wrappedComponentRef) {
-          var called = false;
-          formProps.ref = function () {
-            if (!called) {
-              wrappedComponentRef.apply(undefined, arguments);
-              called = true;
-            }
-          };
+          formProps.ref = innerestWrappedComponentRef;
         }
         var props = mapProps.call(this, __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, formProps, restProps, {
-          wrappedComponentRef: wrappedComponentRef
+          wrappedComponentRef: innerestWrappedComponentRef
         }));
         return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(WrappedComponent, props);
       }
