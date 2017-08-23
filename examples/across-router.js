@@ -19,7 +19,7 @@ var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
 var _AsyncUtils = __webpack_require__(222);
 
-var _Actions = __webpack_require__(37);
+var _Actions = __webpack_require__(38);
 
 var _createLocation2 = __webpack_require__(168);
 
@@ -29,7 +29,7 @@ var _runTransitionHook = __webpack_require__(89);
 
 var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-var _parsePath = __webpack_require__(32);
+var _parsePath = __webpack_require__(33);
 
 var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -342,7 +342,7 @@ var _runTransitionHook = __webpack_require__(89);
 
 var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
 
-var _parsePath = __webpack_require__(32);
+var _parsePath = __webpack_require__(33);
 
 var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -714,7 +714,7 @@ var _RouteUtils = __webpack_require__(27);
 
 var _PatternUtils = __webpack_require__(51);
 
-var _PropTypes = __webpack_require__(30);
+var _PropTypes = __webpack_require__(31);
 
 var _React$PropTypes = _react2['default'].PropTypes;
 var string = _React$PropTypes.string;
@@ -1107,7 +1107,7 @@ var _invariant = __webpack_require__(21);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _Actions = __webpack_require__(37);
+var _Actions = __webpack_require__(38);
 
 var _ExecutionEnvironment = __webpack_require__(56);
 
@@ -1119,7 +1119,7 @@ var _createDOMHistory = __webpack_require__(166);
 
 var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
 
-var _parsePath = __webpack_require__(32);
+var _parsePath = __webpack_require__(33);
 
 var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -1356,9 +1356,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _Actions = __webpack_require__(37);
+var _Actions = __webpack_require__(38);
 
-var _parsePath = __webpack_require__(32);
+var _parsePath = __webpack_require__(33);
 
 var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -1424,13 +1424,13 @@ var _invariant = __webpack_require__(21);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _Actions = __webpack_require__(37);
+var _Actions = __webpack_require__(38);
 
 var _createHistory = __webpack_require__(119);
 
 var _createHistory2 = _interopRequireDefault(_createHistory);
 
-var _parsePath = __webpack_require__(32);
+var _parsePath = __webpack_require__(33);
 
 var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -1603,7 +1603,7 @@ var _extractPath = __webpack_require__(120);
 
 var _extractPath2 = _interopRequireDefault(_extractPath);
 
-var _parsePath = __webpack_require__(32);
+var _parsePath = __webpack_require__(33);
 
 var _parsePath2 = _interopRequireDefault(_parsePath);
 
@@ -2228,66 +2228,6 @@ function createRoutes(routes) {
 
 /***/ }),
 
-/***/ 30:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.falsy = falsy;
-
-var _react = __webpack_require__(0);
-
-var func = _react.PropTypes.func;
-var object = _react.PropTypes.object;
-var arrayOf = _react.PropTypes.arrayOf;
-var oneOfType = _react.PropTypes.oneOfType;
-var element = _react.PropTypes.element;
-var shape = _react.PropTypes.shape;
-var string = _react.PropTypes.string;
-
-function falsy(props, propName, componentName) {
-  if (props[propName]) return new Error('<' + componentName + '> should not have a "' + propName + '" prop');
-}
-
-var history = shape({
-  listen: func.isRequired,
-  pushState: func.isRequired,
-  replaceState: func.isRequired,
-  go: func.isRequired
-});
-
-exports.history = history;
-var location = shape({
-  pathname: string.isRequired,
-  search: string.isRequired,
-  state: object,
-  action: string.isRequired,
-  key: string
-});
-
-exports.location = location;
-var component = oneOfType([func, string]);
-exports.component = component;
-var components = oneOfType([component, object]);
-exports.components = components;
-var route = oneOfType([object, element]);
-exports.route = route;
-var routes = oneOfType([route, arrayOf(route)]);
-
-exports.routes = routes;
-exports['default'] = {
-  falsy: falsy,
-  history: history,
-  location: location,
-  component: component,
-  components: components,
-  route: route
-};
-
-/***/ }),
-
 /***/ 303:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2296,7 +2236,7 @@ exports['default'] = {
 
 exports.__esModule = true;
 
-var _PropTypes = __webpack_require__(30);
+var _PropTypes = __webpack_require__(31);
 
 /**
  * A mixin that adds the "history" instance variable to components.
@@ -2397,7 +2337,7 @@ var _Redirect = __webpack_require__(158);
 
 var _Redirect2 = _interopRequireDefault(_Redirect);
 
-var _PropTypes = __webpack_require__(30);
+var _PropTypes = __webpack_require__(31);
 
 var _React$PropTypes = _react2['default'].PropTypes;
 var string = _React$PropTypes.string;
@@ -2476,7 +2416,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _RouteUtils = __webpack_require__(27);
 
-var _PropTypes = __webpack_require__(30);
+var _PropTypes = __webpack_require__(31);
 
 var func = _react2['default'].PropTypes.func;
 
@@ -2622,7 +2562,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _RouteUtils = __webpack_require__(27);
 
-var _PropTypes = __webpack_require__(30);
+var _PropTypes = __webpack_require__(31);
 
 var _React$PropTypes = _react2['default'].PropTypes;
 var string = _React$PropTypes.string;
@@ -2718,6 +2658,66 @@ module.exports = exports['default'];
 
 /***/ }),
 
+/***/ 31:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.falsy = falsy;
+
+var _react = __webpack_require__(0);
+
+var func = _react.PropTypes.func;
+var object = _react.PropTypes.object;
+var arrayOf = _react.PropTypes.arrayOf;
+var oneOfType = _react.PropTypes.oneOfType;
+var element = _react.PropTypes.element;
+var shape = _react.PropTypes.shape;
+var string = _react.PropTypes.string;
+
+function falsy(props, propName, componentName) {
+  if (props[propName]) return new Error('<' + componentName + '> should not have a "' + propName + '" prop');
+}
+
+var history = shape({
+  listen: func.isRequired,
+  pushState: func.isRequired,
+  replaceState: func.isRequired,
+  go: func.isRequired
+});
+
+exports.history = history;
+var location = shape({
+  pathname: string.isRequired,
+  search: string.isRequired,
+  state: object,
+  action: string.isRequired,
+  key: string
+});
+
+exports.location = location;
+var component = oneOfType([func, string]);
+exports.component = component;
+var components = oneOfType([component, object]);
+exports.components = components;
+var route = oneOfType([object, element]);
+exports.route = route;
+var routes = oneOfType([route, arrayOf(route)]);
+
+exports.routes = routes;
+exports['default'] = {
+  falsy: falsy,
+  history: history,
+  location: location,
+  component: component,
+  components: components,
+  route: route
+};
+
+/***/ }),
+
 /***/ 310:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2758,7 +2758,7 @@ var _useRoutes = __webpack_require__(95);
 
 var _useRoutes2 = _interopRequireDefault(_useRoutes);
 
-var _PropTypes = __webpack_require__(30);
+var _PropTypes = __webpack_require__(31);
 
 var _React$PropTypes = _react2['default'].PropTypes;
 var func = _React$PropTypes.func;
@@ -3197,7 +3197,7 @@ var _RoutingContext3 = _interopRequireDefault(_RoutingContext2);
 
 exports.RoutingContext = _RoutingContext3['default'];
 
-var _PropTypes2 = __webpack_require__(30);
+var _PropTypes2 = __webpack_require__(31);
 
 var _PropTypes3 = _interopRequireDefault(_PropTypes2);
 
@@ -3612,7 +3612,21 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 32:
+/***/ 321:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
+};
+
+
+/***/ }),
+
+/***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3664,21 +3678,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 321:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-};
-
-
-/***/ }),
-
-/***/ 37:
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3721,9 +3721,9 @@ exports['default'] = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
@@ -4458,7 +4458,7 @@ var _warning = __webpack_require__(19);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _historyLibActions = __webpack_require__(37);
+var _historyLibActions = __webpack_require__(38);
 
 var _historyLibUseQueries = __webpack_require__(121);
 
