@@ -38,8 +38,11 @@ function getScrollableContainer(n) {
   while ((nodeName = node.nodeName.toLowerCase()) !== 'body') {
     const overflowY = computedStyle(node, 'overflowY');
     // https://stackoverflow.com/a/36900407/3040605
-    if (node !== n && (overflowY === 'auto' || overflowY === 'scroll') &&
-        node.scrollHeight > node.clientHeight) {
+    if (
+      node !== n &&
+        (overflowY === 'auto' || overflowY === 'scroll') &&
+        node.scrollHeight > node.clientHeight
+    ) {
       return node;
     }
     node = node.parentNode;
