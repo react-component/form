@@ -62,7 +62,7 @@ function createBaseForm(option = {}, mixins = []) {
 
       componentWillReceiveProps(nextProps) {
         if (mapPropsToFields) {
-          this.fieldsStore.replaceFields(mapPropsToFields(nextProps));
+          this.fieldsStore.updateFields(mapPropsToFields(nextProps));
         }
       },
 

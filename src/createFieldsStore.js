@@ -15,8 +15,8 @@ class FieldsStore {
     this.fields = fields;
     this.fieldsMeta = {};
   }
-  replaceFields(fields) {
-    this.fields = fields;
+  updateFields(fields) {
+    Object.assign(this.fields, fields);
   }
 
   setFields(fields) {

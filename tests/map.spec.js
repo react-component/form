@@ -60,6 +60,25 @@ describe('map usage', () => {
     expect(form.getFieldValue('normal')).toBe('3');
   });
 
+  it('mapPropsToFields\'s return value will be merge to current fields', () => {
+    const Test = createForm({
+      withRef: true,
+      mapPropsToFields(props) {
+        return {
+          normal: {
+            value: props.formState.normal,
+          },
+        };
+      },
+    })(TestComponent);
+    component = ReactDOM.render(<Test formState={{ normal: '2' }}/>, container);
+    component = component.refs.wrappedComponent;
+    form = component.props.form;
+    form.getFieldInstance('normal2').value = '3';
+    Simulate.change(form.getFieldInstance('normal2'));
+    component = ReactDOM.render(<Test formState={{ normal: '1' }}/>, container);
+    expect(form.getFieldValue('normal2')).toBe('3');
+  });
 
   it('mapProps works', () => {
     const Test = createForm({
