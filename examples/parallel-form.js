@@ -239,7 +239,7 @@ var Switch = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, restProps, {
           className: switchClassName,
           tabIndex: switchTabIndex,
-          ref: 'node',
+          ref: this.saveNode,
           onKeyDown: this.handleKeyDown,
           onClick: this.toggle,
           onMouseUp: this.handleMouseUp
@@ -281,12 +281,16 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.handleMouseUp = function (e) {
-    if (_this2.refs.node) {
-      _this2.refs.node.blur();
+    if (_this2.node) {
+      _this2.node.blur();
     }
     if (_this2.props.onMouseUp) {
       _this2.props.onMouseUp(e);
     }
+  };
+
+  this.saveNode = function (node) {
+    _this2.node = node;
   };
 };
 
@@ -548,7 +552,7 @@ __WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 668:
+/***/ 667:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(395);
@@ -612,5 +616,5 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ })
 
-},[668]);
+},[667]);
 //# sourceMappingURL=parallel-form.js.map
