@@ -178,11 +178,11 @@ class Form extends React.Component {
 }
 
 Form = createForm({
-  onFieldsChange(_, changedFields) {
-    console.log('onFieldsChange: ', changedFields);
+  onFieldsChange(_, changedFields, allFields) {
+    console.log('onFieldsChange: ', changedFields, allFields);
   },
-  onValuesChange(_, changedValues) {
-    console.log('onValuesChange: ', changedValues);
+  onValuesChange(_, changedValues, allValues) {
+    console.log('onValuesChange: ', changedValues, allValues);
   },
 })(Form);
 
