@@ -21,9 +21,9 @@ const DEFAULT_TRIGGER = 'onChange';
 
 function createBaseForm(option = {}, mixins = []) {
   const {
-    mapPropsToFields, onFieldsChange, onValuesChange,
-    fieldNameProp, fieldMetaProp,
-    validateMessages, mapProps = mirror,
+    validateMessages, mapProps = mirror, mapPropsToFields,
+    onFieldsChange, onValuesChange,
+    fieldNameProp, fieldMetaProp, fieldDataProp,
     formPropName = 'form', withRef,
   } = option;
 
@@ -222,6 +222,10 @@ function createBaseForm(option = {}, mixins = []) {
         this.fieldsStore.setFieldMeta(name, meta);
         if (fieldMetaProp) {
           inputProps[fieldMetaProp] = meta;
+        }
+
+        if (fieldDataProp) {
+          inputProps[fieldDataProp] = this.fieldsStore.getField(name);
         }
 
         return inputProps;
@@ -460,12 +464,6 @@ function createBaseForm(option = {}, mixins = []) {
         const formProps = {
           [formPropName]: this.getForm(),
         };
-        function innerestWrappedComponentRef(...args) {
-          if (wrappedComponentRef && !innerestWrappedComponentRef.called) {
-            wrappedComponentRef(...args);
-            innerestWrappedComponentRef.called = true;
-          }
-        }
         if (withRef) {
           warning(
             false,
@@ -474,12 +472,11 @@ function createBaseForm(option = {}, mixins = []) {
           );
           formProps.ref = 'wrappedComponent';
         } else if (wrappedComponentRef) {
-          formProps.ref = innerestWrappedComponentRef;
+          formProps.ref = wrappedComponentRef;
         }
         const props = mapProps.call(this, {
           ...formProps,
           ...restProps,
-          wrappedComponentRef: innerestWrappedComponentRef,
         });
         return <WrappedComponent {...props}/>;
       },

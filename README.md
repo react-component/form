@@ -114,10 +114,13 @@ export createForm()(Form);
 | Option    | Description                              | Type       | Default |
 |-----------|------------------------------------------|------------|---------|
 | formOption.validateMessages | Preseted messages of [async-validator](https://github.com/yiminghe/async-validator) | Object | {} |
-| formOption.mapProps | Get new props transfered to WrappedComponent. | (props): Object | props => props |
 | formOption.onFieldsChange | Called when field changed, you can dispatch fields to redux store. | (props, changedFields): void | NOOP |
 | formOption.onValuesChange | Called when value changed. | (props, changedValues): void | NOOP |
+| formOption.mapProps | Get new props transfered to WrappedComponent. | (props): Object | props => props |
 | formOption.mapPropsToFields | Convert value from props to fields. Used for read fields from redux store. | (props): Object | NOOP |
+| formOption.fieldNameProp | Where to store the `name` argument of `getFieldProps`. | String | - |
+| formOption.fieldMetaProp | Where to store the meta data of `getFieldProps`. | String | - |
+| formOption.fieldDataProp | Where to store the field data | String | - |
 | formOption.withRef(deprecated) | Maintain an ref for wrapped component instance, use `refs.wrappedComponent` to access. | boolean | false |
 
 ### Note: use wrappedComponentRef instead of withRef after rc-form@1.4.0
@@ -171,8 +174,6 @@ This input's unique name.
 | option.validateTrigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
 | option.rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
 | option.validateFirst | Whether stop validate on first rule of error for this field. | boolean | false |
-| option.fieldNameProp | Where to store the `name` argument of `getFieldProps`. | String | - |
-| option.fieldMetaProp | Where to store the meta data of `getFieldProps`. | String | - |
 | option.validate | | Object[] | - |
 | option.validate[n].trigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
 | option.validate[n].rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
