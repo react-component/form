@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@1.4.8 - React High Order Form Component</title>
+  <title>rc-form@1.5.0 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@1.4.8</h1>
+  <h1>rc-form@1.5.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -888,12 +888,6 @@ export createForm()(Form);</code></pre></div><h2>createForm(formOption): Functio
 <td>{}</td>
 </tr>
 <tr>
-<td>formOption.mapProps</td>
-<td>Get new props transfered to WrappedComponent.</td>
-<td>(props): Object</td>
-<td>props =&gt; props</td>
-</tr>
-<tr>
 <td>formOption.onFieldsChange</td>
 <td>Called when field changed, you can dispatch fields to redux store.</td>
 <td>(props, changedFields): void</td>
@@ -906,10 +900,34 @@ export createForm()(Form);</code></pre></div><h2>createForm(formOption): Functio
 <td>NOOP</td>
 </tr>
 <tr>
+<td>formOption.mapProps</td>
+<td>Get new props transfered to WrappedComponent.</td>
+<td>(props): Object</td>
+<td>props =&gt; props</td>
+</tr>
+<tr>
 <td>formOption.mapPropsToFields</td>
 <td>Convert value from props to fields. Used for read fields from redux store.</td>
 <td>(props): Object</td>
 <td>NOOP</td>
+</tr>
+<tr>
+<td>formOption.fieldNameProp</td>
+<td>Where to store the <code>name</code> argument of <code>getFieldProps</code>.</td>
+<td>String</td>
+<td>-</td>
+</tr>
+<tr>
+<td>formOption.fieldMetaProp</td>
+<td>Where to store the meta data of <code>getFieldProps</code>.</td>
+<td>String</td>
+<td>-</td>
+</tr>
+<tr>
+<td>formOption.fieldDataProp</td>
+<td>Where to store the field data</td>
+<td>String</td>
+<td>-</td>
 </tr>
 <tr>
 <td>formOption.withRef(deprecated)</td>
@@ -999,18 +1017,6 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createFo
 <td>Whether stop validate on first rule of error for this field.</td>
 <td>boolean</td>
 <td>false</td>
-</tr>
-<tr>
-<td>option.fieldNameProp</td>
-<td>Where to store the <code>name</code> argument of <code>getFieldProps</code>.</td>
-<td>String</td>
-<td>-</td>
-</tr>
-<tr>
-<td>option.fieldMetaProp</td>
-<td>Where to store the meta data of <code>getFieldProps</code>.</td>
-<td>String</td>
-<td>-</td>
 </tr>
 <tr>
 <td>option.validate</td>

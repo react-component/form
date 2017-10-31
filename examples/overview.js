@@ -1,5 +1,41 @@
 webpackJsonp([0],{
 
+/***/ 100:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = createChainedFunction;
+/**
+ * Safe chained function
+ *
+ * Will only create a new function if needed,
+ * otherwise will pass back existing functions or null.
+ *
+ * @returns {function|null}
+ */
+function createChainedFunction() {
+  var args = [].slice.call(arguments, 0);
+  if (args.length === 1) {
+    return args[0];
+  }
+
+  return function chainedFunction() {
+    for (var i = 0; i < args.length; i++) {
+      if (args[i] && args[i].apply) {
+        args[i].apply(this, arguments);
+      }
+    }
+  };
+}
+module.exports = exports['default'];
+
+/***/ }),
+
 /***/ 105:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25,11 +61,11 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _isIterable2 = __webpack_require__(195);
+var _isIterable2 = __webpack_require__(196);
 
 var _isIterable3 = _interopRequireDefault(_isIterable2);
 
-var _getIterator2 = __webpack_require__(194);
+var _getIterator2 = __webpack_require__(195);
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
@@ -227,6 +263,8 @@ function getRegion(node) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getOffsetParent__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isAncestorFixed__ = __webpack_require__(117);
+
 
 
 
@@ -271,16 +309,44 @@ function getVisibleRectForElement(element) {
     el = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__getOffsetParent__["a" /* default */])(el);
   }
 
-  // Clip by document's size.
-  var scrollX = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].getWindowScrollLeft(win);
-  var viewportWidth = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].viewportWidth(win);
-  var maxVisibleWidth = Math.max(documentElement.scrollWidth, scrollX + viewportWidth);
-  visibleRect.right = Math.min(visibleRect.right, maxVisibleWidth);
+  // Set element position to fixed
+  // make sure absolute element itself don't affect it's visible area
+  // https://github.com/ant-design/ant-design/issues/7601
+  var originalPosition = null;
+  if (!__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].isWindow(element) && element.nodeType !== 9) {
+    originalPosition = element.style.position;
+    var position = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].css(element, 'position');
+    if (position === 'absolute') {
+      element.style.position = 'fixed';
+    }
+  }
 
+  var scrollX = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].getWindowScrollLeft(win);
   var scrollY = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].getWindowScrollTop(win);
+  var viewportWidth = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].viewportWidth(win);
   var viewportHeight = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].viewportHeight(win);
-  var maxVisibleHeight = Math.max(documentElement.scrollHeight, scrollY + viewportHeight);
-  visibleRect.bottom = Math.min(visibleRect.bottom, maxVisibleHeight);
+  var documentWidth = documentElement.scrollWidth;
+  var documentHeight = documentElement.scrollHeight;
+
+  // Reset element position after calculate the visible area
+  if (element.style) {
+    element.style.position = originalPosition;
+  }
+
+  if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__isAncestorFixed__["a" /* default */])(element)) {
+    // Clip by viewport's size.
+    visibleRect.left = Math.max(visibleRect.left, scrollX);
+    visibleRect.top = Math.max(visibleRect.top, scrollY);
+    visibleRect.right = Math.min(visibleRect.right, scrollX + viewportWidth);
+    visibleRect.bottom = Math.min(visibleRect.bottom, scrollY + viewportHeight);
+  } else {
+    // Clip by document's size.
+    var maxVisibleWidth = Math.max(documentWidth, scrollX + viewportWidth);
+    visibleRect.right = Math.min(visibleRect.right, maxVisibleWidth);
+
+    var maxVisibleHeight = Math.max(documentHeight, scrollY + viewportHeight);
+    visibleRect.bottom = Math.min(visibleRect.bottom, maxVisibleHeight);
+  }
 
   return visibleRect.top >= 0 && visibleRect.left >= 0 && visibleRect.bottom > visibleRect.top && visibleRect.right > visibleRect.left ? visibleRect : null;
 }
@@ -508,6 +574,33 @@ domAlign.__getVisibleRectForElement = __WEBPACK_IMPORTED_MODULE_2__getVisibleRec
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = isAncestorFixed;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(25);
+
+
+function isAncestorFixed(element) {
+  if (__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].isWindow(element) || element.nodeType === 9) {
+    return false;
+  }
+
+  var doc = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].getDocument(element);
+  var body = doc.body;
+  var parent = null;
+  for (parent = element.parentNode; parent && parent !== body; parent = parent.parentNode) {
+    var positionStyle = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */].css(parent, 'position');
+    if (positionStyle === 'fixed') {
+      return true;
+    }
+  }
+  return false;
+}
+
+/***/ }),
+
+/***/ 118:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["e"] = getTransformName;
 /* harmony export (immutable) */ __webpack_exports__["b"] = setTransitionProperty;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getTransitionProperty;
@@ -616,7 +709,7 @@ function setTransformXY(node, xy) {
 
 /***/ }),
 
-/***/ 126:
+/***/ 127:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -646,7 +739,7 @@ var _addEventListener = __webpack_require__(43);
 
 var _addEventListener2 = _interopRequireDefault(_addEventListener);
 
-var _isWindow = __webpack_require__(128);
+var _isWindow = __webpack_require__(129);
 
 var _isWindow2 = _interopRequireDefault(_isWindow);
 
@@ -803,7 +896,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 127:
+/***/ 128:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -813,7 +906,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Align = __webpack_require__(126);
+var _Align = __webpack_require__(127);
 
 var _Align2 = _interopRequireDefault(_Align);
 
@@ -825,7 +918,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 128:
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -841,17 +934,6 @@ function isWindow(obj) {
   return obj != null && obj == obj.window;
 }
 module.exports = exports['default'];
-
-/***/ }),
-
-/***/ 129:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  DATE_ROW_COUNT: 6,
-  DATE_COL_COUNT: 7
-});
 
 /***/ }),
 
@@ -879,15 +961,26 @@ var errorStyle = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  DATE_ROW_COUNT: 6,
+  DATE_COL_COUNT: 7
+});
+
+/***/ }),
+
+/***/ 131:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Calendar__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Calendar__ = __webpack_require__(234);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__Calendar__["a" /* default */]);
 
 /***/ }),
 
-/***/ 131:
+/***/ 132:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -907,7 +1000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_classnames__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__decade_DecadePanel__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__decade_DecadePanel__ = __webpack_require__(244);
 
 
 
@@ -1136,7 +1229,7 @@ YearPanel.defaultProps = {
 
 /***/ }),
 
-/***/ 132:
+/***/ 133:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1162,15 +1255,15 @@ var _KeyCode = __webpack_require__(34);
 
 var _KeyCode2 = _interopRequireDefault(_KeyCode);
 
-var _MonthPanel = __webpack_require__(137);
+var _MonthPanel = __webpack_require__(138);
 
 var _MonthPanel2 = _interopRequireDefault(_MonthPanel);
 
-var _CalendarMixin = __webpack_require__(260);
+var _CalendarMixin = __webpack_require__(261);
 
 var _CalendarMixin2 = _interopRequireDefault(_CalendarMixin);
 
-var _CommonMixin = __webpack_require__(136);
+var _CommonMixin = __webpack_require__(137);
 
 var _CommonMixin2 = _interopRequireDefault(_CommonMixin);
 
@@ -1256,7 +1349,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 133:
+/***/ 134:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1282,7 +1375,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _createChainedFunction = __webpack_require__(99);
+var _createChainedFunction = __webpack_require__(100);
 
 var _createChainedFunction2 = _interopRequireDefault(_createChainedFunction);
 
@@ -1290,7 +1383,7 @@ var _KeyCode = __webpack_require__(34);
 
 var _KeyCode2 = _interopRequireDefault(_KeyCode);
 
-var _placements = __webpack_require__(262);
+var _placements = __webpack_require__(263);
 
 var _placements2 = _interopRequireDefault(_placements);
 
@@ -1500,7 +1593,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 134:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1517,7 +1610,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 135:
+/***/ 136:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1556,7 +1649,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 136:
+/***/ 137:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1570,7 +1663,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _en_US = __webpack_require__(259);
+var _en_US = __webpack_require__(260);
 
 var _en_US2 = _interopRequireDefault(_en_US);
 
@@ -1639,7 +1732,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 137:
+/***/ 138:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1661,11 +1754,11 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _YearPanel = __webpack_require__(138);
+var _YearPanel = __webpack_require__(139);
 
 var _YearPanel2 = _interopRequireDefault(_YearPanel);
 
-var _MonthTable = __webpack_require__(261);
+var _MonthTable = __webpack_require__(262);
 
 var _MonthTable2 = _interopRequireDefault(_MonthTable);
 
@@ -1819,7 +1912,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 138:
+/***/ 139:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1861,7 +1954,7 @@ var _classnames = __webpack_require__(9);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _DecadePanel = __webpack_require__(258);
+var _DecadePanel = __webpack_require__(259);
 
 var _DecadePanel2 = _interopRequireDefault(_DecadePanel);
 
@@ -2086,7 +2179,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 139:
+/***/ 140:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2120,7 +2213,7 @@ var _KeyCode = __webpack_require__(34);
 
 var _KeyCode2 = _interopRequireDefault(_KeyCode);
 
-var _createChainedFunction = __webpack_require__(99);
+var _createChainedFunction = __webpack_require__(100);
 
 var _createChainedFunction2 = _interopRequireDefault(_createChainedFunction);
 
@@ -2134,11 +2227,11 @@ var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
 
 var _util = __webpack_require__(57);
 
-var _DOMWrap = __webpack_require__(264);
+var _DOMWrap = __webpack_require__(265);
 
 var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function allDisabled(arr) {
   if (!arr.length) {
@@ -2190,17 +2283,17 @@ function saveRef(index, subIndex, c) {
 
 var MenuMixin = {
   propTypes: {
-    focusable: _propTypes2["default"].bool,
-    multiple: _propTypes2["default"].bool,
-    style: _propTypes2["default"].object,
-    defaultActiveFirst: _propTypes2["default"].bool,
-    visible: _propTypes2["default"].bool,
-    activeKey: _propTypes2["default"].string,
-    selectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    defaultSelectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    defaultOpenKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    openKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    children: _propTypes2["default"].any
+    focusable: _propTypes2['default'].bool,
+    multiple: _propTypes2['default'].bool,
+    style: _propTypes2['default'].object,
+    defaultActiveFirst: _propTypes2['default'].bool,
+    visible: _propTypes2['default'].bool,
+    activeKey: _propTypes2['default'].string,
+    selectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    defaultSelectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    defaultOpenKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    openKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    children: _propTypes2['default'].any
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -2264,15 +2357,15 @@ var MenuMixin = {
       return 1;
     }
     var activeItem = null;
-    if (keyCode === _KeyCode2["default"].UP || keyCode === _KeyCode2["default"].DOWN) {
-      activeItem = this.step(keyCode === _KeyCode2["default"].UP ? -1 : 1);
+    if (keyCode === _KeyCode2['default'].UP || keyCode === _KeyCode2['default'].DOWN) {
+      activeItem = this.step(keyCode === _KeyCode2['default'].UP ? -1 : 1);
     }
     if (activeItem) {
       e.preventDefault();
       this.setState({
         activeKey: activeItem.props.eventKey
       }, function () {
-        (0, _domScrollIntoView2["default"])(_reactDom2["default"].findDOMNode(activeItem), _reactDom2["default"].findDOMNode(_this), {
+        (0, _domScrollIntoView2['default'])(_reactDom2['default'].findDOMNode(activeItem), _reactDom2['default'].findDOMNode(_this), {
           onlyScrollIfNeeded: true
         });
         if (callback) {
@@ -2343,7 +2436,7 @@ var MenuMixin = {
     var key = (0, _util.getKeyFromChildrenIndex)(child, props.eventKey, i);
     var childProps = child.props;
     var isActive = key === state.activeKey;
-    var newChildProps = (0, _extends3["default"])({
+    var newChildProps = (0, _extends3['default'])({
       mode: props.mode,
       level: props.level,
       inlineIndent: props.inlineIndent,
@@ -2351,7 +2444,7 @@ var MenuMixin = {
       rootPrefixCls: props.prefixCls,
       index: i,
       parentMenu: this,
-      ref: childProps.disabled ? undefined : (0, _createChainedFunction2["default"])(child.ref, saveRef.bind(this, i, subIndex)),
+      ref: childProps.disabled ? undefined : (0, _createChainedFunction2['default'])(child.ref, saveRef.bind(this, i, subIndex)),
       eventKey: key,
       closeSubMenuOnMouseLeave: props.closeSubMenuOnMouseLeave,
       onItemHover: this.onItemHover,
@@ -2368,15 +2461,15 @@ var MenuMixin = {
     if (props.mode === 'inline') {
       newChildProps.closeSubMenuOnMouseLeave = newChildProps.openSubMenuOnMouseEnter = false;
     }
-    return _react2["default"].cloneElement(child, newChildProps);
+    return _react2['default'].cloneElement(child, newChildProps);
   },
   renderRoot: function renderRoot(props) {
     var _classes;
 
     this.instanceArray = [];
-    var classes = (_classes = {}, (0, _defineProperty3["default"])(_classes, props.prefixCls, 1), (0, _defineProperty3["default"])(_classes, props.prefixCls + '-' + props.mode, 1), (0, _defineProperty3["default"])(_classes, props.className, !!props.className), _classes);
+    var classes = (_classes = {}, (0, _defineProperty3['default'])(_classes, props.prefixCls, 1), (0, _defineProperty3['default'])(_classes, props.prefixCls + '-' + props.mode, 1), (0, _defineProperty3['default'])(_classes, props.className, !!props.className), _classes);
     var domProps = {
-      className: (0, _classnames2["default"])(classes),
+      className: (0, _classnames2['default'])(classes),
       role: 'menu',
       'aria-activedescendant': ''
     };
@@ -2390,15 +2483,15 @@ var MenuMixin = {
     return (
       // ESLint is not smart enough to know that the type of `children` was checked.
       /* eslint-disable */
-      _react2["default"].createElement(
-        _DOMWrap2["default"],
-        (0, _extends3["default"])({
+      _react2['default'].createElement(
+        _DOMWrap2['default'],
+        (0, _extends3['default'])({
           style: props.style,
           tag: 'ul',
           hiddenClassName: props.prefixCls + '-hidden',
           visible: props.visible
         }, domProps),
-        _react2["default"].Children.map(props.children, this.renderMenuItem)
+        _react2['default'].Children.map(props.children, this.renderMenuItem)
       )
       /*eslint-enable */
 
@@ -2445,12 +2538,12 @@ var MenuMixin = {
   }
 };
 
-exports["default"] = MenuMixin;
+exports['default'] = MenuMixin;
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 140:
+/***/ 141:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2461,39 +2554,39 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Divider = exports.ItemGroup = exports.MenuItemGroup = exports.MenuItem = exports.Item = exports.SubMenu = undefined;
 
-var _Menu = __webpack_require__(266);
+var _Menu = __webpack_require__(267);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _SubMenu = __webpack_require__(269);
+var _SubMenu = __webpack_require__(270);
 
 var _SubMenu2 = _interopRequireDefault(_SubMenu);
 
-var _MenuItem = __webpack_require__(267);
+var _MenuItem = __webpack_require__(268);
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
-var _MenuItemGroup = __webpack_require__(268);
+var _MenuItemGroup = __webpack_require__(269);
 
 var _MenuItemGroup2 = _interopRequireDefault(_MenuItemGroup);
 
-var _Divider = __webpack_require__(265);
+var _Divider = __webpack_require__(266);
 
 var _Divider2 = _interopRequireDefault(_Divider);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-exports.SubMenu = _SubMenu2["default"];
-exports.Item = _MenuItem2["default"];
-exports.MenuItem = _MenuItem2["default"];
-exports.MenuItemGroup = _MenuItemGroup2["default"];
-exports.ItemGroup = _MenuItemGroup2["default"];
-exports.Divider = _Divider2["default"];
-exports["default"] = _Menu2["default"];
+exports.SubMenu = _SubMenu2['default'];
+exports.Item = _MenuItem2['default'];
+exports.MenuItem = _MenuItem2['default'];
+exports.MenuItemGroup = _MenuItemGroup2['default'];
+exports.ItemGroup = _MenuItemGroup2['default'];
+exports.Divider = _Divider2['default'];
+exports['default'] = _Menu2['default'];
 
 /***/ }),
 
-/***/ 141:
+/***/ 142:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2556,7 +2649,7 @@ var SelectPropTypes = {
 
 /***/ }),
 
-/***/ 142:
+/***/ 143:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2594,11 +2687,11 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Header = __webpack_require__(281);
+var _Header = __webpack_require__(282);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Combobox = __webpack_require__(280);
+var _Combobox = __webpack_require__(281);
 
 var _Combobox2 = _interopRequireDefault(_Combobox);
 
@@ -2786,7 +2879,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 143:
+/***/ 144:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2806,10 +2899,10 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_align__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_align__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_align___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rc_align__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_animate__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__PopupInner__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__PopupInner__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__LazyRenderBox__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__utils__ = __webpack_require__(70);
 
@@ -3056,7 +3149,7 @@ var _initialiseProps = function _initialiseProps() {
 
 /***/ }),
 
-/***/ 144:
+/***/ 145:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3132,7 +3225,7 @@ PopupInner.propTypes = {
 
 /***/ }),
 
-/***/ 145:
+/***/ 146:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3152,7 +3245,7 @@ function mapSelf(children) {
 
 /***/ }),
 
-/***/ 146:
+/***/ 147:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3171,7 +3264,7 @@ function contains(root, n) {
 
 /***/ }),
 
-/***/ 147:
+/***/ 148:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3284,7 +3377,7 @@ module.exports = exports['default'];
 /***/ (function(module, exports) {
 
 //! moment.js
-//! version : 2.18.1
+//! version : 2.19.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -3318,12 +3411,17 @@ function isObject(input) {
 }
 
 function isObjectEmpty(obj) {
-    var k;
-    for (k in obj) {
-        // even if its not own property I'd still call it non-empty
-        return false;
+    if (Object.getOwnPropertyNames) {
+        return (Object.getOwnPropertyNames(obj).length === 0);
+    } else {
+        var k;
+        for (k in obj) {
+            if (obj.hasOwnProperty(k)) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
 }
 
 function isUndefined(input) {
@@ -3417,12 +3515,10 @@ if (Array.prototype.some) {
     };
 }
 
-var some$1 = some;
-
 function isValid(m) {
     if (m._isValid == null) {
         var flags = getParsingFlags(m);
-        var parsedParts = some$1.call(flags.parsedDateParts, function (i) {
+        var parsedParts = some.call(flags.parsedDateParts, function (i) {
             return i != null;
         });
         var isNowValid = !isNaN(m._d.getTime()) &&
@@ -3430,6 +3526,7 @@ function isValid(m) {
             !flags.empty &&
             !flags.invalidMonth &&
             !flags.invalidWeekday &&
+            !flags.weekdayMismatch &&
             !flags.nullInput &&
             !flags.invalidFormat &&
             !flags.userInvalidated &&
@@ -3695,8 +3792,6 @@ if (Object.keys) {
     };
 }
 
-var keys$1 = keys;
-
 var defaultCalendar = {
     sameDay : '[Today at] LT',
     nextDay : '[Tomorrow at] LT',
@@ -3820,56 +3915,6 @@ function getPrioritizedUnits(unitsObj) {
         return a.priority - b.priority;
     });
     return units;
-}
-
-function makeGetSet (unit, keepTime) {
-    return function (value) {
-        if (value != null) {
-            set$1(this, unit, value);
-            hooks.updateOffset(this, keepTime);
-            return this;
-        } else {
-            return get(this, unit);
-        }
-    };
-}
-
-function get (mom, unit) {
-    return mom.isValid() ?
-        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-}
-
-function set$1 (mom, unit, value) {
-    if (mom.isValid()) {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-    }
-}
-
-// MOMENTS
-
-function stringGet (units) {
-    units = normalizeUnits(units);
-    if (isFunction(this[units])) {
-        return this[units]();
-    }
-    return this;
-}
-
-
-function stringSet (units, value) {
-    if (typeof units === 'object') {
-        units = normalizeObjectUnits(units);
-        var prioritized = getPrioritizedUnits(units);
-        for (var i = 0; i < prioritized.length; i++) {
-            this[prioritized[i].unit](units[prioritized[i].unit]);
-        }
-    } else {
-        units = normalizeUnits(units);
-        if (isFunction(this[units])) {
-            return this[units](value);
-        }
-    }
-    return this;
 }
 
 function zeroFill(number, targetLength, forceSign) {
@@ -4062,6 +4107,131 @@ var MILLISECOND = 6;
 var WEEK = 7;
 var WEEKDAY = 8;
 
+// FORMATTING
+
+addFormatToken('Y', 0, 0, function () {
+    var y = this.year();
+    return y <= 9999 ? '' + y : '+' + y;
+});
+
+addFormatToken(0, ['YY', 2], 0, function () {
+    return this.year() % 100;
+});
+
+addFormatToken(0, ['YYYY',   4],       0, 'year');
+addFormatToken(0, ['YYYYY',  5],       0, 'year');
+addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+// ALIASES
+
+addUnitAlias('year', 'y');
+
+// PRIORITIES
+
+addUnitPriority('year', 1);
+
+// PARSING
+
+addRegexToken('Y',      matchSigned);
+addRegexToken('YY',     match1to2, match2);
+addRegexToken('YYYY',   match1to4, match4);
+addRegexToken('YYYYY',  match1to6, match6);
+addRegexToken('YYYYYY', match1to6, match6);
+
+addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+addParseToken('YYYY', function (input, array) {
+    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+});
+addParseToken('YY', function (input, array) {
+    array[YEAR] = hooks.parseTwoDigitYear(input);
+});
+addParseToken('Y', function (input, array) {
+    array[YEAR] = parseInt(input, 10);
+});
+
+// HELPERS
+
+function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+}
+
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
+// HOOKS
+
+hooks.parseTwoDigitYear = function (input) {
+    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+};
+
+// MOMENTS
+
+var getSetYear = makeGetSet('FullYear', true);
+
+function getIsLeapYear () {
+    return isLeapYear(this.year());
+}
+
+function makeGetSet (unit, keepTime) {
+    return function (value) {
+        if (value != null) {
+            set$1(this, unit, value);
+            hooks.updateOffset(this, keepTime);
+            return this;
+        } else {
+            return get(this, unit);
+        }
+    };
+}
+
+function get (mom, unit) {
+    return mom.isValid() ?
+        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+}
+
+function set$1 (mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+        if (unit === 'FullYear' && isLeapYear(mom.year())) {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+        }
+        else {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+        }
+    }
+}
+
+// MOMENTS
+
+function stringGet (units) {
+    units = normalizeUnits(units);
+    if (isFunction(this[units])) {
+        return this[units]();
+    }
+    return this;
+}
+
+
+function stringSet (units, value) {
+    if (typeof units === 'object') {
+        units = normalizeObjectUnits(units);
+        var prioritized = getPrioritizedUnits(units);
+        for (var i = 0; i < prioritized.length; i++) {
+            this[prioritized[i].unit](units[prioritized[i].unit]);
+        }
+    } else {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units](value);
+        }
+    }
+    return this;
+}
+
+function mod(n, x) {
+    return ((n % x) + x) % x;
+}
+
 var indexOf;
 
 if (Array.prototype.indexOf) {
@@ -4079,10 +4249,13 @@ if (Array.prototype.indexOf) {
     };
 }
 
-var indexOf$1 = indexOf;
-
 function daysInMonth(year, month) {
-    return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    if (isNaN(year) || isNaN(month)) {
+        return NaN;
+    }
+    var modMonth = mod(month, 12);
+    year += (month - modMonth) / 12;
+    return modMonth === 1 ? (isLeapYear(year) ? 29 : 28) : (31 - modMonth % 7 % 2);
 }
 
 // FORMATTING
@@ -4171,26 +4344,26 @@ function handleStrictParse(monthName, format, strict) {
 
     if (strict) {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -4347,72 +4520,6 @@ function computeMonthsParse () {
     this._monthsShortRegex = this._monthsRegex;
     this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-}
-
-// FORMATTING
-
-addFormatToken('Y', 0, 0, function () {
-    var y = this.year();
-    return y <= 9999 ? '' + y : '+' + y;
-});
-
-addFormatToken(0, ['YY', 2], 0, function () {
-    return this.year() % 100;
-});
-
-addFormatToken(0, ['YYYY',   4],       0, 'year');
-addFormatToken(0, ['YYYYY',  5],       0, 'year');
-addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-// ALIASES
-
-addUnitAlias('year', 'y');
-
-// PRIORITIES
-
-addUnitPriority('year', 1);
-
-// PARSING
-
-addRegexToken('Y',      matchSigned);
-addRegexToken('YY',     match1to2, match2);
-addRegexToken('YYYY',   match1to4, match4);
-addRegexToken('YYYYY',  match1to6, match6);
-addRegexToken('YYYYYY', match1to6, match6);
-
-addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-addParseToken('YYYY', function (input, array) {
-    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-});
-addParseToken('YY', function (input, array) {
-    array[YEAR] = hooks.parseTwoDigitYear(input);
-});
-addParseToken('Y', function (input, array) {
-    array[YEAR] = parseInt(input, 10);
-});
-
-// HELPERS
-
-function daysInYear(year) {
-    return isLeapYear(year) ? 366 : 365;
-}
-
-function isLeapYear(year) {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-}
-
-// HOOKS
-
-hooks.parseTwoDigitYear = function (input) {
-    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-};
-
-// MOMENTS
-
-var getSetYear = makeGetSet('FullYear', true);
-
-function getIsLeapYear () {
-    return isLeapYear(this.year());
 }
 
 function createDate (y, m, d, h, M, s, ms) {
@@ -4682,48 +4789,48 @@ function handleStrictParse$1(weekdayName, format, strict) {
 
     if (strict) {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -5112,11 +5219,10 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            require('./locale/' + name);
-            // because defineLocale currently also sets the global locale, we
-            // want to undo that for lazy loaded locales
+            var aliasedRequire = require;
+            aliasedRequire('./locale/' + name);
             getSetGlobalLocale(oldLocale);
-        } catch (e) { }
+        } catch (e) {}
     }
     return locales[name];
 }
@@ -5242,7 +5348,7 @@ function getLocale (key) {
 }
 
 function listLocales() {
-    return keys$1(locales);
+    return keys(locales);
 }
 
 function checkOverflow (m) {
@@ -5273,6 +5379,154 @@ function checkOverflow (m) {
     }
 
     return m;
+}
+
+// Pick the first defined of two or three arguments.
+function defaults(a, b, c) {
+    if (a != null) {
+        return a;
+    }
+    if (b != null) {
+        return b;
+    }
+    return c;
+}
+
+function currentDateArray(config) {
+    // hooks is actually the exported moment object
+    var nowValue = new Date(hooks.now());
+    if (config._useUTC) {
+        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+    }
+    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+}
+
+// convert an array to a date.
+// the array should mirror the parameters below
+// note: all values past the year are optional and will default to the lowest possible value.
+// [year, month, day , hour, minute, second, millisecond]
+function configFromArray (config) {
+    var i, date, input = [], currentDate, yearToUse;
+
+    if (config._d) {
+        return;
+    }
+
+    currentDate = currentDateArray(config);
+
+    //compute day of the year from weeks and weekdays
+    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+        dayOfYearFromWeekInfo(config);
+    }
+
+    //if the day of the year is set, figure out what it is
+    if (config._dayOfYear != null) {
+        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
+            getParsingFlags(config)._overflowDayOfYear = true;
+        }
+
+        date = createUTCDate(yearToUse, 0, config._dayOfYear);
+        config._a[MONTH] = date.getUTCMonth();
+        config._a[DATE] = date.getUTCDate();
+    }
+
+    // Default to current date.
+    // * if no year, month, day of month are given, default to today
+    // * if day of month is given, default month and year
+    // * if month is given, default only year
+    // * if year is given, don't default anything
+    for (i = 0; i < 3 && config._a[i] == null; ++i) {
+        config._a[i] = input[i] = currentDate[i];
+    }
+
+    // Zero out whatever was not defaulted, including time
+    for (; i < 7; i++) {
+        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+    }
+
+    // Check for 24:00:00.000
+    if (config._a[HOUR] === 24 &&
+            config._a[MINUTE] === 0 &&
+            config._a[SECOND] === 0 &&
+            config._a[MILLISECOND] === 0) {
+        config._nextDay = true;
+        config._a[HOUR] = 0;
+    }
+
+    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+    // Apply timezone offset from input. The actual utcOffset can be changed
+    // with parseZone.
+    if (config._tzm != null) {
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+    }
+
+    if (config._nextDay) {
+        config._a[HOUR] = 24;
+    }
+
+    // check for mismatching day of week
+    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== config._d.getDay()) {
+        getParsingFlags(config).weekdayMismatch = true;
+    }
+}
+
+function dayOfYearFromWeekInfo(config) {
+    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+
+    w = config._w;
+    if (w.GG != null || w.W != null || w.E != null) {
+        dow = 1;
+        doy = 4;
+
+        // TODO: We need to take the current isoWeekYear, but that depends on
+        // how we interpret now (local, utc, fixed offset). So create
+        // a now version of current config (take local/utc/offset flags, and
+        // create now).
+        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+        week = defaults(w.W, 1);
+        weekday = defaults(w.E, 1);
+        if (weekday < 1 || weekday > 7) {
+            weekdayOverflow = true;
+        }
+    } else {
+        dow = config._locale._week.dow;
+        doy = config._locale._week.doy;
+
+        var curWeek = weekOfYear(createLocal(), dow, doy);
+
+        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+        // Default to current week.
+        week = defaults(w.w, curWeek.week);
+
+        if (w.d != null) {
+            // weekday -- low day numbers are considered next week
+            weekday = w.d;
+            if (weekday < 0 || weekday > 6) {
+                weekdayOverflow = true;
+            }
+        } else if (w.e != null) {
+            // local weekday -- counting starts from begining of week
+            weekday = w.e + dow;
+            if (w.e < 0 || w.e > 6) {
+                weekdayOverflow = true;
+            }
+        } else {
+            // default to begining of week
+            weekday = dow;
+        }
+    }
+    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+        getParsingFlags(config)._overflowWeeks = true;
+    } else if (weekdayOverflow != null) {
+        getParsingFlags(config)._overflowWeekday = true;
+    } else {
+        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+        config._a[YEAR] = temp.year;
+        config._dayOfYear = temp.dayOfYear;
+    }
 }
 
 // iso 8601 regex
@@ -5366,70 +5620,94 @@ function configFromISO(config) {
 }
 
 // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
-var basicRfcRegex = /^((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d?\d\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(?:\d\d)?\d\d\s)(\d\d:\d\d)(\:\d\d)?(\s(?:UT|GMT|[ECMP][SD]T|[A-IK-Za-ik-z]|[+-]\d{4}))$/;
+var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
+function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+    var result = [
+        untruncateYear(yearStr),
+        defaultLocaleMonthsShort.indexOf(monthStr),
+        parseInt(dayStr, 10),
+        parseInt(hourStr, 10),
+        parseInt(minuteStr, 10)
+    ];
+
+    if (secondStr) {
+        result.push(parseInt(secondStr, 10));
+    }
+
+    return result;
+}
+
+function untruncateYear(yearStr) {
+    var year = parseInt(yearStr, 10);
+    if (year <= 49) {
+        return 2000 + year;
+    } else if (year <= 999) {
+        return 1900 + year;
+    }
+    return year;
+}
+
+function preprocessRFC2822(s) {
+    // Remove comments and folding whitespace and replace multiple-spaces with a single space
+    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').trim();
+}
+
+function checkWeekday(weekdayStr, parsedInput, config) {
+    if (weekdayStr) {
+        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+        var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+            weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
+        if (weekdayProvided !== weekdayActual) {
+            getParsingFlags(config).weekdayMismatch = true;
+            config._isValid = false;
+            return false;
+        }
+    }
+    return true;
+}
+
+var obsOffsets = {
+    UT: 0,
+    GMT: 0,
+    EDT: -4 * 60,
+    EST: -5 * 60,
+    CDT: -5 * 60,
+    CST: -6 * 60,
+    MDT: -6 * 60,
+    MST: -7 * 60,
+    PDT: -7 * 60,
+    PST: -8 * 60
+};
+
+function calculateOffset(obsOffset, militaryOffset, numOffset) {
+    if (obsOffset) {
+        return obsOffsets[obsOffset];
+    } else if (militaryOffset) {
+        // the only allowed military tz is Z
+        return 0;
+    } else {
+        var hm = parseInt(numOffset, 10);
+        var m = hm % 100, h = (hm - m) / 100;
+        return h * 60 + m;
+    }
+}
 
 // date and time from ref 2822 format
 function configFromRFC2822(config) {
-    var string, match, dayFormat,
-        dateFormat, timeFormat, tzFormat;
-    var timezones = {
-        ' GMT': ' +0000',
-        ' EDT': ' -0400',
-        ' EST': ' -0500',
-        ' CDT': ' -0500',
-        ' CST': ' -0600',
-        ' MDT': ' -0600',
-        ' MST': ' -0700',
-        ' PDT': ' -0700',
-        ' PST': ' -0800'
-    };
-    var military = 'YXWVUTSRQPONZABCDEFGHIKLM';
-    var timezone, timezoneIndex;
-
-    string = config._i
-        .replace(/\([^\)]*\)|[\n\t]/g, ' ') // Remove comments and folding whitespace
-        .replace(/(\s\s+)/g, ' ') // Replace multiple-spaces with a single space
-        .replace(/^\s|\s$/g, ''); // Remove leading and trailing spaces
-    match = basicRfcRegex.exec(string);
-
+    var match = rfc2822.exec(preprocessRFC2822(config._i));
     if (match) {
-        dayFormat = match[1] ? 'ddd' + ((match[1].length === 5) ? ', ' : ' ') : '';
-        dateFormat = 'D MMM ' + ((match[2].length > 10) ? 'YYYY ' : 'YY ');
-        timeFormat = 'HH:mm' + (match[4] ? ':ss' : '');
-
-        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
-        if (match[1]) { // day of week given
-            var momentDate = new Date(match[2]);
-            var momentDay = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][momentDate.getDay()];
-
-            if (match[1].substr(0,3) !== momentDay) {
-                getParsingFlags(config).weekdayMismatch = true;
-                config._isValid = false;
-                return;
-            }
+        var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+        if (!checkWeekday(match[1], parsedArray, config)) {
+            return;
         }
 
-        switch (match[5].length) {
-            case 2: // military
-                if (timezoneIndex === 0) {
-                    timezone = ' +0000';
-                } else {
-                    timezoneIndex = military.indexOf(match[5][1].toUpperCase()) - 12;
-                    timezone = ((timezoneIndex < 0) ? ' -' : ' +') +
-                        (('' + timezoneIndex).replace(/^-?/, '0')).match(/..$/)[0] + '00';
-                }
-                break;
-            case 4: // Zone
-                timezone = timezones[match[5]];
-                break;
-            default: // UT or +/-9999
-                timezone = timezones[' GMT'];
-        }
-        match[5] = timezone;
-        config._i = match.splice(1).join('');
-        tzFormat = ' ZZ';
-        config._f = dayFormat + dateFormat + timeFormat + tzFormat;
-        configFromStringAndFormat(config);
+        config._a = parsedArray;
+        config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+        config._d = createUTCDate.apply(null, config._a);
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
         getParsingFlags(config).rfc2822 = true;
     } else {
         config._isValid = false;
@@ -5472,149 +5750,6 @@ hooks.createFromInputFallback = deprecate(
         config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
     }
 );
-
-// Pick the first defined of two or three arguments.
-function defaults(a, b, c) {
-    if (a != null) {
-        return a;
-    }
-    if (b != null) {
-        return b;
-    }
-    return c;
-}
-
-function currentDateArray(config) {
-    // hooks is actually the exported moment object
-    var nowValue = new Date(hooks.now());
-    if (config._useUTC) {
-        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
-    }
-    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
-}
-
-// convert an array to a date.
-// the array should mirror the parameters below
-// note: all values past the year are optional and will default to the lowest possible value.
-// [year, month, day , hour, minute, second, millisecond]
-function configFromArray (config) {
-    var i, date, input = [], currentDate, yearToUse;
-
-    if (config._d) {
-        return;
-    }
-
-    currentDate = currentDateArray(config);
-
-    //compute day of the year from weeks and weekdays
-    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
-        dayOfYearFromWeekInfo(config);
-    }
-
-    //if the day of the year is set, figure out what it is
-    if (config._dayOfYear != null) {
-        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
-
-        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
-            getParsingFlags(config)._overflowDayOfYear = true;
-        }
-
-        date = createUTCDate(yearToUse, 0, config._dayOfYear);
-        config._a[MONTH] = date.getUTCMonth();
-        config._a[DATE] = date.getUTCDate();
-    }
-
-    // Default to current date.
-    // * if no year, month, day of month are given, default to today
-    // * if day of month is given, default month and year
-    // * if month is given, default only year
-    // * if year is given, don't default anything
-    for (i = 0; i < 3 && config._a[i] == null; ++i) {
-        config._a[i] = input[i] = currentDate[i];
-    }
-
-    // Zero out whatever was not defaulted, including time
-    for (; i < 7; i++) {
-        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
-    }
-
-    // Check for 24:00:00.000
-    if (config._a[HOUR] === 24 &&
-            config._a[MINUTE] === 0 &&
-            config._a[SECOND] === 0 &&
-            config._a[MILLISECOND] === 0) {
-        config._nextDay = true;
-        config._a[HOUR] = 0;
-    }
-
-    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
-    // Apply timezone offset from input. The actual utcOffset can be changed
-    // with parseZone.
-    if (config._tzm != null) {
-        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-    }
-
-    if (config._nextDay) {
-        config._a[HOUR] = 24;
-    }
-}
-
-function dayOfYearFromWeekInfo(config) {
-    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
-
-    w = config._w;
-    if (w.GG != null || w.W != null || w.E != null) {
-        dow = 1;
-        doy = 4;
-
-        // TODO: We need to take the current isoWeekYear, but that depends on
-        // how we interpret now (local, utc, fixed offset). So create
-        // a now version of current config (take local/utc/offset flags, and
-        // create now).
-        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
-        week = defaults(w.W, 1);
-        weekday = defaults(w.E, 1);
-        if (weekday < 1 || weekday > 7) {
-            weekdayOverflow = true;
-        }
-    } else {
-        dow = config._locale._week.dow;
-        doy = config._locale._week.doy;
-
-        var curWeek = weekOfYear(createLocal(), dow, doy);
-
-        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
-
-        // Default to current week.
-        week = defaults(w.w, curWeek.week);
-
-        if (w.d != null) {
-            // weekday -- low day numbers are considered next week
-            weekday = w.d;
-            if (weekday < 0 || weekday > 6) {
-                weekdayOverflow = true;
-            }
-        } else if (w.e != null) {
-            // local weekday -- counting starts from begining of week
-            weekday = w.e + dow;
-            if (w.e < 0 || w.e > 6) {
-                weekdayOverflow = true;
-            }
-        } else {
-            // default to begining of week
-            weekday = dow;
-        }
-    }
-    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
-        getParsingFlags(config)._overflowWeeks = true;
-    } else if (weekdayOverflow != null) {
-        getParsingFlags(config)._overflowWeekday = true;
-    } else {
-        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
-        config._a[YEAR] = temp.year;
-        config._dayOfYear = temp.dayOfYear;
-    }
-}
 
 // constant that refers to the ISO standard
 hooks.ISO_8601 = function () {};
@@ -5940,7 +6075,7 @@ var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'se
 
 function isDurationValid(m) {
     for (var key in m) {
-        if (!(ordering.indexOf(key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+        if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
             return false;
         }
     }
@@ -5991,7 +6126,7 @@ function Duration (duration) {
     // day when working around DST, we need to store them separately
     this._days = +days +
         weeks * 7;
-    // It is impossible translate months into days without knowing
+    // It is impossible to translate months into days without knowing
     // which months you are are talking about, so we have to store
     // it separately.
     this._months = +months +
@@ -6238,12 +6373,12 @@ function isUtc () {
 }
 
 // ASP.NET json date format regex
-var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
+var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
 // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
 // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
 // and further modified to allow for strings containing both week and day
-var isoRegex = /^(-)?P(?:(-?[0-9,.]*)Y)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)W)?(?:(-?[0-9,.]*)D)?(?:T(?:(-?[0-9,.]*)H)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)S)?)?$/;
+var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
 
 function createDuration (input, key) {
     var duration = input,
@@ -6277,7 +6412,7 @@ function createDuration (input, key) {
             ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
         };
     } else if (!!(match = isoRegex.exec(input))) {
-        sign = (match[1] === '-') ? -1 : 1;
+        sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
         duration = {
             y : parseIso(match[2], sign),
             M : parseIso(match[3], sign),
@@ -6380,14 +6515,14 @@ function addSubtract (mom, duration, isAdding, updateOffset) {
 
     updateOffset = updateOffset == null ? true : updateOffset;
 
-    if (milliseconds) {
-        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+    if (months) {
+        setMonth(mom, get(mom, 'Month') + months * isAdding);
     }
     if (days) {
         set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
     }
-    if (months) {
-        setMonth(mom, get(mom, 'Month') + months * isAdding);
+    if (milliseconds) {
+        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
     }
     if (updateOffset) {
         hooks.updateOffset(mom, days || months);
@@ -6497,22 +6632,18 @@ function diff (input, units, asFloat) {
 
     units = normalizeUnits(units);
 
-    if (units === 'year' || units === 'month' || units === 'quarter') {
-        output = monthDiff(this, that);
-        if (units === 'quarter') {
-            output = output / 3;
-        } else if (units === 'year') {
-            output = output / 12;
-        }
-    } else {
-        delta = this - that;
-        output = units === 'second' ? delta / 1e3 : // 1000
-            units === 'minute' ? delta / 6e4 : // 1000 * 60
-            units === 'hour' ? delta / 36e5 : // 1000 * 60 * 60
-            units === 'day' ? (delta - zoneDelta) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
-            units === 'week' ? (delta - zoneDelta) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
-            delta;
+    switch (units) {
+        case 'year': output = monthDiff(this, that) / 12; break;
+        case 'month': output = monthDiff(this, that); break;
+        case 'quarter': output = monthDiff(this, that) / 3; break;
+        case 'second': output = (this - that) / 1e3; break; // 1000
+        case 'minute': output = (this - that) / 6e4; break; // 1000 * 60
+        case 'hour': output = (this - that) / 36e5; break; // 1000 * 60 * 60
+        case 'day': output = (this - that - zoneDelta) / 864e5; break; // 1000 * 60 * 60 * 24, negate dst
+        case 'week': output = (this - that - zoneDelta) / 6048e5; break; // 1000 * 60 * 60 * 24 * 7, negate dst
+        default: output = this - that;
     }
+
     return asFloat ? output : absFloor(output);
 }
 
@@ -7490,6 +7621,10 @@ var asWeeks        = makeAs('w');
 var asMonths       = makeAs('M');
 var asYears        = makeAs('y');
 
+function clone$1 () {
+    return createDuration(this);
+}
+
 function get$2 (units) {
     units = normalizeUnits(units);
     return this.isValid() ? this[units + 's']() : NaN;
@@ -7599,6 +7734,10 @@ function humanize (withSuffix) {
 
 var abs$1 = Math.abs;
 
+function sign(x) {
+    return ((x > 0) - (x < 0)) || +x;
+}
+
 function toISOString$1() {
     // for ISO strings we do not use the normal bubbling rules:
     //  * milliseconds bubble up until they become hours
@@ -7633,7 +7772,7 @@ function toISOString$1() {
     var D = days;
     var h = hours;
     var m = minutes;
-    var s = seconds;
+    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
     var total = this.asSeconds();
 
     if (!total) {
@@ -7642,15 +7781,19 @@ function toISOString$1() {
         return 'P0D';
     }
 
-    return (total < 0 ? '-' : '') +
-        'P' +
-        (Y ? Y + 'Y' : '') +
-        (M ? M + 'M' : '') +
-        (D ? D + 'D' : '') +
+    var totalSign = total < 0 ? '-' : '';
+    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
+    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
+    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+
+    return totalSign + 'P' +
+        (Y ? ymSign + Y + 'Y' : '') +
+        (M ? ymSign + M + 'M' : '') +
+        (D ? daysSign + D + 'D' : '') +
         ((h || m || s) ? 'T' : '') +
-        (h ? h + 'H' : '') +
-        (m ? m + 'M' : '') +
-        (s ? s + 'S' : '');
+        (h ? hmsSign + h + 'H' : '') +
+        (m ? hmsSign + m + 'M' : '') +
+        (s ? hmsSign + s + 'S' : '');
 }
 
 var proto$2 = Duration.prototype;
@@ -7670,6 +7813,7 @@ proto$2.asMonths       = asMonths;
 proto$2.asYears        = asYears;
 proto$2.valueOf        = valueOf$1;
 proto$2._bubble        = bubble;
+proto$2.clone          = clone$1;
 proto$2.get            = get$2;
 proto$2.milliseconds   = milliseconds;
 proto$2.seconds        = seconds;
@@ -7711,7 +7855,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.18.1';
+hooks.version = '2.19.1';
 
 setHookCallback(createLocal);
 
@@ -7738,7 +7882,7 @@ hooks.updateLocale          = updateLocale;
 hooks.locales               = listLocales;
 hooks.weekdaysShort         = listWeekdaysShort;
 hooks.normalizeUnits        = normalizeUnits;
-hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+hooks.relativeTimeRounding  = getSetRelativeTimeRounding;
 hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
 hooks.calendarFormat        = getCalendarFormat;
 hooks.prototype             = proto;
@@ -7750,7 +7894,7 @@ return hooks;
 
 /***/ }),
 
-/***/ 184:
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7780,15 +7924,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _zh_CN = __webpack_require__(135);
+var _zh_CN = __webpack_require__(136);
 
 var _zh_CN2 = _interopRequireDefault(_zh_CN);
 
-var _rcCalendar = __webpack_require__(130);
+var _rcCalendar = __webpack_require__(131);
 
 var _rcCalendar2 = _interopRequireDefault(_rcCalendar);
 
-var _warning = __webpack_require__(104);
+var _warning = __webpack_require__(76);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -7822,7 +7966,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 185:
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7872,11 +8016,11 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _RangeCalendar = __webpack_require__(249);
+var _RangeCalendar = __webpack_require__(250);
 
 var _RangeCalendar2 = _interopRequireDefault(_RangeCalendar);
 
-var _Picker = __webpack_require__(133);
+var _Picker = __webpack_require__(134);
 
 var _Picker2 = _interopRequireDefault(_Picker);
 
@@ -7888,7 +8032,7 @@ var _icon = __webpack_require__(59);
 
 var _icon2 = _interopRequireDefault(_icon);
 
-var _getLocale = __webpack_require__(79);
+var _getLocale = __webpack_require__(80);
 
 var _warning = __webpack_require__(52);
 
@@ -7962,7 +8106,9 @@ var RangePicker = function (_React$Component) {
             props.onChange(value, [formatValue(value[0], props.format), formatValue(value[1], props.format)]);
         };
         _this.handleOpenChange = function (open) {
-            _this.setState({ open: open });
+            if (!('open' in _this.props)) {
+                _this.setState({ open: open });
+            }
             var onOpenChange = _this.props.onOpenChange;
 
             if (onOpenChange) {
@@ -7994,7 +8140,7 @@ var RangePicker = function (_React$Component) {
                 return _react2['default'].createElement(
                     'a',
                     { key: range, onClick: function onClick() {
-                            return _this.setValue(value);
+                            return _this.setValue(value, true);
                         }, onMouseEnter: function onMouseEnter() {
                             return _this.setState({ hoverValue: value });
                         }, onMouseLeave: _this.clearHoverValue },
@@ -8041,9 +8187,9 @@ var RangePicker = function (_React$Component) {
         }
     }, {
         key: 'setValue',
-        value: function setValue(value) {
+        value: function setValue(value, hidePanel) {
             this.handleChange(value);
-            if (!this.props.showTime) {
+            if ((hidePanel || !this.props.showTime) && !('open' in this.props)) {
                 this.setState({ open: false });
             }
         }
@@ -8154,7 +8300,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 186:
+/***/ 187:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8202,11 +8348,11 @@ var _moment = __webpack_require__(15);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _MonthCalendar = __webpack_require__(132);
+var _MonthCalendar = __webpack_require__(133);
 
 var _MonthCalendar2 = _interopRequireDefault(_MonthCalendar);
 
-var _Picker = __webpack_require__(133);
+var _Picker = __webpack_require__(134);
 
 var _Picker2 = _interopRequireDefault(_Picker);
 
@@ -8222,7 +8368,7 @@ var _icon = __webpack_require__(59);
 
 var _icon2 = _interopRequireDefault(_icon);
 
-var _getLocale = __webpack_require__(79);
+var _getLocale = __webpack_require__(80);
 
 var _warning = __webpack_require__(52);
 
@@ -8356,7 +8502,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 187:
+/***/ 188:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8370,27 +8516,27 @@ var _extends2 = __webpack_require__(3);
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _rcCalendar = __webpack_require__(130);
+var _rcCalendar = __webpack_require__(131);
 
 var _rcCalendar2 = _interopRequireDefault(_rcCalendar);
 
-var _MonthCalendar = __webpack_require__(132);
+var _MonthCalendar = __webpack_require__(133);
 
 var _MonthCalendar2 = _interopRequireDefault(_MonthCalendar);
 
-var _createPicker = __webpack_require__(186);
+var _createPicker = __webpack_require__(187);
 
 var _createPicker2 = _interopRequireDefault(_createPicker);
 
-var _wrapPicker = __webpack_require__(189);
+var _wrapPicker = __webpack_require__(190);
 
 var _wrapPicker2 = _interopRequireDefault(_wrapPicker);
 
-var _RangePicker = __webpack_require__(185);
+var _RangePicker = __webpack_require__(186);
 
 var _RangePicker2 = _interopRequireDefault(_RangePicker);
 
-var _Calendar = __webpack_require__(184);
+var _Calendar = __webpack_require__(185);
 
 var _Calendar2 = _interopRequireDefault(_Calendar);
 
@@ -8408,7 +8554,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 188:
+/***/ 189:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8422,7 +8568,7 @@ var _extends2 = __webpack_require__(3);
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _zh_CN = __webpack_require__(135);
+var _zh_CN = __webpack_require__(136);
 
 var _zh_CN2 = _interopRequireDefault(_zh_CN);
 
@@ -8434,7 +8580,7 @@ var _moment = __webpack_require__(15);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-__webpack_require__(230);
+__webpack_require__(231);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -8457,7 +8603,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 189:
+/***/ 190:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8501,7 +8647,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Panel = __webpack_require__(142);
+var _Panel = __webpack_require__(143);
 
 var _Panel2 = _interopRequireDefault(_Panel);
 
@@ -8509,13 +8655,13 @@ var _classnames = __webpack_require__(9);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _timePicker = __webpack_require__(193);
+var _timePicker = __webpack_require__(194);
 
 var _warning = __webpack_require__(52);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _getLocale = __webpack_require__(79);
+var _getLocale = __webpack_require__(80);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -8575,7 +8721,7 @@ function wrapPicker(Picker, defaultFormat) {
                 var pickerClass = (0, _classnames2['default'])((0, _defineProperty3['default'])({}, prefixCls + '-picker', true));
                 var pickerInputClass = (0, _classnames2['default'])(prefixCls + '-picker-input', inputPrefixCls, (_classNames2 = {}, (0, _defineProperty3['default'])(_classNames2, inputPrefixCls + '-lg', props.size === 'large'), (0, _defineProperty3['default'])(_classNames2, inputPrefixCls + '-sm', props.size === 'small'), (0, _defineProperty3['default'])(_classNames2, inputPrefixCls + '-disabled', props.disabled), _classNames2));
                 var locale = (0, _getLocale.getComponentLocale)(props, this.context, 'DatePicker', function () {
-                    return __webpack_require__(188);
+                    return __webpack_require__(189);
                 });
                 var timeFormat = props.showTime && props.showTime.format || 'HH:mm:ss';
                 var rcTimePickerProps = (0, _extends3['default'])({}, (0, _timePicker.generateShowHourMinuteSecond)(timeFormat), { format: timeFormat, use12Hours: props.showTime && props.showTime.use12Hours });
@@ -8606,76 +8752,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 19:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2014-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = function() {};
-
-if (process.env.NODE_ENV !== 'production') {
-  warning = function(condition, format, args) {
-    var len = arguments.length;
-    args = new Array(len > 2 ? len - 2 : 0);
-    for (var key = 2; key < len; key++) {
-      args[key - 2] = arguments[key];
-    }
-    if (format === undefined) {
-      throw new Error(
-        '`warning(condition, format, ...args)` requires a warning ' +
-        'message argument'
-      );
-    }
-
-    if (format.length < 10 || (/^[s\W]*$/).test(format)) {
-      throw new Error(
-        'The warning format should be able to uniquely identify this ' +
-        'warning. Please, use a more descriptive format than: ' + format
-      );
-    }
-
-    if (!condition) {
-      var argIndex = 0;
-      var message = 'Warning: ' +
-        format.replace(/%s/g, function() {
-          return args[argIndex++];
-        });
-      if (typeof console !== 'undefined') {
-        console.error(message);
-      }
-      try {
-        // This error was thrown as a convenience so that you can use this stack
-        // to find the callsite that caused this warning to fire.
-        throw new Error(message);
-      } catch(x) {}
-    }
-  };
-}
-
-module.exports = warning;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ }),
-
-/***/ 190:
+/***/ 191:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8742,7 +8819,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 191:
+/***/ 192:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8784,7 +8861,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _rcSelect = __webpack_require__(277);
+var _rcSelect = __webpack_require__(278);
 
 var _rcSelect2 = _interopRequireDefault(_rcSelect);
 
@@ -8899,7 +8976,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 193:
+/***/ 194:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8943,7 +9020,7 @@ var _moment = __webpack_require__(15);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _TimePicker = __webpack_require__(283);
+var _TimePicker = __webpack_require__(284);
 
 var _TimePicker2 = _interopRequireDefault(_TimePicker);
 
@@ -8951,7 +9028,7 @@ var _classnames = __webpack_require__(9);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _injectLocale = __webpack_require__(190);
+var _injectLocale = __webpack_require__(191);
 
 var _injectLocale2 = _interopRequireDefault(_injectLocale);
 
@@ -9076,13 +9153,6 @@ exports['default'] = injectTimePickerLocale(TimePicker);
 
 /***/ }),
 
-/***/ 194:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(197), __esModule: true };
-
-/***/ }),
-
 /***/ 195:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9090,13 +9160,10 @@ module.exports = { "default": __webpack_require__(198), __esModule: true };
 
 /***/ }),
 
-/***/ 197:
+/***/ 196:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(110);
-__webpack_require__(98);
-module.exports = __webpack_require__(216);
-
+module.exports = { "default": __webpack_require__(199), __esModule: true };
 
 /***/ }),
 
@@ -9104,17 +9171,27 @@ module.exports = __webpack_require__(216);
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(110);
-__webpack_require__(98);
+__webpack_require__(99);
 module.exports = __webpack_require__(217);
 
 
 /***/ }),
 
-/***/ 216:
+/***/ 199:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(110);
+__webpack_require__(99);
+module.exports = __webpack_require__(218);
+
+
+/***/ }),
+
+/***/ 217:
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(62);
-var get = __webpack_require__(215);
+var get = __webpack_require__(216);
 module.exports = __webpack_require__(35).getIterator = function (it) {
   var iterFn = get(it);
   if (typeof iterFn != 'function') throw TypeError(it + ' is not iterable!');
@@ -9124,12 +9201,12 @@ module.exports = __webpack_require__(35).getIterator = function (it) {
 
 /***/ }),
 
-/***/ 217:
+/***/ 218:
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(199);
+var classof = __webpack_require__(200);
 var ITERATOR = __webpack_require__(41)('iterator');
-var Iterators = __webpack_require__(84);
+var Iterators = __webpack_require__(85);
 module.exports = __webpack_require__(35).isIterable = function (it) {
   var O = Object(it);
   return O[ITERATOR] !== undefined
@@ -9141,7 +9218,7 @@ module.exports = __webpack_require__(35).isIterable = function (it) {
 
 /***/ }),
 
-/***/ 230:
+/***/ 231:
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9258,7 +9335,7 @@ return zhCn;
 
 /***/ }),
 
-/***/ 233:
+/***/ 234:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9273,12 +9350,12 @@ return zhCn;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_util_es_KeyCode__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__date_DateTable__ = __webpack_require__(242);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__calendar_CalendarHeader__ = __webpack_require__(235);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__calendar_CalendarFooter__ = __webpack_require__(234);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__mixin_CalendarMixin__ = __webpack_require__(245);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__mixin_CommonMixin__ = __webpack_require__(246);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__date_DateInput__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__date_DateTable__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__calendar_CalendarHeader__ = __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__calendar_CalendarFooter__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__mixin_CalendarMixin__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__mixin_CommonMixin__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__date_DateInput__ = __webpack_require__(240);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__util__ = __webpack_require__(50);
 
 
@@ -9502,16 +9579,26 @@ var Calendar = __WEBPACK_IMPORTED_MODULE_3_create_react_class___default()({
 
     var disabledTimeConfig = showTimePicker && disabledTime && timePicker ? __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["c" /* getTimeConfig */])(selectedValue, disabledTime) : null;
 
-    var timePickerEle = timePicker && showTimePicker ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.cloneElement(timePicker, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({
-      showHour: true,
-      showSecond: true,
-      showMinute: true
-    }, timePicker.props, disabledTimeConfig, {
-      onChange: this.onDateInputChange,
-      defaultOpenValue: timePicker.props.defaultValue,
-      value: selectedValue,
-      disabledTime: disabledTime
-    })) : null;
+    var timePickerEle = null;
+
+    if (timePicker && showTimePicker) {
+      var timePickerProps = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({
+        showHour: true,
+        showSecond: true,
+        showMinute: true
+      }, timePicker.props, disabledTimeConfig, {
+        onChange: this.onDateInputChange,
+        value: selectedValue,
+        disabledTime: disabledTime
+      });
+
+      if (timePicker.props.defaultValue !== undefined) {
+        timePickerProps.defaultOpenValue = timePicker.props.defaultValue;
+      }
+
+      timePickerEle = __WEBPACK_IMPORTED_MODULE_1_react___default.a.cloneElement(timePicker, timePickerProps);
+    }
+
     var dateInputElement = props.showDateInput ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__date_DateInput__["a" /* default */], {
       format: this.getFormat(),
       key: 'date-input',
@@ -9597,7 +9684,7 @@ var Calendar = __WEBPACK_IMPORTED_MODULE_3_create_react_class___default()({
 
 /***/ }),
 
-/***/ 234:
+/***/ 235:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9613,12 +9700,12 @@ var Calendar = __WEBPACK_IMPORTED_MODULE_3_create_react_class___default()({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_create_react_class__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_es_Children_mapSelf__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_es_Children_mapSelf__ = __webpack_require__(146);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_classnames__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__calendar_TodayButton__ = __webpack_require__(238);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__calendar_OkButton__ = __webpack_require__(236);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__calendar_TimePickerButton__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__calendar_TodayButton__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__calendar_OkButton__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__calendar_TimePickerButton__ = __webpack_require__(238);
 
 
 
@@ -9703,7 +9790,7 @@ var CalendarFooter = __WEBPACK_IMPORTED_MODULE_4_create_react_class___default()(
 
 /***/ }),
 
-/***/ 235:
+/***/ 236:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9713,9 +9800,9 @@ var CalendarFooter = __WEBPACK_IMPORTED_MODULE_4_create_react_class___default()(
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__month_MonthPanel__ = __webpack_require__(247);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__year_YearPanel__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_util_es_Children_mapSelf__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__month_MonthPanel__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__year_YearPanel__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_util_es_Children_mapSelf__ = __webpack_require__(146);
 
 
 
@@ -9932,7 +10019,7 @@ var CalendarHeader = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()(
 
 /***/ }),
 
-/***/ 236:
+/***/ 237:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9964,7 +10051,7 @@ function OkButton(_ref) {
 
 /***/ }),
 
-/***/ 237:
+/***/ 238:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10007,7 +10094,7 @@ function TimePickerButton(_ref) {
 
 /***/ }),
 
-/***/ 238:
+/***/ 239:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10046,7 +10133,7 @@ function TodayButton(_ref) {
 
 /***/ }),
 
-/***/ 239:
+/***/ 240:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10199,7 +10286,7 @@ var DateInput = __WEBPACK_IMPORTED_MODULE_2_create_react_class___default()({
 
 /***/ }),
 
-/***/ 240:
+/***/ 241:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10213,7 +10300,7 @@ var DateInput = __WEBPACK_IMPORTED_MODULE_2_create_react_class___default()({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DateConstants__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DateConstants__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util___ = __webpack_require__(50);
 
 
@@ -10468,7 +10555,7 @@ var DateTBody = __WEBPACK_IMPORTED_MODULE_2_create_react_class___default()({
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10482,7 +10569,7 @@ var DateTBody = __WEBPACK_IMPORTED_MODULE_2_create_react_class___default()({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DateConstants__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DateConstants__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
 
@@ -10571,7 +10658,7 @@ var DateTHead = function (_React$Component) {
 
 /***/ }),
 
-/***/ 242:
+/***/ 243:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10585,8 +10672,8 @@ var DateTHead = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DateTHead__ = __webpack_require__(241);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__DateTBody__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__DateTHead__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__DateTBody__ = __webpack_require__(241);
 
 
 
@@ -10626,7 +10713,7 @@ var DateTable = function (_React$Component) {
 
 /***/ }),
 
-/***/ 243:
+/***/ 244:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10824,7 +10911,7 @@ DecadePanel.defaultProps = {
 
 /***/ }),
 
-/***/ 244:
+/***/ 245:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10858,7 +10945,7 @@ DecadePanel.defaultProps = {
 
 /***/ }),
 
-/***/ 245:
+/***/ 246:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10990,13 +11077,13 @@ var CalendarMixin = {
 
 /***/ }),
 
-/***/ 246:
+/***/ 247:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale_en_US__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale_en_US__ = __webpack_require__(245);
 
 
 
@@ -11062,7 +11149,7 @@ function noop() {}
 
 /***/ }),
 
-/***/ 247:
+/***/ 248:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11072,8 +11159,8 @@ function noop() {}
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_create_react_class__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__year_YearPanel__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__MonthTable__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__year_YearPanel__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__MonthTable__ = __webpack_require__(249);
 
 
 
@@ -11227,7 +11314,7 @@ var MonthPanel = __WEBPACK_IMPORTED_MODULE_1_create_react_class___default()({
 
 /***/ }),
 
-/***/ 248:
+/***/ 249:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11415,634 +11502,11 @@ MonthTable.propTypes = {
 
 /***/ }),
 
-/***/ 249:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends2 = __webpack_require__(3);
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _defineProperty2 = __webpack_require__(10);
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _toConsumableArray2 = __webpack_require__(196);
-
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
-var _slicedToArray2 = __webpack_require__(106);
-
-var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _createReactClass = __webpack_require__(11);
-
-var _createReactClass2 = _interopRequireDefault(_createReactClass);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _moment = __webpack_require__(15);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _classnames2 = __webpack_require__(9);
-
-var _classnames3 = _interopRequireDefault(_classnames2);
-
-var _CalendarPart = __webpack_require__(263);
-
-var _CalendarPart2 = _interopRequireDefault(_CalendarPart);
-
-var _TodayButton = __webpack_require__(253);
-
-var _TodayButton2 = _interopRequireDefault(_TodayButton);
-
-var _OkButton = __webpack_require__(251);
-
-var _OkButton2 = _interopRequireDefault(_OkButton);
-
-var _TimePickerButton = __webpack_require__(252);
-
-var _TimePickerButton2 = _interopRequireDefault(_TimePickerButton);
-
-var _CommonMixin = __webpack_require__(136);
-
-var _CommonMixin2 = _interopRequireDefault(_CommonMixin);
-
-var _util = __webpack_require__(39);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function noop() {}
-
-function isEmptyArray(arr) {
-  return Array.isArray(arr) && (arr.length === 0 || arr.every(function (i) {
-    return !i;
-  }));
-}
-
-function getValueFromSelectedValue(selectedValue) {
-  var _selectedValue = (0, _slicedToArray3['default'])(selectedValue, 2),
-      start = _selectedValue[0],
-      end = _selectedValue[1];
-
-  var newEnd = end && end.isSame(start, 'month') ? end.clone().add(1, 'month') : end;
-  return [start, newEnd];
-}
-
-function normalizeAnchor(props, init) {
-  var selectedValue = props.selectedValue || init && props.defaultSelectedValue;
-  var value = props.value || init && props.defaultValue;
-  var normalizedValue = value ? getValueFromSelectedValue(value) : getValueFromSelectedValue(selectedValue);
-  return !isEmptyArray(normalizedValue) ? normalizedValue : init && [(0, _moment2['default'])(), (0, _moment2['default'])().add(1, 'months')];
-}
-
-function generateOptions(length) {
-  var arr = [];
-  for (var value = 0; value < length; value++) {
-    arr.push(value);
-  }
-  return arr;
-}
-
-function onInputSelect(direction, value) {
-  if (!value) {
-    return;
-  }
-  var originalValue = this.state.selectedValue;
-  var selectedValue = originalValue.concat();
-  var index = direction === 'left' ? 0 : 1;
-  selectedValue[index] = value;
-  if (selectedValue[0] && this.compare(selectedValue[0], selectedValue[1]) > 0) {
-    selectedValue[1 - index] = this.state.showTimePicker ? selectedValue[index] : undefined;
-  }
-  this.fireSelectValueChange(selectedValue);
-}
-
-var RangeCalendar = (0, _createReactClass2['default'])({
-  displayName: 'RangeCalendar',
-
-  propTypes: {
-    prefixCls: _propTypes2['default'].string,
-    dateInputPlaceholder: _propTypes2['default'].any,
-    defaultValue: _propTypes2['default'].any,
-    value: _propTypes2['default'].any,
-    hoverValue: _propTypes2['default'].any,
-    timePicker: _propTypes2['default'].any,
-    showOk: _propTypes2['default'].bool,
-    showToday: _propTypes2['default'].bool,
-    defaultSelectedValue: _propTypes2['default'].array,
-    selectedValue: _propTypes2['default'].array,
-    onOk: _propTypes2['default'].func,
-    showClear: _propTypes2['default'].bool,
-    locale: _propTypes2['default'].object,
-    onChange: _propTypes2['default'].func,
-    onSelect: _propTypes2['default'].func,
-    onValueChange: _propTypes2['default'].func,
-    onHoverChange: _propTypes2['default'].func,
-    format: _propTypes2['default'].oneOfType([_propTypes2['default'].object, _propTypes2['default'].string]),
-    onClear: _propTypes2['default'].func,
-    type: _propTypes2['default'].any,
-    disabledDate: _propTypes2['default'].func,
-    disabledTime: _propTypes2['default'].func
-  },
-
-  mixins: [_CommonMixin2['default']],
-
-  getDefaultProps: function getDefaultProps() {
-    return {
-      type: 'both',
-      defaultSelectedValue: [],
-      onValueChange: noop,
-      onHoverChange: noop,
-      disabledTime: noop,
-      showToday: true
-    };
-  },
-  getInitialState: function getInitialState() {
-    var props = this.props;
-    var selectedValue = props.selectedValue || props.defaultSelectedValue;
-    var value = normalizeAnchor(props, 1);
-    return {
-      selectedValue: selectedValue,
-      prevSelectedValue: selectedValue,
-      firstSelectedValue: null,
-      hoverValue: props.hoverValue || [],
-      value: value,
-      showTimePicker: false,
-      isStartMonthYearPanelShow: false,
-      isEndMonthYearPanelShow: false
-    };
-  },
-  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    var newState = {};
-    if ('value' in nextProps) {
-      newState.value = normalizeAnchor(nextProps, 0);
-      this.setState(newState);
-    }
-    if ('hoverValue' in nextProps) {
-      this.setState({ hoverValue: nextProps.hoverValue });
-    }
-    if ('selectedValue' in nextProps) {
-      newState.selectedValue = nextProps.selectedValue;
-      newState.prevSelectedValue = nextProps.selectedValue;
-      this.setState(newState);
-    }
-  },
-  onDatePanelEnter: function onDatePanelEnter() {
-    if (this.hasSelectedValue()) {
-      this.fireHoverValueChange(this.state.selectedValue.concat());
-    }
-  },
-  onDatePanelLeave: function onDatePanelLeave() {
-    if (this.hasSelectedValue()) {
-      this.fireHoverValueChange([]);
-    }
-  },
-  onSelect: function onSelect(value) {
-    var type = this.props.type;
-    var _state = this.state,
-        selectedValue = _state.selectedValue,
-        prevSelectedValue = _state.prevSelectedValue,
-        firstSelectedValue = _state.firstSelectedValue;
-
-    var nextSelectedValue = void 0;
-    if (type === 'both') {
-      if (!firstSelectedValue) {
-        (0, _util.syncTime)(prevSelectedValue[0], value);
-        nextSelectedValue = [value];
-      } else if (this.compare(firstSelectedValue, value) < 0) {
-        (0, _util.syncTime)(prevSelectedValue[1], value);
-        nextSelectedValue = [firstSelectedValue, value];
-      } else {
-        (0, _util.syncTime)(prevSelectedValue[0], value);
-        (0, _util.syncTime)(prevSelectedValue[1], firstSelectedValue);
-        nextSelectedValue = [value, firstSelectedValue];
-      }
-    } else if (type === 'start') {
-      (0, _util.syncTime)(prevSelectedValue[0], value);
-      var endValue = selectedValue[1];
-      nextSelectedValue = endValue && this.compare(endValue, value) > 0 ? [value, endValue] : [value];
-    } else {
-      // type === 'end'
-      var startValue = selectedValue[0];
-      if (startValue && this.compare(startValue, value) <= 0) {
-        (0, _util.syncTime)(prevSelectedValue[1], value);
-        nextSelectedValue = [startValue, value];
-      } else {
-        (0, _util.syncTime)(prevSelectedValue[0], value);
-        nextSelectedValue = [value];
-      }
-    }
-
-    this.fireSelectValueChange(nextSelectedValue);
-  },
-  onDayHover: function onDayHover(value) {
-    var hoverValue = [];
-    var _state2 = this.state,
-        selectedValue = _state2.selectedValue,
-        firstSelectedValue = _state2.firstSelectedValue;
-    var type = this.props.type;
-
-    if (type === 'start' && selectedValue[1]) {
-      hoverValue = this.compare(value, selectedValue[1]) < 0 ? [value, selectedValue[1]] : [value];
-    } else if (type === 'end' && selectedValue[0]) {
-      hoverValue = this.compare(value, selectedValue[0]) > 0 ? [selectedValue[0], value] : [];
-    } else {
-      if (!firstSelectedValue) {
-        return;
-      }
-      hoverValue = this.compare(value, firstSelectedValue) < 0 ? [value, firstSelectedValue] : [firstSelectedValue, value];
-    }
-    this.fireHoverValueChange(hoverValue);
-  },
-  onToday: function onToday() {
-    var startValue = (0, _util.getTodayTime)(this.state.value[0]);
-    var endValue = startValue.clone().add(1, 'months');
-    this.setState({ value: [startValue, endValue] });
-  },
-  onOpenTimePicker: function onOpenTimePicker() {
-    this.setState({
-      showTimePicker: true
-    });
-  },
-  onCloseTimePicker: function onCloseTimePicker() {
-    this.setState({
-      showTimePicker: false
-    });
-  },
-  onOk: function onOk() {
-    var selectedValue = this.state.selectedValue;
-
-    if (this.isAllowedDateAndTime(selectedValue)) {
-      this.props.onOk(this.state.selectedValue);
-    }
-  },
-  onStartInputSelect: function onStartInputSelect() {
-    for (var _len = arguments.length, oargs = Array(_len), _key = 0; _key < _len; _key++) {
-      oargs[_key] = arguments[_key];
-    }
-
-    var args = ['left'].concat(oargs);
-    return onInputSelect.apply(this, args);
-  },
-  onEndInputSelect: function onEndInputSelect() {
-    for (var _len2 = arguments.length, oargs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      oargs[_key2] = arguments[_key2];
-    }
-
-    var args = ['right'].concat(oargs);
-    return onInputSelect.apply(this, args);
-  },
-  onStartValueChange: function onStartValueChange(leftValue) {
-    var value = [].concat((0, _toConsumableArray3['default'])(this.state.value));
-    value[0] = leftValue;
-    return this.fireValueChange(value);
-  },
-  onEndValueChange: function onEndValueChange(rightValue) {
-    var value = [].concat((0, _toConsumableArray3['default'])(this.state.value));
-    value[1] = rightValue;
-    return this.fireValueChange(value);
-  },
-  onStartPanelChange: function onStartPanelChange(_ref) {
-    var showMonthPanel = _ref.showMonthPanel,
-        showYearPanel = _ref.showYearPanel;
-
-    this.setState({ isStartMonthYearPanelShow: showMonthPanel || showYearPanel });
-  },
-  onEndPanelChange: function onEndPanelChange(_ref2) {
-    var showMonthPanel = _ref2.showMonthPanel,
-        showYearPanel = _ref2.showYearPanel;
-
-    this.setState({ isEndMonthYearPanelShow: showMonthPanel || showYearPanel });
-  },
-  getStartValue: function getStartValue() {
-    var value = this.state.value[0];
-    var selectedValue = this.state.selectedValue;
-    // keep selectedTime when select date
-    if (selectedValue[0] && this.props.timePicker) {
-      value = value.clone();
-      (0, _util.syncTime)(selectedValue[0], value);
-    }
-    if (this.state.showTimePicker && selectedValue[0]) {
-      return selectedValue[0];
-    }
-    return value;
-  },
-  getEndValue: function getEndValue() {
-    var _state3 = this.state,
-        value = _state3.value,
-        selectedValue = _state3.selectedValue,
-        showTimePicker = _state3.showTimePicker;
-
-    var endValue = value[1] ? value[1].clone() : value[0].clone().add(1, 'month');
-    // keep selectedTime when select date
-    if (selectedValue[1] && this.props.timePicker) {
-      (0, _util.syncTime)(selectedValue[1], endValue);
-    }
-    if (showTimePicker) {
-      return selectedValue[1] ? selectedValue[1] : this.getStartValue();
-    }
-    return endValue;
-  },
-
-  // get disabled hours for second picker
-  getEndDisableTime: function getEndDisableTime() {
-    var _state4 = this.state,
-        selectedValue = _state4.selectedValue,
-        value = _state4.value;
-
-    var startValue = selectedValue && selectedValue[0] || value[0].clone();
-    // if startTime and endTime is same day..
-    // the second time picker will not able to pick time before first time picker
-    if (!selectedValue[1] || startValue.isSame(selectedValue[1], 'day')) {
-      var hours = startValue.hour();
-      var minutes = startValue.minute();
-      var second = startValue.second();
-      var _disabledHours = generateOptions(hours);
-      var _disabledMinutes = generateOptions(minutes);
-      var _disabledSeconds = generateOptions(second);
-      return {
-        disabledHours: function disabledHours() {
-          return _disabledHours;
-        },
-        disabledMinutes: function disabledMinutes(hour) {
-          if (hour === hours) {
-            return _disabledMinutes;
-          }
-          return [];
-        },
-        disabledSeconds: function disabledSeconds(hour, minute) {
-          if (hour === hours && minute === minutes) {
-            return _disabledSeconds;
-          }
-          return [];
-        }
-      };
-    }
-    return null;
-  },
-  isAllowedDateAndTime: function isAllowedDateAndTime(selectedValue) {
-    return (0, _util.isAllowedDate)(selectedValue[0], this.props.disabledDate, this.disabledStartTime) && (0, _util.isAllowedDate)(selectedValue[1], this.props.disabledDate, this.disabledEndTime);
-  },
-  hasSelectedValue: function hasSelectedValue() {
-    var selectedValue = this.state.selectedValue;
-
-    return !!selectedValue[1] && !!selectedValue[0];
-  },
-  compare: function compare(v1, v2) {
-    if (this.props.timePicker) {
-      return v1.diff(v2);
-    }
-    return v1.diff(v2, 'days');
-  },
-  fireSelectValueChange: function fireSelectValueChange(selectedValue, direct) {
-    var timePicker = this.props.timePicker;
-    var prevSelectedValue = this.state.prevSelectedValue;
-
-    if (timePicker && timePicker.props.defaultValue) {
-      var timePickerDefaultValue = timePicker.props.defaultValue;
-      if (!prevSelectedValue[0] && selectedValue[0]) {
-        (0, _util.syncTime)(timePickerDefaultValue[0], selectedValue[0]);
-      }
-      if (!prevSelectedValue[1] && selectedValue[1]) {
-        (0, _util.syncTime)(timePickerDefaultValue[1], selectedValue[1]);
-      }
-    }
-
-    if (!('selectedValue' in this.props)) {
-      this.setState({
-        selectedValue: selectedValue
-      });
-    }
-
-    // 尚未选择过时间，直接输入的话
-    if (!this.state.selectedValue[0] || !this.state.selectedValue[1]) {
-      var startValue = selectedValue[0] || (0, _moment2['default'])();
-      var endValue = selectedValue[1] || startValue.clone().add(1, 'months');
-      this.setState({
-        selectedValue: selectedValue,
-        value: getValueFromSelectedValue([startValue, endValue])
-      });
-    }
-
-    if (selectedValue[0] && !selectedValue[1]) {
-      this.setState({ firstSelectedValue: selectedValue[0] });
-      this.fireHoverValueChange(selectedValue.concat());
-    }
-    this.props.onChange(selectedValue);
-    if (direct || selectedValue[0] && selectedValue[1]) {
-      this.setState({
-        prevSelectedValue: selectedValue,
-        firstSelectedValue: null
-      });
-      this.fireHoverValueChange([]);
-      this.props.onSelect(selectedValue);
-    }
-  },
-  fireValueChange: function fireValueChange(value) {
-    var props = this.props;
-    if (!('value' in props)) {
-      this.setState({
-        value: value
-      });
-    }
-    props.onValueChange(value);
-  },
-  fireHoverValueChange: function fireHoverValueChange(hoverValue) {
-    var props = this.props;
-    if (!('hoverValue' in props)) {
-      this.setState({ hoverValue: hoverValue });
-    }
-    props.onHoverChange(hoverValue);
-  },
-  clear: function clear() {
-    this.fireSelectValueChange([], true);
-    this.props.onClear();
-  },
-  disabledStartTime: function disabledStartTime(time) {
-    return this.props.disabledTime(time, 'start');
-  },
-  disabledEndTime: function disabledEndTime(time) {
-    return this.props.disabledTime(time, 'end');
-  },
-  disabledStartMonth: function disabledStartMonth(month) {
-    var value = this.state.value;
-
-    return month.isSameOrAfter(value[1], 'month');
-  },
-  disabledEndMonth: function disabledEndMonth(month) {
-    var value = this.state.value;
-
-    return month.isSameOrBefore(value[0], 'month');
-  },
-  render: function render() {
-    var _className, _classnames;
-
-    var props = this.props;
-    var state = this.state;
-    var showTimePicker = state.showTimePicker,
-        isStartMonthYearPanelShow = state.isStartMonthYearPanelShow,
-        isEndMonthYearPanelShow = state.isEndMonthYearPanelShow;
-    var prefixCls = props.prefixCls,
-        dateInputPlaceholder = props.dateInputPlaceholder,
-        timePicker = props.timePicker,
-        showOk = props.showOk,
-        locale = props.locale,
-        showClear = props.showClear,
-        showToday = props.showToday,
-        type = props.type;
-    var hoverValue = state.hoverValue,
-        selectedValue = state.selectedValue;
-
-    var className = (_className = {}, (0, _defineProperty3['default'])(_className, props.className, !!props.className), (0, _defineProperty3['default'])(_className, prefixCls, 1), (0, _defineProperty3['default'])(_className, prefixCls + '-hidden', !props.visible), (0, _defineProperty3['default'])(_className, prefixCls + '-range', 1), (0, _defineProperty3['default'])(_className, prefixCls + '-show-time-picker', showTimePicker), (0, _defineProperty3['default'])(_className, prefixCls + '-week-number', props.showWeekNumber), _className);
-    var classes = (0, _classnames3['default'])(className);
-    var newProps = {
-      selectedValue: state.selectedValue,
-      onSelect: this.onSelect,
-      onDayHover: type === 'start' && selectedValue[1] || type === 'end' && selectedValue[0] || !!hoverValue.length ? this.onDayHover : undefined
-    };
-
-    var placeholder1 = void 0;
-    var placeholder2 = void 0;
-
-    if (dateInputPlaceholder) {
-      if (Array.isArray(dateInputPlaceholder)) {
-        var _dateInputPlaceholder = (0, _slicedToArray3['default'])(dateInputPlaceholder, 2);
-
-        placeholder1 = _dateInputPlaceholder[0];
-        placeholder2 = _dateInputPlaceholder[1];
-      } else {
-        placeholder1 = placeholder2 = dateInputPlaceholder;
-      }
-    }
-    var showOkButton = showOk === true || showOk !== false && !!timePicker;
-    var cls = (0, _classnames3['default'])((_classnames = {}, (0, _defineProperty3['default'])(_classnames, prefixCls + '-footer', true), (0, _defineProperty3['default'])(_classnames, prefixCls + '-range-bottom', true), (0, _defineProperty3['default'])(_classnames, prefixCls + '-footer-show-ok', showOkButton), _classnames));
-
-    var startValue = this.getStartValue();
-    var endValue = this.getEndValue();
-    var todayTime = (0, _util.getTodayTime)(startValue);
-    var thisMonth = todayTime.month();
-    var thisYear = todayTime.year();
-    var isTodayInView = startValue.year() === thisYear && startValue.month() === thisMonth || endValue.year() === thisYear && endValue.month() === thisMonth;
-    var nextMonthOfStart = startValue.clone().add(1, 'months');
-    var isClosestMonths = nextMonthOfStart.year() === endValue.year() && nextMonthOfStart.month() === endValue.month();
-    return _react2['default'].createElement(
-      'div',
-      {
-        ref: this.saveRoot,
-        className: classes,
-        style: props.style,
-        tabIndex: '0'
-      },
-      props.renderSidebar(),
-      _react2['default'].createElement(
-        'div',
-        { className: prefixCls + '-panel' },
-        showClear && selectedValue[0] && selectedValue[1] ? _react2['default'].createElement('a', {
-          className: prefixCls + '-clear-btn',
-          role: 'button',
-          title: locale.clear,
-          onClick: this.clear
-        }) : null,
-        _react2['default'].createElement(
-          'div',
-          {
-            className: prefixCls + '-date-panel',
-            onMouseLeave: type !== 'both' ? this.onDatePanelLeave : undefined,
-            onMouseEnter: type !== 'both' ? this.onDatePanelEnter : undefined
-          },
-          _react2['default'].createElement(_CalendarPart2['default'], (0, _extends3['default'])({}, props, newProps, {
-            hoverValue: hoverValue,
-            direction: 'left',
-            disabledTime: this.disabledStartTime,
-            disabledMonth: this.disabledStartMonth,
-            format: this.getFormat(),
-            value: startValue,
-            placeholder: placeholder1,
-            onInputSelect: this.onStartInputSelect,
-            onValueChange: this.onStartValueChange,
-            onPanelChange: this.onStartPanelChange,
-            timePicker: timePicker,
-            showTimePicker: showTimePicker,
-            enablePrev: true,
-            enableNext: !isClosestMonths || isEndMonthYearPanelShow
-          })),
-          _react2['default'].createElement(
-            'span',
-            { className: prefixCls + '-range-middle' },
-            '~'
-          ),
-          _react2['default'].createElement(_CalendarPart2['default'], (0, _extends3['default'])({}, props, newProps, {
-            hoverValue: hoverValue,
-            direction: 'right',
-            format: this.getFormat(),
-            timePickerDisabledTime: this.getEndDisableTime(),
-            placeholder: placeholder2,
-            value: endValue,
-            onInputSelect: this.onEndInputSelect,
-            onValueChange: this.onEndValueChange,
-            onPanelChange: this.onEndPanelChange,
-            timePicker: timePicker,
-            showTimePicker: showTimePicker,
-            disabledTime: this.disabledEndTime,
-            disabledMonth: this.disabledEndMonth,
-            enablePrev: !isClosestMonths || isStartMonthYearPanelShow,
-            enableNext: true
-          }))
-        ),
-        _react2['default'].createElement(
-          'div',
-          { className: cls },
-          props.renderFooter(),
-          showToday || props.timePicker || showOkButton ? _react2['default'].createElement(
-            'div',
-            { className: prefixCls + '-footer-btn' },
-            showToday ? _react2['default'].createElement(_TodayButton2['default'], (0, _extends3['default'])({}, props, {
-              disabled: isTodayInView,
-              value: state.value[0],
-              onToday: this.onToday,
-              text: locale.backToToday
-            })) : null,
-            props.timePicker ? _react2['default'].createElement(_TimePickerButton2['default'], (0, _extends3['default'])({}, props, {
-              showTimePicker: showTimePicker,
-              onOpenTimePicker: this.onOpenTimePicker,
-              onCloseTimePicker: this.onCloseTimePicker,
-              timePickerDisabled: !this.hasSelectedValue() || hoverValue.length
-            })) : null,
-            showOkButton ? _react2['default'].createElement(_OkButton2['default'], (0, _extends3['default'])({}, props, {
-              onOk: this.onOk,
-              okDisabled: !this.isAllowedDateAndTime(selectedValue) || !this.hasSelectedValue() || hoverValue.length
-            })) : null
-          ) : null
-        )
-      )
-    );
-  }
-});
-
-exports['default'] = RangeCalendar;
-module.exports = exports['default'];
-
-/***/ }),
-
 /***/ 25:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__propertyUtils__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__propertyUtils__ = __webpack_require__(118);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 
@@ -12620,6 +12084,22 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends2 = __webpack_require__(3);
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _defineProperty2 = __webpack_require__(10);
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _toConsumableArray2 = __webpack_require__(197);
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _slicedToArray2 = __webpack_require__(106);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -12632,15 +12112,622 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _MonthPanel = __webpack_require__(137);
+var _moment = __webpack_require__(15);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _classnames2 = __webpack_require__(9);
+
+var _classnames3 = _interopRequireDefault(_classnames2);
+
+var _CalendarPart = __webpack_require__(264);
+
+var _CalendarPart2 = _interopRequireDefault(_CalendarPart);
+
+var _TodayButton = __webpack_require__(254);
+
+var _TodayButton2 = _interopRequireDefault(_TodayButton);
+
+var _OkButton = __webpack_require__(252);
+
+var _OkButton2 = _interopRequireDefault(_OkButton);
+
+var _TimePickerButton = __webpack_require__(253);
+
+var _TimePickerButton2 = _interopRequireDefault(_TimePickerButton);
+
+var _CommonMixin = __webpack_require__(137);
+
+var _CommonMixin2 = _interopRequireDefault(_CommonMixin);
+
+var _util = __webpack_require__(39);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function noop() {}
+
+function isEmptyArray(arr) {
+  return Array.isArray(arr) && (arr.length === 0 || arr.every(function (i) {
+    return !i;
+  }));
+}
+
+function getValueFromSelectedValue(selectedValue) {
+  var _selectedValue = (0, _slicedToArray3['default'])(selectedValue, 2),
+      start = _selectedValue[0],
+      end = _selectedValue[1];
+
+  var newEnd = end && end.isSame(start, 'month') ? end.clone().add(1, 'month') : end;
+  return [start, newEnd];
+}
+
+function normalizeAnchor(props, init) {
+  var selectedValue = props.selectedValue || init && props.defaultSelectedValue;
+  var value = props.value || init && props.defaultValue;
+  var normalizedValue = value ? getValueFromSelectedValue(value) : getValueFromSelectedValue(selectedValue);
+  return !isEmptyArray(normalizedValue) ? normalizedValue : init && [(0, _moment2['default'])(), (0, _moment2['default'])().add(1, 'months')];
+}
+
+function generateOptions(length) {
+  var arr = [];
+  for (var value = 0; value < length; value++) {
+    arr.push(value);
+  }
+  return arr;
+}
+
+function onInputSelect(direction, value) {
+  if (!value) {
+    return;
+  }
+  var originalValue = this.state.selectedValue;
+  var selectedValue = originalValue.concat();
+  var index = direction === 'left' ? 0 : 1;
+  selectedValue[index] = value;
+  if (selectedValue[0] && this.compare(selectedValue[0], selectedValue[1]) > 0) {
+    selectedValue[1 - index] = this.state.showTimePicker ? selectedValue[index] : undefined;
+  }
+  this.fireSelectValueChange(selectedValue);
+}
+
+var RangeCalendar = (0, _createReactClass2['default'])({
+  displayName: 'RangeCalendar',
+
+  propTypes: {
+    prefixCls: _propTypes2['default'].string,
+    dateInputPlaceholder: _propTypes2['default'].any,
+    defaultValue: _propTypes2['default'].any,
+    value: _propTypes2['default'].any,
+    hoverValue: _propTypes2['default'].any,
+    timePicker: _propTypes2['default'].any,
+    showOk: _propTypes2['default'].bool,
+    showToday: _propTypes2['default'].bool,
+    defaultSelectedValue: _propTypes2['default'].array,
+    selectedValue: _propTypes2['default'].array,
+    onOk: _propTypes2['default'].func,
+    showClear: _propTypes2['default'].bool,
+    locale: _propTypes2['default'].object,
+    onChange: _propTypes2['default'].func,
+    onSelect: _propTypes2['default'].func,
+    onValueChange: _propTypes2['default'].func,
+    onHoverChange: _propTypes2['default'].func,
+    format: _propTypes2['default'].oneOfType([_propTypes2['default'].object, _propTypes2['default'].string]),
+    onClear: _propTypes2['default'].func,
+    type: _propTypes2['default'].any,
+    disabledDate: _propTypes2['default'].func,
+    disabledTime: _propTypes2['default'].func
+  },
+
+  mixins: [_CommonMixin2['default']],
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      type: 'both',
+      defaultSelectedValue: [],
+      onValueChange: noop,
+      onHoverChange: noop,
+      disabledTime: noop,
+      showToday: true
+    };
+  },
+  getInitialState: function getInitialState() {
+    var props = this.props;
+    var selectedValue = props.selectedValue || props.defaultSelectedValue;
+    var value = normalizeAnchor(props, 1);
+    return {
+      selectedValue: selectedValue,
+      prevSelectedValue: selectedValue,
+      firstSelectedValue: null,
+      hoverValue: props.hoverValue || [],
+      value: value,
+      showTimePicker: false,
+      isStartMonthYearPanelShow: false,
+      isEndMonthYearPanelShow: false
+    };
+  },
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    var newState = {};
+    if ('value' in nextProps) {
+      newState.value = normalizeAnchor(nextProps, 0);
+      this.setState(newState);
+    }
+    if ('hoverValue' in nextProps) {
+      this.setState({ hoverValue: nextProps.hoverValue });
+    }
+    if ('selectedValue' in nextProps) {
+      newState.selectedValue = nextProps.selectedValue;
+      newState.prevSelectedValue = nextProps.selectedValue;
+      this.setState(newState);
+    }
+  },
+  onDatePanelEnter: function onDatePanelEnter() {
+    if (this.hasSelectedValue()) {
+      this.fireHoverValueChange(this.state.selectedValue.concat());
+    }
+  },
+  onDatePanelLeave: function onDatePanelLeave() {
+    if (this.hasSelectedValue()) {
+      this.fireHoverValueChange([]);
+    }
+  },
+  onSelect: function onSelect(value) {
+    var type = this.props.type;
+    var _state = this.state,
+        selectedValue = _state.selectedValue,
+        prevSelectedValue = _state.prevSelectedValue,
+        firstSelectedValue = _state.firstSelectedValue;
+
+    var nextSelectedValue = void 0;
+    if (type === 'both') {
+      if (!firstSelectedValue) {
+        (0, _util.syncTime)(prevSelectedValue[0], value);
+        nextSelectedValue = [value];
+      } else if (this.compare(firstSelectedValue, value) < 0) {
+        (0, _util.syncTime)(prevSelectedValue[1], value);
+        nextSelectedValue = [firstSelectedValue, value];
+      } else {
+        (0, _util.syncTime)(prevSelectedValue[0], value);
+        (0, _util.syncTime)(prevSelectedValue[1], firstSelectedValue);
+        nextSelectedValue = [value, firstSelectedValue];
+      }
+    } else if (type === 'start') {
+      (0, _util.syncTime)(prevSelectedValue[0], value);
+      var endValue = selectedValue[1];
+      nextSelectedValue = endValue && this.compare(endValue, value) > 0 ? [value, endValue] : [value];
+    } else {
+      // type === 'end'
+      var startValue = selectedValue[0];
+      if (startValue && this.compare(startValue, value) <= 0) {
+        (0, _util.syncTime)(prevSelectedValue[1], value);
+        nextSelectedValue = [startValue, value];
+      } else {
+        (0, _util.syncTime)(prevSelectedValue[0], value);
+        nextSelectedValue = [value];
+      }
+    }
+
+    this.fireSelectValueChange(nextSelectedValue);
+  },
+  onDayHover: function onDayHover(value) {
+    var hoverValue = [];
+    var _state2 = this.state,
+        selectedValue = _state2.selectedValue,
+        firstSelectedValue = _state2.firstSelectedValue;
+    var type = this.props.type;
+
+    if (type === 'start' && selectedValue[1]) {
+      hoverValue = this.compare(value, selectedValue[1]) < 0 ? [value, selectedValue[1]] : [value];
+    } else if (type === 'end' && selectedValue[0]) {
+      hoverValue = this.compare(value, selectedValue[0]) > 0 ? [selectedValue[0], value] : [];
+    } else {
+      if (!firstSelectedValue) {
+        return;
+      }
+      hoverValue = this.compare(value, firstSelectedValue) < 0 ? [value, firstSelectedValue] : [firstSelectedValue, value];
+    }
+    this.fireHoverValueChange(hoverValue);
+  },
+  onToday: function onToday() {
+    var startValue = (0, _util.getTodayTime)(this.state.value[0]);
+    var endValue = startValue.clone().add(1, 'months');
+    this.setState({ value: [startValue, endValue] });
+  },
+  onOpenTimePicker: function onOpenTimePicker() {
+    this.setState({
+      showTimePicker: true
+    });
+  },
+  onCloseTimePicker: function onCloseTimePicker() {
+    this.setState({
+      showTimePicker: false
+    });
+  },
+  onOk: function onOk() {
+    var selectedValue = this.state.selectedValue;
+
+    if (this.isAllowedDateAndTime(selectedValue)) {
+      this.props.onOk(this.state.selectedValue);
+    }
+  },
+  onStartInputSelect: function onStartInputSelect() {
+    for (var _len = arguments.length, oargs = Array(_len), _key = 0; _key < _len; _key++) {
+      oargs[_key] = arguments[_key];
+    }
+
+    var args = ['left'].concat(oargs);
+    return onInputSelect.apply(this, args);
+  },
+  onEndInputSelect: function onEndInputSelect() {
+    for (var _len2 = arguments.length, oargs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      oargs[_key2] = arguments[_key2];
+    }
+
+    var args = ['right'].concat(oargs);
+    return onInputSelect.apply(this, args);
+  },
+  onStartValueChange: function onStartValueChange(leftValue) {
+    var value = [].concat((0, _toConsumableArray3['default'])(this.state.value));
+    value[0] = leftValue;
+    return this.fireValueChange(value);
+  },
+  onEndValueChange: function onEndValueChange(rightValue) {
+    var value = [].concat((0, _toConsumableArray3['default'])(this.state.value));
+    value[1] = rightValue;
+    return this.fireValueChange(value);
+  },
+  onStartPanelChange: function onStartPanelChange(_ref) {
+    var showMonthPanel = _ref.showMonthPanel,
+        showYearPanel = _ref.showYearPanel;
+
+    this.setState({ isStartMonthYearPanelShow: showMonthPanel || showYearPanel });
+  },
+  onEndPanelChange: function onEndPanelChange(_ref2) {
+    var showMonthPanel = _ref2.showMonthPanel,
+        showYearPanel = _ref2.showYearPanel;
+
+    this.setState({ isEndMonthYearPanelShow: showMonthPanel || showYearPanel });
+  },
+  getStartValue: function getStartValue() {
+    var value = this.state.value[0];
+    var selectedValue = this.state.selectedValue;
+    // keep selectedTime when select date
+    if (selectedValue[0] && this.props.timePicker) {
+      value = value.clone();
+      (0, _util.syncTime)(selectedValue[0], value);
+    }
+    if (this.state.showTimePicker && selectedValue[0]) {
+      return selectedValue[0];
+    }
+    return value;
+  },
+  getEndValue: function getEndValue() {
+    var _state3 = this.state,
+        value = _state3.value,
+        selectedValue = _state3.selectedValue,
+        showTimePicker = _state3.showTimePicker;
+
+    var endValue = value[1] ? value[1].clone() : value[0].clone().add(1, 'month');
+    // keep selectedTime when select date
+    if (selectedValue[1] && this.props.timePicker) {
+      (0, _util.syncTime)(selectedValue[1], endValue);
+    }
+    if (showTimePicker) {
+      return selectedValue[1] ? selectedValue[1] : this.getStartValue();
+    }
+    return endValue;
+  },
+
+  // get disabled hours for second picker
+  getEndDisableTime: function getEndDisableTime() {
+    var _state4 = this.state,
+        selectedValue = _state4.selectedValue,
+        value = _state4.value;
+
+    var startValue = selectedValue && selectedValue[0] || value[0].clone();
+    // if startTime and endTime is same day..
+    // the second time picker will not able to pick time before first time picker
+    if (!selectedValue[1] || startValue.isSame(selectedValue[1], 'day')) {
+      var hours = startValue.hour();
+      var minutes = startValue.minute();
+      var second = startValue.second();
+      var _disabledHours = generateOptions(hours);
+      var _disabledMinutes = generateOptions(minutes);
+      var _disabledSeconds = generateOptions(second);
+      return {
+        disabledHours: function disabledHours() {
+          return _disabledHours;
+        },
+        disabledMinutes: function disabledMinutes(hour) {
+          if (hour === hours) {
+            return _disabledMinutes;
+          }
+          return [];
+        },
+        disabledSeconds: function disabledSeconds(hour, minute) {
+          if (hour === hours && minute === minutes) {
+            return _disabledSeconds;
+          }
+          return [];
+        }
+      };
+    }
+    return null;
+  },
+  isAllowedDateAndTime: function isAllowedDateAndTime(selectedValue) {
+    return (0, _util.isAllowedDate)(selectedValue[0], this.props.disabledDate, this.disabledStartTime) && (0, _util.isAllowedDate)(selectedValue[1], this.props.disabledDate, this.disabledEndTime);
+  },
+  hasSelectedValue: function hasSelectedValue() {
+    var selectedValue = this.state.selectedValue;
+
+    return !!selectedValue[1] && !!selectedValue[0];
+  },
+  compare: function compare(v1, v2) {
+    if (this.props.timePicker) {
+      return v1.diff(v2);
+    }
+    return v1.diff(v2, 'days');
+  },
+  fireSelectValueChange: function fireSelectValueChange(selectedValue, direct) {
+    var timePicker = this.props.timePicker;
+    var prevSelectedValue = this.state.prevSelectedValue;
+
+    if (timePicker && timePicker.props.defaultValue) {
+      var timePickerDefaultValue = timePicker.props.defaultValue;
+      if (!prevSelectedValue[0] && selectedValue[0]) {
+        (0, _util.syncTime)(timePickerDefaultValue[0], selectedValue[0]);
+      }
+      if (!prevSelectedValue[1] && selectedValue[1]) {
+        (0, _util.syncTime)(timePickerDefaultValue[1], selectedValue[1]);
+      }
+    }
+
+    if (!('selectedValue' in this.props)) {
+      this.setState({
+        selectedValue: selectedValue
+      });
+    }
+
+    // 尚未选择过时间，直接输入的话
+    if (!this.state.selectedValue[0] || !this.state.selectedValue[1]) {
+      var startValue = selectedValue[0] || (0, _moment2['default'])();
+      var endValue = selectedValue[1] || startValue.clone().add(1, 'months');
+      this.setState({
+        selectedValue: selectedValue,
+        value: getValueFromSelectedValue([startValue, endValue])
+      });
+    }
+
+    if (selectedValue[0] && !selectedValue[1]) {
+      this.setState({ firstSelectedValue: selectedValue[0] });
+      this.fireHoverValueChange(selectedValue.concat());
+    }
+    this.props.onChange(selectedValue);
+    if (direct || selectedValue[0] && selectedValue[1]) {
+      this.setState({
+        prevSelectedValue: selectedValue,
+        firstSelectedValue: null
+      });
+      this.fireHoverValueChange([]);
+      this.props.onSelect(selectedValue);
+    }
+  },
+  fireValueChange: function fireValueChange(value) {
+    var props = this.props;
+    if (!('value' in props)) {
+      this.setState({
+        value: value
+      });
+    }
+    props.onValueChange(value);
+  },
+  fireHoverValueChange: function fireHoverValueChange(hoverValue) {
+    var props = this.props;
+    if (!('hoverValue' in props)) {
+      this.setState({ hoverValue: hoverValue });
+    }
+    props.onHoverChange(hoverValue);
+  },
+  clear: function clear() {
+    this.fireSelectValueChange([], true);
+    this.props.onClear();
+  },
+  disabledStartTime: function disabledStartTime(time) {
+    return this.props.disabledTime(time, 'start');
+  },
+  disabledEndTime: function disabledEndTime(time) {
+    return this.props.disabledTime(time, 'end');
+  },
+  disabledStartMonth: function disabledStartMonth(month) {
+    var value = this.state.value;
+
+    return month.isSameOrAfter(value[1], 'month');
+  },
+  disabledEndMonth: function disabledEndMonth(month) {
+    var value = this.state.value;
+
+    return month.isSameOrBefore(value[0], 'month');
+  },
+  render: function render() {
+    var _className, _classnames;
+
+    var props = this.props;
+    var state = this.state;
+    var showTimePicker = state.showTimePicker,
+        isStartMonthYearPanelShow = state.isStartMonthYearPanelShow,
+        isEndMonthYearPanelShow = state.isEndMonthYearPanelShow;
+    var prefixCls = props.prefixCls,
+        dateInputPlaceholder = props.dateInputPlaceholder,
+        timePicker = props.timePicker,
+        showOk = props.showOk,
+        locale = props.locale,
+        showClear = props.showClear,
+        showToday = props.showToday,
+        type = props.type;
+    var hoverValue = state.hoverValue,
+        selectedValue = state.selectedValue;
+
+    var className = (_className = {}, (0, _defineProperty3['default'])(_className, props.className, !!props.className), (0, _defineProperty3['default'])(_className, prefixCls, 1), (0, _defineProperty3['default'])(_className, prefixCls + '-hidden', !props.visible), (0, _defineProperty3['default'])(_className, prefixCls + '-range', 1), (0, _defineProperty3['default'])(_className, prefixCls + '-show-time-picker', showTimePicker), (0, _defineProperty3['default'])(_className, prefixCls + '-week-number', props.showWeekNumber), _className);
+    var classes = (0, _classnames3['default'])(className);
+    var newProps = {
+      selectedValue: state.selectedValue,
+      onSelect: this.onSelect,
+      onDayHover: type === 'start' && selectedValue[1] || type === 'end' && selectedValue[0] || !!hoverValue.length ? this.onDayHover : undefined
+    };
+
+    var placeholder1 = void 0;
+    var placeholder2 = void 0;
+
+    if (dateInputPlaceholder) {
+      if (Array.isArray(dateInputPlaceholder)) {
+        var _dateInputPlaceholder = (0, _slicedToArray3['default'])(dateInputPlaceholder, 2);
+
+        placeholder1 = _dateInputPlaceholder[0];
+        placeholder2 = _dateInputPlaceholder[1];
+      } else {
+        placeholder1 = placeholder2 = dateInputPlaceholder;
+      }
+    }
+    var showOkButton = showOk === true || showOk !== false && !!timePicker;
+    var cls = (0, _classnames3['default'])((_classnames = {}, (0, _defineProperty3['default'])(_classnames, prefixCls + '-footer', true), (0, _defineProperty3['default'])(_classnames, prefixCls + '-range-bottom', true), (0, _defineProperty3['default'])(_classnames, prefixCls + '-footer-show-ok', showOkButton), _classnames));
+
+    var startValue = this.getStartValue();
+    var endValue = this.getEndValue();
+    var todayTime = (0, _util.getTodayTime)(startValue);
+    var thisMonth = todayTime.month();
+    var thisYear = todayTime.year();
+    var isTodayInView = startValue.year() === thisYear && startValue.month() === thisMonth || endValue.year() === thisYear && endValue.month() === thisMonth;
+    var nextMonthOfStart = startValue.clone().add(1, 'months');
+    var isClosestMonths = nextMonthOfStart.year() === endValue.year() && nextMonthOfStart.month() === endValue.month();
+    return _react2['default'].createElement(
+      'div',
+      {
+        ref: this.saveRoot,
+        className: classes,
+        style: props.style,
+        tabIndex: '0'
+      },
+      props.renderSidebar(),
+      _react2['default'].createElement(
+        'div',
+        { className: prefixCls + '-panel' },
+        showClear && selectedValue[0] && selectedValue[1] ? _react2['default'].createElement('a', {
+          className: prefixCls + '-clear-btn',
+          role: 'button',
+          title: locale.clear,
+          onClick: this.clear
+        }) : null,
+        _react2['default'].createElement(
+          'div',
+          {
+            className: prefixCls + '-date-panel',
+            onMouseLeave: type !== 'both' ? this.onDatePanelLeave : undefined,
+            onMouseEnter: type !== 'both' ? this.onDatePanelEnter : undefined
+          },
+          _react2['default'].createElement(_CalendarPart2['default'], (0, _extends3['default'])({}, props, newProps, {
+            hoverValue: hoverValue,
+            direction: 'left',
+            disabledTime: this.disabledStartTime,
+            disabledMonth: this.disabledStartMonth,
+            format: this.getFormat(),
+            value: startValue,
+            placeholder: placeholder1,
+            onInputSelect: this.onStartInputSelect,
+            onValueChange: this.onStartValueChange,
+            onPanelChange: this.onStartPanelChange,
+            timePicker: timePicker,
+            showTimePicker: showTimePicker,
+            enablePrev: true,
+            enableNext: !isClosestMonths || isEndMonthYearPanelShow
+          })),
+          _react2['default'].createElement(
+            'span',
+            { className: prefixCls + '-range-middle' },
+            '~'
+          ),
+          _react2['default'].createElement(_CalendarPart2['default'], (0, _extends3['default'])({}, props, newProps, {
+            hoverValue: hoverValue,
+            direction: 'right',
+            format: this.getFormat(),
+            timePickerDisabledTime: this.getEndDisableTime(),
+            placeholder: placeholder2,
+            value: endValue,
+            onInputSelect: this.onEndInputSelect,
+            onValueChange: this.onEndValueChange,
+            onPanelChange: this.onEndPanelChange,
+            timePicker: timePicker,
+            showTimePicker: showTimePicker,
+            disabledTime: this.disabledEndTime,
+            disabledMonth: this.disabledEndMonth,
+            enablePrev: !isClosestMonths || isStartMonthYearPanelShow,
+            enableNext: true
+          }))
+        ),
+        _react2['default'].createElement(
+          'div',
+          { className: cls },
+          props.renderFooter(),
+          showToday || props.timePicker || showOkButton ? _react2['default'].createElement(
+            'div',
+            { className: prefixCls + '-footer-btn' },
+            showToday ? _react2['default'].createElement(_TodayButton2['default'], (0, _extends3['default'])({}, props, {
+              disabled: isTodayInView,
+              value: state.value[0],
+              onToday: this.onToday,
+              text: locale.backToToday
+            })) : null,
+            props.timePicker ? _react2['default'].createElement(_TimePickerButton2['default'], (0, _extends3['default'])({}, props, {
+              showTimePicker: showTimePicker,
+              onOpenTimePicker: this.onOpenTimePicker,
+              onCloseTimePicker: this.onCloseTimePicker,
+              timePickerDisabled: !this.hasSelectedValue() || hoverValue.length
+            })) : null,
+            showOkButton ? _react2['default'].createElement(_OkButton2['default'], (0, _extends3['default'])({}, props, {
+              onOk: this.onOk,
+              okDisabled: !this.isAllowedDateAndTime(selectedValue) || !this.hasSelectedValue() || hoverValue.length
+            })) : null
+          ) : null
+        )
+      )
+    );
+  }
+});
+
+exports['default'] = RangeCalendar;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 251:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _createReactClass = __webpack_require__(11);
+
+var _createReactClass2 = _interopRequireDefault(_createReactClass);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _MonthPanel = __webpack_require__(138);
 
 var _MonthPanel2 = _interopRequireDefault(_MonthPanel);
 
-var _YearPanel = __webpack_require__(138);
+var _YearPanel = __webpack_require__(139);
 
 var _YearPanel2 = _interopRequireDefault(_YearPanel);
 
-var _mapSelf = __webpack_require__(286);
+var _mapSelf = __webpack_require__(287);
 
 var _mapSelf2 = _interopRequireDefault(_mapSelf);
 
@@ -12856,7 +12943,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 251:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12897,7 +12984,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 252:
+/***/ 253:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12952,7 +13039,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 253:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13000,7 +13087,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 254:
+/***/ 255:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13166,7 +13253,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 255:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13196,7 +13283,7 @@ var _classnames = __webpack_require__(9);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _DateConstants = __webpack_require__(134);
+var _DateConstants = __webpack_require__(135);
 
 var _DateConstants2 = _interopRequireDefault(_DateConstants);
 
@@ -13450,7 +13537,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 256:
+/***/ 257:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13480,7 +13567,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _DateConstants = __webpack_require__(134);
+var _DateConstants = __webpack_require__(135);
 
 var _DateConstants2 = _interopRequireDefault(_DateConstants);
 
@@ -13567,7 +13654,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 257:
+/***/ 258:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13597,11 +13684,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _DateTHead = __webpack_require__(256);
+var _DateTHead = __webpack_require__(257);
 
 var _DateTHead2 = _interopRequireDefault(_DateTHead);
 
-var _DateTBody = __webpack_require__(255);
+var _DateTBody = __webpack_require__(256);
 
 var _DateTBody2 = _interopRequireDefault(_DateTBody);
 
@@ -13636,7 +13723,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 258:
+/***/ 259:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13851,7 +13938,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 259:
+/***/ 260:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13891,7 +13978,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 260:
+/***/ 261:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14036,7 +14123,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 261:
+/***/ 262:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14239,7 +14326,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 262:
+/***/ 263:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14287,7 +14374,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 263:
+/***/ 264:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14313,15 +14400,15 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _CalendarHeader = __webpack_require__(250);
+var _CalendarHeader = __webpack_require__(251);
 
 var _CalendarHeader2 = _interopRequireDefault(_CalendarHeader);
 
-var _DateTable = __webpack_require__(257);
+var _DateTable = __webpack_require__(258);
 
 var _DateTable2 = _interopRequireDefault(_DateTable);
 
-var _DateInput = __webpack_require__(254);
+var _DateInput = __webpack_require__(255);
 
 var _DateInput2 = _interopRequireDefault(_DateInput);
 
@@ -14446,7 +14533,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 264:
+/***/ 265:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14472,15 +14559,15 @@ var _createReactClass = __webpack_require__(11);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var DOMWrap = (0, _createReactClass2["default"])({
+var DOMWrap = (0, _createReactClass2['default'])({
   displayName: 'DOMWrap',
 
   propTypes: {
-    tag: _propTypes2["default"].string,
-    hiddenClassName: _propTypes2["default"].string,
-    visible: _propTypes2["default"].bool
+    tag: _propTypes2['default'].string,
+    hiddenClassName: _propTypes2['default'].string,
+    visible: _propTypes2['default'].bool
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -14489,7 +14576,7 @@ var DOMWrap = (0, _createReactClass2["default"])({
     };
   },
   render: function render() {
-    var props = (0, _extends3["default"])({}, this.props);
+    var props = (0, _extends3['default'])({}, this.props);
     if (!props.visible) {
       props.className = props.className || '';
       props.className += ' ' + props.hiddenClassName;
@@ -14498,64 +14585,11 @@ var DOMWrap = (0, _createReactClass2["default"])({
     delete props.tag;
     delete props.hiddenClassName;
     delete props.visible;
-    return _react2["default"].createElement(Tag, props);
+    return _react2['default'].createElement(Tag, props);
   }
 });
 
-exports["default"] = DOMWrap;
-module.exports = exports['default'];
-
-/***/ }),
-
-/***/ 265:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _createReactClass = __webpack_require__(11);
-
-var _createReactClass2 = _interopRequireDefault(_createReactClass);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var Divider = (0, _createReactClass2["default"])({
-  displayName: 'Divider',
-
-  propTypes: {
-    disabled: _propTypes2["default"].bool,
-    className: _propTypes2["default"].string,
-    rootPrefixCls: _propTypes2["default"].string
-  },
-
-  getDefaultProps: function getDefaultProps() {
-    return {
-      disabled: true
-    };
-  },
-  render: function render() {
-    var _props = this.props,
-        _props$className = _props.className,
-        className = _props$className === undefined ? '' : _props$className,
-        rootPrefixCls = _props.rootPrefixCls;
-
-    return _react2["default"].createElement('li', { className: className + ' ' + rootPrefixCls + '-item-divider' });
-  }
-});
-
-exports["default"] = Divider;
+exports['default'] = DOMWrap;
 module.exports = exports['default'];
 
 /***/ }),
@@ -14570,6 +14604,59 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _createReactClass = __webpack_require__(11);
+
+var _createReactClass2 = _interopRequireDefault(_createReactClass);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var Divider = (0, _createReactClass2['default'])({
+  displayName: 'Divider',
+
+  propTypes: {
+    disabled: _propTypes2['default'].bool,
+    className: _propTypes2['default'].string,
+    rootPrefixCls: _propTypes2['default'].string
+  },
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      disabled: true
+    };
+  },
+  render: function render() {
+    var _props = this.props,
+        _props$className = _props.className,
+        className = _props$className === undefined ? '' : _props$className,
+        rootPrefixCls = _props.rootPrefixCls;
+
+    return _react2['default'].createElement('li', { className: className + ' ' + rootPrefixCls + '-item-divider' });
+  }
+});
+
+exports['default'] = Divider;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 267:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _extends2 = __webpack_require__(3);
 
 var _extends3 = _interopRequireDefault(_extends2);
@@ -14582,39 +14669,39 @@ var _createReactClass = __webpack_require__(11);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-var _MenuMixin = __webpack_require__(139);
+var _MenuMixin = __webpack_require__(140);
 
 var _MenuMixin2 = _interopRequireDefault(_MenuMixin);
 
 var _util = __webpack_require__(57);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 // import React from 'react';
-var Menu = (0, _createReactClass2["default"])({
+var Menu = (0, _createReactClass2['default'])({
   displayName: 'Menu',
 
   propTypes: {
-    openSubMenuOnMouseEnter: _propTypes2["default"].bool,
-    closeSubMenuOnMouseLeave: _propTypes2["default"].bool,
-    selectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    defaultSelectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    defaultOpenKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    openKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    mode: _propTypes2["default"].string,
-    onClick: _propTypes2["default"].func,
-    onSelect: _propTypes2["default"].func,
-    onDeselect: _propTypes2["default"].func,
-    onDestroy: _propTypes2["default"].func,
-    openTransitionName: _propTypes2["default"].string,
-    openAnimation: _propTypes2["default"].oneOfType([_propTypes2["default"].string, _propTypes2["default"].object]),
-    level: _propTypes2["default"].number,
-    eventKey: _propTypes2["default"].string,
-    selectable: _propTypes2["default"].bool,
-    children: _propTypes2["default"].any
+    openSubMenuOnMouseEnter: _propTypes2['default'].bool,
+    closeSubMenuOnMouseLeave: _propTypes2['default'].bool,
+    selectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    defaultSelectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    defaultOpenKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    openKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    mode: _propTypes2['default'].string,
+    onClick: _propTypes2['default'].func,
+    onSelect: _propTypes2['default'].func,
+    onDeselect: _propTypes2['default'].func,
+    onDestroy: _propTypes2['default'].func,
+    openTransitionName: _propTypes2['default'].string,
+    openAnimation: _propTypes2['default'].oneOfType([_propTypes2['default'].string, _propTypes2['default'].object]),
+    level: _propTypes2['default'].number,
+    eventKey: _propTypes2['default'].string,
+    selectable: _propTypes2['default'].bool,
+    children: _propTypes2['default'].any
   },
 
-  mixins: [_MenuMixin2["default"]],
+  mixins: [_MenuMixin2['default']],
 
   getDefaultProps: function getDefaultProps() {
     return {
@@ -14712,7 +14799,7 @@ var Menu = (0, _createReactClass2["default"])({
           selectedKeys: selectedKeys
         });
       }
-      props.onSelect((0, _extends3["default"])({}, selectInfo, {
+      props.onSelect((0, _extends3['default'])({}, selectInfo, {
         selectedKeys: selectedKeys
       }));
     }
@@ -14767,7 +14854,7 @@ var Menu = (0, _createReactClass2["default"])({
           selectedKeys: selectedKeys
         });
       }
-      props.onDeselect((0, _extends3["default"])({}, selectInfo, {
+      props.onDeselect((0, _extends3['default'])({}, selectInfo, {
         selectedKeys: selectedKeys
       }));
     }
@@ -14808,18 +14895,18 @@ var Menu = (0, _createReactClass2["default"])({
     return this.renderCommonMenuItem(c, i, subIndex, extraProps);
   },
   render: function render() {
-    var props = (0, _extends3["default"])({}, this.props);
+    var props = (0, _extends3['default'])({}, this.props);
     props.className += ' ' + props.prefixCls + '-root';
     return this.renderRoot(props);
   }
 });
 
-exports["default"] = Menu;
+exports['default'] = Menu;
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 267:
+/***/ 268:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14855,29 +14942,29 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 var _util = __webpack_require__(57);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 /* eslint react/no-is-mounted:0 */
 
-var MenuItem = (0, _createReactClass2["default"])({
+var MenuItem = (0, _createReactClass2['default'])({
   displayName: 'MenuItem',
 
   propTypes: {
-    rootPrefixCls: _propTypes2["default"].string,
-    eventKey: _propTypes2["default"].string,
-    active: _propTypes2["default"].bool,
-    children: _propTypes2["default"].any,
-    selectedKeys: _propTypes2["default"].array,
-    disabled: _propTypes2["default"].bool,
-    title: _propTypes2["default"].string,
-    onSelect: _propTypes2["default"].func,
-    onClick: _propTypes2["default"].func,
-    onDeselect: _propTypes2["default"].func,
-    parentMenu: _propTypes2["default"].object,
-    onItemHover: _propTypes2["default"].func,
-    onDestroy: _propTypes2["default"].func,
-    onMouseEnter: _propTypes2["default"].func,
-    onMouseLeave: _propTypes2["default"].func
+    rootPrefixCls: _propTypes2['default'].string,
+    eventKey: _propTypes2['default'].string,
+    active: _propTypes2['default'].bool,
+    children: _propTypes2['default'].any,
+    selectedKeys: _propTypes2['default'].array,
+    disabled: _propTypes2['default'].bool,
+    title: _propTypes2['default'].string,
+    onSelect: _propTypes2['default'].func,
+    onClick: _propTypes2['default'].func,
+    onDeselect: _propTypes2['default'].func,
+    parentMenu: _propTypes2['default'].object,
+    onItemHover: _propTypes2['default'].func,
+    onDestroy: _propTypes2['default'].func,
+    onMouseEnter: _propTypes2['default'].func,
+    onMouseLeave: _propTypes2['default'].func
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -14898,7 +14985,7 @@ var MenuItem = (0, _createReactClass2["default"])({
   },
   onKeyDown: function onKeyDown(e) {
     var keyCode = e.keyCode;
-    if (keyCode === _KeyCode2["default"].ENTER) {
+    if (keyCode === _KeyCode2['default'].ENTER) {
       this.onClick(e);
       return true;
     }
@@ -14933,7 +15020,7 @@ var MenuItem = (0, _createReactClass2["default"])({
     var eventKey = props.eventKey,
         parentMenu = props.parentMenu;
 
-    this.clearMenuItemMouseLeaveTimer(parentMenu.menuItemInstance !== this);
+    this.clearMenuItemMouseLeaveTimer();
     if (parentMenu.subMenuInstance) {
       parentMenu.subMenuInstance.clearSubMenuTimers();
     }
@@ -14984,14 +15071,10 @@ var MenuItem = (0, _createReactClass2["default"])({
   },
   clearMenuItemMouseLeaveTimer: function clearMenuItemMouseLeaveTimer() {
     var props = this.props;
-    var callFn = void 0;
     var parentMenu = props.parentMenu;
     if (parentMenu.menuItemMouseLeaveTimer) {
       clearTimeout(parentMenu.menuItemMouseLeaveTimer);
       parentMenu.menuItemMouseLeaveTimer = null;
-      if (callFn && parentMenu.menuItemMouseLeaveFn) {
-        parentMenu.menuItemMouseLeaveFn();
-      }
       parentMenu.menuItemMouseLeaveFn = null;
     }
   },
@@ -15007,9 +15090,9 @@ var MenuItem = (0, _createReactClass2["default"])({
     classes[this.getDisabledClassName()] = props.disabled;
     classes[this.getPrefixCls()] = true;
     classes[props.className] = !!props.className;
-    var attrs = (0, _extends3["default"])({}, props.attribute, {
+    var attrs = (0, _extends3['default'])({}, props.attribute, {
       title: props.title,
-      className: (0, _classnames2["default"])(classes),
+      className: (0, _classnames2['default'])(classes),
       role: 'menuitem',
       'aria-selected': selected,
       'aria-disabled': props.disabled
@@ -15022,13 +15105,13 @@ var MenuItem = (0, _createReactClass2["default"])({
         onMouseEnter: this.onMouseEnter
       };
     }
-    var style = (0, _extends3["default"])({}, props.style);
+    var style = (0, _extends3['default'])({}, props.style);
     if (props.mode === 'inline') {
       style.paddingLeft = props.inlineIndent * props.level;
     }
-    return _react2["default"].createElement(
+    return _react2['default'].createElement(
       'li',
-      (0, _extends3["default"])({
+      (0, _extends3['default'])({
         style: style
       }, attrs, mouseEvent),
       props.children
@@ -15038,12 +15121,12 @@ var MenuItem = (0, _createReactClass2["default"])({
 
 MenuItem.isMenuItem = 1;
 
-exports["default"] = MenuItem;
+exports['default'] = MenuItem;
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 268:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15065,16 +15148,16 @@ var _createReactClass = __webpack_require__(11);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var MenuItemGroup = (0, _createReactClass2["default"])({
+var MenuItemGroup = (0, _createReactClass2['default'])({
   displayName: 'MenuItemGroup',
 
   propTypes: {
-    renderMenuItem: _propTypes2["default"].func,
-    index: _propTypes2["default"].number,
-    className: _propTypes2["default"].string,
-    rootPrefixCls: _propTypes2["default"].string
+    renderMenuItem: _propTypes2['default'].func,
+    index: _propTypes2['default'].number,
+    className: _propTypes2['default'].string,
+    rootPrefixCls: _propTypes2['default'].string
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -15097,18 +15180,21 @@ var MenuItemGroup = (0, _createReactClass2["default"])({
 
     var titleClassName = rootPrefixCls + '-item-group-title';
     var listClassName = rootPrefixCls + '-item-group-list';
-    return _react2["default"].createElement(
+    return _react2['default'].createElement(
       'li',
       { className: className + ' ' + rootPrefixCls + '-item-group' },
-      _react2["default"].createElement(
+      _react2['default'].createElement(
         'div',
-        { className: titleClassName },
+        {
+          className: titleClassName,
+          title: typeof props.title === 'string' ? props.title : undefined
+        },
         props.title
       ),
-      _react2["default"].createElement(
+      _react2['default'].createElement(
         'ul',
         { className: listClassName },
-        _react2["default"].Children.map(props.children, this.renderInnerMenuItem)
+        _react2['default'].Children.map(props.children, this.renderInnerMenuItem)
       )
     );
   }
@@ -15116,12 +15202,12 @@ var MenuItemGroup = (0, _createReactClass2["default"])({
 
 MenuItemGroup.isMenuItemGroup = true;
 
-exports["default"] = MenuItemGroup;
+exports['default'] = MenuItemGroup;
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 269:
+/***/ 270:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15151,7 +15237,7 @@ var _createReactClass = __webpack_require__(11);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-var _SubPopupMenu = __webpack_require__(271);
+var _SubPopupMenu = __webpack_require__(272);
 
 var _SubPopupMenu2 = _interopRequireDefault(_SubPopupMenu);
 
@@ -15165,41 +15251,41 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 var _util = __webpack_require__(57);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var guid = 0;
 
 /* eslint react/no-is-mounted:0 */
 
-var SubMenu = (0, _createReactClass2["default"])({
+var SubMenu = (0, _createReactClass2['default'])({
   displayName: 'SubMenu',
 
   propTypes: {
-    parentMenu: _propTypes2["default"].object,
-    title: _propTypes2["default"].node,
-    children: _propTypes2["default"].any,
-    selectedKeys: _propTypes2["default"].array,
-    openKeys: _propTypes2["default"].array,
-    onClick: _propTypes2["default"].func,
-    onOpenChange: _propTypes2["default"].func,
-    rootPrefixCls: _propTypes2["default"].string,
-    eventKey: _propTypes2["default"].string,
-    multiple: _propTypes2["default"].bool,
-    active: _propTypes2["default"].bool,
-    onSelect: _propTypes2["default"].func,
-    closeSubMenuOnMouseLeave: _propTypes2["default"].bool,
-    openSubMenuOnMouseEnter: _propTypes2["default"].bool,
-    onDeselect: _propTypes2["default"].func,
-    onDestroy: _propTypes2["default"].func,
-    onItemHover: _propTypes2["default"].func,
-    onMouseEnter: _propTypes2["default"].func,
-    onMouseLeave: _propTypes2["default"].func,
-    onTitleMouseEnter: _propTypes2["default"].func,
-    onTitleMouseLeave: _propTypes2["default"].func,
-    onTitleClick: _propTypes2["default"].func
+    parentMenu: _propTypes2['default'].object,
+    title: _propTypes2['default'].node,
+    children: _propTypes2['default'].any,
+    selectedKeys: _propTypes2['default'].array,
+    openKeys: _propTypes2['default'].array,
+    onClick: _propTypes2['default'].func,
+    onOpenChange: _propTypes2['default'].func,
+    rootPrefixCls: _propTypes2['default'].string,
+    eventKey: _propTypes2['default'].string,
+    multiple: _propTypes2['default'].bool,
+    active: _propTypes2['default'].bool,
+    onSelect: _propTypes2['default'].func,
+    closeSubMenuOnMouseLeave: _propTypes2['default'].bool,
+    openSubMenuOnMouseEnter: _propTypes2['default'].bool,
+    onDeselect: _propTypes2['default'].func,
+    onDestroy: _propTypes2['default'].func,
+    onItemHover: _propTypes2['default'].func,
+    onMouseEnter: _propTypes2['default'].func,
+    onMouseLeave: _propTypes2['default'].func,
+    onTitleMouseEnter: _propTypes2['default'].func,
+    onTitleMouseLeave: _propTypes2['default'].func,
+    onTitleClick: _propTypes2['default'].func
   },
 
-  mixins: [__webpack_require__(270)],
+  mixins: [__webpack_require__(271)],
 
   getDefaultProps: function getDefaultProps() {
     return {
@@ -15238,7 +15324,7 @@ var SubMenu = (0, _createReactClass2["default"])({
     var menu = this.menuInstance;
     var isOpen = this.isOpen();
 
-    if (keyCode === _KeyCode2["default"].ENTER) {
+    if (keyCode === _KeyCode2['default'].ENTER) {
       this.onTitleClick(e);
       this.setState({
         defaultActiveFirst: true
@@ -15246,7 +15332,7 @@ var SubMenu = (0, _createReactClass2["default"])({
       return true;
     }
 
-    if (keyCode === _KeyCode2["default"].RIGHT) {
+    if (keyCode === _KeyCode2['default'].RIGHT) {
       if (isOpen) {
         menu.onKeyDown(e);
       } else {
@@ -15257,7 +15343,7 @@ var SubMenu = (0, _createReactClass2["default"])({
       }
       return true;
     }
-    if (keyCode === _KeyCode2["default"].LEFT) {
+    if (keyCode === _KeyCode2['default'].LEFT) {
       var handled = void 0;
       if (isOpen) {
         handled = menu.onKeyDown(e);
@@ -15271,7 +15357,7 @@ var SubMenu = (0, _createReactClass2["default"])({
       return handled;
     }
 
-    if (isOpen && (keyCode === _KeyCode2["default"].UP || keyCode === _KeyCode2["default"].DOWN)) {
+    if (isOpen && (keyCode === _KeyCode2['default'].UP || keyCode === _KeyCode2['default'].DOWN)) {
       return menu.onKeyDown(e);
     }
   },
@@ -15280,11 +15366,60 @@ var SubMenu = (0, _createReactClass2["default"])({
   },
   onMouseEnter: function onMouseEnter(e) {
     var props = this.props;
-    this.clearSubMenuLeaveTimer(props.parentMenu.subMenuInstance !== this);
+    this.clearSubMenuLeaveTimer();
     props.onMouseEnter({
       key: props.eventKey,
       domEvent: e
     });
+  },
+  onMouseLeave: function onMouseLeave(e) {
+    var _this = this;
+
+    var props = this.props;
+    var parentMenu = props.parentMenu,
+        eventKey = props.eventKey;
+
+    parentMenu.subMenuInstance = this;
+    parentMenu.subMenuLeaveFn = function () {
+      // leave whole sub tree
+      // still active
+      if (props.mode !== 'inline') {
+        var isOpen = _this.isOpen();
+        if (isOpen && props.closeSubMenuOnMouseLeave && props.active) {
+          props.onItemHover({
+            key: eventKey,
+            item: _this,
+            hover: false,
+            trigger: 'mouseleave',
+            openChanges: [{
+              key: eventKey,
+              item: _this,
+              trigger: 'mouseleave',
+              open: false
+            }]
+          });
+        } else {
+          if (props.active) {
+            props.onItemHover({
+              key: eventKey,
+              item: _this,
+              hover: false,
+              trigger: 'mouseleave'
+            });
+          }
+          if (isOpen && props.closeSubMenuOnMouseLeave) {
+            _this.triggerOpenChange(false);
+          }
+        }
+      }
+      // trigger mouseleave
+      props.onMouseLeave({
+        key: eventKey,
+        domEvent: e
+      });
+    };
+    // prevent popup menu and submenu gap
+    parentMenu.subMenuLeaveTimer = setTimeout(parentMenu.subMenuLeaveFn, 100);
   },
   onTitleMouseEnter: function onTitleMouseEnter(domEvent) {
     var props = this.props;
@@ -15292,9 +15427,9 @@ var SubMenu = (0, _createReactClass2["default"])({
         key = props.eventKey;
 
     var item = this;
-    this.clearSubMenuTitleLeaveTimer(parentMenu.subMenuInstance !== item);
+    this.clearSubMenuTitleLeaveTimer();
     if (parentMenu.menuItemInstance) {
-      parentMenu.menuItemInstance.clearMenuItemMouseLeaveTimer(true);
+      parentMenu.menuItemInstance.clearMenuItemMouseLeaveTimer();
     }
     var openChanges = [];
     if (props.openSubMenuOnMouseEnter) {
@@ -15321,7 +15456,7 @@ var SubMenu = (0, _createReactClass2["default"])({
     });
   },
   onTitleMouseLeave: function onTitleMouseLeave(e) {
-    var _this = this;
+    var _this2 = this;
 
     var props = this.props;
     var parentMenu = props.parentMenu,
@@ -15334,7 +15469,7 @@ var SubMenu = (0, _createReactClass2["default"])({
       if (props.mode === 'inline' && props.active) {
         props.onItemHover({
           key: eventKey,
-          item: _this,
+          item: _this2,
           hover: false,
           trigger: 'mouseleave'
         });
@@ -15345,55 +15480,6 @@ var SubMenu = (0, _createReactClass2["default"])({
       });
     };
     parentMenu.subMenuTitleLeaveTimer = setTimeout(parentMenu.subMenuTitleLeaveFn, 100);
-  },
-  onMouseLeave: function onMouseLeave(e) {
-    var _this2 = this;
-
-    var props = this.props;
-    var parentMenu = props.parentMenu,
-        eventKey = props.eventKey;
-
-    parentMenu.subMenuInstance = this;
-    parentMenu.subMenuLeaveFn = function () {
-      // leave whole sub tree
-      // still active
-      if (props.mode !== 'inline') {
-        var isOpen = _this2.isOpen();
-        if (isOpen && props.closeSubMenuOnMouseLeave && props.active) {
-          props.onItemHover({
-            key: eventKey,
-            item: _this2,
-            hover: false,
-            trigger: 'mouseleave',
-            openChanges: [{
-              key: eventKey,
-              item: _this2,
-              trigger: 'mouseleave',
-              open: false
-            }]
-          });
-        } else {
-          if (props.active) {
-            props.onItemHover({
-              key: eventKey,
-              item: _this2,
-              hover: false,
-              trigger: 'mouseleave'
-            });
-          }
-          if (isOpen && props.closeSubMenuOnMouseLeave) {
-            _this2.triggerOpenChange(false);
-          }
-        }
-      }
-      // trigger mouseleave
-      props.onMouseLeave({
-        key: eventKey,
-        domEvent: e
-      });
-    };
-    // prevent popup menu and submenu gap
-    parentMenu.subMenuLeaveTimer = setTimeout(parentMenu.subMenuLeaveFn, 100);
   },
   onTitleClick: function onTitleClick(e) {
     var props = this.props;
@@ -15438,7 +15524,7 @@ var SubMenu = (0, _createReactClass2["default"])({
     this.menuInstance = c;
   },
   addKeyPath: function addKeyPath(info) {
-    return (0, _extends3["default"])({}, info, {
+    return (0, _extends3['default'])({}, info, {
       keyPath: (info.keyPath || []).concat(this.props.eventKey)
     });
   },
@@ -15452,31 +15538,22 @@ var SubMenu = (0, _createReactClass2["default"])({
     });
   },
   clearSubMenuTimers: function clearSubMenuTimers() {
-    var callFn = void 0;
-    this.clearSubMenuLeaveTimer(callFn);
-    this.clearSubMenuTitleLeaveTimer(callFn);
+    this.clearSubMenuLeaveTimer();
+    this.clearSubMenuTitleLeaveTimer();
   },
   clearSubMenuTitleLeaveTimer: function clearSubMenuTitleLeaveTimer() {
-    var callFn = void 0;
     var parentMenu = this.props.parentMenu;
     if (parentMenu.subMenuTitleLeaveTimer) {
       clearTimeout(parentMenu.subMenuTitleLeaveTimer);
       parentMenu.subMenuTitleLeaveTimer = null;
-      if (callFn && parentMenu.subMenuTitleLeaveFn) {
-        parentMenu.subMenuTitleLeaveFn();
-      }
       parentMenu.subMenuTitleLeaveFn = null;
     }
   },
   clearSubMenuLeaveTimer: function clearSubMenuLeaveTimer() {
-    var callFn = void 0;
     var parentMenu = this.props.parentMenu;
     if (parentMenu.subMenuLeaveTimer) {
       clearTimeout(parentMenu.subMenuLeaveTimer);
       parentMenu.subMenuLeaveTimer = null;
-      if (callFn && parentMenu.subMenuLeaveFn) {
-        parentMenu.subMenuLeaveFn();
-      }
       parentMenu.subMenuLeaveFn = null;
     }
   },
@@ -15513,8 +15590,8 @@ var SubMenu = (0, _createReactClass2["default"])({
       id: this._menuId,
       ref: this.saveMenuInstance
     };
-    return _react2["default"].createElement(
-      _SubPopupMenu2["default"],
+    return _react2['default'].createElement(
+      _SubPopupMenu2['default'],
       baseProps,
       children
     );
@@ -15526,7 +15603,7 @@ var SubMenu = (0, _createReactClass2["default"])({
     this.haveOpen = this.haveOpen || isOpen;
     var props = this.props;
     var prefixCls = this.getPrefixCls();
-    var classes = (_classes = {}, (0, _defineProperty3["default"])(_classes, props.className, !!props.className), (0, _defineProperty3["default"])(_classes, prefixCls + '-' + props.mode, 1), _classes);
+    var classes = (_classes = {}, (0, _defineProperty3['default'])(_classes, props.className, !!props.className), (0, _defineProperty3['default'])(_classes, prefixCls + '-' + props.mode, 1), _classes);
 
     classes[this.getOpenClassName()] = isOpen;
     classes[this.getActiveClassName()] = props.active;
@@ -15543,16 +15620,16 @@ var SubMenu = (0, _createReactClass2["default"])({
 
     classes[prefixCls] = true;
     classes[prefixCls + '-' + props.mode] = 1;
-    var titleClickEvents = {};
     var mouseEvents = {};
+    var titleClickEvents = {};
     var titleMouseEvents = {};
     if (!props.disabled) {
-      titleClickEvents = {
-        onClick: this.onTitleClick
-      };
       mouseEvents = {
         onMouseLeave: this.onMouseLeave,
         onMouseEnter: this.onMouseEnter
+      };
+      titleClickEvents = {
+        onClick: this.onTitleClick
       };
       // only works in title, not outer li
       titleMouseEvents = {
@@ -15564,21 +15641,22 @@ var SubMenu = (0, _createReactClass2["default"])({
     if (props.mode === 'inline') {
       style.paddingLeft = props.inlineIndent * props.level;
     }
-    return _react2["default"].createElement(
+    return _react2['default'].createElement(
       'li',
-      (0, _extends3["default"])({ className: (0, _classnames2["default"])(classes) }, mouseEvents),
-      _react2["default"].createElement(
+      (0, _extends3['default'])({ className: (0, _classnames2['default'])(classes) }, mouseEvents, { style: props.style }),
+      _react2['default'].createElement(
         'div',
-        (0, _extends3["default"])({
+        (0, _extends3['default'])({
           style: style,
           className: prefixCls + '-title'
         }, titleMouseEvents, titleClickEvents, {
           'aria-expanded': isOpen,
           'aria-owns': this._menuId,
-          'aria-haspopup': 'true'
+          'aria-haspopup': 'true',
+          title: typeof props.title === 'string' ? props.title : undefined
         }),
         props.title,
-        _react2["default"].createElement('i', { className: prefixCls + '-arrow' })
+        _react2['default'].createElement('i', { className: prefixCls + '-arrow' })
       ),
       this.renderChildren(props.children)
     );
@@ -15587,12 +15665,12 @@ var SubMenu = (0, _createReactClass2["default"])({
 
 SubMenu.isSubMenu = 1;
 
-exports["default"] = SubMenu;
+exports['default'] = SubMenu;
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 270:
+/***/ 271:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15610,7 +15688,7 @@ var _addEventListener = __webpack_require__(43);
 
 var _addEventListener2 = _interopRequireDefault(_addEventListener);
 
-var _contains = __webpack_require__(287);
+var _contains = __webpack_require__(288);
 
 var _contains2 = _interopRequireDefault(_contains);
 
@@ -15618,9 +15696,9 @@ var _reactDom = __webpack_require__(8);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-exports["default"] = {
+exports['default'] = {
   componentDidMount: function componentDidMount() {
     this.componentDidUpdate();
   },
@@ -15634,7 +15712,7 @@ exports["default"] = {
     }
   },
   handleDocumentKeyUp: function handleDocumentKeyUp(e) {
-    if (e.keyCode === _KeyCode2["default"].ESC) {
+    if (e.keyCode === _KeyCode2['default'].ESC) {
       this.props.onItemHover({
         key: this.props.eventKey,
         item: this,
@@ -15645,7 +15723,7 @@ exports["default"] = {
   handleDocumentClick: function handleDocumentClick(e) {
     // If the click originated from within this component
     // don't do anything.
-    if ((0, _contains2["default"])(_reactDom2["default"].findDOMNode(this), e.target)) {
+    if ((0, _contains2['default'])(_reactDom2['default'].findDOMNode(this), e.target)) {
       return;
     }
     var props = this.props;
@@ -15658,8 +15736,8 @@ exports["default"] = {
   },
   bindRootCloseHandlers: function bindRootCloseHandlers() {
     if (!this._onDocumentClickListener) {
-      this._onDocumentClickListener = (0, _addEventListener2["default"])(document, 'click', this.handleDocumentClick);
-      this._onDocumentKeyupListener = (0, _addEventListener2["default"])(document, 'keyup', this.handleDocumentKeyUp);
+      this._onDocumentClickListener = (0, _addEventListener2['default'])(document, 'click', this.handleDocumentClick);
+      this._onDocumentKeyupListener = (0, _addEventListener2['default'])(document, 'keyup', this.handleDocumentKeyUp);
     }
   },
   unbindRootCloseHandlers: function unbindRootCloseHandlers() {
@@ -15681,7 +15759,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 271:
+/***/ 272:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15711,7 +15789,7 @@ var _createReactClass = __webpack_require__(11);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-var _MenuMixin = __webpack_require__(139);
+var _MenuMixin = __webpack_require__(140);
 
 var _MenuMixin2 = _interopRequireDefault(_MenuMixin);
 
@@ -15719,26 +15797,26 @@ var _rcAnimate = __webpack_require__(48);
 
 var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var SubPopupMenu = (0, _createReactClass2["default"])({
+var SubPopupMenu = (0, _createReactClass2['default'])({
   displayName: 'SubPopupMenu',
 
   propTypes: {
-    onSelect: _propTypes2["default"].func,
-    onClick: _propTypes2["default"].func,
-    onDeselect: _propTypes2["default"].func,
-    onOpenChange: _propTypes2["default"].func,
-    onDestroy: _propTypes2["default"].func,
-    openTransitionName: _propTypes2["default"].string,
-    openAnimation: _propTypes2["default"].oneOfType([_propTypes2["default"].string, _propTypes2["default"].object]),
-    openKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-    closeSubMenuOnMouseLeave: _propTypes2["default"].bool,
-    visible: _propTypes2["default"].bool,
-    children: _propTypes2["default"].any
+    onSelect: _propTypes2['default'].func,
+    onClick: _propTypes2['default'].func,
+    onDeselect: _propTypes2['default'].func,
+    onOpenChange: _propTypes2['default'].func,
+    onDestroy: _propTypes2['default'].func,
+    openTransitionName: _propTypes2['default'].string,
+    openAnimation: _propTypes2['default'].oneOfType([_propTypes2['default'].string, _propTypes2['default'].object]),
+    openKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
+    closeSubMenuOnMouseLeave: _propTypes2['default'].bool,
+    visible: _propTypes2['default'].bool,
+    children: _propTypes2['default'].any
   },
 
-  mixins: [_MenuMixin2["default"]],
+  mixins: [_MenuMixin2['default']],
 
   onDeselect: function onDeselect(selectInfo) {
     this.props.onDeselect(selectInfo);
@@ -15790,20 +15868,20 @@ var SubPopupMenu = (0, _createReactClass2["default"])({
     if (!renderFirst && this.props.visible) {
       transitionAppear = false;
     }
-    var props = (0, _extends3["default"])({}, this.props);
+    var props = (0, _extends3['default'])({}, this.props);
     props.className += ' ' + props.prefixCls + '-sub';
     var animProps = {};
     if (props.openTransitionName) {
       animProps.transitionName = props.openTransitionName;
-    } else if ((0, _typeof3["default"])(props.openAnimation) === 'object') {
-      animProps.animation = (0, _extends3["default"])({}, props.openAnimation);
+    } else if ((0, _typeof3['default'])(props.openAnimation) === 'object') {
+      animProps.animation = (0, _extends3['default'])({}, props.openAnimation);
       if (!transitionAppear) {
         delete animProps.animation.appear;
       }
     }
-    return _react2["default"].createElement(
-      _rcAnimate2["default"],
-      (0, _extends3["default"])({}, animProps, {
+    return _react2['default'].createElement(
+      _rcAnimate2['default'],
+      (0, _extends3['default'])({}, animProps, {
         showProp: 'visible',
         component: '',
         transitionAppear: transitionAppear
@@ -15813,12 +15891,12 @@ var SubPopupMenu = (0, _createReactClass2["default"])({
   }
 });
 
-exports["default"] = SubPopupMenu;
+exports['default'] = SubPopupMenu;
 module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 272:
+/***/ 273:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15838,12 +15916,12 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_util_es_Children_toArray__ = __webpack_require__(285);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_menu__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rc_util_es_Children_toArray__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_menu__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_menu___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rc_menu__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_dom_scroll_into_view__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_dom_scroll_into_view___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_dom_scroll_into_view__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util__ = __webpack_require__(92);
 
 
 
@@ -16033,7 +16111,7 @@ DropdownMenu.displayName = 'DropdownMenu';
 
 /***/ }),
 
-/***/ 273:
+/***/ 274:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16067,7 +16145,7 @@ OptGroup.isSelectOptGroup = true;
 
 /***/ }),
 
-/***/ 274:
+/***/ 275:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16107,7 +16185,7 @@ Option.isSelectOption = true;
 
 /***/ }),
 
-/***/ 275:
+/***/ 276:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16133,13 +16211,14 @@ Option.isSelectOption = true;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rc_animate__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_component_classes__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_component_classes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_component_classes__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__util__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__SelectTrigger__ = __webpack_require__(276);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__PropTypes__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rc_menu__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__util__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__SelectTrigger__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__PropTypes__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rc_menu__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rc_menu___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_rc_menu__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_warning__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_warning__ = __webpack_require__(76);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16_warning__);
+
 
 
 
@@ -16573,6 +16652,10 @@ var _initialiseProps = function _initialiseProps() {
   };
 
   this.onOuterFocus = function (e) {
+    if (_this2.props.disabled) {
+      e.preventDefault();
+      return;
+    }
     _this2.clearBlurTime();
     if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__util__["c" /* isMultipleOrTagsOrCombobox */])(_this2.props) && e.target === _this2.getInputDOMNode()) {
       return;
@@ -16589,7 +16672,11 @@ var _initialiseProps = function _initialiseProps() {
         _this2.maybeFocus(true, true);
   };
 
-  this.onOuterBlur = function () {
+  this.onOuterBlur = function (e) {
+    if (_this2.props.disabled) {
+      e.preventDefault();
+      return;
+    }
     _this2.blurTimer = setTimeout(function () {
       _this2._focused = false;
       _this2.updateFocusClassName();
@@ -16760,7 +16847,7 @@ var _initialiseProps = function _initialiseProps() {
 
   this.getInputElement = function () {
     var props = _this2.props;
-    var inputElement = props.getInputElement ? props.getInputElement() : __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement('input', { id: props.id });
+    var inputElement = props.getInputElement ? props.getInputElement() : __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement('input', { id: props.id, autoComplete: 'off' });
     var inputCls = __WEBPACK_IMPORTED_MODULE_9_classnames___default()(inputElement.props.className, __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()({}, props.prefixCls + '-search__field', true));
             return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
       'div',
@@ -17333,7 +17420,7 @@ Select.displayName = 'Select';
 
 /***/ }),
 
-/***/ 276:
+/***/ 277:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17358,10 +17445,10 @@ Select.displayName = 'Select';
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_classnames__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__DropdownMenu__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__DropdownMenu__ = __webpack_require__(273);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_react_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__util__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__util__ = __webpack_require__(92);
 
 
 
@@ -17412,7 +17499,14 @@ var SelectTrigger = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = SelectTrigger.__proto__ || Object.getPrototypeOf(SelectTrigger)).call.apply(_ref, [this].concat(args))), _this), _this.getInnerMenu = function () {
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = SelectTrigger.__proto__ || Object.getPrototypeOf(SelectTrigger)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      dropdownWidth: null
+    }, _this.setDropdownWidth = function () {
+      var width = __WEBPACK_IMPORTED_MODULE_12_react_dom___default.a.findDOMNode(_this).offsetWidth;
+      if (width !== _this.state.dropdownWidth) {
+        _this.setState({ dropdownWidth: width });
+      }
+    }, _this.getInnerMenu = function () {
       return _this.popupMenu && _this.popupMenu.refs.menu;
     }, _this.getPopupDOMNode = function () {
       return _this.refs.trigger.getPopupDomNode();
@@ -17444,28 +17538,23 @@ var SelectTrigger = function (_React$Component) {
   }
 
   __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default()(SelectTrigger, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.setDropdownWidth();
+    }
+  }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      var _props = this.props,
-          visible = _props.visible,
-          dropdownMatchSelectWidth = _props.dropdownMatchSelectWidth;
-
-      if (visible) {
-        var dropdownDOMNode = this.getPopupDOMNode();
-        if (dropdownDOMNode) {
-          var widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
-          dropdownDOMNode.style[widthProp] = __WEBPACK_IMPORTED_MODULE_12_react_dom___default.a.findDOMNode(this).offsetWidth + 'px';
-        }
-      }
+      this.setDropdownWidth();
     }
   }, {
     key: 'render',
     value: function render() {
       var _popupClassName;
 
-      var _props2 = this.props,
-          onPopupFocus = _props2.onPopupFocus,
-          props = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_props2, ['onPopupFocus']);
+      var _props = this.props,
+          onPopupFocus = _props.onPopupFocus,
+          props = __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['onPopupFocus']);
 
       var multiple = props.multiple,
           visible = props.visible,
@@ -17473,7 +17562,9 @@ var SelectTrigger = function (_React$Component) {
           dropdownAlign = props.dropdownAlign,
           disabled = props.disabled,
           showSearch = props.showSearch,
-          dropdownClassName = props.dropdownClassName;
+          dropdownClassName = props.dropdownClassName,
+          dropdownStyle = props.dropdownStyle,
+          dropdownMatchSelectWidth = props.dropdownMatchSelectWidth;
 
       var dropdownPrefixCls = this.getDropdownPrefixCls();
       var popupClassName = (_popupClassName = {}, __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_popupClassName, dropdownClassName, !!dropdownClassName), __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default()(_popupClassName, dropdownPrefixCls + '--' + (multiple ? 'multiple' : 'single'), 1), _popupClassName);
@@ -17492,6 +17583,12 @@ var SelectTrigger = function (_React$Component) {
       } else {
         hideAction = ['blur'];
       }
+      var popupStyle = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, dropdownStyle);
+      var widthProp = dropdownMatchSelectWidth ? 'width' : 'minWidth';
+      if (this.state.dropdownWidth) {
+        popupStyle[widthProp] = this.state.dropdownWidth + 'px';
+      }
+
       return __WEBPACK_IMPORTED_MODULE_8_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_7_rc_trigger__["default"],
         __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, props, {
@@ -17508,7 +17605,7 @@ var SelectTrigger = function (_React$Component) {
           popupVisible: visible,
           getPopupContainer: props.getPopupContainer,
           popupClassName: __WEBPACK_IMPORTED_MODULE_10_classnames___default()(popupClassName),
-          popupStyle: props.dropdownStyle
+          popupStyle: popupStyle
         }),
         props.children
       );
@@ -17541,15 +17638,15 @@ SelectTrigger.displayName = 'SelectTrigger';
 
 /***/ }),
 
-/***/ 277:
+/***/ 278:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Select__ = __webpack_require__(275);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Option__ = __webpack_require__(274);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PropTypes__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__OptGroup__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Select__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Option__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PropTypes__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__OptGroup__ = __webpack_require__(274);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Option", function() { return __WEBPACK_IMPORTED_MODULE_1__Option__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "OptGroup", function() { return __WEBPACK_IMPORTED_MODULE_3__OptGroup__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "SelectPropTypes", function() { return __WEBPACK_IMPORTED_MODULE_2__PropTypes__["a"]; });
@@ -17564,7 +17661,7 @@ __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* default */].OptGroup = __WEBPACK_IM
 
 /***/ }),
 
-/***/ 280:
+/***/ 281:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17598,7 +17695,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _Select = __webpack_require__(282);
+var _Select = __webpack_require__(283);
 
 var _Select2 = _interopRequireDefault(_Select);
 
@@ -17848,7 +17945,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 281:
+/***/ 282:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18092,7 +18189,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 282:
+/***/ 283:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18294,7 +18391,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 283:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18332,11 +18429,11 @@ var _rcTrigger = __webpack_require__(69);
 
 var _rcTrigger2 = _interopRequireDefault(_rcTrigger);
 
-var _Panel = __webpack_require__(142);
+var _Panel = __webpack_require__(143);
 
 var _Panel2 = _interopRequireDefault(_Panel);
 
-var _placements = __webpack_require__(284);
+var _placements = __webpack_require__(285);
 
 var _placements2 = _interopRequireDefault(_placements);
 
@@ -18675,7 +18772,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 284:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18723,7 +18820,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 285:
+/***/ 286:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18742,7 +18839,7 @@ function toArray(children) {
 
 /***/ }),
 
-/***/ 286:
+/***/ 287:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18771,7 +18868,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 287:
+/***/ 288:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20045,7 +20142,7 @@ function isAllowedDate(value, disabledDate, disabledTime) {
 
 /***/ }),
 
-/***/ 394:
+/***/ 395:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20067,9 +20164,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_antd_lib_select__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_antd_lib_select__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_antd_lib_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_antd_lib_select__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_date_picker__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_date_picker__ = __webpack_require__(188);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_date_picker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_antd_lib_date_picker__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__);
@@ -20500,7 +20597,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports['default'] = addEventListenerWrap;
 
-var _addDomEventListener = __webpack_require__(78);
+var _addDomEventListener = __webpack_require__(79);
 
 var _addDomEventListener2 = _interopRequireDefault(_addDomEventListener);
 
@@ -20533,7 +20630,7 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_has__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createBaseForm__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createBaseForm__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__createForm__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils__ = __webpack_require__(60);
 
@@ -20696,8 +20793,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ChildrenUtils__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__AnimateChild__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ChildrenUtils__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__AnimateChild__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__util__ = __webpack_require__(49);
 
 
@@ -21199,7 +21296,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _warning = __webpack_require__(104);
+var _warning = __webpack_require__(76);
 
 var _warning2 = _interopRequireDefault(_warning);
 
@@ -21434,7 +21531,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function noop() {}
 
@@ -21445,10 +21542,10 @@ function getKeyFromChildrenIndex(child, menuEventKey, index) {
 
 function loopMenuItem(children, cb) {
   var index = -1;
-  _react2["default"].Children.forEach(children, function (c) {
+  _react2['default'].Children.forEach(children, function (c) {
     index++;
     if (c && c.type && c.type.isMenuItemGroup) {
-      _react2["default"].Children.forEach(c.props.children, function (c2) {
+      _react2['default'].Children.forEach(c.props.children, function (c2) {
         index++;
         cb(c2, index);
       });
@@ -21462,7 +21559,7 @@ function loopMenuItemRecusively(children, keys, ret) {
   if (!children || ret.find) {
     return;
   }
-  _react2["default"].Children.forEach(children, function (c) {
+  _react2['default'].Children.forEach(children, function (c) {
     if (ret.find) {
       return;
     }
@@ -21584,10 +21681,10 @@ function getOffsetParent(element) {
 
 /***/ }),
 
-/***/ 666:
+/***/ 667:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(394);
+module.exports = __webpack_require__(395);
 
 
 /***/ }),
@@ -21702,12 +21799,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_create_react_class__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_create_react_class___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_create_react_class__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_util_es_Dom_contains__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_util_es_Dom_contains__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Dom_addEventListener__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Dom_addEventListener___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Dom_addEventListener__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Popup__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Popup__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_util_lib_getContainerRenderMixin__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_util_lib_getContainerRenderMixin__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rc_util_lib_getContainerRenderMixin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rc_util_lib_getContainerRenderMixin__);
 
 
@@ -21729,6 +21826,8 @@ function returnEmptyString() {
 function returnDocument() {
   return window.document;
 }
+
+var isMobile = typeof navigator !== 'undefined' && !!navigator.userAgent.match(/(Android|iPhone|iPad|iPod|iOS|UCWEB)/i);
 
 var ALL_HANDLERS = ['onClick', 'onMouseDown', 'onTouchStart', 'onMouseEnter', 'onMouseLeave', 'onFocus', 'onBlur'];
 
@@ -21861,9 +21960,9 @@ var Trigger = __WEBPACK_IMPORTED_MODULE_4_create_react_class___default()({
         currentDocument = props.getDocument();
         this.clickOutsideHandler = __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Dom_addEventListener___default()(currentDocument, 'mousedown', this.onDocumentClick);
       }
-            if (!this.touchOutsideHandler) {
+                              if (!this.touchOutsideHandler && isMobile) {
         currentDocument = currentDocument || props.getDocument();
-        this.touchOutsideHandler = __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Dom_addEventListener___default()(currentDocument, 'touchstart', this.onDocumentClick);
+        this.touchOutsideHandler = __WEBPACK_IMPORTED_MODULE_6_rc_util_lib_Dom_addEventListener___default()(currentDocument, 'click', this.onDocumentClick);
       }
       return;
     }
@@ -21886,7 +21985,7 @@ var Trigger = __WEBPACK_IMPORTED_MODULE_4_create_react_class___default()({
     this.clearDelayTimer();
   },
   onPopupMouseLeave: function onPopupMouseLeave(e) {
-            if (e.relatedTarget && !e.relatedTarget.setTimeout && this._component && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_rc_util_es_Dom_contains__["a" /* default */])(this._component.getPopupDomNode(), e.relatedTarget)) {
+            if (e.relatedTarget && !e.relatedTarget.setTimeout && this._component && this._component.getPopupDomNode && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_rc_util_es_Dom_contains__["a" /* default */])(this._component.getPopupDomNode(), e.relatedTarget)) {
       return;
     }
     this.delaySetPopupVisible(false, this.props.mouseLeaveDelay);
@@ -22731,7 +22830,7 @@ KeyCode.isCharacterKey = function isCharacterKey(keyCode) {
 
 /***/ }),
 
-/***/ 76:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22798,7 +22897,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 77:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22808,11 +22907,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _EventBaseObject = __webpack_require__(76);
+var _EventBaseObject = __webpack_require__(77);
 
 var _EventBaseObject2 = _interopRequireDefault(_EventBaseObject);
 
-var _objectAssign = __webpack_require__(20);
+var _objectAssign = __webpack_require__(19);
 
 var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -23082,7 +23181,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 78:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23093,7 +23192,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = addEventListener;
 
-var _EventObject = __webpack_require__(77);
+var _EventObject = __webpack_require__(78);
 
 var _EventObject2 = _interopRequireDefault(_EventObject);
 
@@ -23125,7 +23224,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 79:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23169,7 +23268,7 @@ function getLocaleCode(context) {
 
 /***/ }),
 
-/***/ 85:
+/***/ 86:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23258,14 +23357,14 @@ var TransitionEvents = {
 
 /***/ }),
 
-/***/ 86:
+/***/ 87:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return isCssAnimationSupported; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Event__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Event__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_component_classes__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_component_classes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_component_classes__);
 
@@ -23446,7 +23545,63 @@ cssAnimation.isCssAnimationSupported = isCssAnimationSupported;
 
 /***/ }),
 
-/***/ 89:
+/***/ 9:
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+			return classNames;
+		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+		window.classNames = classNames;
+	}
+}());
+
+
+/***/ }),
+
+/***/ 90:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23466,7 +23621,7 @@ cssAnimation.isCssAnimationSupported = isCssAnimationSupported;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_css_animation__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_css_animation__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__util__ = __webpack_require__(49);
 
 
@@ -23583,63 +23738,7 @@ AnimateChild.propTypes = {
 
 /***/ }),
 
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-  Copyright (c) 2016 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-	'use strict';
-
-	var hasOwn = {}.hasOwnProperty;
-
-	function classNames () {
-		var classes = [];
-
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg)) {
-				classes.push(classNames.apply(null, arg));
-			} else if (argType === 'object') {
-				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
-						classes.push(key);
-					}
-				}
-			}
-		}
-
-		return classes.join(' ');
-	}
-
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = classNames;
-	} else if (true) {
-		// register as 'classnames', consistent with npm package name
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-			return classNames;
-		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-		window.classNames = classNames;
-	}
-}());
-
-
-/***/ }),
-
-/***/ 90:
+/***/ 91:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23755,7 +23854,7 @@ function mergeChildren(prev, next) {
 
 /***/ }),
 
-/***/ 91:
+/***/ 92:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23907,57 +24006,16 @@ function includesSeparators(string, separators) {
 
 function splitBySeparators(string, separators) {
   var reg = new RegExp('[' + separators.join() + ']');
-  var array = string.split(reg);
-  while (array[0] === '') {
-    array.shift();
-  }
-  while (array[array.length - 1] === '') {
-    array.pop();
-  }
-  return array;
+  return string.split(reg).filter(function (token) {
+    return token;
+  });
 }
 
 function defaultFilterFn(input, child) {
   return String(getPropValue(child, this.props.optionFilterProp)).indexOf(input) > -1;
 }
 
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = createChainedFunction;
-/**
- * Safe chained function
- *
- * Will only create a new function if needed,
- * otherwise will pass back existing functions or null.
- *
- * @returns {function|null}
- */
-function createChainedFunction() {
-  var args = [].slice.call(arguments, 0);
-  if (args.length === 1) {
-    return args[0];
-  }
-
-  return function chainedFunction() {
-    for (var i = 0; i < args.length; i++) {
-      if (args[i] && args[i].apply) {
-        args[i].apply(this, arguments);
-      }
-    }
-  };
-}
-module.exports = exports['default'];
-
 /***/ })
 
-},[666]);
+},[667]);
 //# sourceMappingURL=overview.js.map
