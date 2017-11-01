@@ -111,19 +111,19 @@ class Form extends React.Component {
 export createForm()(Form);
 ```
 
-## createForm(formOption): Function
+## createForm(option: Object) => (WrappedComponent: React.Component) => React.Component
 
 | Option    | Description                              | Type       | Default |
 |-----------|------------------------------------------|------------|---------|
-| formOption.validateMessages | Preseted messages of [async-validator](https://github.com/yiminghe/async-validator) | Object | {} |
-| formOption.onFieldsChange | Called when field changed, you can dispatch fields to redux store. | (props, changed, all): void | NOOP |
-| formOption.onValuesChange | Called when value changed. | (props, changed, all): void | NOOP |
-| formOption.mapProps | Get new props transfered to WrappedComponent. | (props): Object | props => props |
-| formOption.mapPropsToFields | Convert value from props to fields. Used for read fields from redux store. | (props): Object | NOOP |
-| formOption.fieldNameProp | Where to store the `name` argument of `getFieldProps`. | String | - |
-| formOption.fieldMetaProp | Where to store the meta data of `getFieldProps`. | String | - |
-| formOption.fieldDataProp | Where to store the field data | String | - |
-| formOption.withRef(deprecated) | Maintain an ref for wrapped component instance, use `refs.wrappedComponent` to access. | boolean | false |
+| option.validateMessages | Preseted messages of [async-validator](https://github.com/yiminghe/async-validator) | Object | {} |
+| option.onFieldsChange | Called when field changed, you can dispatch fields to redux store. | (props, changed, all): void | NOOP |
+| option.onValuesChange | Called when value changed. | (props, changed, all): void | NOOP |
+| option.mapProps | Get new props transfered to WrappedComponent. | (props): Object | props => props |
+| option.mapPropsToFields | Convert value from props to fields. Used for read fields from redux store. | (props): Object | NOOP |
+| option.fieldNameProp | Where to store the `name` argument of `getFieldProps`. | String | - |
+| option.fieldMetaProp | Where to store the meta data of `getFieldProps`. | String | - |
+| option.fieldDataProp | Where to store the field data | String | - |
+| option.withRef(deprecated) | Maintain an ref for wrapped component instance, use `refs.wrappedComponent` to access. | boolean | false |
 
 ### Note: use wrappedComponentRef instead of withRef after rc-form@1.4.0
 
@@ -141,13 +141,11 @@ const EnhancedForm = createForm()(Form);
 this.formRef // => The instance of Form
 ```
 
-## createForm() will return another function
+## (WrappedComponent: React.Component) => React.Component
 
-### function(WrappedComponent: React.Component): React.Component
+The returned function of createForm(). It will pass an object as prop `form` with the following members to WrappedComponent:
 
-Will pass an object as prop form with the following members to WrappedComponent:
-
-### getFieldProps(name, option): Object
+### getFieldProps(name, option): Object { [valuePropName], [trigger], [validateTrigger] }
 
 Will create props which can be set on a input/InputComponent which support value and onChange interface.
 
@@ -167,11 +165,11 @@ This input's unique name.
 
 | Option    | Description                              | Type       | Default |
 |-----------|------------------------------------------|------------|---------|
-| option.exclusive(deprecated) | Whether set value exclusively. Used with radio. | boolean | false |
 | option.valuePropName | Prop name of component's value field, eg: checkbox should be set to `checked` ... | String | 'value' |
 | option.getValueProps | Get the component props according to field value. | (value): Object | (value) => ({ value }) |
+| option.getValueFromEvent | Specify how to get value from event. | (e): any | See below |
 | option.initialValue | Initial value of current component. | any | - |
-| option.normalize | Return normalized value. | (value, prevValue, allValues): Object | - |
+| option.normalize | Return normalized value. | (value, prev, all): Object | - |
 | option.trigger | Event which is listened to collect form data. | String | 'onChange' |
 | option.validateTrigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
 | option.rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
@@ -179,10 +177,12 @@ This input's unique name.
 | option.validate | | Object[] | - |
 | option.validate[n].trigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
 | option.validate[n].rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
-| option.getValueFromEvent | Specify how to get value from event. | (e): any | See below |
+| option.exclusive(deprecated) | Whether set value exclusively. Used with radio. | boolean | false |
+
+##### Default value of `getValueFromEvent`
 
 ```js
-function (e) {
+function defaultGetValueFromEvent(e) {
   if (!e || !e.target) {
     return e;
   }
@@ -207,7 +207,7 @@ function (e) {
 }
 ```
 
-### getFieldDecorator(name:String, option: Object): (React.Node): React.Node
+### getFieldDecorator(name:String, option: Object) => (React.Node) => React.Node
 
 Similar to `getFieldProps`, but add some helper warnings and you can write onXX directly inside React.Node props:
 
@@ -241,7 +241,7 @@ Set fields initialValue by kv object. use for reset and initial display/value.
 
 Set fields by kv object. each field can contain errors and value member.
 
-### validateFields([fieldNames: String[]], [options: Object], callback: Function(errors, values))
+### validateFields([fieldNames: String[]], [options: Object], callback: (errors, values) => void)
 
 Validate and get fields value by fieldNames.
 
@@ -276,24 +276,24 @@ Whether this input's value had been change.
 
 Whether one of the inputs' values had been change.
 
-### isSubmitting(): Bool
-
-Whether the form is submitting.
-
-### submit(callback: Function)
-
-Cause isSubmitting to return true, after callback called, isSubmitting return false.
-
 ### resetFields([names: String[]])
 
 Reset specified inputs. Defaults to all.
 
+### isSubmitting(): Bool (Deprecated)
 
-## rc-form/lib/createDOMForm(formOption): Function
+Whether the form is submitting.
+
+### submit(callback: Function) (Deprecated)
+
+Cause isSubmitting to return true, after callback called, isSubmitting return false.
+
+
+## rc-form/lib/createDOMForm(option): Function
 
 createDOMForm enhancement, support props.form.validateFieldsAndScroll
 
-### props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))
+### validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: (errors, values) => void)
 
 props.form.validateFields enhancement, support scroll to the first invalid form field
 
