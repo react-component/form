@@ -78,7 +78,15 @@ function createBaseForm(option = {}, mixins = []) {
           fieldMeta.getValueFromEvent(...args) :
           getValueFromEvent(...args);
         if (onValuesChange && value !== this.fieldsStore.getFieldValue(name)) {
-          onValuesChange(this.props, set({}, name, value));
+          const valuesAll = this.fieldsStore.getValueFromFieldsAll();
+          let valuesAllSet = {};
+          valuesAll[name] = value;
+          Object.keys(valuesAll).forEach(key => {
+            if (valuesAll[key]) {
+              valuesAllSet = set(valuesAllSet, key, valuesAll[key]);
+            }
+          });
+          onValuesChange(this.props, set({}, name, value), valuesAllSet);
         }
         const nameKeyObj = getNameIfNested(name);
         if (this.fieldsStore.getFieldMeta(nameKeyObj.name).exclusive) {
@@ -249,7 +257,7 @@ function createBaseForm(option = {}, mixins = []) {
           Object.keys(fields).forEach((f) => {
             changedFields[f] = this.fieldsStore.getField(f);
           });
-          onFieldsChange(this.props, changedFields);
+          onFieldsChange(this.props, changedFields, this.fieldsStore.getFieldAll());
         }
         this.forceUpdate();
       },

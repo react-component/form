@@ -49,6 +49,14 @@ class FieldsStore {
     });
     this.fields = nowFields;
   }
+  getUndirtyFields() {
+    const undirtyFields = {};
+    const undirtyValues = Object.keys(this.fieldsMeta).filter(key =>
+      !this.fields[key] && this.fieldsMeta[key].initialValue)
+      .map(key => ({ dirty: false, name: key, value: this.fieldsMeta[key].initialValue }));
+    undirtyValues.forEach(value => undirtyFields[value.name] = value);
+    return undirtyFields;
+  }
   resetFields(ns) {
     const newFields = {};
     const { fields } = this;
@@ -61,7 +69,6 @@ class FieldsStore {
     });
     return newFields;
   }
-
   getValueFromFieldsInternal(name, fields) {
     const field = fields[name];
     if (field && 'value' in field) {
@@ -83,6 +90,16 @@ class FieldsStore {
       return ret[name];
     }
     return this.getValueFromFieldsInternal(name, fields);
+  }
+  getValueFromFieldsAll = () => {
+    const { fieldsMeta, fields } = this;
+    const ret = {};
+    let fieldKeyValue;
+    Object.keys(fieldsMeta).forEach(fieldKey => {
+      fieldKeyValue = this.getValueFromFieldsInternal(fieldKey, fields);
+      ret[fieldKey] = fieldKeyValue;
+    });
+    return ret;
   }
 
   getValidFieldsName() {
@@ -115,6 +132,9 @@ class FieldsStore {
       ...this.fields[name],
       name,
     };
+  }
+  getFieldAll() {
+    return Object.assign({}, this.fields, this.getUndirtyFields());
   }
   getFieldMember(name, member) {
     return this.getField(name)[member];
