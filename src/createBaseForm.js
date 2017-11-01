@@ -21,10 +21,13 @@ const DEFAULT_TRIGGER = 'onChange';
 
 function createBaseForm(option = {}, mixins = []) {
   const {
-    validateMessages, mapProps = mirror, mapPropsToFields,
+    validateMessages,
     onFieldsChange, onValuesChange,
+    mapProps = mirror, mapPropsToFields,
     fieldNameProp, fieldMetaProp, fieldDataProp,
-    formPropName = 'form', withRef,
+    formPropName = 'form',
+    // @deprecated
+    withRef,
   } = option;
 
   function decorate(WrappedComponent) {
@@ -79,13 +82,9 @@ function createBaseForm(option = {}, mixins = []) {
           getValueFromEvent(...args);
         if (onValuesChange && value !== this.fieldsStore.getFieldValue(name)) {
           const valuesAll = this.fieldsStore.getValueFromFieldsAll();
-          let valuesAllSet = {};
+          const valuesAllSet = {};
           valuesAll[name] = value;
-          Object.keys(valuesAll).forEach(key => {
-            if (valuesAll[key]) {
-              valuesAllSet = set(valuesAllSet, key, valuesAll[key]);
-            }
-          });
+          Object.keys(valuesAll).forEach(key => set(valuesAllSet, key, valuesAll[key]));
           onValuesChange(this.props, set({}, name, value), valuesAllSet);
         }
         const nameKeyObj = getNameIfNested(name);

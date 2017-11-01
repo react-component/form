@@ -95,8 +95,10 @@ class Form extends React.Component {
     return (
       <div>
         {this.requiredDecorator(
-          <input onChange={
-            // can still write your own onChange
+          <input
+            onChange={
+              // can still write your own onChange
+            }
           />
         )}
         {(errors = getFieldError('required')) ? errors.join(',') : null}
@@ -114,8 +116,8 @@ export createForm()(Form);
 | Option    | Description                              | Type       | Default |
 |-----------|------------------------------------------|------------|---------|
 | formOption.validateMessages | Preseted messages of [async-validator](https://github.com/yiminghe/async-validator) | Object | {} |
-| formOption.onFieldsChange | Called when field changed, you can dispatch fields to redux store. | (props, changedFields): void | NOOP |
-| formOption.onValuesChange | Called when value changed. | (props, changedValues): void | NOOP |
+| formOption.onFieldsChange | Called when field changed, you can dispatch fields to redux store. | (props, changed, all): void | NOOP |
+| formOption.onValuesChange | Called when value changed. | (props, changed, all): void | NOOP |
 | formOption.mapProps | Get new props transfered to WrappedComponent. | (props): Object | props => props |
 | formOption.mapPropsToFields | Convert value from props to fields. Used for read fields from redux store. | (props): Object | NOOP |
 | formOption.fieldNameProp | Where to store the `name` argument of `getFieldProps`. | String | - |

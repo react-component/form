@@ -50,12 +50,12 @@ class FieldsStore {
     this.fields = nowFields;
   }
   getUndirtyFields() {
-    const undirtyFields = {};
-    const undirtyValues = Object.keys(this.fieldsMeta).filter(key =>
-      !this.fields[key] && this.fieldsMeta[key].initialValue)
+    const undirtyFields = Object.keys(this.fieldsMeta)
+      .filter(key => !this.fields[key])
       .map(key => ({ dirty: false, name: key, value: this.fieldsMeta[key].initialValue }));
-    undirtyValues.forEach(value => undirtyFields[value.name] = value);
-    return undirtyFields;
+    const ret = {};
+    undirtyFields.forEach(value => set(ret, value.name, value));
+    return ret;
   }
   resetFields(ns) {
     const newFields = {};
@@ -94,10 +94,8 @@ class FieldsStore {
   getValueFromFieldsAll = () => {
     const { fieldsMeta, fields } = this;
     const ret = {};
-    let fieldKeyValue;
     Object.keys(fieldsMeta).forEach(fieldKey => {
-      fieldKeyValue = this.getValueFromFieldsInternal(fieldKey, fields);
-      ret[fieldKey] = fieldKeyValue;
+      ret[fieldKey] = this.getValueFromFieldsInternal(fieldKey, fields);
     });
     return ret;
   }
@@ -134,7 +132,10 @@ class FieldsStore {
     };
   }
   getFieldAll() {
-    return Object.assign({}, this.fields, this.getUndirtyFields());
+    return {
+      ...this.fields,
+      ...this.getUndirtyFields(),
+    };
   }
   getFieldMember(name, member) {
     return this.getField(name)[member];
