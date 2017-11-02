@@ -11,8 +11,12 @@ export function argumentContainer(Container, WrappedComponent) {
   return hoistStatics(Container, WrappedComponent);
 }
 
+export function mirror(obj) {
+  return obj;
+}
+
 export function getValueFromEvent(e) {
-  // support custom element
+  // To support custom element
   if (!e || !e.target) {
     return e;
   }
@@ -40,14 +44,10 @@ export function flattenArray(arr) {
   return Array.prototype.concat.apply([], arr);
 }
 
-export function mirror(obj) {
-  return obj;
-}
-
 export function hasRules(validate) {
   if (validate) {
     return validate.some((item) => {
-      return !!item.rules && item.rules.length;
+      return item.rules && item.rules.length;
     });
   }
   return false;
@@ -84,67 +84,6 @@ export function getParams(ns, opt, cb) {
     callback,
     options,
   };
-}
-
-const NAME_KEY_SEP = '.';
-const NAME_INDEX_OPEN_SEP = '[';
-
-export function getNameIfNested(str) {
-  const keyIndex = str.indexOf(NAME_KEY_SEP);
-  const arrayIndex = str.indexOf(NAME_INDEX_OPEN_SEP);
-
-  let index;
-
-  if (keyIndex === -1 && arrayIndex === -1) {
-    return {
-      name: str,
-    };
-  } else if (keyIndex === -1) {
-    index = arrayIndex;
-  } else if (arrayIndex === -1) {
-    index = keyIndex;
-  } else {
-    index = Math.min(keyIndex, arrayIndex);
-  }
-
-  return {
-    name: str.slice(0, index),
-    isNested: true,
-  };
-}
-
-export function flatFieldNames(names) {
-  const ret = {};
-  names.forEach((n) => {
-    ret[getNameIfNested(n).name] = 1;
-  });
-  return Object.keys(ret);
-}
-
-export function clearVirtualField(name, fields, fieldsMeta) {
-  if (fieldsMeta[name] && fieldsMeta[name].virtual) {
-    /* eslint no-loop-func:0 */
-    Object.keys(fields).forEach((ok) => {
-      if (getNameIfNested(ok).name === name) {
-        delete fields[ok];
-      }
-    });
-  }
-}
-
-export function getVirtualPaths(fieldsMeta) {
-  const virtualPaths = {};
-  Object.keys(fieldsMeta).forEach((name) => {
-    const leadingName = fieldsMeta[name].leadingName;
-    if (leadingName && fieldsMeta[leadingName].virtual) {
-      if (leadingName in virtualPaths) {
-        virtualPaths[leadingName].push(name);
-      } else {
-        virtualPaths[leadingName] = [name];
-      }
-    }
-  });
-  return virtualPaths;
 }
 
 export function normalizeValidateRules(validate, rules, validateTrigger) {

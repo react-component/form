@@ -31,9 +31,6 @@ class Form extends Component {
   render() {
     const { form } = this.props;
     const { getFieldProps } = form;
-    getFieldProps('normal', {
-      initialValue: 'b',
-    });
     return (<div style={{ margin: 20 }}>
       <h2>radio-group</h2>
       <form onSubmit={this.onSubmit}>
@@ -45,7 +42,7 @@ class Form extends Component {
               <input
                 type="radio"
                 {...getFieldProps('normal.a', {
-                  exclusive: true,
+                  initialValue: 'a',
                   getValueFromEvent(e) {
                     return e.target.checked ? 'a' : '';
                   },
@@ -65,7 +62,6 @@ class Form extends Component {
               <input
                 type="radio"
                 {...getFieldProps('normal.b', {
-                  exclusive: true,
                   getValueFromEvent(e) {
                     return e.target.checked ? 'b' : '';
                   },

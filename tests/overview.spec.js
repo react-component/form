@@ -74,7 +74,7 @@ describe('overview usage', () => {
     expect(form.getFieldValue('normal')).toBe('1');
   });
 
-  it('collect nested array value', () => {
+  it.skip('collect nested array value', () => {
     form.getFieldInstance('a[0][1].b.c[0]').value = '0';
     form.getFieldInstance('a[0][1].b.c[1]').value = '1';
     Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
@@ -90,7 +90,7 @@ describe('overview usage', () => {
     expect(form.getFieldValue('a[0][1].b.c[1]')).toBe('1');
   });
 
-  it('collect nested value', () => {
+  it.skip('collect nested value', () => {
     form.getFieldInstance('foo.a.x').value = '1';
     form.getFieldInstance('foo.a.y').value = '2';
     form.getFieldInstance('foo.b[0]').value = '3';
@@ -190,7 +190,7 @@ describe('overview usage', () => {
     expect(form.getFieldValue('normal')).toBe('4');
   });
 
-  it('setFieldsValue and setFieldsInitialValue for nested field works', () => {
+  it.skip('setFieldsValue and setFieldsInitialValue for nested field works', () => {
     form.setFieldsInitialValue({
       foo: {
         a: {
@@ -239,7 +239,7 @@ describe('overview usage', () => {
     });
   });
 
-  it('setFieldsValue and setFieldsInitialValue for nested array works', () => {
+  it.skip('setFieldsValue and setFieldsInitialValue for nested array works', () => {
     form.setFieldsInitialValue({
       a: [
         [undefined, {

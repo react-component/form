@@ -1,11 +1,6 @@
-import get from 'lodash/get';
-import has from 'lodash/has';
 import set from 'lodash/set';
 import {
-  flatFieldNames,
   getErrorStrs,
-  getNameIfNested,
-  getVirtualPaths,
 } from './utils';
 
 const atom = {};
@@ -26,13 +21,8 @@ class FieldsStore {
       ...fields,
     };
     const nowValues = {};
-    Object.keys(fieldsMeta).forEach((f) => {
-      const { name, isNested } = getNameIfNested(f);
-      if (isNested && fieldsMeta[name].exclusive) {
-        return;
-      }
-      nowValues[f] = this.getValueFromFields(f, nowFields);
-    });
+    Object.keys(fieldsMeta)
+      .forEach((f) => nowValues[f] = this.getValueFromFields(f, nowFields));
     Object.keys(nowValues).forEach((f) => {
       const value = nowValues[f];
       const fieldMeta = fieldsMeta[f];
@@ -78,17 +68,6 @@ class FieldsStore {
     return fieldMeta && fieldMeta.initialValue;
   }
   getValueFromFields(name, fields) {
-    const { fieldsMeta } = this;
-    if (fieldsMeta[name] && fieldsMeta[name].virtual) {
-      const ret = {};
-      Object.keys(fieldsMeta).forEach(fieldKey => {
-        const nameIfNested = getNameIfNested(fieldKey);
-        if (nameIfNested.name === name && nameIfNested.isNested) {
-          set(ret, fieldKey, this.getValueFromFieldsInternal(fieldKey, fields));
-        }
-      });
-      return ret[name];
-    }
     return this.getValueFromFieldsInternal(name, fields);
   }
   getValueFromFieldsAll = () => {
@@ -102,21 +81,18 @@ class FieldsStore {
 
   getValidFieldsName() {
     const fieldsMeta = this.fieldsMeta;
-    return fieldsMeta ?
-      Object.keys(fieldsMeta).filter(name => !fieldsMeta[name].hidden) :
-      [];
+    return fieldsMeta ? Object.keys(fieldsMeta) : [];
   }
 
   getFieldValuePropValue(fieldMeta) {
-    const { exclusive, leadingName, name, getValueProps, valuePropName } = fieldMeta;
-    const { fieldsMeta } = this;
-    const field = exclusive ? this.getField(leadingName) : this.getField(name);
+    const { name, getValueProps, valuePropName } = fieldMeta;
+    const field = this.getField(name);
     let fieldValue = atom;
     if (field && 'value' in field) {
       fieldValue = field.value;
     }
     if (fieldValue === atom) {
-      fieldValue = exclusive ? fieldsMeta[leadingName].initialValue : fieldMeta.initialValue;
+      fieldValue = fieldMeta.initialValue;
     }
     if (getValueProps) {
       return getValueProps(fieldValue);
@@ -142,7 +118,7 @@ class FieldsStore {
   }
 
   getFieldsValue = (names) => {
-    const fields = names || flatFieldNames(this.getValidFieldsName());
+    const fields = names || this.getValidFieldsName();
     const allValues = {};
     fields.forEach((f) => {
       set(allValues, f, this.getFieldValue(f));
@@ -156,7 +132,7 @@ class FieldsStore {
   }
 
   getFieldsError = (names) => {
-    const fields = names || flatFieldNames(this.getValidFieldsName());
+    const fields = names || this.getValidFieldsName();
     const allErrors = {};
     fields.forEach((f) => {
       set(allErrors, f, this.getFieldError(f));
@@ -179,19 +155,8 @@ class FieldsStore {
 
   setFieldsInitialValue = (initialValues) => {
     const fieldsMeta = this.fieldsMeta;
-    const virtualPaths = getVirtualPaths(fieldsMeta);
     Object.keys(initialValues).forEach(name => {
-      if (fieldsMeta[name] && fieldsMeta[name].virtual) {
-        for (let i = 0, len = virtualPaths[name].length; i < len; i++) {
-          const path = virtualPaths[name][i];
-          if (has(initialValues, path)) {
-            fieldsMeta[path] = {
-              ...fieldsMeta[path],
-              initialValue: get(initialValues, path),
-            };
-          }
-        }
-      } else if (fieldsMeta[name]) {
+      if (fieldsMeta[name]) {
         fieldsMeta[name] = {
           ...fieldsMeta[name],
           initialValue: initialValues[name],
