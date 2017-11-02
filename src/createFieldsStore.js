@@ -1,17 +1,22 @@
 import set from 'lodash/set';
+import { isFormField } from './createFormField';
 import {
+  flattenFields,
   getErrorStrs,
 } from './utils';
 
-const atom = {};
-
 class FieldsStore {
   constructor(fields) {
-    this.fields = fields;
+    this.fields = flattenFields(fields, this.isFieldTypeLeaf);
     this.fieldsMeta = {};
   }
+
   updateFields(fields) {
-    Object.assign(this.fields, fields);
+    this.fields = flattenFields(fields, this.isFieldTypeLeaf);
+  }
+
+  isFieldTypeLeaf(_, node) {
+    return isFormField(node);
   }
 
   setFields(fields) {
@@ -39,14 +44,6 @@ class FieldsStore {
     });
     this.fields = nowFields;
   }
-  getUndirtyFields() {
-    const undirtyFields = Object.keys(this.fieldsMeta)
-      .filter(key => !this.fields[key])
-      .map(key => ({ dirty: false, name: key, value: this.fieldsMeta[key].initialValue }));
-    const ret = {};
-    undirtyFields.forEach(value => set(ret, value.name, value));
-    return ret;
-  }
   resetFields(ns) {
     const newFields = {};
     const { fields } = this;
@@ -58,6 +55,14 @@ class FieldsStore {
       }
     });
     return newFields;
+  }
+  getUndirtyFields() {
+    const undirtyFields = Object.keys(this.fieldsMeta)
+      .filter(key => !this.fields[key])
+      .map(key => ({ dirty: false, name: key, value: this.fieldsMeta[key].initialValue }));
+    const ret = {};
+    undirtyFields.forEach(value => set(ret, value.name, value));
+    return ret;
   }
   getValueFromFieldsInternal(name, fields) {
     const field = fields[name];
@@ -87,19 +92,13 @@ class FieldsStore {
   getFieldValuePropValue(fieldMeta) {
     const { name, getValueProps, valuePropName } = fieldMeta;
     const field = this.getField(name);
-    let fieldValue = atom;
-    if (field && 'value' in field) {
-      fieldValue = field.value;
-    }
-    if (fieldValue === atom) {
-      fieldValue = fieldMeta.initialValue;
-    }
+    const fieldValue = 'value' in field ?
+      field.value : fieldMeta.initialValue;
     if (getValueProps) {
       return getValueProps(fieldValue);
     }
     return { [valuePropName]: fieldValue };
   }
-
 
   getField(name) {
     return {
@@ -149,6 +148,7 @@ class FieldsStore {
     }
     return this.fieldsMeta[name];
   }
+
   setFieldMeta(name, meta) {
     this.fieldsMeta[name] = meta;
   }

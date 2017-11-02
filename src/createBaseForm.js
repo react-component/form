@@ -8,13 +8,14 @@ import set from 'lodash/set';
 import createFieldsStore from './createFieldsStore';
 import {
   argumentContainer,
-  mirror,
+  identity,
+  normalizeValidateRules,
+  getValidateTriggers,
   getValueFromEvent,
   hasRules,
   getParams,
   isEmptyObject,
   flattenArray,
-  normalizeValidateRules,
 } from './utils';
 
 const DEFAULT_TRIGGER = 'onChange';
@@ -24,7 +25,7 @@ function createBaseForm(option = {}, mixins = []) {
     validateMessages,
     onFieldsChange,
     onValuesChange,
-    mapProps = mirror,
+    mapProps = identity,
     mapPropsToFields,
     fieldNameProp,
     fieldMetaProp,
@@ -34,7 +35,7 @@ function createBaseForm(option = {}, mixins = []) {
     withRef,
   } = option;
 
-  function decorate(WrappedComponent) {
+  return function decorate(WrappedComponent) {
     const Form = createReactClass({
       mixins,
 
@@ -97,12 +98,12 @@ function createBaseForm(option = {}, mixins = []) {
       onCollect(name_, action, ...args) {
         const { name, field, fieldMeta } = this.onCollectCommon(name_, action, args);
         const { validate } = fieldMeta;
-        const fieldContent = {
+        const newField = {
           ...field,
           dirty: hasRules(validate),
         };
         this.setFields({
-          [name]: fieldContent,
+          [name]: newField,
         });
       },
 
@@ -121,7 +122,10 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       getCacheBind(name, action, fn) {
-        const cache = this.cachedBind[name] = this.cachedBind[name] || {};
+        if (!this.cachedBind[name]) {
+          this.cachedBind[name] = {};
+        }
+        const cache = this.cachedBind[name];
         if (!cache[action]) {
           cache[action] = fn.bind(this, name, action);
         }
@@ -169,10 +173,10 @@ function createBaseForm(option = {}, mixins = []) {
         );
 
         const fieldOption = {
+          name,
+          trigger: DEFAULT_TRIGGER,
           valuePropName: 'value',
           validate: [],
-          trigger: DEFAULT_TRIGGER,
-          name,
           ...usersFieldOption,
         };
 
@@ -197,10 +201,7 @@ function createBaseForm(option = {}, mixins = []) {
         }
 
         const validateRules = normalizeValidateRules(validate, rules, validateTrigger);
-        const validateTriggers = validateRules
-          .filter(item => !!item.rules && item.rules.length)
-          .map(item => item.trigger)
-          .reduce((pre, curr) => pre.concat(curr), []);
+        const validateTriggers = getValidateTriggers(validateRules);
         validateTriggers.forEach((action) => {
           if (inputProps[action]) return;
           inputProps[action] = this.getCacheBind(name, action, this.onCollectValidate);
@@ -260,7 +261,8 @@ function createBaseForm(option = {}, mixins = []) {
 
       setFieldsValue(fieldsValue) {
         if (onValuesChange) {
-          onValuesChange(this.props, fieldsValue);
+          const valuesAll = this.fieldsStore.getValueFromFieldsAll();
+          onValuesChange(this.props, fieldsValue, { ...valuesAll, ...fieldsValue });
         }
         const newFields = {};
         const { fieldsMeta } = this.fieldsStore;
@@ -429,10 +431,20 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       isSubmitting() {
+        warning(
+          false,
+          '`isSubmitting` is deprecated. ' +
+            'Actually, it\'s more convenient to handle submitting status by yourself.'
+        );
         return this.state.submitting;
       },
 
       submit(callback) {
+        warning(
+          false,
+          '`submit` is deprecated.' +
+            'Actually, it\'s more convenient to handle submitting status by yourself.'
+        );
         const fn = () => {
           this.setState({
             submitting: false,
@@ -468,9 +480,7 @@ function createBaseForm(option = {}, mixins = []) {
     });
 
     return argumentContainer(Form, WrappedComponent);
-  }
-
-  return decorate;
+  };
 }
 
 export default createBaseForm;

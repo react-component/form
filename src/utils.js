@@ -11,8 +11,70 @@ export function argumentContainer(Container, WrappedComponent) {
   return hoistStatics(Container, WrappedComponent);
 }
 
-export function mirror(obj) {
+export function identity(obj) {
   return obj;
+}
+
+export function flattenArray(arr) {
+  return Array.prototype.concat.apply([], arr);
+}
+
+function treeTraverse(path, tree, isLeafNode, callback) {
+  if (isLeafNode(path, tree)) {
+    callback(path, tree);
+  } else if (Array.isArray(tree)) {
+    tree.forEach((subTree, index) => treeTraverse(
+      `${path}[${index}]`,
+      subTree,
+      isLeafNode,
+      callback
+    ));
+  } else { // It's object and not a leaf node
+    Object.keys(tree).forEach(subTreeKey => {
+      const subTree = tree[subTreeKey];
+      treeTraverse(
+        `${path}${path ? '.' : ''}${subTreeKey}`,
+        subTree,
+        isLeafNode,
+        callback
+      );
+    });
+  }
+}
+
+export function flattenFields(maybeNestedFields, isLeafNode) {
+  const fields = {};
+  treeTraverse('', maybeNestedFields, isLeafNode, (path, node) => {
+    fields[path] = node;
+  });
+  return fields;
+}
+
+export function normalizeValidateRules(validate, rules, validateTrigger) {
+  const validateRules = validate.map((item) => {
+    const newItem = {
+      ...item,
+      trigger: item.trigger || [],
+    };
+    if (typeof newItem.trigger === 'string') {
+      newItem.trigger = [newItem.trigger];
+    }
+    return newItem;
+  });
+  if (rules) {
+    validateRules.push({
+      trigger: validateTrigger ? [].concat(validateTrigger) : [],
+      rules,
+    });
+  }
+  return validateRules;
+}
+
+export function getValidateTriggers(validateRules) {
+  return validateRules
+    .filter(item => !!item.rules && item.rules.length)
+    .map(item => item.trigger)
+    .reduce((pre, curr) => pre.concat(curr), []);
 }
 
 export function getValueFromEvent(e) {
@@ -36,37 +98,16 @@ export function getErrorStrs(errors) {
   return errors;
 }
 
-export function isEmptyObject(obj) {
-  return Object.keys(obj).length === 0;
-}
-
-export function flattenArray(arr) {
-  return Array.prototype.concat.apply([], arr);
-}
-
-export function hasRules(validate) {
-  if (validate) {
-    return validate.some((item) => {
-      return item.rules && item.rules.length;
-    });
-  }
-  return false;
-}
-
-export function startsWith(str, prefix) {
-  return str.lastIndexOf(prefix, 0) === 0;
-}
-
 export function getParams(ns, opt, cb) {
   let names = ns;
-  let callback = cb;
   let options = opt;
+  let callback = cb;
   if (cb === undefined) {
     if (typeof names === 'function') {
       callback = names;
       options = {};
       names = undefined;
-    } else if (Array.isArray(ns)) {
+    } else if (Array.isArray(names)) {
       if (typeof options === 'function') {
         callback = options;
         options = {};
@@ -81,27 +122,24 @@ export function getParams(ns, opt, cb) {
   }
   return {
     names,
-    callback,
     options,
+    callback,
   };
 }
 
-export function normalizeValidateRules(validate, rules, validateTrigger) {
-  const validateRules = validate.map((item) => {
-    const newItem = {
-      ...item,
-      trigger: item.trigger || [],
-    };
-    if (typeof newItem.trigger === 'string') {
-      newItem.trigger = [newItem.trigger];
-    }
-    return newItem;
-  });
-  if (rules) {
-    validateRules.push({
-      trigger: validateTrigger ? [].concat(validateTrigger) : [],
-      rules,
+export function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
+}
+
+export function hasRules(validate) {
+  if (validate) {
+    return validate.some((item) => {
+      return item.rules && item.rules.length;
     });
   }
-  return validateRules;
+  return false;
+}
+
+export function startsWith(str, prefix) {
+  return str.lastIndexOf(prefix, 0) === 0;
 }

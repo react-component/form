@@ -33,18 +33,20 @@ class Test extends React.Component {
 
   render() {
     const { getFieldProps } = this.props.form;
-    return (<div>
-      <input {...getFieldProps('normal')} />
-      <input {...getFieldProps('check', {
-        rules: [this.check],
-      })}
-      />
-      <input {...getFieldProps('force', {
-        rules: [this.force],
-        validateTrigger: false,
-      })}
-      />
-    </div>);
+    return (
+      <div>
+        <input {...getFieldProps('normal')} />
+        <input {...getFieldProps('check', {
+          rules: [this.check],
+        })}
+        />
+        <input {...getFieldProps('force', {
+          rules: [this.force],
+          validateTrigger: false,
+        })}
+        />
+      </div>
+    );
   }
 }
 
@@ -52,7 +54,7 @@ Test = createForm({
   withRef: true,
 })(Test);
 
-describe('async usage', () => {
+describe('validateFields', () => {
   let container;
   let component;
   let form;

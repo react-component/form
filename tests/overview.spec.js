@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, react/prop-types */
+/* eslint-disable no-undef, react/prop-types, react/no-multi-comp */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -284,5 +284,33 @@ describe('overview usage', () => {
         },
       }],
     ]);
+  });
+
+  it('jsx works', () => {
+    class TestComponent extends React.Component {
+      render() {
+        const { getFieldProps } = this.props.form;
+        return (
+          <div>
+            <input {...getFieldProps('required', {
+              rules: [{
+                required: true,
+                message: <b>1</b>,
+              }],
+            })}
+            />
+          </div>
+        );
+      }
+    }
+    TestComponent = createForm({
+      withRef: true,
+    })(TestComponent);
+    component = ReactDOM.render(<TestComponent />, container);
+    component = component.refs.wrappedComponent;
+    form = component.props.form;
+    Simulate.change(form.getFieldInstance('required'));
+    expect(form.getFieldError('required').length).toBe(1);
+    expect(form.getFieldError('required')[0].type).toBe('b');
   });
 });
