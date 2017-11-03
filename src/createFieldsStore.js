@@ -1,5 +1,5 @@
 import set from 'lodash/set';
-import { isFormField } from './createFormField';
+import createFormField, { isFormField } from './createFormField';
 import {
   flattenFields,
   getErrorStrs,
@@ -17,6 +17,11 @@ class FieldsStore {
 
   isFieldTypeLeaf(_, node) {
     return isFormField(node);
+  }
+
+  flattenRegisteredFields(fields) {
+    const validFieldsName = this.getValidFieldsName();
+    return flattenFields(fields, path => validFieldsName.includes(path));
   }
 
   setFields(fields) {
@@ -56,14 +61,6 @@ class FieldsStore {
     });
     return newFields;
   }
-  getUndirtyFields() {
-    const undirtyFields = Object.keys(this.fieldsMeta)
-      .filter(key => !this.fields[key])
-      .map(key => ({ dirty: false, name: key, value: this.fieldsMeta[key].initialValue }));
-    const ret = {};
-    undirtyFields.forEach(value => set(ret, value.name, value));
-    return ret;
-  }
   getValueFromFieldsInternal(name, fields) {
     const field = fields[name];
     if (field && 'value' in field) {
@@ -75,17 +72,14 @@ class FieldsStore {
   getValueFromFields(name, fields) {
     return this.getValueFromFieldsInternal(name, fields);
   }
-  getValueFromFieldsAll = () => {
+  getAllValues = () => {
     const { fieldsMeta, fields } = this;
-    const ret = {};
-    Object.keys(fieldsMeta).forEach(fieldKey => {
-      ret[fieldKey] = this.getValueFromFieldsInternal(fieldKey, fields);
-    });
-    return ret;
+    return Object.keys(fieldsMeta)
+      .reduce((acc, name) => set(acc, name, this.getValueFromFieldsInternal(name, fields)), {});
   }
 
   getValidFieldsName() {
-    const fieldsMeta = this.fieldsMeta;
+    const { fieldsMeta } = this;
     return fieldsMeta ? Object.keys(fieldsMeta) : [];
   }
 
@@ -106,12 +100,26 @@ class FieldsStore {
       name,
     };
   }
-  getFieldAll() {
-    return {
-      ...this.fields,
-      ...this.getUndirtyFields(),
-    };
+
+  getNotCollectedFields() {
+    return this.getValidFieldsName()
+      .filter(name => !this.fields[name])
+      .map(name => ({
+        name,
+        dirty: false,
+        value: this.fieldsMeta[name].initialValue,
+      }))
+      .reduce((acc, field) => set(acc, field.name, createFormField(field)), {});
   }
+
+  getAllFields() {
+    return Object.keys(this.fields)
+      .reduce(
+        (acc, name) => set(acc, name, createFormField(this.fields[name])),
+        this.getNotCollectedFields()
+      );
+  }
+
   getFieldMember(name, member) {
     return this.getField(name)[member];
   }

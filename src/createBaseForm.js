@@ -85,7 +85,7 @@ function createBaseForm(option = {}, mixins = []) {
           fieldMeta.getValueFromEvent(...args) :
           getValueFromEvent(...args);
         if (onValuesChange && value !== this.fieldsStore.getFieldValue(name)) {
-          const valuesAll = this.fieldsStore.getValueFromFieldsAll();
+          const valuesAll = this.fieldsStore.getAllValues();
           const valuesAllSet = {};
           valuesAll[name] = value;
           Object.keys(valuesAll).forEach(key => set(valuesAllSet, key, valuesAll[key]));
@@ -109,11 +109,11 @@ function createBaseForm(option = {}, mixins = []) {
 
       onCollectValidate(name_, action, ...args) {
         const { field, fieldMeta } = this.onCollectCommon(name_, action, args);
-        const fieldContent = {
+        const newField = {
           ...field,
           dirty: true,
         };
-        this.validateFieldsInternal([fieldContent], {
+        this.validateFieldsInternal([newField], {
           action,
           options: {
             firstFields: !!fieldMeta.validateFirst,
@@ -240,14 +240,13 @@ function createBaseForm(option = {}, mixins = []) {
         return flattenArray(actionRules);
       },
 
-      setFields(fields) {
+      setFields(maybeNestedFields) {
+        const fields = this.fieldsStore.flattenRegisteredFields(maybeNestedFields);
         this.fieldsStore.setFields(fields);
         if (onFieldsChange) {
-          const changedFields = {};
-          Object.keys(fields).forEach((f) => {
-            changedFields[f] = this.fieldsStore.getField(f);
-          });
-          onFieldsChange(this.props, changedFields, this.fieldsStore.getFieldAll());
+          const changedFields = Object.keys(fields)
+            .reduce((acc, name) => set(acc, name, this.fieldsStore.getField(name)), {});
+          onFieldsChange(this.props, changedFields, this.fieldsStore.getAllFields());
         }
         this.forceUpdate();
       },
@@ -259,29 +258,29 @@ function createBaseForm(option = {}, mixins = []) {
         }
       },
 
-      setFieldsValue(fieldsValue) {
-        if (onValuesChange) {
-          const valuesAll = this.fieldsStore.getValueFromFieldsAll();
-          onValuesChange(this.props, fieldsValue, { ...valuesAll, ...fieldsValue });
-        }
-        const newFields = {};
+      setFieldsValue(changedValues) {
         const { fieldsMeta } = this.fieldsStore;
-        Object.keys(fieldsValue).forEach((name) => {
-          const value = fieldsValue[name];
-          if (fieldsMeta[name]) {
-            newFields[name] = {
-              name,
+        const values = this.fieldsStore.flattenRegisteredFields(changedValues);
+        const newFields = Object.keys(values).reduce((acc, name) => {
+          const isRegistered = fieldsMeta[name];
+          warning(
+            isRegistered,
+            'Cannot use `setFieldsValue` until ' +
+              'you use `getFieldDecorator` or `getFieldProps` to register it.'
+          );
+          if (isRegistered) {
+            const value = values[name];
+            acc[name] = {
               value,
             };
-          } else {
-            warning(
-              false,
-              'Cannot use `setFieldsValue` until ' +
-                'you use `getFieldDecorator` or `getFieldProps` to register it.'
-            );
           }
-        });
+          return acc;
+        }, {});
         this.setFields(newFields);
+        if (onValuesChange) {
+          const allValues = this.fieldsStore.getAllValues();
+          onValuesChange(this.props, changedValues, allValues);
+        }
       },
 
       saveRef(name, _, component) {

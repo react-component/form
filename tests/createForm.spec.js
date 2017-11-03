@@ -1,21 +1,9 @@
-/* eslint-disable no-undef, react/prop-types, react/no-multi-comp */
+/* eslint-disable no-undef, space-before-keywords, react/prop-types, react/no-multi-comp */
 
 import React from 'react';
 import { mount } from 'enzyme';
 import createForm from '../src/createForm';
 import createFormField from '../src/createFormField';
-
-class TestComponent extends React.Component {
-  render() {
-    const { getFieldProps } = this.props.form;
-    return (
-      <div>
-        <input {...getFieldProps('normal')} />
-        <input {...getFieldProps('normal2')} />
-      </div>
-    );
-  }
-}
 
 describe('createForm', () => {
   describe('validateMessage', () => {
@@ -54,22 +42,28 @@ describe('createForm', () => {
       const onFieldsChange = jest.fn();
       const Test = createForm({
         onFieldsChange,
-      })(TestComponent);
+      })(class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('user.name')} />
+              <input {...getFieldProps('user.age')} type="number" />
+              <input {...getFieldProps('agreement')} type="checkbox" />
+            </form>
+          );
+        }
+      });
       const wrapper = mount(<Test />);
 
-      wrapper.find('input').first().simulate('change', { target: { value: '2' } });
-      expect(onFieldsChange.mock.calls[0][1]).toMatchObject({ normal: { value: '2' } });
+      wrapper.find('input').first().simulate('change', { target: { value: 'Benjy' } });
+      expect(onFieldsChange.mock.calls[0][1]).toMatchObject({ user: { name: { value: 'Benjy' } } });
       expect(onFieldsChange.mock.calls[0][2]).toMatchObject({
-        normal: { value: '2' },
-        normal2: { value: undefined },
-      });
-
-      onFieldsChange.mockClear();
-      wrapper.find('input').last().simulate('change', { target: { value: 'B' } });
-      expect(onFieldsChange.mock.calls[0][1]).toMatchObject({ normal2: { value: 'B' } });
-      expect(onFieldsChange.mock.calls[0][2]).toMatchObject({
-        normal: { value: '2' },
-        normal2: { value: 'B' },
+        user: {
+          name: { value: 'Benjy' },
+          age: { value: undefined },
+        },
+        agreement: { value: undefined },
       });
     });
 
@@ -78,23 +72,81 @@ describe('createForm', () => {
       const Test = createForm({
         withRef: true,
         onFieldsChange,
-      })(TestComponent);
+      })(class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('user.name')} />
+              <input {...getFieldProps('user.age')} type="number" />
+              <input {...getFieldProps('agreement')} type="checkbox" />
+            </form>
+          );
+        }
+      });
       const wrapper = mount(<Test />);
       const form = wrapper.ref('wrappedComponent').prop('form');
 
-      form.setFields({ normal: { value: '2' } });
-      expect(onFieldsChange.mock.calls[0][1]).toMatchObject({ normal: { value: '2' } });
+      form.setFields({ user: { name: { value: 'Benjy' } } });
+      expect(onFieldsChange.mock.calls[0][1]).toMatchObject({ user: { name: { value: 'Benjy' } } });
       expect(onFieldsChange.mock.calls[0][2]).toMatchObject({
-        normal: { value: '2' },
-        normal2: { value: undefined },
+        user: {
+          name: { value: 'Benjy' },
+          age: { value: undefined },
+        },
+        agreement: { value: undefined },
       });
+    });
 
-      onFieldsChange.mockClear();
-      form.setFields({ normal2: { value: 'B' } });
-      expect(onFieldsChange.mock.calls[0][1]).toMatchObject({ normal2: { value: 'B' } });
-      expect(onFieldsChange.mock.calls[0][2]).toMatchObject({
-        normal: { value: '2' },
-        normal2: { value: 'B' },
+    it('fields in arguemnts can be passed to `mapPropsToFields` directly', () => {
+      const Test = createForm({
+        withRef: true,
+        onFieldsChange(props, changed, all) {
+          props.onChange(all);
+        },
+        mapPropsToFields({ fields }) {
+          return fields;
+        },
+      })(class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('user.name')} />
+              <input {...getFieldProps('user.age')} type="number" />
+              <input {...getFieldProps('agreement')} type="checkbox" />
+            </form>
+          );
+        }
+      });
+      class TestWrapper extends React.Component {
+        state = {
+          fields: {},
+        };
+        handleFieldsChange = (fields) => {
+          this.setState({ fields });
+        }
+        render() {
+          return (
+            <Test
+              ref="test"
+              fields={this.state.fields}
+              onChange={this.handleFieldsChange}
+            />
+          );
+        }
+      }
+      const wrapper = mount(<TestWrapper />);
+      wrapper.find('input').at(0).simulate('change', { target: { value: 'Benjy' } });
+      wrapper.find('input').at(1).simulate('change', { target: { value: 18 } });
+      wrapper.find('input').at(2)
+        .simulate('change', { target: { type: 'checkbox', checked: true } });
+      expect(wrapper.state('fields')).toMatchObject({
+        user: {
+          age: { value: 18 },
+          name: { value: 'Benjy' },
+        },
+        agreement: { value: true },
       });
     });
   });
@@ -104,12 +156,29 @@ describe('createForm', () => {
       const onValuesChange = jest.fn();
       const Test = createForm({
         onValuesChange,
-      })(TestComponent);
+      })(class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('user.name')} />
+              <input {...getFieldProps('user.age')} type="number" />
+              <input {...getFieldProps('agreement')} type="checkbox" />
+            </form>
+          );
+        }
+      });
       const wrapper = mount(<Test />);
       wrapper.find('input').first().simulate('change', { target: { value: 'Benjy' } });
-      expect(onValuesChange.mock.calls[0][1]).toMatchObject({ normal: 'Benjy' });
+      expect(onValuesChange.mock.calls[0][1]).toMatchObject({ user: { name: 'Benjy' } });
       expect(onValuesChange.mock.calls[0][2])
-        .toMatchObject({ normal: 'Benjy', normal2: undefined });
+        .toMatchObject({
+          user: {
+            name: 'Benjy',
+            age: undefined,
+          },
+          agreement: undefined,
+        });
     });
 
     it('trigger `onValuesChange` when `setFieldsValue`', () => {
@@ -117,13 +186,30 @@ describe('createForm', () => {
       const Test = createForm({
         withRef: true,
         onValuesChange,
-      })(TestComponent);
+      })(class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('user.name')} />
+              <input {...getFieldProps('user.age')} type="number" />
+              <input {...getFieldProps('agreement')} type="checkbox" />
+            </form>
+          );
+        }
+      });
       const wrapper = mount(<Test />);
       const form = wrapper.ref('wrappedComponent').prop('form');
-      form.setFieldsValue({ normal: 'Benjy' });
-      expect(onValuesChange.mock.calls[0][1]).toMatchObject({ normal: 'Benjy' });
+      form.setFieldsValue({ user: { name: 'Benjy' } });
+      expect(onValuesChange.mock.calls[0][1]).toMatchObject({ user: { name: 'Benjy' } });
       expect(onValuesChange.mock.calls[0][2])
-        .toMatchObject({ normal: 'Benjy', normal2: undefined });
+      .toMatchObject({
+        user: {
+          name: 'Benjy',
+          age: undefined,
+        },
+        agreement: undefined,
+      });
     });
   });
 
@@ -137,7 +223,7 @@ describe('createForm', () => {
             x: props.x + 1,
           };
         },
-      })(TestComponent);
+      })(class extends React.Component { render() { return null; } });
       const wrapper = mount(<Test x={2} />);
       const wrappedComponent = wrapper.ref('wrappedComponent');
       expect(wrappedComponent.prop('x')).toBe(3);
@@ -145,23 +231,78 @@ describe('createForm', () => {
   });
 
   describe('mapPropsToFields', () => {
+    it('works', () => {
+      const Test = createForm({
+        withRef: true,
+        mapPropsToFields({ formState }) {
+          return {
+            user: {
+              name: createFormField({
+                value: formState.userName,
+              }),
+              age: createFormField({
+                value: formState.userAge,
+              }),
+            },
+            agreement: createFormField({
+              value: formState.agreement,
+            }),
+          };
+        },
+      })(class extends React.Component {
+        render() {
+          const { form } = this.props;
+          const { getFieldProps } = form;
+          return (
+            <form>
+              <input {...getFieldProps('user.name')} />
+              <input {...getFieldProps('user.age')} type="number" />
+              <input {...getFieldProps('agreement')} type="checkbox" />
+            </form>
+          );
+        }
+      });
+      const wrapper = mount(
+        <Test formState={{ userName: 'Benjy', userAge: 18, agreement: false }} />
+      );
+      const form = wrapper.ref('wrappedComponent').prop('form');
+      expect(form.getFieldValue('user.name')).toBe('Benjy');
+      expect(form.getFieldValue('user.age')).toBe(18);
+      expect(form.getFieldValue('agreement')).toBe(false);
+
+      wrapper.setProps({ formState: { userName: 'Benjy', userAge: 18, agreement: true } });
+      expect(form.getFieldValue('user.name')).toBe('Benjy');
+      expect(form.getFieldValue('user.age')).toBe(18);
+      expect(form.getFieldValue('agreement')).toBe(true);
+    });
+
     it('returned value will replace current fields', () => {
       const Test = createForm({
         withRef: true,
         mapPropsToFields(props) {
           return {
-            normal: createFormField({
-              value: props.formState.normal,
+            field1: createFormField({
+              value: props.formState.field1,
             }),
           };
         },
-      })(TestComponent);
-      const wrapper = mount(<Test formState={{ normal: '2' }} />);
+      })(class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('field1')} />
+              <input {...getFieldProps('field2')} />
+            </form>
+          );
+        }
+      });
+      const wrapper = mount(<Test formState={{ field1: '2' }} />);
       const form = wrapper.ref('wrappedComponent').prop('form');
       wrapper.find('input').last().simulate('change', { target: { value: '3' } });
-      wrapper.setProps({ formState: { normal: '1' } });
-      expect(form.getFieldValue('normal')).toBe('1');
-      expect(form.getFieldValue('normal2')).toBe(undefined);
+      wrapper.setProps({ formState: { field1: '1' } });
+      expect(form.getFieldValue('field1')).toBe('1');
+      expect(form.getFieldValue('field2')).toBe(undefined);
     });
   });
 });

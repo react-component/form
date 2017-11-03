@@ -9,5 +9,8 @@ export function isFormField(obj) {
 }
 
 export default function createFormField(field) {
+  if (isFormField(field)) {
+    return field;
+  }
   return new Field(field);
 }
