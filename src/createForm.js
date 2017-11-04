@@ -10,6 +10,7 @@ export const mixin = {
       setFields: this.setFields,
       setFieldsInitialValue: this.fieldsStore.setFieldsInitialValue,
       getFieldDecorator: this.getFieldDecorator,
+      getFieldInitialValue: this.getFieldInitialValue,
       getFieldProps: this.getFieldProps,
       getFieldsError: this.fieldsStore.getFieldsError,
       getFieldError: this.fieldsStore.getFieldError,

@@ -77,6 +77,7 @@ class FieldsStore {
     const fieldMeta = this.fieldsMeta[name];
     return fieldMeta && fieldMeta.initialValue;
   }
+
   getValueFromFields(name, fields) {
     const { fieldsMeta } = this;
     if (fieldsMeta[name] && fieldsMeta[name].virtual) {
@@ -198,6 +199,11 @@ class FieldsStore {
         };
       }
     });
+  }
+
+  getFieldInitialValue = (name) => {
+    const fieldsMeta = this.fieldsMeta;
+    return fieldsMeta && fieldsMeta[name] ? fieldsMeta[name].initialValue : undefined;
   }
 
   isFieldValidating = (name) => {
