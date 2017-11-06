@@ -101,3 +101,64 @@ describe('normalize', () => {
     expect(form.getFieldInstance('normal').value).toBe('A');
   });
 });
+
+describe('validate', () => {
+  it('works', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <input
+              {...getFieldProps('normal', {
+                validate: [{
+                  trigger: 'onBlur',
+                  rules: [{
+                    required: true,
+                  }],
+                }],
+              })}
+            />
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    expect(form.getFieldValue('normal')).toBe(undefined);
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+    expect(form.getFieldValue('normal')).toBe('');
+    expect(form.getFieldError('normal')).toBe(undefined);
+    wrapper.find('input').simulate('blur', { target: { value: '' } });
+    expect(form.getFieldValue('normal')).toBe('');
+    expect(form.getFieldError('normal')).toEqual(['normal is required']);
+    wrapper.find('input').simulate('blur', { target: { value: '1' } });
+    expect(form.getFieldValue('normal')).toBe('1');
+    expect(form.getFieldError('normal')).toBe(undefined);
+  });
+
+  it('suport jsx message', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <input
+              {...getFieldProps('required', {
+                rules: [{
+                  required: true,
+                  message: <b>1</b>,
+                }],
+              })}
+            />
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    wrapper.find('input').simulate('change');
+    expect(form.getFieldError('required').length).toBe(1);
+    expect(form.getFieldError('required')[0].type).toBe('b');
+  });
+});

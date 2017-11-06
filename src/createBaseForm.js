@@ -246,7 +246,7 @@ function createBaseForm(option = {}, mixins = []) {
         if (onFieldsChange) {
           const changedFields = Object.keys(fields)
             .reduce((acc, name) => set(acc, name, this.fieldsStore.getField(name)), {});
-          onFieldsChange(this.props, changedFields, this.fieldsStore.getAllFields());
+          onFieldsChange(this.props, changedFields, this.fieldsStore.getNestedAllFields());
         }
         this.forceUpdate();
       },
@@ -401,7 +401,9 @@ function createBaseForm(option = {}, mixins = []) {
 
       validateFields(ns, opt, cb) {
         const { names, callback, options } = getParams(ns, opt, cb);
-        const fieldNames = names || this.fieldsStore.getValidFieldsName();
+        const fieldNames = names ?
+          this.fieldsStore.getValidFieldsFullName(names) :
+          this.fieldsStore.getValidFieldsName();
         const fields = fieldNames
           .filter(name => {
             const fieldMeta = this.fieldsStore.getFieldMeta(name);
