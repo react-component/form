@@ -430,20 +430,24 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       isSubmitting() {
-        warning(
-          false,
-          '`isSubmitting` is deprecated. ' +
-            'Actually, it\'s more convenient to handle submitting status by yourself.'
-        );
+        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+          warning(
+            false,
+            '`isSubmitting` is deprecated. ' +
+              'Actually, it\'s more convenient to handle submitting status by yourself.'
+          );
+        }
         return this.state.submitting;
       },
 
       submit(callback) {
-        warning(
-          false,
-          '`submit` is deprecated.' +
-            'Actually, it\'s more convenient to handle submitting status by yourself.'
-        );
+        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+          warning(
+            false,
+            '`submit` is deprecated.' +
+              'Actually, it\'s more convenient to handle submitting status by yourself.'
+          );
+        }
         const fn = () => {
           this.setState({
             submitting: false,
@@ -461,11 +465,13 @@ function createBaseForm(option = {}, mixins = []) {
           [formPropName]: this.getForm(),
         };
         if (withRef) {
-          warning(
-            false,
-            '`withRef` is deprecated, please use `wrappedComponentRef` instead. ' +
-              'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
-          );
+          if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+            warning(
+              false,
+              '`withRef` is deprecated, please use `wrappedComponentRef` instead. ' +
+                'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
+            );
+          }
           formProps.ref = 'wrappedComponent';
         } else if (wrappedComponentRef) {
           formProps.ref = wrappedComponentRef;
