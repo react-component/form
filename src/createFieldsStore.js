@@ -105,7 +105,9 @@ class FieldsStore {
 
   getValidFieldsName() {
     const { fieldsMeta } = this;
-    return fieldsMeta ? Object.keys(fieldsMeta) : [];
+    return fieldsMeta ?
+      Object.keys(fieldsMeta).filter(name => !fieldsMeta[name].hidden) :
+      [];
   }
 
   getValidFieldsFullName(maybePartialName) {
@@ -168,7 +170,10 @@ class FieldsStore {
 
   getNestedField(name, getter) {
     const fullNames = this.getValidFieldsFullName(name);
-    if (fullNames.length === 1 && fullNames[0] === name) {
+    if (
+      fullNames.length === 0 || // Not registered
+        (fullNames.length === 1 && fullNames[0] === name) // Name already is full name.
+    ) {
       return getter(name);
     }
     const isArrayValue = fullNames[0][name.length] === '[';

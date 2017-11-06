@@ -30,4 +30,24 @@ describe('utils.flattenFields', () => {
         'user.hobbies[1]': { value: 'Roller Skating' },
       });
   });
+
+  it('just ignore `undefined` when `undefined` is not a valid leaf node', () => {
+    const fields = {
+      user: {
+        name: undefined,
+        age: undefined,
+        hobbies: [
+          undefined,
+          createFormField({
+            value: 'Roller Skating',
+          }),
+        ],
+      },
+    };
+
+    expect(flattenFields(fields, (_, node) => isFormField(node)))
+      .toEqual({
+        'user.hobbies[1]': { value: 'Roller Skating' },
+      });
+  });
 });

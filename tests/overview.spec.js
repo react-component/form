@@ -86,6 +86,17 @@ describe('getFieldProps\' behaviors', () => {
 });
 
 describe('createForm\'s form behavior', () => {
+  it('getFieldValue should return `undefined` when `name` is not registered', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() { return null; }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    expect(form.getFieldValue('not-registered')).toBe(undefined);
+  });
+
   it('setFieldsInitialValue works', () => {
     const Test = createForm({ withRef: true })(
       class extends React.Component {

@@ -1,3 +1,4 @@
 // export this package's api
 import createForm from './createForm';
-export { createForm };
+import createFormField from './createFormField';
+export { createForm, createFormField };

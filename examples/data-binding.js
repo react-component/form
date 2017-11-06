@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import { createForm } from 'rc-form';
+import { createForm, createFormField } from 'rc-form';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createRootContainer, createContainer } from 'react-data-binding';
@@ -85,7 +85,9 @@ const NewForm = createContainer((state) => {
 })(createForm({
   mapPropsToFields(props) {
     console.log('mapPropsToFields', props);
-    return props.formState;
+    return {
+      email: props.formState && createFormField(props.formState.email),
+    };
   },
   onFieldsChange(props, fields) {
     console.log('onFieldsChange', fields);

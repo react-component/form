@@ -162,3 +162,32 @@ describe('validate', () => {
     expect(form.getFieldError('required')[0].type).toBe('b');
   });
 });
+
+describe('hidden', () => {
+  it('works', (callback) => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <input
+              {...getFieldProps('normal', {
+                hidden: true,
+                initialValue: '',
+                rules: [{ required: true }],
+              })}
+            />
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    expect(form.getFieldsValue()).toEqual({});
+    form.validateFields((errors, values) => {
+      expect(errors).toBe(null);
+      expect(values).toEqual({});
+      callback();
+    });
+  });
+});
