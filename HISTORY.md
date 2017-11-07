@@ -1,6 +1,35 @@
 # History
 ----
 
+## 2.0.0 / 2017-11-07
+
+- Remove `option.exclusive` of `getFieldProps` and `getFieldDecorator`, just use something like [`antd.Radio.Group`](https://ant.design/components/radio/#components-radio-demo-radiogroup) or [`antd.Checkbox.Group`](https://ant.design/components/checkbox/#components-checkbox-demo-group) as workaround.
+- Add `createFormField`, and you must use it to wrap field data in `option.mapPropsToFields` of `createForm` or `createDOMForm`:
+  Before rc-form@2.0.0:
+  ```jsx
+  import { createForm } from 'rc-form';
+  createFrom({
+    mapPropsToFields() {
+      return {
+        name: { value: 'rc-form' },
+      };
+    },
+  })
+  ```
+  After rc-form@2.0.0:
+  ```jsx
+  import { createForm, createFormField } from 'rc-form';
+  createFrom({
+    mapPropsToFields() {
+      return {
+        name: createFormField({ value: 'rc-form' }),
+      };
+    },
+  })
+  ```
+- Deprecate `form.isSubmitting` and `form.submit`, just handle submit status in your own code.
+
+
 ## 1.4.0 / 2017-06-13
 
 - support wrappedComponentRef and deprecate withRef [#87](https://github.com/react-component/form/pull/87)
