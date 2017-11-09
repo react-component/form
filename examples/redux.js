@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import { createForm } from 'rc-form';
+import { createForm, createFormField } from 'rc-form';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
@@ -95,7 +95,7 @@ const NewForm = connect((state) => {
   mapPropsToFields(props) {
     console.log('mapPropsToFields', props);
     return {
-      email: props.formState.email,
+      email: createFormField(props.formState.email),
     };
   },
   onFieldsChange(props, fields) {

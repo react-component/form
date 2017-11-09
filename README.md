@@ -177,7 +177,7 @@ This input's unique name.
 | option.validate | | Object[] | - |
 | option.validate[n].trigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
 | option.validate[n].rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
-| option.exclusive(deprecated) | Whether set value exclusively. Used with radio. | boolean | false |
+| option.hidden | Ignore current field while validating or gettting fields | boolean | false |
 
 ##### Default value of `getValueFromEvent`
 

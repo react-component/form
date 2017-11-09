@@ -40,7 +40,7 @@
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
-    "test": "jest",
+    "test": "NODE_ENV=test jest",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "jest": {

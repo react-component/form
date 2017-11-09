@@ -1,22 +1,40 @@
-import get from 'lodash/get';
-import has from 'lodash/has';
 import set from 'lodash/set';
+import createFormField, { isFormField } from './createFormField';
 import {
-  flatFieldNames,
+  flattenFields,
   getErrorStrs,
-  getNameIfNested,
-  getVirtualPaths,
 } from './utils';
-
-const atom = {};
 
 class FieldsStore {
   constructor(fields) {
-    this.fields = fields;
+    this.fields = this.flattenFields(fields);
     this.fieldsMeta = {};
   }
+
   updateFields(fields) {
-    Object.assign(this.fields, fields);
+    this.fields = this.flattenFields(fields);
+  }
+
+  flattenFields(fields) {
+    return flattenFields(fields, (_, node) => isFormField(node));
+  }
+
+  flattenRegisteredFields(fields) {
+    const validFieldsName = this.getValidFieldsName();
+    return flattenFields(fields, path => validFieldsName.includes(path));
+  }
+
+  setFieldsInitialValue = (initialValues) => {
+    const flattenedInitialValues = this.flattenRegisteredFields(initialValues);
+    const fieldsMeta = this.fieldsMeta;
+    Object.keys(flattenedInitialValues).forEach(name => {
+      if (fieldsMeta[name]) {
+        fieldsMeta[name] = {
+          ...fieldsMeta[name],
+          initialValue: flattenedInitialValues[name],
+        };
+      }
+    });
   }
 
   setFields(fields) {
@@ -26,13 +44,8 @@ class FieldsStore {
       ...fields,
     };
     const nowValues = {};
-    Object.keys(fieldsMeta).forEach((f) => {
-      const { name, isNested } = getNameIfNested(f);
-      if (isNested && fieldsMeta[name].exclusive) {
-        return;
-      }
-      nowValues[f] = this.getValueFromFields(f, nowFields);
-    });
+    Object.keys(fieldsMeta)
+      .forEach((f) => nowValues[f] = this.getValueFromFields(f, nowFields));
     Object.keys(nowValues).forEach((f) => {
       const value = nowValues[f];
       const fieldMeta = fieldsMeta[f];
@@ -49,122 +62,23 @@ class FieldsStore {
     });
     this.fields = nowFields;
   }
-  getUndirtyFields() {
-    const undirtyFields = Object.keys(this.fieldsMeta)
-      .filter(key => !this.fields[key])
-      .map(key => ({ dirty: false, name: key, value: this.fieldsMeta[key].initialValue }));
-    const ret = {};
-    undirtyFields.forEach(value => set(ret, value.name, value));
-    return ret;
-  }
+
   resetFields(ns) {
-    const newFields = {};
     const { fields } = this;
-    const names = ns || Object.keys(fields);
-    names.forEach((name) => {
+    const names = ns ?
+      this.getValidFieldsFullName(ns) :
+      this.getValidFieldsName();
+    return names.reduce((acc, name) => {
       const field = fields[name];
       if (field && 'value' in field) {
-        newFields[name] = {};
+        acc[name] = {};
       }
-    });
-    return newFields;
-  }
-  getValueFromFieldsInternal(name, fields) {
-    const field = fields[name];
-    if (field && 'value' in field) {
-      return field.value;
-    }
-    const fieldMeta = this.fieldsMeta[name];
-    return fieldMeta && fieldMeta.initialValue;
-  }
-  getValueFromFields(name, fields) {
-    const { fieldsMeta } = this;
-    if (fieldsMeta[name] && fieldsMeta[name].virtual) {
-      const ret = {};
-      Object.keys(fieldsMeta).forEach(fieldKey => {
-        const nameIfNested = getNameIfNested(fieldKey);
-        if (nameIfNested.name === name && nameIfNested.isNested) {
-          set(ret, fieldKey, this.getValueFromFieldsInternal(fieldKey, fields));
-        }
-      });
-      return ret[name];
-    }
-    return this.getValueFromFieldsInternal(name, fields);
-  }
-  getValueFromFieldsAll = () => {
-    const { fieldsMeta, fields } = this;
-    const ret = {};
-    Object.keys(fieldsMeta).forEach(fieldKey => {
-      ret[fieldKey] = this.getValueFromFieldsInternal(fieldKey, fields);
-    });
-    return ret;
+      return acc;
+    }, {});
   }
 
-  getValidFieldsName() {
-    const fieldsMeta = this.fieldsMeta;
-    return fieldsMeta ?
-      Object.keys(fieldsMeta).filter(name => !fieldsMeta[name].hidden) :
-      [];
-  }
-
-  getFieldValuePropValue(fieldMeta) {
-    const { exclusive, leadingName, name, getValueProps, valuePropName } = fieldMeta;
-    const { fieldsMeta } = this;
-    const field = exclusive ? this.getField(leadingName) : this.getField(name);
-    let fieldValue = atom;
-    if (field && 'value' in field) {
-      fieldValue = field.value;
-    }
-    if (fieldValue === atom) {
-      fieldValue = exclusive ? fieldsMeta[leadingName].initialValue : fieldMeta.initialValue;
-    }
-    if (getValueProps) {
-      return getValueProps(fieldValue);
-    }
-    return { [valuePropName]: fieldValue };
-  }
-
-
-  getField(name) {
-    return {
-      ...this.fields[name],
-      name,
-    };
-  }
-  getFieldAll() {
-    return {
-      ...this.fields,
-      ...this.getUndirtyFields(),
-    };
-  }
-  getFieldMember(name, member) {
-    return this.getField(name)[member];
-  }
-
-  getFieldsValue = (names) => {
-    const fields = names || flatFieldNames(this.getValidFieldsName());
-    const allValues = {};
-    fields.forEach((f) => {
-      set(allValues, f, this.getFieldValue(f));
-    });
-    return allValues;
-  }
-
-  getFieldValue = (name) => {
-    const { fields } = this;
-    return this.getValueFromFields(name, fields);
-  }
-
-  getFieldsError = (names) => {
-    const fields = names || flatFieldNames(this.getValidFieldsName());
-    const allErrors = {};
-    fields.forEach((f) => {
-      set(allErrors, f, this.getFieldError(f));
-    });
-    return allErrors;
-  }
-  getFieldError = (name) => {
-    return getErrorStrs(this.getFieldMember(name, 'errors'));
+  setFieldMeta(name, meta) {
+    this.fieldsMeta[name] = meta;
   }
 
   getFieldMeta(name) {
@@ -173,31 +87,126 @@ class FieldsStore {
     }
     return this.fieldsMeta[name];
   }
-  setFieldMeta(name, meta) {
-    this.fieldsMeta[name] = meta;
+
+  getValueFromFields(name, fields) {
+    const field = fields[name];
+    if (field && 'value' in field) {
+      return field.value;
+    }
+    const fieldMeta = this.fieldsMeta[name];
+    return fieldMeta && fieldMeta.initialValue;
   }
 
-  setFieldsInitialValue = (initialValues) => {
-    const fieldsMeta = this.fieldsMeta;
-    const virtualPaths = getVirtualPaths(fieldsMeta);
-    Object.keys(initialValues).forEach(name => {
-      if (fieldsMeta[name] && fieldsMeta[name].virtual) {
-        for (let i = 0, len = virtualPaths[name].length; i < len; i++) {
-          const path = virtualPaths[name][i];
-          if (has(initialValues, path)) {
-            fieldsMeta[path] = {
-              ...fieldsMeta[path],
-              initialValue: get(initialValues, path),
-            };
-          }
-        }
-      } else if (fieldsMeta[name]) {
-        fieldsMeta[name] = {
-          ...fieldsMeta[name],
-          initialValue: initialValues[name],
-        };
-      }
-    });
+  getAllValues = () => {
+    const { fieldsMeta, fields } = this;
+    return Object.keys(fieldsMeta)
+      .reduce((acc, name) => set(acc, name, this.getValueFromFields(name, fields)), {});
+  }
+
+  getValidFieldsName() {
+    const { fieldsMeta } = this;
+    return fieldsMeta ?
+      Object.keys(fieldsMeta).filter(name => !fieldsMeta[name].hidden) :
+      [];
+  }
+
+  getValidFieldsFullName(maybePartialName) {
+    const maybePartialNames = Array.isArray(maybePartialName) ?
+      maybePartialName : [maybePartialName];
+    return this.getValidFieldsName()
+      .filter(fullName => maybePartialNames.some(partialName => (
+        fullName === partialName || (
+          fullName.startsWith(partialName) &&
+            ['.', '['].includes(fullName[partialName.length])
+        )
+      )));
+  }
+
+  getFieldValuePropValue(fieldMeta) {
+    const { name, getValueProps, valuePropName } = fieldMeta;
+    const field = this.getField(name);
+    const fieldValue = 'value' in field ?
+      field.value : fieldMeta.initialValue;
+    if (getValueProps) {
+      return getValueProps(fieldValue);
+    }
+    return { [valuePropName]: fieldValue };
+  }
+
+  getField(name) {
+    return {
+      ...this.fields[name],
+      name,
+    };
+  }
+
+  getNotCollectedFields() {
+    return this.getValidFieldsName()
+      .filter(name => !this.fields[name])
+      .map(name => ({
+        name,
+        dirty: false,
+        value: this.fieldsMeta[name].initialValue,
+      }))
+      .reduce((acc, field) => set(acc, field.name, createFormField(field)), {});
+  }
+
+  getNestedAllFields() {
+    return Object.keys(this.fields)
+      .reduce(
+        (acc, name) => set(acc, name, createFormField(this.fields[name])),
+        this.getNotCollectedFields()
+      );
+  }
+
+  getFieldMember(name, member) {
+    return this.getField(name)[member];
+  }
+
+  getNestedFields(names, getter) {
+    const fields = names || this.getValidFieldsName();
+    return fields.reduce((acc, f) => set(acc, f, getter(f)), {});
+  }
+
+  getNestedField(name, getter) {
+    const fullNames = this.getValidFieldsFullName(name);
+    if (
+      fullNames.length === 0 || // Not registered
+        (fullNames.length === 1 && fullNames[0] === name) // Name already is full name.
+    ) {
+      return getter(name);
+    }
+    const isArrayValue = fullNames[0][name.length] === '[';
+    const suffixNameStartIndex = isArrayValue ? name.length : name.length + 1;
+    return fullNames
+      .reduce(
+        (acc, fullName) => set(
+          acc,
+          fullName.slice(suffixNameStartIndex),
+          getter(fullName)
+        ),
+        isArrayValue ? [] : {}
+      );
+  }
+
+  getFieldsValue = (names) => {
+    return this.getNestedFields(names, this.getFieldValue);
+  }
+
+  getFieldValue = (name) => {
+    const { fields } = this;
+    return this.getNestedField(name, (fullName) => this.getValueFromFields(fullName, fields));
+  }
+
+  getFieldsError = (names) => {
+    return this.getNestedFields(names, this.getFieldError);
+  }
+
+  getFieldError = (name) => {
+    return this.getNestedField(
+      name,
+      (fullName) => getErrorStrs(this.getFieldMember(fullName, 'errors'))
+    );
   }
 
   isFieldValidating = (name) => {
@@ -206,9 +215,7 @@ class FieldsStore {
 
   isFieldsValidating = (ns) => {
     const names = ns || this.getValidFieldsName();
-    return names.some((n) => {
-      return this.isFieldValidating(n);
-    });
+    return names.some((n) => this.isFieldValidating(n));
   }
 
   isFieldTouched = (name) => {
@@ -217,9 +224,7 @@ class FieldsStore {
 
   isFieldsTouched = (ns) => {
     const names = ns || this.getValidFieldsName();
-    return names.some((n) => {
-      return this.isFieldTouched(n);
-    });
+    return names.some((n) => this.isFieldTouched(n));
   }
 
   clearField(name) {

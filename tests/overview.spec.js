@@ -1,288 +1,243 @@
-/* eslint-disable no-undef, react/prop-types */
+/* eslint-disable no-undef, react/prop-types, react/no-multi-comp */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Simulate } from 'react-dom/test-utils';
+import { mount } from 'enzyme';
 import createForm from '../src/createForm';
 
-class Test extends React.Component {
-  render() {
-    const { getFieldProps } = this.props.form;
-    return (
-      <div>
-        <input {...getFieldProps('normal')} />
-        <input
-          {...getFieldProps('required', {
-            rules: [{
-              required: true,
-            }],
-          })}
-        />
-
-        <input
-          {...getFieldProps('blurRequired', {
-            validate: [{
-              trigger: 'onBlur',
-              rules: [{
-                required: true,
-              }],
-            }],
-          })}
-        />
-
-        <input {...getFieldProps('foo.a.x')} />
-        <input {...getFieldProps('foo.a.y')} />
-        <input {...getFieldProps('foo.b[0]')} />
-        <input {...getFieldProps('foo.b[1]')} />
-
-        <input {...getFieldProps('a[0][1].b.c[0]')} />
-        <input {...getFieldProps('a[0][1].b.c[1]')} />
-
-      </div>
+describe('getFieldProps\' behaviors', () => {
+  it('collect value and relative getters', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('normal')} />
+              <input {...getFieldProps('nested1.a[0]')} />
+              <input {...getFieldProps('nested2[0].b')} />
+            </form>
+          );
+        }
+      }
     );
-  }
-}
-
-Test = createForm({
-  withRef: true,
-})(Test);
-
-describe('overview usage', () => {
-  let container;
-  let component;
-  let form;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-    component = ReactDOM.render(<Test />, container);
-    component = component.refs.wrappedComponent;
-    form = component.props.form;
-  });
-
-  afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-    document.body.removeChild(container);
-  });
-
-  it('collect value', () => {
-    expect(form.getFieldValue('normal')).toBe(undefined);
-    Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).toBe('');
-    form.getFieldInstance('normal').value = '1';
-    Simulate.change(form.getFieldInstance('normal'));
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    wrapper.find('input').at(0).simulate('change', { target: { value: '1' } });
     expect(form.getFieldValue('normal')).toBe('1');
+    wrapper.find('input').at(1).simulate('change', { target: { value: 'a' } });
+    expect(form.getFieldValue('nested1.a[0]')).toBe('a');
+    expect(form.getFieldValue('nested1')).toEqual({ a: ['a'] });
+    wrapper.find('input').at(2).simulate('change', { target: { value: 'b' } });
+    expect(form.getFieldValue('nested2[0].b')).toBe('b');
+    expect(form.getFieldValue('nested2')).toEqual([{ b: 'b' }]);
+
+    expect(form.getFieldsValue(['normal', 'nested1', 'nested2[0]']))
+      .toEqual({
+        normal: '1',
+        nested1: { a: ['a'] },
+        nested2: [{ b: 'b' }],
+      });
   });
 
-  it('collect nested array value', () => {
-    form.getFieldInstance('a[0][1].b.c[0]').value = '0';
-    form.getFieldInstance('a[0][1].b.c[1]').value = '1';
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[1]'));
-    expect(form.getFieldValue('a')).toEqual([
-      [undefined, {
-        b: {
-          c: ['0', '1'],
-        },
-      }],
-    ]);
-    expect(form.getFieldValue('a[0][1].b.c[0]')).toBe('0');
-    expect(form.getFieldValue('a[0][1].b.c[1]')).toBe('1');
+  it('validate value and relative getters', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('normal', { rules: [{ required: true }] })} />
+              <input {...getFieldProps('nested1.a[0]', { rules: [{ required: true }] })} />
+              <input {...getFieldProps('nested2[0].b', { rules: [{ required: true }] })} />
+            </form>
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+
+    wrapper.find('input').at(0).simulate('change');
+    expect(form.getFieldError('normal')).toEqual(['normal is required']);
+    wrapper.find('input').at(0).simulate('change', { target: { value: '1' } });
+    expect(form.getFieldError('normal')).toBe(undefined);
+
+    wrapper.find('input').at(1).simulate('change');
+    expect(form.getFieldError('nested1.a[0]')).toEqual(['nested1.a[0] is required']);
+    expect(form.getFieldError('nested1')).toEqual({ a: [['nested1.a[0] is required']] });
+    wrapper.find('input').at(1).simulate('change', { target: { value: '1' } });
+    expect(form.getFieldError('nested1.a[0]')).toBe(undefined);
+    expect(form.getFieldError('nested1')).toEqual({ a: [undefined] });
+
+    wrapper.find('input').at(2).simulate('change');
+    expect(form.getFieldError('nested2[0].b')).toEqual(['nested2[0].b is required']);
+    expect(form.getFieldError('nested2')).toEqual([{ b: ['nested2[0].b is required'] }]);
+    wrapper.find('input').at(2).simulate('change', { target: { value: '1' } });
+    expect(form.getFieldError('nested2[0].b')).toBe(undefined);
+    expect(form.getFieldError('nested2')).toEqual([{ b: undefined }]);
+
+    expect(form.getFieldsError(['normal', 'nested1', 'nested2[0]']))
+      .toEqual({
+        normal: undefined,
+        nested1: { a: [undefined] },
+        nested2: [{ b: undefined }],
+      });
+  });
+});
+
+describe('createForm\'s form behavior', () => {
+  it('getFieldValue should return `undefined` when `name` is not registered', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() { return null; }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    expect(form.getFieldValue('not-registered')).toBe(undefined);
   });
 
-  it('collect nested value', () => {
-    form.getFieldInstance('foo.a.x').value = '1';
-    form.getFieldInstance('foo.a.y').value = '2';
-    form.getFieldInstance('foo.b[0]').value = '3';
-    form.getFieldInstance('foo.b[1]').value = '4';
-    Simulate.change(form.getFieldInstance('foo.a.x'));
-    Simulate.change(form.getFieldInstance('foo.a.y'));
-    Simulate.change(form.getFieldInstance('foo.b[0]'));
-    Simulate.change(form.getFieldInstance('foo.b[1]'));
-    expect(form.getFieldValue('foo')).toEqual({
-      a: {
-        x: '1',
-        y: '2',
-      },
-      b: ['3', '4'],
+  it('setFieldsInitialValue works', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('normal')} />
+              <input {...getFieldProps('nested1.a[0]')} />
+              <input {...getFieldProps('nested2[0].b')} />
+            </form>
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    form.setFieldsInitialValue({
+      normal: '1',
+      nested1: { a: ['2'] },
+      nested2: [{ b: '3' }],
     });
-    expect(form.getFieldValue('foo.a.x')).toBe('1');
-    expect(form.getFieldValue('foo.a.y')).toBe('2');
-    expect(form.getFieldValue('foo.b[0]')).toBe('3');
-    expect(form.getFieldValue('foo.b[1]')).toBe('4');
+    expect(form.getFieldsValue()).toEqual({
+      normal: '1',
+      nested1: { a: ['2'] },
+      nested2: [{ b: '3' }],
+    });
   });
 
-  it('validate value', () => {
-    expect(form.getFieldValue('required')).toBe(undefined);
-    Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).toBe('');
-    expect(form.getFieldError('required')).toEqual(['required is required']);
-    form.getFieldInstance('required').value = '1';
-    Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).toBe('1');
-    expect(form.getFieldError('required')).toBe(undefined);
+  it('resetFields works', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('normal', { rules: [{ required: true }] })} />
+              <input {...getFieldProps('nested1.a[0]', { rules: [{ required: true }] })} />
+              <input {...getFieldProps('nested2[0].b', { rules: [{ required: true }] })} />
+            </form>
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+
+    wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
+    expect(form.getFieldValue('normal')).toBe('');
+    expect(form.getFieldError('normal')).toEqual(['normal is required']);
+    wrapper.find('input').at(1).simulate('change', { target: { value: '' } });
+    expect(form.getFieldValue('nested1.a[0]')).toBe('');
+    expect(form.getFieldError('nested1.a[0]')).toEqual(['nested1.a[0] is required']);
+    wrapper.find('input').at(2).simulate('change', { target: { value: '' } });
+    expect(form.getFieldValue('nested2[0].b')).toBe('');
+    expect(form.getFieldError('nested2[0].b')).toEqual(['nested2[0].b is required']);
+    form.resetFields(['normal', 'nested1', 'nested2[0]']);
+    expect(form.getFieldValue('normal')).toBe(undefined);
+    expect(form.getFieldError('normal')).toBe(undefined);
+    expect(form.getFieldValue('nested1.a[0]')).toBe(undefined);
+    expect(form.getFieldError('nested1.a[0]')).toBe(undefined);
+    expect(form.getFieldValue('nested2[0].b')).toBe(undefined);
+    expect(form.getFieldError('nested2[0].b')).toBe(undefined);
   });
 
-
-  it('validate trigger value', () => {
-    expect(form.getFieldValue('blurRequired')).toBe(undefined);
-    Simulate.change(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).toBe('');
-    expect(form.getFieldError('blurRequired')).toBe(undefined);
-    Simulate.blur(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).toBe('');
-    expect(form.getFieldError('blurRequired')).toEqual(['blurRequired is required']);
-    form.getFieldInstance('blurRequired').value = '1';
-    Simulate.change(form.getFieldInstance('blurRequired'));
-    Simulate.blur(form.getFieldInstance('blurRequired'));
-    expect(form.getFieldValue('blurRequired')).toBe('1');
-    expect(form.getFieldError('blurRequired')).toBe(undefined);
-  });
-
-  it('validateFields works for error', (callback) => {
+  it('validateFields works for errors', (callback) => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return <input {...getFieldProps('normal', { rules: [{ required: true }] })} />;
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
     form.validateFields((errors, values) => {
-      expect(Object.keys(errors).length).toBe(2);
-      expect(errors.required.errors.map(e => e.message)).toEqual(['required is required']);
-      expect(errors.blurRequired.errors.map(e => e.message)).toEqual(['blurRequired is required']);
-      expect(values.normal).toBe(undefined);
-      expect(values.blurRequired).toBe(undefined);
-      expect(values.required).toBe(undefined);
+      expect(errors).toEqual({
+        normal: {
+          errors: [{ field: 'normal', message: 'normal is required' }],
+        },
+      });
+      expect(values).toEqual({ normal: undefined });
       callback();
     });
   });
 
   it('validateFields works for ok', (callback) => {
-    form.getFieldInstance('required').value = '2';
-    form.getFieldInstance('blurRequired').value = '1';
-    Simulate.change(form.getFieldInstance('blurRequired'));
-    Simulate.change(form.getFieldInstance('required'));
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return <input {...getFieldProps('normal', { rules: [{ required: true }] })} />;
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    wrapper.find('input').simulate('change', { target: { value: '1' } });
     form.validateFields((errors, values) => {
-      expect(errors).toBeFalsy();
-      expect(values.normal).toBe(undefined);
-      expect(values.blurRequired).toBe('1');
-      expect(values.required).toBe('2');
-      expect(values.foo.a.x).toBe(undefined);
-      expect(values.foo.a.y).toBe(undefined);
-      expect(values.foo.b[0]).toBe(undefined);
-      expect(values.foo.b[1]).toBe(undefined);
+      expect(errors).toBe(null);
+      expect(values).toEqual({ normal: '1' });
       callback();
     });
   });
 
-  it('resetFields works', () => {
-    form.getFieldInstance('required').value = '1';
-    Simulate.change(form.getFieldInstance('required'));
-    expect(form.getFieldValue('required')).toBe('1');
-    expect(form.getFieldError('required')).toBe(undefined);
-    form.resetFields();
-    expect(form.getFieldValue('required')).toBe(undefined);
-    expect(form.getFieldError('required')).toBe(undefined);
-  });
-
-  it('setFieldsInitialValue works', () => {
-    form.setFieldsInitialValue({
-      normal: '4',
-    });
-    form.getFieldInstance('normal').value = '2';
-    Simulate.change(form.getFieldInstance('normal'));
-    expect(form.getFieldValue('normal')).toBe('2');
-    form.resetFields();
-    expect(form.getFieldValue('normal')).toBe('4');
-  });
-
-  it('setFieldsValue and setFieldsInitialValue for nested field works', () => {
-    form.setFieldsInitialValue({
-      foo: {
-        a: {
-          x: '1',
-          y: '2',
+  it('validateFields(names, callback) works', (callback) => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <form>
+              <input {...getFieldProps('normal', { rules: [{ required: true }] })} />
+              <input {...getFieldProps('nested1.a[0]', { rules: [{ required: true }] })} />
+              <input {...getFieldProps('nested2[0].b', { rules: [{ required: true }] })} />
+            </form>
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').prop('form');
+    form.validateFields(['nested1', 'nested2[0]'], (errors, values) => {
+      expect(errors).toEqual({
+        nested1: {
+          a: [{
+            errors: [{ field: 'nested1.a[0]', message: 'nested1.a[0] is required' }],
+          }],
         },
-        b: ['3', '4'],
-      },
-    });
-    form.setFieldsValue({
-      foo: {
-        a: {
-          x: '5',
-          y: '6',
-        },
-        b: ['7', '8'],
-      },
-    });
-    Simulate.change(form.getFieldInstance('foo.a.x'));
-    Simulate.change(form.getFieldInstance('foo.a.y'));
-    Simulate.change(form.getFieldInstance('foo.b[0]'));
-    Simulate.change(form.getFieldInstance('foo.b[1]'));
-    expect(form.getFieldValue('foo')).toEqual({
-      a: {
-        x: '5',
-        y: '6',
-      },
-      b: ['7', '8'],
-    });
-    form.setFieldsValue({ 'foo.a.x': '9' });
-    Simulate.change(form.getFieldInstance('foo.a.x'));
-    expect(form.getFieldValue('foo')).toEqual({
-      a: {
-        x: '9',
-        y: '6',
-      },
-      b: ['7', '8'],
-    });
-    form.resetFields();
-    expect(form.getFieldValue('foo')).toEqual({
-      a: {
-        x: '1',
-        y: '2',
-      },
-      b: ['3', '4'],
-    });
-  });
-
-  it('setFieldsValue and setFieldsInitialValue for nested array works', () => {
-    form.setFieldsInitialValue({
-      a: [
-        [undefined, {
+        nested2: [{
           b: {
-            c: ['0', '1'],
+            errors: [{ field: 'nested2[0].b', message: 'nested2[0].b is required' }],
           },
         }],
-      ],
+      });
+      expect(values).toEqual({
+        nested1: { a: [undefined] },
+        nested2: [{ b: undefined }],
+      });
+      callback();
     });
-    form.setFieldsValue({
-      a: [
-        [undefined, {
-          b: {
-            c: ['2', '3'],
-          },
-        }],
-      ],
-    });
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[1]'));
-    expect(form.getFieldValue('a')).toEqual([
-      [undefined, {
-        b: {
-          c: ['2', '3'],
-        },
-      }],
-    ]);
-    form.setFieldsValue({ 'a[0][1].b.c[0]': '9' });
-    Simulate.change(form.getFieldInstance('a[0][1].b.c[0]'));
-    expect(form.getFieldValue('a')).toEqual([
-      [undefined, {
-        b: {
-          c: ['9', '3'],
-        },
-      }],
-    ]);
-    form.resetFields();
-    expect(form.getFieldValue('a')).toEqual([
-      [undefined, {
-        b: {
-          c: ['0', '1'],
-        },
-      }],
-    ]);
   });
 });

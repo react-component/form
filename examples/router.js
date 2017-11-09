@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createForm } from 'rc-form';
+import { createForm, createFormField } from 'rc-form';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
 import { createRootContainer, createContainer } from 'react-data-binding';
@@ -142,7 +142,10 @@ class Form extends React.Component {
 
 Form = createForm({
   mapPropsToFields(props) {
-    return props.formState;
+    return props.formState ? {
+      city: createFormField(props.formState.city),
+      user: createFormField(props.formState.user),
+    } : {};
   },
   onFieldsChange(props, fields) {
     props.setStoreState({

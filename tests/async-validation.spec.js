@@ -19,13 +19,16 @@ class Test extends React.Component {
 
   render() {
     const { getFieldProps } = this.props.form;
-    return (<div>
-      <input {...getFieldProps('normal')} />
-      <input {...getFieldProps('async', {
-        rules: [this.check],
-      })}
-      />
-    </div>);
+    return (
+      <div>
+        <input {...getFieldProps('normal')} />
+        <input
+          {...getFieldProps('async', {
+            rules: [this.check],
+          })}
+        />
+      </div>
+    );
   }
 }
 
@@ -33,7 +36,7 @@ Test = createForm({
   withRef: true,
 })(Test);
 
-describe('async usage', () => {
+describe('Async Validation', () => {
   let container;
   let component;
   let form;
@@ -105,18 +108,6 @@ describe('async usage', () => {
     });
   });
 
-  it('submit works', (done) => {
-    expect(form.isSubmitting()).toBe(false);
-    form.submit((callback) => {
-      expect(form.isSubmitting()).toBe(true);
-      setTimeout(() => {
-        callback();
-        expect(form.isSubmitting()).toBe(false);
-        done();
-      }, 100);
-    });
-  });
-
   it('will error if change when validating', (done) => {
     form.validateFields((errors) => {
       expect(Object.keys(errors).length).toBe(1);
@@ -127,5 +118,18 @@ describe('async usage', () => {
     });
     form.getFieldInstance('async').value = '1';
     Simulate.change(form.getFieldInstance('async'));
+  });
+
+  // TODO: submit and isSubmitting are deprecated
+  it('submit works', (done) => {
+    expect(form.isSubmitting()).toBe(false);
+    form.submit((callback) => {
+      expect(form.isSubmitting()).toBe(true);
+      setTimeout(() => {
+        callback();
+        expect(form.isSubmitting()).toBe(false);
+        done();
+      }, 100);
+    });
   });
 });

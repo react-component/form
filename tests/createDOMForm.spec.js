@@ -2,8 +2,8 @@
 jest.mock('dom-scroll-into-view', () => jest.fn());
 
 import React from 'react';
-import scrollIntoView from 'dom-scroll-into-view';
 import { mount } from 'enzyme';
+import scrollIntoView from 'dom-scroll-into-view';
 import createDOMForm from '../src/createDOMForm';
 
 class Test extends React.Component {
