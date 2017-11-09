@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@1.5.0 - React High Order Form Component</title>
+  <title>rc-form@2.0.0 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@1.5.0</h1>
+  <h1>rc-form@2.0.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -747,8 +747,6 @@
       <li><a href="examples/across-router.html">across-router</a></li>
       
       <li><a href="examples/async-init.html">async-init</a></li>
-      
-      <li><a href="examples/checkbox-group.html">checkbox-group</a></li>
       
       <li><a href="examples/data-binding-form.html">data-binding-form</a></li>
       
@@ -771,8 +769,6 @@
       <li><a href="examples/overview.html">overview</a></li>
       
       <li><a href="examples/parallel-form.html">parallel-form</a></li>
-      
-      <li><a href="examples/radio-group.html">radio-group</a></li>
       
       <li><a href="examples/redux.html">redux</a></li>
       
@@ -860,8 +856,10 @@ class Form extends React.Component {
     return (
       &lt;div&gt;
         {this.requiredDecorator(
-          &lt;input onChange={
-            // can still write your own onChange
+          &lt;input
+            onChange={
+              // can still write your own onChange
+            }
           /&gt;
         )}
         {(errors = getFieldError('required')) ? errors.join(',') : null}
@@ -871,7 +869,7 @@ class Form extends React.Component {
   }
 }
 
-export createForm()(Form);</code></pre></div><h2>createForm(formOption): Function<a id="user-content-createform(formoption):-function" name="createform(formoption):-function" class="anchor" aria-hidden="true" href="#createform(formoption):-function"><span class="octicon octicon-link"></span></a></h2><table>
+export createForm()(Form);</code></pre></div><h2>createForm(option: Object) =&gt; (WrappedComponent: React.Component) =&gt; React.Component<a id="user-content-createform(option:-object)-=&gt;-(wrappedcomponent:-react.component)-=&gt;-react.component" name="createform(option:-object)-=&gt;-(wrappedcomponent:-react.component)-=&gt;-react.component" class="anchor" aria-hidden="true" href="#createform(option:-object)-=&gt;-(wrappedcomponent:-react.component)-=&gt;-react.component"><span class="octicon octicon-link"></span></a></h2><table>
 <thead>
 <tr>
 <th>Option</th>
@@ -882,55 +880,55 @@ export createForm()(Form);</code></pre></div><h2>createForm(formOption): Functio
 </thead>
 <tbody>
 <tr>
-<td>formOption.validateMessages</td>
+<td>option.validateMessages</td>
 <td>Preseted messages of <a href="https://github.com/yiminghe/async-validator" title="null">async-validator</a></td>
 <td>Object</td>
 <td>{}</td>
 </tr>
 <tr>
-<td>formOption.onFieldsChange</td>
+<td>option.onFieldsChange</td>
 <td>Called when field changed, you can dispatch fields to redux store.</td>
-<td>(props, changedFields): void</td>
+<td>(props, changed, all): void</td>
 <td>NOOP</td>
 </tr>
 <tr>
-<td>formOption.onValuesChange</td>
+<td>option.onValuesChange</td>
 <td>Called when value changed.</td>
-<td>(props, changedValues): void</td>
+<td>(props, changed, all): void</td>
 <td>NOOP</td>
 </tr>
 <tr>
-<td>formOption.mapProps</td>
+<td>option.mapProps</td>
 <td>Get new props transfered to WrappedComponent.</td>
 <td>(props): Object</td>
 <td>props =&gt; props</td>
 </tr>
 <tr>
-<td>formOption.mapPropsToFields</td>
+<td>option.mapPropsToFields</td>
 <td>Convert value from props to fields. Used for read fields from redux store.</td>
 <td>(props): Object</td>
 <td>NOOP</td>
 </tr>
 <tr>
-<td>formOption.fieldNameProp</td>
+<td>option.fieldNameProp</td>
 <td>Where to store the <code>name</code> argument of <code>getFieldProps</code>.</td>
 <td>String</td>
 <td>-</td>
 </tr>
 <tr>
-<td>formOption.fieldMetaProp</td>
+<td>option.fieldMetaProp</td>
 <td>Where to store the meta data of <code>getFieldProps</code>.</td>
 <td>String</td>
 <td>-</td>
 </tr>
 <tr>
-<td>formOption.fieldDataProp</td>
+<td>option.fieldDataProp</td>
 <td>Where to store the field data</td>
 <td>String</td>
 <td>-</td>
 </tr>
 <tr>
-<td>formOption.withRef(deprecated)</td>
+<td>option.withRef(deprecated)</td>
 <td>Maintain an ref for wrapped component instance, use <code>refs.wrappedComponent</code> to access.</td>
 <td>boolean</td>
 <td>false</td>
@@ -947,8 +945,8 @@ this.refs.form.refs.wrappedComponent // =&gt; The instance of Form
 // Recommended
 const EnhancedForm = createForm()(Form);
 <span class="hljs-tag">&lt;<span class="hljs-title">EnhancedForm</span> <span class="hljs-attribute">wrappedComponentRef</span>=<span class="hljs-value">{(inst)</span> =&gt;</span> this.formRef = inst} /&gt;
-this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createForm() will return another function<a id="user-content-createform()-will-return-another-function" name="createform()-will-return-another-function" class="anchor" aria-hidden="true" href="#createform()-will-return-another-function"><span class="octicon octicon-link"></span></a></h2><h3>function(WrappedComponent: React.Component): React.Component<a id="user-content-function(wrappedcomponent:-react.component):-react.component" name="function(wrappedcomponent:-react.component):-react.component" class="anchor" aria-hidden="true" href="#function(wrappedcomponent:-react.component):-react.component"><span class="octicon octicon-link"></span></a></h3><p>Will pass an object as prop form with the following members to WrappedComponent:</p>
-<h3>getFieldProps(name, option): Object<a id="user-content-getfieldprops(name,-option):-object" name="getfieldprops(name,-option):-object" class="anchor" aria-hidden="true" href="#getfieldprops(name,-option):-object"><span class="octicon octicon-link"></span></a></h3><p>Will create props which can be set on a input/InputComponent which support value and onChange interface.</p>
+this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>(WrappedComponent: React.Component) =&gt; React.Component<a id="user-content-(wrappedcomponent:-react.component)-=&gt;-react.component" name="(wrappedcomponent:-react.component)-=&gt;-react.component" class="anchor" aria-hidden="true" href="#(wrappedcomponent:-react.component)-=&gt;-react.component"><span class="octicon octicon-link"></span></a></h2><p>The returned function of createForm(). It will pass an object as prop <code>form</code> with the following members to WrappedComponent:</p>
+<h3>getFieldProps(name, option): Object { [valuePropName], [trigger], [validateTrigger] }<a id="user-content-getfieldprops(name,-option):-object-{-[valuepropname],-[trigger],-[validatetrigger]-}" name="getfieldprops(name,-option):-object-{-[valuepropname],-[trigger],-[validatetrigger]-}" class="anchor" aria-hidden="true" href="#getfieldprops(name,-option):-object-{-[valuepropname],-[trigger],-[validatetrigger]-}"><span class="octicon octicon-link"></span></a></h3><p>Will create props which can be set on a input/InputComponent which support value and onChange interface.</p>
 <p>After set, this will create a binding with this input.</p>
 <div class="highlight"><pre><code language="xml"><span class="hljs-tag">&lt;<span class="hljs-title">form</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-title">input</span> {<span class="hljs-attribute">...getFieldProps</span>('<span class="hljs-attribute">name</span>', { <span class="hljs-attribute">...options</span> })} /&gt;</span>
@@ -964,12 +962,6 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createFo
 </thead>
 <tbody>
 <tr>
-<td>option.exclusive(deprecated)</td>
-<td>Whether set value exclusively. Used with radio.</td>
-<td>boolean</td>
-<td>false</td>
-</tr>
-<tr>
 <td>option.valuePropName</td>
 <td>Prop name of component&#39;s value field, eg: checkbox should be set to <code>checked</code> ...</td>
 <td>String</td>
@@ -982,6 +974,12 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createFo
 <td>(value) =&gt; ({ value })</td>
 </tr>
 <tr>
+<td>option.getValueFromEvent</td>
+<td>Specify how to get value from event.</td>
+<td>(e): any</td>
+<td>See below</td>
+</tr>
+<tr>
 <td>option.initialValue</td>
 <td>Initial value of current component.</td>
 <td>any</td>
@@ -990,7 +988,7 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createFo
 <tr>
 <td>option.normalize</td>
 <td>Return normalized value.</td>
-<td>(value, prevValue, allValues): Object</td>
+<td>(value, prev, all): Object</td>
 <td>-</td>
 </tr>
 <tr>
@@ -1038,14 +1036,14 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createFo
 <td>-</td>
 </tr>
 <tr>
-<td>option.getValueFromEvent</td>
-<td>Specify how to get value from event.</td>
-<td>(e): any</td>
-<td>See below</td>
+<td>option.hidden</td>
+<td>Ignore current field while validating or gettting fields</td>
+<td>boolean</td>
+<td>false</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><code language="js"><span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+<h5>Default value of <code>getValueFromEvent</code><a id="user-content-default-value-of-<code>getvaluefromevent</code>" name="default-value-of-<code>getvaluefromevent</code>" class="anchor" aria-hidden="true" href="#default-value-of-<code>getvaluefromevent</code>"><span class="octicon octicon-link"></span></a></h5><div class="highlight"><pre><code language="js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultGetValueFromEvent</span>(<span class="hljs-params">e</span>) </span>{
   <span class="hljs-keyword">if</span> (!e || !e.target) {
     <span class="hljs-keyword">return</span> e;
   }
@@ -1061,7 +1059,7 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createFo
     trigger: <span class="hljs-string">'onBlur'</span>,
     rules: [required: <span class="hljs-literal">true</span>],
   }],
-}</code></pre></div><h3>getFieldDecorator(name:String, option: Object): (React.Node): React.Node<a id="user-content-getfielddecorator(name:string,-option:-object):-(react.node):-react.node" name="getfielddecorator(name:string,-option:-object):-(react.node):-react.node" class="anchor" aria-hidden="true" href="#getfielddecorator(name:string,-option:-object):-(react.node):-react.node"><span class="octicon octicon-link"></span></a></h3><p>Similar to <code>getFieldProps</code>, but add some helper warnings and you can write onXX directly inside React.Node props:</p>
+}</code></pre></div><h3>getFieldDecorator(name:String, option: Object) =&gt; (React.Node) =&gt; React.Node<a id="user-content-getfielddecorator(name:string,-option:-object)-=&gt;-(react.node)-=&gt;-react.node" name="getfielddecorator(name:string,-option:-object)-=&gt;-(react.node)-=&gt;-react.node" class="anchor" aria-hidden="true" href="#getfielddecorator(name:string,-option:-object)-=&gt;-(react.node)-=&gt;-react.node"><span class="octicon octicon-link"></span></a></h3><p>Similar to <code>getFieldProps</code>, but add some helper warnings and you can write onXX directly inside React.Node props:</p>
 <div class="highlight"><pre><code language="xml"><span class="hljs-tag">&lt;<span class="hljs-title">form</span>&gt;</span>
   {getFieldDecorator('name', otherOptions)(<span class="hljs-tag">&lt;<span class="hljs-title">input</span> /&gt;</span>)}
 <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span></code></pre></div><h3>getFieldsValue([fieldNames: String[]])<a id="user-content-getfieldsvalue([fieldnames:-string[]])" name="getfieldsvalue([fieldnames:-string[]])" class="anchor" aria-hidden="true" href="#getfieldsvalue([fieldnames:-string[]])"><span class="octicon octicon-link"></span></a></h3><p>Get fields value by fieldNames.</p>
@@ -1070,7 +1068,7 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>createFo
 <h3>setFieldsValue(obj: Object)<a id="user-content-setfieldsvalue(obj:-object)" name="setfieldsvalue(obj:-object)" class="anchor" aria-hidden="true" href="#setfieldsvalue(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>Set fields value by kv object.</p>
 <h3>setFieldsInitialValue(obj: Object)<a id="user-content-setfieldsinitialvalue(obj:-object)" name="setfieldsinitialvalue(obj:-object)" class="anchor" aria-hidden="true" href="#setfieldsinitialvalue(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>Set fields initialValue by kv object. use for reset and initial display/value.</p>
 <h3>setFields(obj: Object)<a id="user-content-setfields(obj:-object)" name="setfields(obj:-object)" class="anchor" aria-hidden="true" href="#setfields(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>Set fields by kv object. each field can contain errors and value member.</p>
-<h3>validateFields([fieldNames: String[]], [options: Object], callback: Function(errors, values))<a id="user-content-validatefields([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" name="validatefields([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" class="anchor" aria-hidden="true" href="#validatefields([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))"><span class="octicon octicon-link"></span></a></h3><p>Validate and get fields value by fieldNames.</p>
+<h3>validateFields([fieldNames: String[]], [options: Object], callback: (errors, values) =&gt; void)<a id="user-content-validatefields([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" name="validatefields([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" class="anchor" aria-hidden="true" href="#validatefields([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)"><span class="octicon octicon-link"></span></a></h3><p>Validate and get fields value by fieldNames.</p>
 <p>options is the same as validate method of <a href="https://github.com/yiminghe/async-validator" title="null">async-validator</a>.
 And add <code>force</code> and <code>scroll</code>. <code>scroll</code> is the same as <a href="https://github.com/yiminghe/dom-scroll-into-view#function-parameter" title="null">dom-scroll-into-view&#39;s function parameter <code>config</code></a>.</p>
 <h4>options.force: Boolean<a id="user-content-options.force:-boolean" name="options.force:-boolean" class="anchor" aria-hidden="true" href="#options.force:-boolean"><span class="octicon octicon-link"></span></a></h4><p>Defaults to false. Whether to validate fields which have been validated(caused by validateTrigger).</p>
@@ -1080,11 +1078,11 @@ And add <code>force</code> and <code>scroll</code>. <code>scroll</code> is the s
 <h3>isFieldsValidating(names: String[]): Bool<a id="user-content-isfieldsvalidating(names:-string[]):-bool" name="isfieldsvalidating(names:-string[]):-bool" class="anchor" aria-hidden="true" href="#isfieldsvalidating(names:-string[]):-bool"><span class="octicon octicon-link"></span></a></h3><p>Whether one of the inputs is validating.</p>
 <h3>isFieldTouched(name: String): Bool<a id="user-content-isfieldtouched(name:-string):-bool" name="isfieldtouched(name:-string):-bool" class="anchor" aria-hidden="true" href="#isfieldtouched(name:-string):-bool"><span class="octicon octicon-link"></span></a></h3><p>Whether this input&#39;s value had been change.</p>
 <h3>isFieldsTouched(names: String[]): Bool<a id="user-content-isfieldstouched(names:-string[]):-bool" name="isfieldstouched(names:-string[]):-bool" class="anchor" aria-hidden="true" href="#isfieldstouched(names:-string[]):-bool"><span class="octicon octicon-link"></span></a></h3><p>Whether one of the inputs&#39; values had been change.</p>
-<h3>isSubmitting(): Bool<a id="user-content-issubmitting():-bool" name="issubmitting():-bool" class="anchor" aria-hidden="true" href="#issubmitting():-bool"><span class="octicon octicon-link"></span></a></h3><p>Whether the form is submitting.</p>
-<h3>submit(callback: Function)<a id="user-content-submit(callback:-function)" name="submit(callback:-function)" class="anchor" aria-hidden="true" href="#submit(callback:-function)"><span class="octicon octicon-link"></span></a></h3><p>Cause isSubmitting to return true, after callback called, isSubmitting return false.</p>
 <h3>resetFields([names: String[]])<a id="user-content-resetfields([names:-string[]])" name="resetfields([names:-string[]])" class="anchor" aria-hidden="true" href="#resetfields([names:-string[]])"><span class="octicon octicon-link"></span></a></h3><p>Reset specified inputs. Defaults to all.</p>
-<h2>rc-form/lib/createDOMForm(formOption): Function<a id="user-content-rc-form/lib/createdomform(formoption):-function" name="rc-form/lib/createdomform(formoption):-function" class="anchor" aria-hidden="true" href="#rc-form/lib/createdomform(formoption):-function"><span class="octicon octicon-link"></span></a></h2><p>createDOMForm enhancement, support props.form.validateFieldsAndScroll</p>
-<h3>props.form.validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: Function(errors, values))<a id="user-content-props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" name="props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))" class="anchor" aria-hidden="true" href="#props.form.validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-function(errors,-values))"><span class="octicon octicon-link"></span></a></h3><p>props.form.validateFields enhancement, support scroll to the first invalid form field</p>
+<h3>isSubmitting(): Bool (Deprecated)<a id="user-content-issubmitting():-bool-(deprecated)" name="issubmitting():-bool-(deprecated)" class="anchor" aria-hidden="true" href="#issubmitting():-bool-(deprecated)"><span class="octicon octicon-link"></span></a></h3><p>Whether the form is submitting.</p>
+<h3>submit(callback: Function) (Deprecated)<a id="user-content-submit(callback:-function)-(deprecated)" name="submit(callback:-function)-(deprecated)" class="anchor" aria-hidden="true" href="#submit(callback:-function)-(deprecated)"><span class="octicon octicon-link"></span></a></h3><p>Cause isSubmitting to return true, after callback called, isSubmitting return false.</p>
+<h2>rc-form/lib/createDOMForm(option): Function<a id="user-content-rc-form/lib/createdomform(option):-function" name="rc-form/lib/createdomform(option):-function" class="anchor" aria-hidden="true" href="#rc-form/lib/createdomform(option):-function"><span class="octicon octicon-link"></span></a></h2><p>createDOMForm enhancement, support props.form.validateFieldsAndScroll</p>
+<h3>validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: (errors, values) =&gt; void)<a id="user-content-validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" name="validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" class="anchor" aria-hidden="true" href="#validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)"><span class="octicon octicon-link"></span></a></h3><p>props.form.validateFields enhancement, support scroll to the first invalid form field</p>
 <h4>options.container: HTMLElement<a id="user-content-options.container:-htmlelement" name="options.container:-htmlelement" class="anchor" aria-hidden="true" href="#options.container:-htmlelement"><span class="octicon octicon-link"></span></a></h4><p>Defaults to first scrollable container of form field(until document).</p>
 <h2>Notes<a id="user-content-notes" name="notes" class="anchor" aria-hidden="true" href="#notes"><span class="octicon octicon-link"></span></a></h2><ul>
 <li><p>Do not use stateless function component inside Form component: <a href="https://github.com/facebook/react/pull/6534" title="null">https://github.com/facebook/react/pull/6534</a></p>
