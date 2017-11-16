@@ -29,10 +29,10 @@ class FieldsStore {
     const fieldsMeta = this.fieldsMeta;
     Object.keys(flattenedInitialValues).forEach(name => {
       if (fieldsMeta[name]) {
-        fieldsMeta[name] = {
-          ...fieldsMeta[name],
+        this.setFieldMeta(name, {
+          ...this.getFieldMeta(name),
           initialValue: flattenedInitialValues[name],
-        };
+        });
       }
     });
   }
@@ -78,14 +78,16 @@ class FieldsStore {
   }
 
   setFieldMeta(name, meta) {
-    this.fieldsMeta[name] = meta;
+    this.fieldsMeta[name] = this.fieldsMeta[name] || [];
+    this.fieldsMeta[name].push(meta);
+    this.fieldsMeta[name] = this.fieldsMeta[name].slice(-2);
   }
 
   getFieldMeta(name) {
     if (!this.fieldsMeta[name]) {
-      this.fieldsMeta[name] = {};
+      this.fieldsMeta[name] = [{}];
     }
-    return this.fieldsMeta[name];
+    return this.fieldsMeta[name][this.fieldsMeta[name].length - 1];
   }
 
   getValueFromFields(name, fields) {
@@ -93,7 +95,7 @@ class FieldsStore {
     if (field && 'value' in field) {
       return field.value;
     }
-    const fieldMeta = this.fieldsMeta[name];
+    const fieldMeta = this.getFieldMeta(name);
     return fieldMeta && fieldMeta.initialValue;
   }
 
@@ -106,7 +108,7 @@ class FieldsStore {
   getValidFieldsName() {
     const { fieldsMeta } = this;
     return fieldsMeta ?
-      Object.keys(fieldsMeta).filter(name => !fieldsMeta[name].hidden) :
+      Object.keys(fieldsMeta).filter(name => !this.getFieldMeta(name).hidden) :
       [];
   }
 
@@ -146,7 +148,7 @@ class FieldsStore {
       .map(name => ({
         name,
         dirty: false,
-        value: this.fieldsMeta[name].initialValue,
+        value: this.this.getFieldMeta(name).initialValue,
       }))
       .reduce((acc, field) => set(acc, field.name, createFormField(field)), {});
   }
@@ -228,8 +230,12 @@ class FieldsStore {
   }
 
   clearField(name) {
-    delete this.fields[name];
-    delete this.fieldsMeta[name];
+    this.fieldsMeta[name] = this.fieldsMeta[name] || [];
+    this.fieldsMeta[name].unshift();
+    if (this.fieldsMeta[name].length === 0) {
+      delete this.fields[name];
+      delete this.fieldsMeta[name];
+    }
   }
 }
 
