@@ -148,7 +148,7 @@ class FieldsStore {
       .map(name => ({
         name,
         dirty: false,
-        value: this.this.getFieldMeta(name).initialValue,
+        value: this.getFieldMeta(name).initialValue,
       }))
       .reduce((acc, field) => set(acc, field.name, createFormField(field)), {});
   }
