@@ -21,7 +21,7 @@ describe('getFieldProps\' behaviors', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').at(0).simulate('change', { target: { value: '1' } });
     expect(form.getFieldValue('normal')).toBe('1');
     wrapper.find('input').at(1).simulate('change', { target: { value: 'a' } });
@@ -55,7 +55,7 @@ describe('getFieldProps\' behaviors', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
 
     wrapper.find('input').at(0).simulate('change');
     expect(form.getFieldError('normal')).toEqual(['normal is required']);
@@ -93,7 +93,7 @@ describe('createForm\'s form behavior', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     expect(form.getFieldValue('not-registered')).toBe(undefined);
   });
 
@@ -113,7 +113,7 @@ describe('createForm\'s form behavior', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     form.setFieldsInitialValue({
       normal: '1',
       nested1: { a: ['2'] },
@@ -142,7 +142,7 @@ describe('createForm\'s form behavior', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
 
     wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
     expect(form.getFieldValue('normal')).toBe('');
@@ -172,7 +172,7 @@ describe('createForm\'s form behavior', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     form.validateFields((errors, values) => {
       expect(errors).toEqual({
         normal: {
@@ -194,7 +194,7 @@ describe('createForm\'s form behavior', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').simulate('change', { target: { value: '1' } });
     form.validateFields((errors, values) => {
       expect(errors).toBe(null);
@@ -219,7 +219,7 @@ describe('createForm\'s form behavior', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     form.validateFields(['nested1', 'nested2[0]'], (errors, values) => {
       expect(errors).toEqual({
         nested1: {

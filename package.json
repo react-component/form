@@ -36,36 +36,45 @@
   },
   "scripts": {
     "build": "rc-tools run build",
+    "compile": "rc-tools run compile --babel-runtime",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
-    "test": "NODE_ENV=test jest",
-    "coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+    "lint:fix": "rc-tools run lint --fix",
+    "test": "jest",
+    "prepublish": "rc-tools run guard",
+    "coverage": "jest --coverage"
   },
   "jest": {
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
     "collectCoverageFrom": [
-      "src/*"
+      "src/**/*"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ],
     "transform": {
-      "\\.tsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js",
       "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
     }
   },
   "devDependencies": {
     "antd": "2.x",
     "async": "^1.5.2",
-    "coveralls": "^2.11.15",
-    "enzyme": "^2.8.2",
-    "history": "^1.16.0",
-    "jest": "^19.0.2",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.2",
+    "enzyme-to-json": "^3.1.4",
+    "jest": "^21.2.1",
     "pre-commit": "1.x",
+    "rc-tools": "6.x",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-test-renderer": "^16.1.1",
+    "history": "^1.16.0",
     "prop-types": "^15.5.10",
-    "rc-tools": "^6.2.0",
-    "react": "15.x",
-    "react-addons-test-utils": "^15.5.1",
     "react-data-binding": "^0.4.0",
-    "react-dom": "15.x",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.2",
     "redux": "^3.0.4"
