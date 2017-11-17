@@ -3,7 +3,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import createForm from '../src/createForm';
-import createFormField from '../src/createFormField';
 
 describe('binding dynamic fields without any errors', () => {
   it('normal input', (done) => {
@@ -30,11 +29,11 @@ describe('binding dynamic fields without any errors', () => {
     );
     const wrapper = mount(<Test mode />);
     const form = wrapper.ref('wrappedComponent').props.form;
-    wrapper.find('#text').simulate('change', { target: { value: '123' }});
+    wrapper.find('#text').simulate('change', { target: { value: '123' } });
     wrapper.setProps({ mode: false });
     expect(wrapper.find('#number').getDOMNode().value).toBe('123');
     expect(form.getFieldValue('name')).toBe('123');
-    wrapper.find('#number').simulate('change', { target: { value: '456' }});
+    wrapper.find('#number').simulate('change', { target: { value: '456' } });
     wrapper.setProps({ mode: true });
     expect(wrapper.find('#text').getDOMNode().value).toBe('456');
     expect(form.getFieldValue('name')).toBe('456');
@@ -65,11 +64,11 @@ describe('binding dynamic fields without any errors', () => {
     );
     const wrapper = mount(<Test mode />);
     const form = wrapper.ref('wrappedComponent').props.form;
-    wrapper.find('#text').simulate('change', { target: { value: '123' }});
+    wrapper.find('#text').simulate('change', { target: { value: '123' } });
     wrapper.setProps({ mode: false });
     expect(wrapper.find('#number').getDOMNode().value).toBe('123');
     expect(form.getFieldValue('name.xxx')).toBe('123');
-    wrapper.find('#number').simulate('change', { target: { value: '456' }});
+    wrapper.find('#number').simulate('change', { target: { value: '456' } });
     wrapper.setProps({ mode: true });
     expect(wrapper.find('#text').getDOMNode().value).toBe('456');
     expect(form.getFieldValue('name.xxx')).toBe('456');
@@ -92,7 +91,9 @@ describe('binding dynamic fields without any errors', () => {
           return (
             <form>
               {mode ? getFieldDecorator('name')(<input key="text" id="text" />) : null}
-              {mode ? null : getFieldDecorator('name')(<input key="number" id="number" type="number" />)}
+              {mode ? null : getFieldDecorator('name')(
+                <input key="number" id="number" type="number" />
+              )}
             </form>
           );
         }
@@ -100,11 +101,11 @@ describe('binding dynamic fields without any errors', () => {
     );
     const wrapper = mount(<Test mode />);
     const form = wrapper.ref('wrappedComponent').props.form;
-    wrapper.find('#text').simulate('change', { target: { value: '123' }});
+    wrapper.find('#text').simulate('change', { target: { value: '123' } });
     wrapper.setProps({ mode: false });
     expect(wrapper.find('#number').getDOMNode().value).toBe('123');
     expect(form.getFieldValue('name')).toBe('123');
-    wrapper.find('#number').simulate('change', { target: { value: '456' }});
+    wrapper.find('#number').simulate('change', { target: { value: '456' } });
     wrapper.setProps({ mode: true });
     expect(wrapper.find('#text').getDOMNode().value).toBe('456');
     expect(form.getFieldValue('name')).toBe('456');

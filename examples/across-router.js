@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { createForm } from 'rc-form';
-import { Router, Route } from 'react-router';
+import { Router, Route, hashHistory } from 'react-router';
 import { regionStyle } from './styles';
 
 class ChildForm extends React.Component {
@@ -107,7 +107,7 @@ ReactDOM.render((<div
     position: 'relative',
   }}
 >
-  <Router>
+  <Router history={hashHistory}>
     <Route path="/" component={ParentForm}>
       <Route path="/open" component={ChildForm}/>
     </Route>

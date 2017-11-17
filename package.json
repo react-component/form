@@ -74,9 +74,8 @@
     "react-test-renderer": "^16.1.1",
     "history": "^1.16.0",
     "prop-types": "^15.5.10",
-    "react-data-binding": "^0.4.0",
     "react-redux": "^4.0.0",
-    "react-router": "^1.0.2",
+    "react-router": "^3.0.0",
     "redux": "^3.0.4"
   },
   "pre-commit": [
