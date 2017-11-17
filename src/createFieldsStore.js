@@ -48,7 +48,7 @@ class FieldsStore {
       .forEach((f) => nowValues[f] = this.getValueFromFields(f, nowFields));
     Object.keys(nowValues).forEach((f) => {
       const value = nowValues[f];
-      const fieldMeta = fieldsMeta[f];
+      const fieldMeta = this.getFieldMeta(f);
       if (fieldMeta && fieldMeta.normalize) {
         const nowValue =
                 fieldMeta.normalize(value, this.getValueFromFields(f, this.fields), nowValues);
