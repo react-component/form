@@ -84,10 +84,8 @@ class FieldsStore {
   }
 
   getFieldMeta(name) {
-    if (!this.fieldsMeta[name]) {
-      this.fieldsMeta[name] = [{}];
-    }
-    return this.fieldsMeta[name][this.fieldsMeta[name].length - 1];
+    this.fieldsMeta[name] = this.fieldsMeta[name] || [];
+    return this.fieldsMeta[name][this.fieldsMeta[name].length - 1] || {};
   }
 
   getValueFromFields(name, fields) {
