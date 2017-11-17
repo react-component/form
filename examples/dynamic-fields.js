@@ -37,7 +37,7 @@ class Form1 extends React.Component {
           initialValue: '',
           rules: [{
             required: true,
-            message: 'What\'s your name?',
+            message: 'What\'s your name 1?',
           }],
         })(<input />) : null}
         <span>text content</span>
@@ -45,7 +45,7 @@ class Form1 extends React.Component {
           initialValue: '',
           rules: [{
             required: true,
-            message: 'What\'s your name?',
+            message: 'What\'s your name 2?',
           }],
         })(<input />)}
         <div>
