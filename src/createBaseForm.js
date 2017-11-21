@@ -190,10 +190,7 @@ function createBaseForm(option = {}, mixins = []) {
 
         const fieldMeta = this.fieldsStore.getFieldMeta(name);
         if ('initialValue' in fieldOption) {
-          this.fieldsStore.setFieldMeta(name, {
-            ...fieldMeta,
-            initialValue: fieldOption.initialValue,
-          });
+          fieldMeta.initialValue = fieldOption.initialValue;
         }
 
         const inputProps = {

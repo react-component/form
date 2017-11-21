@@ -115,4 +115,43 @@ describe('binding dynamic fields without any errors', () => {
       done();
     });
   });
+
+  it('submit without removed fields', (done) => {
+    const Test = createForm({
+      withRef: true,
+    })(
+      class extends React.Component {
+        render() {
+          const { form, mode } = this.props;
+          const { getFieldDecorator } = form;
+          return (
+            <form>
+              {getFieldDecorator('name1')(<input />)}
+              {getFieldDecorator('name2')(<input />)}
+              {mode ? null : getFieldDecorator('name3')(<input />)}
+              {mode ? null : getFieldDecorator('name4')(<input />)}
+            </form>
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').props.form;
+    form.validateFields((errors, values) => {
+      expect(errors).toBe(null);
+      expect('name1' in values).toBe(true);
+      expect('name2' in values).toBe(true);
+      expect('name3' in values).toBe(true);
+      expect('name4' in values).toBe(true);
+      wrapper.setProps({ mode: true });
+      form.validateFields((errors, values) => {
+        expect(errors).toBe(null);
+        expect('name1' in values).toBe(true);
+        expect('name2' in values).toBe(true);
+        expect('name3' in values).toBe(false);
+        expect('name4' in values).toBe(false);
+        done();
+      });
+    });
+  });
 });
