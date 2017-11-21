@@ -78,14 +78,12 @@ class FieldsStore {
   }
 
   setFieldMeta(name, meta) {
-    this.fieldsMeta[name] = this.fieldsMeta[name] || [];
-    this.fieldsMeta[name].push(meta);
-    this.fieldsMeta[name] = this.fieldsMeta[name].slice(-2);
+    this.fieldsMeta[name] = meta;
   }
 
   getFieldMeta(name) {
-    this.fieldsMeta[name] = this.fieldsMeta[name] || [];
-    return this.fieldsMeta[name][this.fieldsMeta[name].length - 1] || {};
+    this.fieldsMeta[name] = this.fieldsMeta[name] || {};
+    return this.fieldsMeta[name];
   }
 
   getValueFromFields(name, fields) {
@@ -228,12 +226,8 @@ class FieldsStore {
   }
 
   clearField(name) {
-    this.fieldsMeta[name] = this.fieldsMeta[name] || [];
-    this.fieldsMeta[name].unshift();
-    if (this.fieldsMeta[name].length === 0) {
-      delete this.fields[name];
-      delete this.fieldsMeta[name];
-    }
+    delete this.fields[name];
+    delete this.fieldsMeta[name];
   }
 }
 
