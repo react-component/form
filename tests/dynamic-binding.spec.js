@@ -144,12 +144,12 @@ describe('binding dynamic fields without any errors', () => {
       expect('name3' in values).toBe(true);
       expect('name4' in values).toBe(true);
       wrapper.setProps({ mode: true });
-      form.validateFields((errors, values) => {
-        expect(errors).toBe(null);
-        expect('name1' in values).toBe(true);
-        expect('name2' in values).toBe(true);
-        expect('name3' in values).toBe(false);
-        expect('name4' in values).toBe(false);
+      form.validateFields((errors2, values2) => {
+        expect(errors2).toBe(null);
+        expect('name1' in values2).toBe(true);
+        expect('name2' in values2).toBe(true);
+        expect('name3' in values2).toBe(false);
+        expect('name4' in values2).toBe(false);
         done();
       });
     });

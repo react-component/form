@@ -298,7 +298,7 @@ function createBaseForm(option = {}, mixins = []) {
         }
         if (this.clearedFieldMetaCache[name]) {
           this.fieldsStore.setFields({
-            name: this.clearedFieldMetaCache[name].field,
+            [name]: this.clearedFieldMetaCache[name].field,
           });
           this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
         }
