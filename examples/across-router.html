@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>across-router.js - example - rc-form@2.0.0</title>
+  <title>across-router.js - example - rc-form@2.1.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@2.0.0</h1>
+      <h1>rc-form@2.1.0</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -275,7 +275,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> { Router, Route } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-router'</span>;
+<span class="hljs-keyword">import</span> { Router, Route, hashHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-router'</span>;
 <span class="hljs-keyword">import</span> { regionStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChildForm</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
@@ -378,7 +378,7 @@ ReactDOM.render((<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-
     <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">relative</span>',
   }}
 &gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-title">Router</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">Router</span> <span class="hljs-attribute">history</span>=<span class="hljs-value">{hashHistory}</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">Route</span> <span class="hljs-attribute">path</span>=<span class="hljs-value">"/"</span> <span class="hljs-attribute">component</span>=<span class="hljs-value">{ParentForm}</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">Route</span> <span class="hljs-attribute">path</span>=<span class="hljs-value">"/open"</span> <span class="hljs-attribute">component</span>=<span class="hljs-value">{ChildForm}</span>/&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-title">Route</span>&gt;</span>

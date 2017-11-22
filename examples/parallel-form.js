@@ -1,6 +1,6 @@
-webpackJsonp([9],{
+webpackJsonp([6],{
 
-/***/ 14:
+/***/ 13:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20,11 +20,11 @@ var errorStyle = {
 
 /***/ }),
 
-/***/ 16:
+/***/ 14:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(15);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["b"]; });
 // export this package's api
@@ -33,12 +33,12 @@ var errorStyle = {
 
 /***/ }),
 
-/***/ 17:
+/***/ 15:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createForm__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__createFormField__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createForm__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__createFormField__ = __webpack_require__(20);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__createForm__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__createFormField__["b"]; });
 // export this package's api
@@ -48,324 +48,39 @@ var errorStyle = {
 
 /***/ }),
 
-/***/ 194:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = __webpack_require__(3);
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _defineProperty2 = __webpack_require__(10);
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _classCallCheck2 = __webpack_require__(4);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(7);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = __webpack_require__(6);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(5);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _rcSwitch = __webpack_require__(281);
-
-var _rcSwitch2 = _interopRequireDefault(_rcSwitch);
-
-var _classnames = __webpack_require__(9);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var Switch = function (_React$Component) {
-    (0, _inherits3['default'])(Switch, _React$Component);
-
-    function Switch() {
-        (0, _classCallCheck3['default'])(this, Switch);
-        return (0, _possibleConstructorReturn3['default'])(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).apply(this, arguments));
-    }
-
-    (0, _createClass3['default'])(Switch, [{
-        key: 'render',
-        value: function render() {
-            var _props = this.props,
-                prefixCls = _props.prefixCls,
-                size = _props.size,
-                _props$className = _props.className,
-                className = _props$className === undefined ? '' : _props$className;
-
-            var classes = (0, _classnames2['default'])(className, (0, _defineProperty3['default'])({}, prefixCls + '-small', size === 'small'));
-            return _react2['default'].createElement(_rcSwitch2['default'], (0, _extends3['default'])({}, this.props, { className: classes }));
-        }
-    }]);
-    return Switch;
-}(_react2['default'].Component);
-
-exports['default'] = Switch;
-
-Switch.defaultProps = {
-    prefixCls: 'ant-switch'
-};
-Switch.propTypes = {
-    prefixCls: _propTypes2['default'].string,
-    // HACK: https://github.com/ant-design/ant-design/issues/5368
-    // size=default and size=large are the same
-    size: _propTypes2['default'].oneOf(['small', 'default', 'large']),
-    className: _propTypes2['default'].string
-};
-module.exports = exports['default'];
-
-/***/ }),
-
-/***/ 280:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_prop_types__);
-
-
-
-
-
-
-
-
-
-var classNames = __webpack_require__(9);
-
-function noop() {}
-
-var Switch = function (_Component) {
-  __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits___default()(Switch, _Component);
-
-  function Switch(props) {
-    __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default()(this, Switch);
-
-    var _this = __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, props));
-
-    _initialiseProps.call(_this);
-
-    var checked = false;
-    if ('checked' in props) {
-      checked = !!props.checked;
-    } else {
-      checked = !!props.defaultChecked;
-    }
-    _this.state = { checked: checked };
-    return _this;
-  }
-
-  __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default()(Switch, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if ('checked' in nextProps) {
-        this.setState({
-          checked: !!nextProps.checked
-        });
-      }
-    }
-  }, {
-    key: 'setChecked',
-    value: function setChecked(checked) {
-      if (this.props.disabled) {
-        return;
-      }
-      if (!('checked' in this.props)) {
-        this.setState({
-          checked: checked
-        });
-      }
-      this.props.onChange(checked);
-    }
-
-    // Handle auto focus when click switch in Chrome
-
-  }, {
-    key: 'render',
-    value: function render() {
-      var _classNames;
-
-      var _props = this.props,
-          className = _props.className,
-          prefixCls = _props.prefixCls,
-          disabled = _props.disabled,
-          checkedChildren = _props.checkedChildren,
-          tabIndex = _props.tabIndex,
-          unCheckedChildren = _props.unCheckedChildren,
-          restProps = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['className', 'prefixCls', 'disabled', 'checkedChildren', 'tabIndex', 'unCheckedChildren']);
-
-      var checked = this.state.checked;
-      var switchTabIndex = disabled ? -1 : tabIndex || 0;
-      var switchClassName = classNames((_classNames = {}, __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, className, !!className), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, prefixCls, true), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, prefixCls + '-checked', checked), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, prefixCls + '-disabled', disabled), _classNames));
-      return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(
-        'span',
-        __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, restProps, {
-          className: switchClassName,
-          tabIndex: switchTabIndex,
-          ref: this.saveNode,
-          onKeyDown: this.handleKeyDown,
-          onClick: this.toggle,
-          onMouseUp: this.handleMouseUp
-        }),
-        __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(
-          'span',
-          { className: prefixCls + '-inner' },
-          checked ? checkedChildren : unCheckedChildren
-        )
-      );
-    }
-  }]);
-
-  return Switch;
-}(__WEBPACK_IMPORTED_MODULE_7_react__["Component"]);
-
-var _initialiseProps = function _initialiseProps() {
-  var _this2 = this;
-
-  this.toggle = function () {
-    var onClick = _this2.props.onClick;
-
-    var checked = !_this2.state.checked;
-    _this2.setChecked(checked);
-    onClick(checked);
-  };
-
-  this.handleKeyDown = function (e) {
-    if (e.keyCode === 37) {
-      // Left
-      _this2.setChecked(false);
-    } else if (e.keyCode === 39) {
-      // Right
-      _this2.setChecked(true);
-    } else if (e.keyCode === 32 || e.keyCode === 13) {
-      // Space, Enter
-      _this2.toggle();
-    }
-  };
-
-  this.handleMouseUp = function (e) {
-    if (_this2.node) {
-      _this2.node.blur();
-    }
-    if (_this2.props.onMouseUp) {
-      _this2.props.onMouseUp(e);
-    }
-  };
-
-  this.saveNode = function (node) {
-    _this2.node = node;
-  };
-};
-
-Switch.propTypes = {
-  className: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.string,
-  prefixCls: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.string,
-  disabled: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-  checkedChildren: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.any,
-  unCheckedChildren: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.any,
-  onChange: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-  onMouseUp: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-  onClick: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
-  tabIndex: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.number,
-  checked: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
-  defaultChecked: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool
-};
-
-Switch.defaultProps = {
-  prefixCls: 'rc-switch',
-  checkedChildren: null,
-  unCheckedChildren: null,
-  className: '',
-  defaultChecked: false,
-  onChange: noop,
-  onClick: noop
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Switch);
-
-/***/ }),
-
-/***/ 281:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(280);
-
-/***/ }),
-
-/***/ 30:
+/***/ 26:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 394:
+/***/ 288:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_form__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_form__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__styles__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__styles__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__ = __webpack_require__(302);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__);
 
 
@@ -556,10 +271,295 @@ __WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 667:
+/***/ 302:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(394);
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = __webpack_require__(3);
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _defineProperty2 = __webpack_require__(8);
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _classCallCheck2 = __webpack_require__(2);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(6);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(5);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(4);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _rcSwitch = __webpack_require__(448);
+
+var _rcSwitch2 = _interopRequireDefault(_rcSwitch);
+
+var _classnames = __webpack_require__(9);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var Switch = function (_React$Component) {
+    (0, _inherits3['default'])(Switch, _React$Component);
+
+    function Switch() {
+        (0, _classCallCheck3['default'])(this, Switch);
+        return (0, _possibleConstructorReturn3['default'])(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).apply(this, arguments));
+    }
+
+    (0, _createClass3['default'])(Switch, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                prefixCls = _props.prefixCls,
+                size = _props.size,
+                _props$className = _props.className,
+                className = _props$className === undefined ? '' : _props$className;
+
+            var classes = (0, _classnames2['default'])(className, (0, _defineProperty3['default'])({}, prefixCls + '-small', size === 'small'));
+            return _react2['default'].createElement(_rcSwitch2['default'], (0, _extends3['default'])({}, this.props, { className: classes }));
+        }
+    }]);
+    return Switch;
+}(_react2['default'].Component);
+
+exports['default'] = Switch;
+
+Switch.defaultProps = {
+    prefixCls: 'ant-switch'
+};
+Switch.propTypes = {
+    prefixCls: _propTypes2['default'].string,
+    // HACK: https://github.com/ant-design/ant-design/issues/5368
+    // size=default and size=large are the same
+    size: _propTypes2['default'].oneOf(['small', 'default', 'large']),
+    className: _propTypes2['default'].string
+};
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 447:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_prop_types__);
+
+
+
+
+
+
+
+
+
+var classNames = __webpack_require__(9);
+
+function noop() {}
+
+var Switch = function (_Component) {
+  __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_inherits___default()(Switch, _Component);
+
+  function Switch(props) {
+    __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default()(this, Switch);
+
+    var _this = __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, props));
+
+    _initialiseProps.call(_this);
+
+    var checked = false;
+    if ('checked' in props) {
+      checked = !!props.checked;
+    } else {
+      checked = !!props.defaultChecked;
+    }
+    _this.state = { checked: checked };
+    return _this;
+  }
+
+  __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_createClass___default()(Switch, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if ('checked' in nextProps) {
+        this.setState({
+          checked: !!nextProps.checked
+        });
+      }
+    }
+  }, {
+    key: 'setChecked',
+    value: function setChecked(checked) {
+      if (this.props.disabled) {
+        return;
+      }
+      if (!('checked' in this.props)) {
+        this.setState({
+          checked: checked
+        });
+      }
+      this.props.onChange(checked);
+    }
+
+    // Handle auto focus when click switch in Chrome
+
+  }, {
+    key: 'render',
+    value: function render() {
+      var _classNames;
+
+      var _props = this.props,
+          className = _props.className,
+          prefixCls = _props.prefixCls,
+          disabled = _props.disabled,
+          checkedChildren = _props.checkedChildren,
+          tabIndex = _props.tabIndex,
+          unCheckedChildren = _props.unCheckedChildren,
+          restProps = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties___default()(_props, ['className', 'prefixCls', 'disabled', 'checkedChildren', 'tabIndex', 'unCheckedChildren']);
+
+      var checked = this.state.checked;
+      var switchTabIndex = disabled ? -1 : tabIndex || 0;
+      var switchClassName = classNames((_classNames = {}, __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, className, !!className), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, prefixCls, true), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, prefixCls + '-checked', checked), __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()(_classNames, prefixCls + '-disabled', disabled), _classNames));
+      return __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(
+        'span',
+        __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, restProps, {
+          className: switchClassName,
+          tabIndex: switchTabIndex,
+          ref: this.saveNode,
+          onKeyDown: this.handleKeyDown,
+          onClick: this.toggle,
+          onMouseUp: this.handleMouseUp
+        }),
+        __WEBPACK_IMPORTED_MODULE_7_react___default.a.createElement(
+          'span',
+          { className: prefixCls + '-inner' },
+          checked ? checkedChildren : unCheckedChildren
+        )
+      );
+    }
+  }]);
+
+  return Switch;
+}(__WEBPACK_IMPORTED_MODULE_7_react__["Component"]);
+
+var _initialiseProps = function _initialiseProps() {
+  var _this2 = this;
+
+  this.toggle = function () {
+    var onClick = _this2.props.onClick;
+
+    var checked = !_this2.state.checked;
+    _this2.setChecked(checked);
+    onClick(checked);
+  };
+
+  this.handleKeyDown = function (e) {
+    if (e.keyCode === 37) {
+      // Left
+      _this2.setChecked(false);
+    } else if (e.keyCode === 39) {
+      // Right
+      _this2.setChecked(true);
+    } else if (e.keyCode === 32 || e.keyCode === 13) {
+      // Space, Enter
+      _this2.toggle();
+    }
+  };
+
+  this.handleMouseUp = function (e) {
+    if (_this2.node) {
+      _this2.node.blur();
+    }
+    if (_this2.props.onMouseUp) {
+      _this2.props.onMouseUp(e);
+    }
+  };
+
+  this.saveNode = function (node) {
+    _this2.node = node;
+  };
+};
+
+Switch.propTypes = {
+  className: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.string,
+  prefixCls: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.string,
+  disabled: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
+  checkedChildren: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.any,
+  unCheckedChildren: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.any,
+  onChange: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
+  onMouseUp: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
+  onClick: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.func,
+  tabIndex: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.number,
+  checked: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool,
+  defaultChecked: __WEBPACK_IMPORTED_MODULE_8_prop_types___default.a.bool
+};
+
+Switch.defaultProps = {
+  prefixCls: 'rc-switch',
+  checkedChildren: null,
+  unCheckedChildren: null,
+  className: '',
+  defaultChecked: false,
+  onChange: noop,
+  onClick: noop
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Switch);
+
+/***/ }),
+
+/***/ 448:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(447);
+
+/***/ }),
+
+/***/ 496:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(288);
 
 
 /***/ }),
@@ -620,5 +620,5 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ })
 
-},[667]);
+},[496]);
 //# sourceMappingURL=parallel-form.js.map
