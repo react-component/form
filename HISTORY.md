@@ -1,6 +1,10 @@
 # History
 ----
 
+## 2.1.0 / 2017-11-22
+
+- Support switching from different components with same field name. [#117](https://github.com/react-component/form/pull/117)
+
 ## 2.0.0 / 2017-11-07
 
 - Remove `option.exclusive` of `getFieldProps` and `getFieldDecorator`, just use something like [`antd.Radio.Group`](https://ant.design/components/radio/#components-radio-demo-radiogroup) or [`antd.Checkbox.Group`](https://ant.design/components/checkbox/#components-checkbox-demo-group) as workaround.
@@ -94,7 +98,7 @@ this.props.validateFields(['xx'], {force: true}).
 
 ## 0.8.0 / 2016-01-13
 
-- support validate/validateFirst option for getFieldProps 
+- support validate/validateFirst option for getFieldProps
 
 ## 0.7.0 / 2015-12-29
 
