@@ -15,7 +15,7 @@ describe('initialValue', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     expect(form.getFieldValue('normal')).toBe('1');
     wrapper.find('input').simulate('change', { target: { value: '2' } });
     expect(form.getFieldValue('normal')).toBe('2');
@@ -43,7 +43,7 @@ describe('getValueProps', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').simulate('change', { target: { value: '2' } });
     expect(form.getFieldValue('normal')).toBe('2');
     expect(form.getFieldInstance('normal').value).toBe('21');
@@ -69,7 +69,7 @@ describe('getValueFromEvent', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').simulate('change', { target: { value: '2' } });
     expect(form.getFieldValue('normal')).toBe('21');
   });
@@ -95,7 +95,7 @@ describe('normalize', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').simulate('change', { target: { value: 'a' } });
     expect(form.getFieldValue('normal')).toBe('A');
     expect(form.getFieldInstance('normal').value).toBe('A');
@@ -124,7 +124,7 @@ describe('validate', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     expect(form.getFieldValue('normal')).toBe(undefined);
     wrapper.find('input').simulate('change', { target: { value: '' } });
     expect(form.getFieldValue('normal')).toBe('');
@@ -156,7 +156,7 @@ describe('validate', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').simulate('change');
     expect(form.getFieldError('required').length).toBe(1);
     expect(form.getFieldError('required')[0].type).toBe('b');
@@ -182,7 +182,7 @@ describe('hidden', () => {
       }
     );
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     expect(form.getFieldsValue()).toEqual({});
     form.validateFields((errors, values) => {
       expect(errors).toBe(null);

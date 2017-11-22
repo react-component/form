@@ -29,10 +29,10 @@ class FieldsStore {
     const fieldsMeta = this.fieldsMeta;
     Object.keys(flattenedInitialValues).forEach(name => {
       if (fieldsMeta[name]) {
-        fieldsMeta[name] = {
-          ...fieldsMeta[name],
+        this.setFieldMeta(name, {
+          ...this.getFieldMeta(name),
           initialValue: flattenedInitialValues[name],
-        };
+        });
       }
     });
   }
@@ -48,7 +48,7 @@ class FieldsStore {
       .forEach((f) => nowValues[f] = this.getValueFromFields(f, nowFields));
     Object.keys(nowValues).forEach((f) => {
       const value = nowValues[f];
-      const fieldMeta = fieldsMeta[f];
+      const fieldMeta = this.getFieldMeta(f);
       if (fieldMeta && fieldMeta.normalize) {
         const nowValue =
                 fieldMeta.normalize(value, this.getValueFromFields(f, this.fields), nowValues);
@@ -82,9 +82,7 @@ class FieldsStore {
   }
 
   getFieldMeta(name) {
-    if (!this.fieldsMeta[name]) {
-      this.fieldsMeta[name] = {};
-    }
+    this.fieldsMeta[name] = this.fieldsMeta[name] || {};
     return this.fieldsMeta[name];
   }
 
@@ -93,7 +91,7 @@ class FieldsStore {
     if (field && 'value' in field) {
       return field.value;
     }
-    const fieldMeta = this.fieldsMeta[name];
+    const fieldMeta = this.getFieldMeta(name);
     return fieldMeta && fieldMeta.initialValue;
   }
 
@@ -106,7 +104,7 @@ class FieldsStore {
   getValidFieldsName() {
     const { fieldsMeta } = this;
     return fieldsMeta ?
-      Object.keys(fieldsMeta).filter(name => !fieldsMeta[name].hidden) :
+      Object.keys(fieldsMeta).filter(name => !this.getFieldMeta(name).hidden) :
       [];
   }
 
@@ -146,7 +144,7 @@ class FieldsStore {
       .map(name => ({
         name,
         dirty: false,
-        value: this.fieldsMeta[name].initialValue,
+        value: this.getFieldMeta(name).initialValue,
       }))
       .reduce((acc, field) => set(acc, field.name, createFormField(field)), {});
   }

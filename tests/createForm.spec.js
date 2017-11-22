@@ -29,7 +29,7 @@ describe('validateMessage', () => {
       },
     })(Test);
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').simulate('change');
     expect(form.getFieldError('required').length).toBe(1);
     expect(form.getFieldError('required')[0]).toBe('required required!');
@@ -84,7 +84,7 @@ describe('onFieldsChange', () => {
       }
     });
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
 
     form.setFields({ user: { name: { value: 'Benjy' } } });
     expect(onFieldsChange.mock.calls[0][1]).toMatchObject({ user: { name: { value: 'Benjy' } } });
@@ -198,7 +198,7 @@ describe('onValuesChange', () => {
       }
     });
     const wrapper = mount(<Test />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     form.setFieldsValue({ user: { name: 'Benjy' } });
     expect(onValuesChange.mock.calls[0][1]).toMatchObject({ user: { name: 'Benjy' } });
     expect(onValuesChange.mock.calls[0][2])
@@ -225,7 +225,7 @@ describe('mapProps', () => {
     })(class extends React.Component { render() { return null; } });
     const wrapper = mount(<Test x={2} />);
     const wrappedComponent = wrapper.ref('wrappedComponent');
-    expect(wrappedComponent.prop('x')).toBe(3);
+    expect(wrappedComponent.props.x).toBe(3);
   });
 });
 
@@ -264,7 +264,7 @@ describe('mapPropsToFields', () => {
     const wrapper = mount(
       <Test formState={{ userName: 'Benjy', userAge: 18, agreement: false }} />
     );
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     expect(form.getFieldValue('user.name')).toBe('Benjy');
     expect(form.getFieldValue('user.age')).toBe(18);
     expect(form.getFieldValue('agreement')).toBe(false);
@@ -297,7 +297,7 @@ describe('mapPropsToFields', () => {
       }
     });
     const wrapper = mount(<Test formState={{ field1: '2' }} />);
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     wrapper.find('input').last().simulate('change', { target: { value: '3' } });
     wrapper.setProps({ formState: { field1: '1' } });
     expect(form.getFieldValue('field1')).toBe('1');

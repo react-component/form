@@ -32,7 +32,7 @@ describe('validateFieldsAndScroll', () => {
   });
   it('works on overflowY auto element', (done) => {
     const wrapper = mount(<Test name="normal" />, { attachTo: document.body });
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     form.validateFieldsAndScroll(() => {
       expect(scrollIntoView.mock.calls[0][1].tagName).not.toBe('TEXTAREA');
       wrapper.detach();
@@ -42,7 +42,7 @@ describe('validateFieldsAndScroll', () => {
 
   it('works with nested fields', (done) => {
     const wrapper = mount(<Test name="a.b.c" />, { attachTo: document.body });
-    const form = wrapper.ref('wrappedComponent').prop('form');
+    const form = wrapper.ref('wrappedComponent').props.form;
     form.validateFieldsAndScroll(() => {
       expect(scrollIntoView).toHaveBeenCalled();
       wrapper.detach();

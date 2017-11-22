@@ -45,6 +45,7 @@ function createBaseForm(option = {}, mixins = []) {
 
         this.instances = {};
         this.cachedBind = {};
+        this.clearedFieldMetaCache = {};
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
          'getFieldValue',
@@ -286,11 +287,22 @@ function createBaseForm(option = {}, mixins = []) {
       saveRef(name, _, component) {
         if (!component) {
           // after destroy, delete data
+          this.clearedFieldMetaCache[name] = {
+            field: this.fieldsStore.getField(name),
+            meta: this.fieldsStore.getFieldMeta(name),
+          };
           this.fieldsStore.clearField(name);
           delete this.instances[name];
           delete this.cachedBind[name];
           return;
         }
+        if (this.clearedFieldMetaCache[name]) {
+          this.fieldsStore.setFields({
+            [name]: this.clearedFieldMetaCache[name].field,
+          });
+          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
+        }
+        delete this.clearedFieldMetaCache[name];
         const fieldMeta = this.fieldsStore.getFieldMeta(name);
         if (fieldMeta) {
           const ref = fieldMeta.ref;
