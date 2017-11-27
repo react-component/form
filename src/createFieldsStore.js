@@ -3,6 +3,7 @@ import createFormField, { isFormField } from './createFormField';
 import {
   flattenFields,
   getErrorStrs,
+  startsWith,
 } from './utils';
 
 class FieldsStore {
@@ -114,7 +115,7 @@ class FieldsStore {
     return this.getValidFieldsName()
       .filter(fullName => maybePartialNames.some(partialName => (
         fullName === partialName || (
-          fullName.startsWith(partialName) &&
+          startsWith(fullName, partialName) &&
             ['.', '['].includes(fullName[partialName.length])
         )
       )));
