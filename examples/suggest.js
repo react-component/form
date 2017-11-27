@@ -52,7 +52,7 @@ var _DOMWrap = __webpack_require__(209);
 
 var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function allDisabled(arr) {
   if (!arr.length) {
@@ -104,17 +104,17 @@ function saveRef(index, subIndex, c) {
 
 var MenuMixin = {
   propTypes: {
-    focusable: _propTypes2['default'].bool,
-    multiple: _propTypes2['default'].bool,
-    style: _propTypes2['default'].object,
-    defaultActiveFirst: _propTypes2['default'].bool,
-    visible: _propTypes2['default'].bool,
-    activeKey: _propTypes2['default'].string,
-    selectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    defaultSelectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    defaultOpenKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    openKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    children: _propTypes2['default'].any
+    focusable: _propTypes2["default"].bool,
+    multiple: _propTypes2["default"].bool,
+    style: _propTypes2["default"].object,
+    defaultActiveFirst: _propTypes2["default"].bool,
+    visible: _propTypes2["default"].bool,
+    activeKey: _propTypes2["default"].string,
+    selectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    defaultSelectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    defaultOpenKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    openKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    children: _propTypes2["default"].any
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -164,13 +164,13 @@ var MenuMixin = {
 
 
   // all keyboard events callbacks run from here at first
-  onKeyDown: function onKeyDown(e, callback) {
+  onKeyDown: function onKeyDown(e) {
     var _this = this;
 
     var keyCode = e.keyCode;
     var handled = void 0;
     this.getFlatInstanceArray().forEach(function (obj) {
-      if (obj && obj.props.active) {
+      if (obj && obj.props.active && obj.onKeyDown) {
         handled = obj.onKeyDown(e);
       }
     });
@@ -178,20 +178,17 @@ var MenuMixin = {
       return 1;
     }
     var activeItem = null;
-    if (keyCode === _KeyCode2['default'].UP || keyCode === _KeyCode2['default'].DOWN) {
-      activeItem = this.step(keyCode === _KeyCode2['default'].UP ? -1 : 1);
+    if (keyCode === _KeyCode2["default"].UP || keyCode === _KeyCode2["default"].DOWN) {
+      activeItem = this.step(keyCode === _KeyCode2["default"].UP ? -1 : 1);
     }
     if (activeItem) {
       e.preventDefault();
       this.setState({
         activeKey: activeItem.props.eventKey
       }, function () {
-        (0, _domScrollIntoView2['default'])(_reactDom2['default'].findDOMNode(activeItem), _reactDom2['default'].findDOMNode(_this), {
+        (0, _domScrollIntoView2["default"])(_reactDom2["default"].findDOMNode(activeItem), _reactDom2["default"].findDOMNode(_this), {
           onlyScrollIfNeeded: true
         });
-        if (callback) {
-          callback(activeItem);
-        }
       });
       return 1;
     } else if (activeItem === undefined) {
@@ -257,7 +254,7 @@ var MenuMixin = {
     var key = (0, _util.getKeyFromChildrenIndex)(child, props.eventKey, i);
     var childProps = child.props;
     var isActive = key === state.activeKey;
-    var newChildProps = (0, _extends3['default'])({
+    var newChildProps = (0, _extends3["default"])({
       mode: props.mode,
       level: props.level,
       inlineIndent: props.inlineIndent,
@@ -265,7 +262,7 @@ var MenuMixin = {
       rootPrefixCls: props.prefixCls,
       index: i,
       parentMenu: this,
-      ref: childProps.disabled ? undefined : (0, _createChainedFunction2['default'])(child.ref, saveRef.bind(this, i, subIndex)),
+      ref: childProps.disabled ? undefined : (0, _createChainedFunction2["default"])(child.ref, saveRef.bind(this, i, subIndex)),
       eventKey: key,
       closeSubMenuOnMouseLeave: props.closeSubMenuOnMouseLeave,
       onItemHover: this.onItemHover,
@@ -282,15 +279,15 @@ var MenuMixin = {
     if (props.mode === 'inline') {
       newChildProps.closeSubMenuOnMouseLeave = newChildProps.openSubMenuOnMouseEnter = false;
     }
-    return _react2['default'].cloneElement(child, newChildProps);
+    return _react2["default"].cloneElement(child, newChildProps);
   },
   renderRoot: function renderRoot(props) {
     var _classes;
 
     this.instanceArray = [];
-    var classes = (_classes = {}, (0, _defineProperty3['default'])(_classes, props.prefixCls, 1), (0, _defineProperty3['default'])(_classes, props.prefixCls + '-' + props.mode, 1), (0, _defineProperty3['default'])(_classes, props.className, !!props.className), _classes);
+    var classes = (_classes = {}, (0, _defineProperty3["default"])(_classes, props.prefixCls, 1), (0, _defineProperty3["default"])(_classes, props.prefixCls + '-' + props.mode, 1), (0, _defineProperty3["default"])(_classes, props.className, !!props.className), _classes);
     var domProps = {
-      className: (0, _classnames2['default'])(classes),
+      className: (0, _classnames2["default"])(classes),
       role: 'menu',
       'aria-activedescendant': ''
     };
@@ -304,15 +301,15 @@ var MenuMixin = {
     return (
       // ESLint is not smart enough to know that the type of `children` was checked.
       /* eslint-disable */
-      _react2['default'].createElement(
-        _DOMWrap2['default'],
-        (0, _extends3['default'])({
+      _react2["default"].createElement(
+        _DOMWrap2["default"],
+        (0, _extends3["default"])({
           style: props.style,
           tag: 'ul',
           hiddenClassName: props.prefixCls + '-hidden',
           visible: props.visible
         }, domProps),
-        _react2['default'].Children.map(props.children, this.renderMenuItem)
+        _react2["default"].Children.map(props.children, this.renderMenuItem)
       )
       /*eslint-enable */
 
@@ -359,7 +356,7 @@ var MenuMixin = {
   }
 };
 
-exports['default'] = MenuMixin;
+exports["default"] = MenuMixin;
 module.exports = exports['default'];
 
 /***/ }),
@@ -395,15 +392,15 @@ var _Divider = __webpack_require__(210);
 
 var _Divider2 = _interopRequireDefault(_Divider);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-exports.SubMenu = _SubMenu2['default'];
-exports.Item = _MenuItem2['default'];
-exports.MenuItem = _MenuItem2['default'];
-exports.MenuItemGroup = _MenuItemGroup2['default'];
-exports.ItemGroup = _MenuItemGroup2['default'];
-exports.Divider = _Divider2['default'];
-exports['default'] = _Menu2['default'];
+exports.SubMenu = _SubMenu2["default"];
+exports.Item = _MenuItem2["default"];
+exports.MenuItem = _MenuItem2["default"];
+exports.MenuItemGroup = _MenuItemGroup2["default"];
+exports.ItemGroup = _MenuItemGroup2["default"];
+exports.Divider = _Divider2["default"];
+exports["default"] = _Menu2["default"];
 
 /***/ }),
 
@@ -1748,15 +1745,15 @@ var _createReactClass = __webpack_require__(10);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var DOMWrap = (0, _createReactClass2['default'])({
+var DOMWrap = (0, _createReactClass2["default"])({
   displayName: 'DOMWrap',
 
   propTypes: {
-    tag: _propTypes2['default'].string,
-    hiddenClassName: _propTypes2['default'].string,
-    visible: _propTypes2['default'].bool
+    tag: _propTypes2["default"].string,
+    hiddenClassName: _propTypes2["default"].string,
+    visible: _propTypes2["default"].bool
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -1765,7 +1762,7 @@ var DOMWrap = (0, _createReactClass2['default'])({
     };
   },
   render: function render() {
-    var props = (0, _extends3['default'])({}, this.props);
+    var props = (0, _extends3["default"])({}, this.props);
     if (!props.visible) {
       props.className = props.className || '';
       props.className += ' ' + props.hiddenClassName;
@@ -1774,11 +1771,11 @@ var DOMWrap = (0, _createReactClass2['default'])({
     delete props.tag;
     delete props.hiddenClassName;
     delete props.visible;
-    return _react2['default'].createElement(Tag, props);
+    return _react2["default"].createElement(Tag, props);
   }
 });
 
-exports['default'] = DOMWrap;
+exports["default"] = DOMWrap;
 module.exports = exports['default'];
 
 /***/ }),
@@ -1805,15 +1802,15 @@ var _createReactClass = __webpack_require__(10);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var Divider = (0, _createReactClass2['default'])({
+var Divider = (0, _createReactClass2["default"])({
   displayName: 'Divider',
 
   propTypes: {
-    disabled: _propTypes2['default'].bool,
-    className: _propTypes2['default'].string,
-    rootPrefixCls: _propTypes2['default'].string
+    disabled: _propTypes2["default"].bool,
+    className: _propTypes2["default"].string,
+    rootPrefixCls: _propTypes2["default"].string
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -1827,11 +1824,11 @@ var Divider = (0, _createReactClass2['default'])({
         className = _props$className === undefined ? '' : _props$className,
         rootPrefixCls = _props.rootPrefixCls;
 
-    return _react2['default'].createElement('li', { className: className + ' ' + rootPrefixCls + '-item-divider' });
+    return _react2["default"].createElement('li', { className: className + ' ' + rootPrefixCls + '-item-divider' });
   }
 });
 
-exports['default'] = Divider;
+exports["default"] = Divider;
 module.exports = exports['default'];
 
 /***/ }),
@@ -1864,33 +1861,33 @@ var _MenuMixin2 = _interopRequireDefault(_MenuMixin);
 
 var _util = __webpack_require__(40);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // import React from 'react';
-var Menu = (0, _createReactClass2['default'])({
+var Menu = (0, _createReactClass2["default"])({
   displayName: 'Menu',
 
   propTypes: {
-    openSubMenuOnMouseEnter: _propTypes2['default'].bool,
-    closeSubMenuOnMouseLeave: _propTypes2['default'].bool,
-    selectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    defaultSelectedKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    defaultOpenKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    openKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    mode: _propTypes2['default'].string,
-    onClick: _propTypes2['default'].func,
-    onSelect: _propTypes2['default'].func,
-    onDeselect: _propTypes2['default'].func,
-    onDestroy: _propTypes2['default'].func,
-    openTransitionName: _propTypes2['default'].string,
-    openAnimation: _propTypes2['default'].oneOfType([_propTypes2['default'].string, _propTypes2['default'].object]),
-    level: _propTypes2['default'].number,
-    eventKey: _propTypes2['default'].string,
-    selectable: _propTypes2['default'].bool,
-    children: _propTypes2['default'].any
+    openSubMenuOnMouseEnter: _propTypes2["default"].bool,
+    closeSubMenuOnMouseLeave: _propTypes2["default"].bool,
+    selectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    defaultSelectedKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    defaultOpenKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    openKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    mode: _propTypes2["default"].string,
+    onClick: _propTypes2["default"].func,
+    onSelect: _propTypes2["default"].func,
+    onDeselect: _propTypes2["default"].func,
+    onDestroy: _propTypes2["default"].func,
+    openTransitionName: _propTypes2["default"].string,
+    openAnimation: _propTypes2["default"].oneOfType([_propTypes2["default"].string, _propTypes2["default"].object]),
+    level: _propTypes2["default"].number,
+    eventKey: _propTypes2["default"].string,
+    selectable: _propTypes2["default"].bool,
+    children: _propTypes2["default"].any
   },
 
-  mixins: [_MenuMixin2['default']],
+  mixins: [_MenuMixin2["default"]],
 
   getDefaultProps: function getDefaultProps() {
     return {
@@ -1988,7 +1985,7 @@ var Menu = (0, _createReactClass2['default'])({
           selectedKeys: selectedKeys
         });
       }
-      props.onSelect((0, _extends3['default'])({}, selectInfo, {
+      props.onSelect((0, _extends3["default"])({}, selectInfo, {
         selectedKeys: selectedKeys
       }));
     }
@@ -2043,7 +2040,7 @@ var Menu = (0, _createReactClass2['default'])({
           selectedKeys: selectedKeys
         });
       }
-      props.onDeselect((0, _extends3['default'])({}, selectInfo, {
+      props.onDeselect((0, _extends3["default"])({}, selectInfo, {
         selectedKeys: selectedKeys
       }));
     }
@@ -2084,13 +2081,13 @@ var Menu = (0, _createReactClass2['default'])({
     return this.renderCommonMenuItem(c, i, subIndex, extraProps);
   },
   render: function render() {
-    var props = (0, _extends3['default'])({}, this.props);
+    var props = (0, _extends3["default"])({}, this.props);
     props.className += ' ' + props.prefixCls + '-root';
     return this.renderRoot(props);
   }
 });
 
-exports['default'] = Menu;
+exports["default"] = Menu;
 module.exports = exports['default'];
 
 /***/ }),
@@ -2131,29 +2128,29 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 var _util = __webpack_require__(40);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /* eslint react/no-is-mounted:0 */
 
-var MenuItem = (0, _createReactClass2['default'])({
+var MenuItem = (0, _createReactClass2["default"])({
   displayName: 'MenuItem',
 
   propTypes: {
-    rootPrefixCls: _propTypes2['default'].string,
-    eventKey: _propTypes2['default'].string,
-    active: _propTypes2['default'].bool,
-    children: _propTypes2['default'].any,
-    selectedKeys: _propTypes2['default'].array,
-    disabled: _propTypes2['default'].bool,
-    title: _propTypes2['default'].string,
-    onSelect: _propTypes2['default'].func,
-    onClick: _propTypes2['default'].func,
-    onDeselect: _propTypes2['default'].func,
-    parentMenu: _propTypes2['default'].object,
-    onItemHover: _propTypes2['default'].func,
-    onDestroy: _propTypes2['default'].func,
-    onMouseEnter: _propTypes2['default'].func,
-    onMouseLeave: _propTypes2['default'].func
+    rootPrefixCls: _propTypes2["default"].string,
+    eventKey: _propTypes2["default"].string,
+    active: _propTypes2["default"].bool,
+    children: _propTypes2["default"].any,
+    selectedKeys: _propTypes2["default"].array,
+    disabled: _propTypes2["default"].bool,
+    title: _propTypes2["default"].string,
+    onSelect: _propTypes2["default"].func,
+    onClick: _propTypes2["default"].func,
+    onDeselect: _propTypes2["default"].func,
+    parentMenu: _propTypes2["default"].object,
+    onItemHover: _propTypes2["default"].func,
+    onDestroy: _propTypes2["default"].func,
+    onMouseEnter: _propTypes2["default"].func,
+    onMouseLeave: _propTypes2["default"].func
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -2174,7 +2171,7 @@ var MenuItem = (0, _createReactClass2['default'])({
   },
   onKeyDown: function onKeyDown(e) {
     var keyCode = e.keyCode;
-    if (keyCode === _KeyCode2['default'].ENTER) {
+    if (keyCode === _KeyCode2["default"].ENTER) {
       this.onClick(e);
       return true;
     }
@@ -2209,7 +2206,7 @@ var MenuItem = (0, _createReactClass2['default'])({
     var eventKey = props.eventKey,
         parentMenu = props.parentMenu;
 
-    this.clearMenuItemMouseLeaveTimer();
+    this.clearMenuItemMouseLeaveTimer(parentMenu.menuItemInstance !== this);
     if (parentMenu.subMenuInstance) {
       parentMenu.subMenuInstance.clearSubMenuTimers();
     }
@@ -2260,10 +2257,14 @@ var MenuItem = (0, _createReactClass2['default'])({
   },
   clearMenuItemMouseLeaveTimer: function clearMenuItemMouseLeaveTimer() {
     var props = this.props;
+    var callFn = void 0;
     var parentMenu = props.parentMenu;
     if (parentMenu.menuItemMouseLeaveTimer) {
       clearTimeout(parentMenu.menuItemMouseLeaveTimer);
       parentMenu.menuItemMouseLeaveTimer = null;
+      if (callFn && parentMenu.menuItemMouseLeaveFn) {
+        parentMenu.menuItemMouseLeaveFn();
+      }
       parentMenu.menuItemMouseLeaveFn = null;
     }
   },
@@ -2279,9 +2280,9 @@ var MenuItem = (0, _createReactClass2['default'])({
     classes[this.getDisabledClassName()] = props.disabled;
     classes[this.getPrefixCls()] = true;
     classes[props.className] = !!props.className;
-    var attrs = (0, _extends3['default'])({}, props.attribute, {
+    var attrs = (0, _extends3["default"])({}, props.attribute, {
       title: props.title,
-      className: (0, _classnames2['default'])(classes),
+      className: (0, _classnames2["default"])(classes),
       role: 'menuitem',
       'aria-selected': selected,
       'aria-disabled': props.disabled
@@ -2294,13 +2295,13 @@ var MenuItem = (0, _createReactClass2['default'])({
         onMouseEnter: this.onMouseEnter
       };
     }
-    var style = (0, _extends3['default'])({}, props.style);
+    var style = (0, _extends3["default"])({}, props.style);
     if (props.mode === 'inline') {
       style.paddingLeft = props.inlineIndent * props.level;
     }
-    return _react2['default'].createElement(
+    return _react2["default"].createElement(
       'li',
-      (0, _extends3['default'])({
+      (0, _extends3["default"])({
         style: style
       }, attrs, mouseEvent),
       props.children
@@ -2310,7 +2311,7 @@ var MenuItem = (0, _createReactClass2['default'])({
 
 MenuItem.isMenuItem = 1;
 
-exports['default'] = MenuItem;
+exports["default"] = MenuItem;
 module.exports = exports['default'];
 
 /***/ }),
@@ -2337,16 +2338,16 @@ var _createReactClass = __webpack_require__(10);
 
 var _createReactClass2 = _interopRequireDefault(_createReactClass);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var MenuItemGroup = (0, _createReactClass2['default'])({
+var MenuItemGroup = (0, _createReactClass2["default"])({
   displayName: 'MenuItemGroup',
 
   propTypes: {
-    renderMenuItem: _propTypes2['default'].func,
-    index: _propTypes2['default'].number,
-    className: _propTypes2['default'].string,
-    rootPrefixCls: _propTypes2['default'].string
+    renderMenuItem: _propTypes2["default"].func,
+    index: _propTypes2["default"].number,
+    className: _propTypes2["default"].string,
+    rootPrefixCls: _propTypes2["default"].string
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -2369,10 +2370,10 @@ var MenuItemGroup = (0, _createReactClass2['default'])({
 
     var titleClassName = rootPrefixCls + '-item-group-title';
     var listClassName = rootPrefixCls + '-item-group-list';
-    return _react2['default'].createElement(
+    return _react2["default"].createElement(
       'li',
       { className: className + ' ' + rootPrefixCls + '-item-group' },
-      _react2['default'].createElement(
+      _react2["default"].createElement(
         'div',
         {
           className: titleClassName,
@@ -2380,10 +2381,10 @@ var MenuItemGroup = (0, _createReactClass2['default'])({
         },
         props.title
       ),
-      _react2['default'].createElement(
+      _react2["default"].createElement(
         'ul',
         { className: listClassName },
-        _react2['default'].Children.map(props.children, this.renderInnerMenuItem)
+        _react2["default"].Children.map(props.children, this.renderInnerMenuItem)
       )
     );
   }
@@ -2391,7 +2392,7 @@ var MenuItemGroup = (0, _createReactClass2['default'])({
 
 MenuItemGroup.isMenuItemGroup = true;
 
-exports['default'] = MenuItemGroup;
+exports["default"] = MenuItemGroup;
 module.exports = exports['default'];
 
 /***/ }),
@@ -2440,38 +2441,38 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 var _util = __webpack_require__(40);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var guid = 0;
 
 /* eslint react/no-is-mounted:0 */
 
-var SubMenu = (0, _createReactClass2['default'])({
+var SubMenu = (0, _createReactClass2["default"])({
   displayName: 'SubMenu',
 
   propTypes: {
-    parentMenu: _propTypes2['default'].object,
-    title: _propTypes2['default'].node,
-    children: _propTypes2['default'].any,
-    selectedKeys: _propTypes2['default'].array,
-    openKeys: _propTypes2['default'].array,
-    onClick: _propTypes2['default'].func,
-    onOpenChange: _propTypes2['default'].func,
-    rootPrefixCls: _propTypes2['default'].string,
-    eventKey: _propTypes2['default'].string,
-    multiple: _propTypes2['default'].bool,
-    active: _propTypes2['default'].bool,
-    onSelect: _propTypes2['default'].func,
-    closeSubMenuOnMouseLeave: _propTypes2['default'].bool,
-    openSubMenuOnMouseEnter: _propTypes2['default'].bool,
-    onDeselect: _propTypes2['default'].func,
-    onDestroy: _propTypes2['default'].func,
-    onItemHover: _propTypes2['default'].func,
-    onMouseEnter: _propTypes2['default'].func,
-    onMouseLeave: _propTypes2['default'].func,
-    onTitleMouseEnter: _propTypes2['default'].func,
-    onTitleMouseLeave: _propTypes2['default'].func,
-    onTitleClick: _propTypes2['default'].func
+    parentMenu: _propTypes2["default"].object,
+    title: _propTypes2["default"].node,
+    children: _propTypes2["default"].any,
+    selectedKeys: _propTypes2["default"].array,
+    openKeys: _propTypes2["default"].array,
+    onClick: _propTypes2["default"].func,
+    onOpenChange: _propTypes2["default"].func,
+    rootPrefixCls: _propTypes2["default"].string,
+    eventKey: _propTypes2["default"].string,
+    multiple: _propTypes2["default"].bool,
+    active: _propTypes2["default"].bool,
+    onSelect: _propTypes2["default"].func,
+    closeSubMenuOnMouseLeave: _propTypes2["default"].bool,
+    openSubMenuOnMouseEnter: _propTypes2["default"].bool,
+    onDeselect: _propTypes2["default"].func,
+    onDestroy: _propTypes2["default"].func,
+    onItemHover: _propTypes2["default"].func,
+    onMouseEnter: _propTypes2["default"].func,
+    onMouseLeave: _propTypes2["default"].func,
+    onTitleMouseEnter: _propTypes2["default"].func,
+    onTitleMouseLeave: _propTypes2["default"].func,
+    onTitleClick: _propTypes2["default"].func
   },
 
   mixins: [__webpack_require__(215)],
@@ -2513,7 +2514,7 @@ var SubMenu = (0, _createReactClass2['default'])({
     var menu = this.menuInstance;
     var isOpen = this.isOpen();
 
-    if (keyCode === _KeyCode2['default'].ENTER) {
+    if (keyCode === _KeyCode2["default"].ENTER) {
       this.onTitleClick(e);
       this.setState({
         defaultActiveFirst: true
@@ -2521,7 +2522,7 @@ var SubMenu = (0, _createReactClass2['default'])({
       return true;
     }
 
-    if (keyCode === _KeyCode2['default'].RIGHT) {
+    if (keyCode === _KeyCode2["default"].RIGHT) {
       if (isOpen) {
         menu.onKeyDown(e);
       } else {
@@ -2532,7 +2533,7 @@ var SubMenu = (0, _createReactClass2['default'])({
       }
       return true;
     }
-    if (keyCode === _KeyCode2['default'].LEFT) {
+    if (keyCode === _KeyCode2["default"].LEFT) {
       var handled = void 0;
       if (isOpen) {
         handled = menu.onKeyDown(e);
@@ -2546,7 +2547,7 @@ var SubMenu = (0, _createReactClass2['default'])({
       return handled;
     }
 
-    if (isOpen && (keyCode === _KeyCode2['default'].UP || keyCode === _KeyCode2['default'].DOWN)) {
+    if (isOpen && (keyCode === _KeyCode2["default"].UP || keyCode === _KeyCode2["default"].DOWN)) {
       return menu.onKeyDown(e);
     }
   },
@@ -2555,60 +2556,11 @@ var SubMenu = (0, _createReactClass2['default'])({
   },
   onMouseEnter: function onMouseEnter(e) {
     var props = this.props;
-    this.clearSubMenuLeaveTimer();
+    this.clearSubMenuLeaveTimer(props.parentMenu.subMenuInstance !== this);
     props.onMouseEnter({
       key: props.eventKey,
       domEvent: e
     });
-  },
-  onMouseLeave: function onMouseLeave(e) {
-    var _this = this;
-
-    var props = this.props;
-    var parentMenu = props.parentMenu,
-        eventKey = props.eventKey;
-
-    parentMenu.subMenuInstance = this;
-    parentMenu.subMenuLeaveFn = function () {
-      // leave whole sub tree
-      // still active
-      if (props.mode !== 'inline') {
-        var isOpen = _this.isOpen();
-        if (isOpen && props.closeSubMenuOnMouseLeave && props.active) {
-          props.onItemHover({
-            key: eventKey,
-            item: _this,
-            hover: false,
-            trigger: 'mouseleave',
-            openChanges: [{
-              key: eventKey,
-              item: _this,
-              trigger: 'mouseleave',
-              open: false
-            }]
-          });
-        } else {
-          if (props.active) {
-            props.onItemHover({
-              key: eventKey,
-              item: _this,
-              hover: false,
-              trigger: 'mouseleave'
-            });
-          }
-          if (isOpen && props.closeSubMenuOnMouseLeave) {
-            _this.triggerOpenChange(false);
-          }
-        }
-      }
-      // trigger mouseleave
-      props.onMouseLeave({
-        key: eventKey,
-        domEvent: e
-      });
-    };
-    // prevent popup menu and submenu gap
-    parentMenu.subMenuLeaveTimer = setTimeout(parentMenu.subMenuLeaveFn, 100);
   },
   onTitleMouseEnter: function onTitleMouseEnter(domEvent) {
     var props = this.props;
@@ -2616,9 +2568,9 @@ var SubMenu = (0, _createReactClass2['default'])({
         key = props.eventKey;
 
     var item = this;
-    this.clearSubMenuTitleLeaveTimer();
+    this.clearSubMenuTitleLeaveTimer(parentMenu.subMenuInstance !== item);
     if (parentMenu.menuItemInstance) {
-      parentMenu.menuItemInstance.clearMenuItemMouseLeaveTimer();
+      parentMenu.menuItemInstance.clearMenuItemMouseLeaveTimer(true);
     }
     var openChanges = [];
     if (props.openSubMenuOnMouseEnter) {
@@ -2645,7 +2597,7 @@ var SubMenu = (0, _createReactClass2['default'])({
     });
   },
   onTitleMouseLeave: function onTitleMouseLeave(e) {
-    var _this2 = this;
+    var _this = this;
 
     var props = this.props;
     var parentMenu = props.parentMenu,
@@ -2658,7 +2610,7 @@ var SubMenu = (0, _createReactClass2['default'])({
       if (props.mode === 'inline' && props.active) {
         props.onItemHover({
           key: eventKey,
-          item: _this2,
+          item: _this,
           hover: false,
           trigger: 'mouseleave'
         });
@@ -2669,6 +2621,55 @@ var SubMenu = (0, _createReactClass2['default'])({
       });
     };
     parentMenu.subMenuTitleLeaveTimer = setTimeout(parentMenu.subMenuTitleLeaveFn, 100);
+  },
+  onMouseLeave: function onMouseLeave(e) {
+    var _this2 = this;
+
+    var props = this.props;
+    var parentMenu = props.parentMenu,
+        eventKey = props.eventKey;
+
+    parentMenu.subMenuInstance = this;
+    parentMenu.subMenuLeaveFn = function () {
+      // leave whole sub tree
+      // still active
+      if (props.mode !== 'inline') {
+        var isOpen = _this2.isOpen();
+        if (isOpen && props.closeSubMenuOnMouseLeave && props.active) {
+          props.onItemHover({
+            key: eventKey,
+            item: _this2,
+            hover: false,
+            trigger: 'mouseleave',
+            openChanges: [{
+              key: eventKey,
+              item: _this2,
+              trigger: 'mouseleave',
+              open: false
+            }]
+          });
+        } else {
+          if (props.active) {
+            props.onItemHover({
+              key: eventKey,
+              item: _this2,
+              hover: false,
+              trigger: 'mouseleave'
+            });
+          }
+          if (isOpen && props.closeSubMenuOnMouseLeave) {
+            _this2.triggerOpenChange(false);
+          }
+        }
+      }
+      // trigger mouseleave
+      props.onMouseLeave({
+        key: eventKey,
+        domEvent: e
+      });
+    };
+    // prevent popup menu and submenu gap
+    parentMenu.subMenuLeaveTimer = setTimeout(parentMenu.subMenuLeaveFn, 100);
   },
   onTitleClick: function onTitleClick(e) {
     var props = this.props;
@@ -2713,7 +2714,7 @@ var SubMenu = (0, _createReactClass2['default'])({
     this.menuInstance = c;
   },
   addKeyPath: function addKeyPath(info) {
-    return (0, _extends3['default'])({}, info, {
+    return (0, _extends3["default"])({}, info, {
       keyPath: (info.keyPath || []).concat(this.props.eventKey)
     });
   },
@@ -2727,22 +2728,31 @@ var SubMenu = (0, _createReactClass2['default'])({
     });
   },
   clearSubMenuTimers: function clearSubMenuTimers() {
-    this.clearSubMenuLeaveTimer();
-    this.clearSubMenuTitleLeaveTimer();
+    var callFn = void 0;
+    this.clearSubMenuLeaveTimer(callFn);
+    this.clearSubMenuTitleLeaveTimer(callFn);
   },
   clearSubMenuTitleLeaveTimer: function clearSubMenuTitleLeaveTimer() {
+    var callFn = void 0;
     var parentMenu = this.props.parentMenu;
     if (parentMenu.subMenuTitleLeaveTimer) {
       clearTimeout(parentMenu.subMenuTitleLeaveTimer);
       parentMenu.subMenuTitleLeaveTimer = null;
+      if (callFn && parentMenu.subMenuTitleLeaveFn) {
+        parentMenu.subMenuTitleLeaveFn();
+      }
       parentMenu.subMenuTitleLeaveFn = null;
     }
   },
   clearSubMenuLeaveTimer: function clearSubMenuLeaveTimer() {
+    var callFn = void 0;
     var parentMenu = this.props.parentMenu;
     if (parentMenu.subMenuLeaveTimer) {
       clearTimeout(parentMenu.subMenuLeaveTimer);
       parentMenu.subMenuLeaveTimer = null;
+      if (callFn && parentMenu.subMenuLeaveFn) {
+        parentMenu.subMenuLeaveFn();
+      }
       parentMenu.subMenuLeaveFn = null;
     }
   },
@@ -2779,8 +2789,8 @@ var SubMenu = (0, _createReactClass2['default'])({
       id: this._menuId,
       ref: this.saveMenuInstance
     };
-    return _react2['default'].createElement(
-      _SubPopupMenu2['default'],
+    return _react2["default"].createElement(
+      _SubPopupMenu2["default"],
       baseProps,
       children
     );
@@ -2792,7 +2802,7 @@ var SubMenu = (0, _createReactClass2['default'])({
     this.haveOpen = this.haveOpen || isOpen;
     var props = this.props;
     var prefixCls = this.getPrefixCls();
-    var classes = (_classes = {}, (0, _defineProperty3['default'])(_classes, props.className, !!props.className), (0, _defineProperty3['default'])(_classes, prefixCls + '-' + props.mode, 1), _classes);
+    var classes = (_classes = {}, (0, _defineProperty3["default"])(_classes, props.className, !!props.className), (0, _defineProperty3["default"])(_classes, prefixCls + '-' + props.mode, 1), _classes);
 
     classes[this.getOpenClassName()] = isOpen;
     classes[this.getActiveClassName()] = props.active;
@@ -2809,16 +2819,16 @@ var SubMenu = (0, _createReactClass2['default'])({
 
     classes[prefixCls] = true;
     classes[prefixCls + '-' + props.mode] = 1;
-    var mouseEvents = {};
     var titleClickEvents = {};
+    var mouseEvents = {};
     var titleMouseEvents = {};
     if (!props.disabled) {
+      titleClickEvents = {
+        onClick: this.onTitleClick
+      };
       mouseEvents = {
         onMouseLeave: this.onMouseLeave,
         onMouseEnter: this.onMouseEnter
-      };
-      titleClickEvents = {
-        onClick: this.onTitleClick
       };
       // only works in title, not outer li
       titleMouseEvents = {
@@ -2830,12 +2840,12 @@ var SubMenu = (0, _createReactClass2['default'])({
     if (props.mode === 'inline') {
       style.paddingLeft = props.inlineIndent * props.level;
     }
-    return _react2['default'].createElement(
+    return _react2["default"].createElement(
       'li',
-      (0, _extends3['default'])({ className: (0, _classnames2['default'])(classes) }, mouseEvents, { style: props.style }),
-      _react2['default'].createElement(
+      (0, _extends3["default"])({ className: (0, _classnames2["default"])(classes) }, mouseEvents),
+      _react2["default"].createElement(
         'div',
-        (0, _extends3['default'])({
+        (0, _extends3["default"])({
           style: style,
           className: prefixCls + '-title'
         }, titleMouseEvents, titleClickEvents, {
@@ -2844,8 +2854,7 @@ var SubMenu = (0, _createReactClass2['default'])({
           'aria-haspopup': 'true',
           title: typeof props.title === 'string' ? props.title : undefined
         }),
-        props.title,
-        _react2['default'].createElement('i', { className: prefixCls + '-arrow' })
+        props.title
       ),
       this.renderChildren(props.children)
     );
@@ -2854,7 +2863,7 @@ var SubMenu = (0, _createReactClass2['default'])({
 
 SubMenu.isSubMenu = 1;
 
-exports['default'] = SubMenu;
+exports["default"] = SubMenu;
 module.exports = exports['default'];
 
 /***/ }),
@@ -2885,9 +2894,9 @@ var _reactDom = __webpack_require__(7);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-exports['default'] = {
+exports["default"] = {
   componentDidMount: function componentDidMount() {
     this.componentDidUpdate();
   },
@@ -2901,7 +2910,7 @@ exports['default'] = {
     }
   },
   handleDocumentKeyUp: function handleDocumentKeyUp(e) {
-    if (e.keyCode === _KeyCode2['default'].ESC) {
+    if (e.keyCode === _KeyCode2["default"].ESC) {
       this.props.onItemHover({
         key: this.props.eventKey,
         item: this,
@@ -2912,7 +2921,7 @@ exports['default'] = {
   handleDocumentClick: function handleDocumentClick(e) {
     // If the click originated from within this component
     // don't do anything.
-    if ((0, _contains2['default'])(_reactDom2['default'].findDOMNode(this), e.target)) {
+    if ((0, _contains2["default"])(_reactDom2["default"].findDOMNode(this), e.target)) {
       return;
     }
     var props = this.props;
@@ -2925,8 +2934,8 @@ exports['default'] = {
   },
   bindRootCloseHandlers: function bindRootCloseHandlers() {
     if (!this._onDocumentClickListener) {
-      this._onDocumentClickListener = (0, _addEventListener2['default'])(document, 'click', this.handleDocumentClick);
-      this._onDocumentKeyupListener = (0, _addEventListener2['default'])(document, 'keyup', this.handleDocumentKeyUp);
+      this._onDocumentClickListener = (0, _addEventListener2["default"])(document, 'click', this.handleDocumentClick);
+      this._onDocumentKeyupListener = (0, _addEventListener2["default"])(document, 'keyup', this.handleDocumentKeyUp);
     }
   },
   unbindRootCloseHandlers: function unbindRootCloseHandlers() {
@@ -2986,26 +2995,26 @@ var _rcAnimate = __webpack_require__(33);
 
 var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var SubPopupMenu = (0, _createReactClass2['default'])({
+var SubPopupMenu = (0, _createReactClass2["default"])({
   displayName: 'SubPopupMenu',
 
   propTypes: {
-    onSelect: _propTypes2['default'].func,
-    onClick: _propTypes2['default'].func,
-    onDeselect: _propTypes2['default'].func,
-    onOpenChange: _propTypes2['default'].func,
-    onDestroy: _propTypes2['default'].func,
-    openTransitionName: _propTypes2['default'].string,
-    openAnimation: _propTypes2['default'].oneOfType([_propTypes2['default'].string, _propTypes2['default'].object]),
-    openKeys: _propTypes2['default'].arrayOf(_propTypes2['default'].string),
-    closeSubMenuOnMouseLeave: _propTypes2['default'].bool,
-    visible: _propTypes2['default'].bool,
-    children: _propTypes2['default'].any
+    onSelect: _propTypes2["default"].func,
+    onClick: _propTypes2["default"].func,
+    onDeselect: _propTypes2["default"].func,
+    onOpenChange: _propTypes2["default"].func,
+    onDestroy: _propTypes2["default"].func,
+    openTransitionName: _propTypes2["default"].string,
+    openAnimation: _propTypes2["default"].oneOfType([_propTypes2["default"].string, _propTypes2["default"].object]),
+    openKeys: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
+    closeSubMenuOnMouseLeave: _propTypes2["default"].bool,
+    visible: _propTypes2["default"].bool,
+    children: _propTypes2["default"].any
   },
 
-  mixins: [_MenuMixin2['default']],
+  mixins: [_MenuMixin2["default"]],
 
   onDeselect: function onDeselect(selectInfo) {
     this.props.onDeselect(selectInfo);
@@ -3057,20 +3066,20 @@ var SubPopupMenu = (0, _createReactClass2['default'])({
     if (!renderFirst && this.props.visible) {
       transitionAppear = false;
     }
-    var props = (0, _extends3['default'])({}, this.props);
+    var props = (0, _extends3["default"])({}, this.props);
     props.className += ' ' + props.prefixCls + '-sub';
     var animProps = {};
     if (props.openTransitionName) {
       animProps.transitionName = props.openTransitionName;
-    } else if ((0, _typeof3['default'])(props.openAnimation) === 'object') {
-      animProps.animation = (0, _extends3['default'])({}, props.openAnimation);
+    } else if ((0, _typeof3["default"])(props.openAnimation) === 'object') {
+      animProps.animation = (0, _extends3["default"])({}, props.openAnimation);
       if (!transitionAppear) {
         delete animProps.animation.appear;
       }
     }
-    return _react2['default'].createElement(
-      _rcAnimate2['default'],
-      (0, _extends3['default'])({}, animProps, {
+    return _react2["default"].createElement(
+      _rcAnimate2["default"],
+      (0, _extends3["default"])({}, animProps, {
         showProp: 'visible',
         component: '',
         transitionAppear: transitionAppear
@@ -3080,7 +3089,7 @@ var SubPopupMenu = (0, _createReactClass2['default'])({
   }
 });
 
-exports['default'] = SubPopupMenu;
+exports["default"] = SubPopupMenu;
 module.exports = exports['default'];
 
 /***/ }),
@@ -6948,7 +6957,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function noop() {}
 
@@ -6959,10 +6968,10 @@ function getKeyFromChildrenIndex(child, menuEventKey, index) {
 
 function loopMenuItem(children, cb) {
   var index = -1;
-  _react2['default'].Children.forEach(children, function (c) {
+  _react2["default"].Children.forEach(children, function (c) {
     index++;
     if (c && c.type && c.type.isMenuItemGroup) {
-      _react2['default'].Children.forEach(c.props.children, function (c2) {
+      _react2["default"].Children.forEach(c.props.children, function (c2) {
         index++;
         cb(c2, index);
       });
@@ -6976,7 +6985,7 @@ function loopMenuItemRecusively(children, keys, ret) {
   if (!children || ret.find) {
     return;
   }
-  _react2['default'].Children.forEach(children, function (c) {
+  _react2["default"].Children.forEach(children, function (c) {
     if (ret.find) {
       return;
     }

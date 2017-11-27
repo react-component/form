@@ -1416,11 +1416,11 @@ module.exports = {};
 /* harmony export (immutable) */ __webpack_exports__["d"] = normalizeValidateRules;
 /* harmony export (immutable) */ __webpack_exports__["e"] = getValidateTriggers;
 /* harmony export (immutable) */ __webpack_exports__["b"] = getValueFromEvent;
-/* harmony export (immutable) */ __webpack_exports__["k"] = getErrorStrs;
+/* harmony export (immutable) */ __webpack_exports__["l"] = getErrorStrs;
 /* harmony export (immutable) */ __webpack_exports__["h"] = getParams;
 /* harmony export (immutable) */ __webpack_exports__["g"] = isEmptyObject;
 /* harmony export (immutable) */ __webpack_exports__["c"] = hasRules;
-/* unused harmony export startsWith */
+/* harmony export (immutable) */ __webpack_exports__["k"] = startsWith;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof__ = __webpack_require__(19);
@@ -1467,7 +1467,7 @@ function treeTraverse() {
   } else {
     // It's object and not a leaf node
     if ((typeof tree === 'undefined' ? 'undefined' : __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof___default()(tree)) !== 'object') {
-      throw new Error('You must wrap field data with `createFormField`.');
+      console.error('You must wrap field data with `createFormField`.');
     }
     Object.keys(tree).forEach(function (subTreeKey) {
       var subTree = tree[subTreeKey];
@@ -5232,7 +5232,7 @@ var FieldsStore = function () {
       var maybePartialNames = Array.isArray(maybePartialName) ? maybePartialName : [maybePartialName];
       return this.getValidFieldsName().filter(function (fullName) {
         return maybePartialNames.some(function (partialName) {
-          return fullName === partialName || fullName.startsWith(partialName) && ['.', '['].includes(fullName[partialName.length]);
+          return fullName === partialName || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils__["k" /* startsWith */])(fullName, partialName) && ['.', '['].indexOf(fullName[partialName.length] >= 0);
         });
       });
     }
@@ -5364,7 +5364,7 @@ var _initialiseProps = function _initialiseProps() {
 
   this.getFieldError = function (name) {
     return _this5.getNestedField(name, function (fullName) {
-      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils__["k" /* getErrorStrs */])(_this5.getFieldMember(fullName, 'errors'));
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils__["l" /* getErrorStrs */])(_this5.getFieldMember(fullName, 'errors'));
     });
   };
 
