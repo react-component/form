@@ -116,7 +116,7 @@ class FieldsStore {
       .filter(fullName => maybePartialNames.some(partialName => (
         fullName === partialName || (
           startsWith(fullName, partialName) &&
-            ['.', '['].includes(fullName[partialName.length])
+            ['.', '['].indexOf(fullName[partialName.length] >= 0)
         )
       )));
   }
