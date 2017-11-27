@@ -33,7 +33,7 @@ export function treeTraverse(path = '', tree, isLeafNode, callback) {
     ));
   } else { // It's object and not a leaf node
     if (typeof tree !== 'object') {
-      throw new Error('You must wrap field data with `createFormField`.');
+      console.error('You must wrap field data with `createFormField`.');
     }
     Object.keys(tree).forEach(subTreeKey => {
       const subTree = tree[subTreeKey];
