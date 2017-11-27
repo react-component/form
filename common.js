@@ -5151,7 +5151,7 @@ var FieldsStore = function () {
     value: function flattenRegisteredFields(fields) {
       var validFieldsName = this.getValidFieldsName();
       return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils__["j" /* flattenFields */])(fields, function (path) {
-        return validFieldsName.includes(path);
+        return validFieldsName.indexOf(path) >= 0;
       });
     }
   }, {
