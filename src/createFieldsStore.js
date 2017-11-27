@@ -22,7 +22,7 @@ class FieldsStore {
 
   flattenRegisteredFields(fields) {
     const validFieldsName = this.getValidFieldsName();
-    return flattenFields(fields, path => validFieldsName.includes(path));
+    return flattenFields(fields, path => validFieldsName.indexOf(path) >= 0);
   }
 
   setFieldsInitialValue = (initialValues) => {
