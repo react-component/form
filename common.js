@@ -1468,6 +1468,7 @@ function treeTraverse() {
     // It's object and not a leaf node
     if ((typeof tree === 'undefined' ? 'undefined' : __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof___default()(tree)) !== 'object') {
       console.error('You must wrap field data with `createFormField`.');
+      return;
     }
     Object.keys(tree).forEach(function (subTreeKey) {
       var subTree = tree[subTreeKey];
