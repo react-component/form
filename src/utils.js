@@ -19,7 +19,7 @@ export function flattenArray(arr) {
   return Array.prototype.concat.apply([], arr);
 }
 
-export function treeTraverse(path = '', tree, isLeafNode, callback) {
+export function treeTraverse(path = '', tree, isLeafNode, errorMessage, callback) {
   if (isLeafNode(path, tree)) {
     callback(path, tree);
   } else if (tree === undefined) {
@@ -29,11 +29,12 @@ export function treeTraverse(path = '', tree, isLeafNode, callback) {
       `${path}[${index}]`,
       subTree,
       isLeafNode,
+      errorMessage,
       callback
     ));
   } else { // It's object and not a leaf node
     if (typeof tree !== 'object') {
-      console.error('You must wrap field data with `createFormField`.');
+      console.error(errorMessage);
       return;
     }
     Object.keys(tree).forEach(subTreeKey => {
@@ -42,15 +43,16 @@ export function treeTraverse(path = '', tree, isLeafNode, callback) {
         `${path}${path ? '.' : ''}${subTreeKey}`,
         subTree,
         isLeafNode,
+        errorMessage,
         callback
       );
     });
   }
 }
 
-export function flattenFields(maybeNestedFields, isLeafNode) {
+export function flattenFields(maybeNestedFields, isLeafNode, errorMessage) {
   const fields = {};
-  treeTraverse(undefined, maybeNestedFields, isLeafNode, (path, node) => {
+  treeTraverse(undefined, maybeNestedFields, isLeafNode, errorMessage, (path, node) => {
     fields[path] = node;
   });
   return fields;

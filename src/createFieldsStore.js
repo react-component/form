@@ -17,12 +17,20 @@ class FieldsStore {
   }
 
   flattenFields(fields) {
-    return flattenFields(fields, (_, node) => isFormField(node));
+    return flattenFields(
+      fields,
+      (_, node) => isFormField(node),
+      'You must wrap field data with `createFormField`.'
+    );
   }
 
   flattenRegisteredFields(fields) {
     const validFieldsName = this.getValidFieldsName();
-    return flattenFields(fields, path => validFieldsName.indexOf(path) >= 0);
+    return flattenFields(
+      fields,
+      path => validFieldsName.indexOf(path) >= 0,
+      'You cannot set field before registering it.'
+    );
   }
 
   setFieldsInitialValue = (initialValues) => {
