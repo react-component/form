@@ -6,6 +6,10 @@ import {
   startsWith,
 } from './utils';
 
+function partOf(a, b) {
+  return b.indexOf(a) === 0 && ['.', '['].indexOf(b[a.length]) !== -1;
+}
+
 class FieldsStore {
   constructor(fields) {
     this.fields = this.flattenFields(fields);
@@ -237,6 +241,13 @@ class FieldsStore {
   isFieldsTouched = (ns) => {
     const names = ns || this.getValidFieldsName();
     return names.some((n) => this.isFieldTouched(n));
+  }
+
+  // @private
+  // BG: `a` and `a.b` cannot be use in the same form
+  isValidNestedFieldName(name) {
+    const names = this.getAllFieldsName();
+    return names.every(n => !partOf(n, name) && !partOf(name, n));
   }
 
   clearField(name) {

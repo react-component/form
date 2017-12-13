@@ -56,11 +56,13 @@ function createBaseForm(option = {}, mixins = []) {
          'isFieldsValidating',
          'isFieldsTouched',
          'isFieldTouched'].forEach(key => this[key] = (...args) => {
-           warning(
-             false,
-             'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
-               'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
-           );
+           if (process.env.NODE_ENV !== 'production') {
+             warning(
+               false,
+               'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
+                 'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
+             );
+           }
            return this.fieldsStore[key](...args);
          });
 
@@ -168,10 +170,16 @@ function createBaseForm(option = {}, mixins = []) {
         if (!name) {
           throw new Error('Must call `getFieldProps` with valid name string!');
         }
-        warning(
-          !('exclusive' in usersFieldOption),
-          '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.'
-        );
+        if (process.env.NODE_ENV !== 'production') {
+          warning(
+            this.fieldsStore.isValidNestedFieldName(name),
+            'One field name cannot be part of another, e.g. `a` and `a.b`.'
+          );
+          warning(
+            !('exclusive' in usersFieldOption),
+            '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.'
+          );
+        }
 
         const fieldOption = {
           name,
@@ -264,11 +272,13 @@ function createBaseForm(option = {}, mixins = []) {
         const values = this.fieldsStore.flattenRegisteredFields(changedValues);
         const newFields = Object.keys(values).reduce((acc, name) => {
           const isRegistered = fieldsMeta[name];
-          warning(
-            isRegistered,
-            'Cannot use `setFieldsValue` until ' +
-              'you use `getFieldDecorator` or `getFieldProps` to register it.'
-          );
+          if (process.env.NODE_ENV !== 'production') {
+            warning(
+              isRegistered,
+              'Cannot use `setFieldsValue` until ' +
+                'you use `getFieldDecorator` or `getFieldProps` to register it.'
+            );
+          }
           if (isRegistered) {
             const value = values[name];
             acc[name] = {
