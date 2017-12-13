@@ -27,3 +27,29 @@ describe('setFieldsValue', () => {
     expect(form.getFieldValue('normal')).toBe('2');
   });
 });
+
+describe('resetFields', () => {
+  it('can reset hidden fields', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <input
+              {...getFieldProps('normal', {
+                hidden: true,
+                initialValue: '',
+              })}
+            />
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').props.form;
+    form.setFieldsValue({ normal: 'Hello world!' });
+    expect(form.getFieldsValue(['normal'])).toEqual({ normal: 'Hello world!' });
+    form.resetFields();
+    expect(form.getFieldsValue(['normal'])).toEqual({ normal: '' });
+  });
+});

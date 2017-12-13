@@ -190,4 +190,27 @@ describe('hidden', () => {
       callback();
     });
   });
+
+  it('can be set', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <input
+              {...getFieldProps('normal', {
+                hidden: true,
+                initialValue: '',
+              })}
+            />
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').props.form;
+    expect(form.getFieldsValue(['normal'])).toEqual({ normal: '' });
+    form.setFieldsValue({ normal: 'Hello world!' });
+    expect(form.getFieldsValue(['normal'])).toEqual({ normal: 'Hello world!' });
+  });
 });

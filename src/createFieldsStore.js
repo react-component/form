@@ -25,7 +25,7 @@ class FieldsStore {
   }
 
   flattenRegisteredFields(fields) {
-    const validFieldsName = this.getValidFieldsName();
+    const validFieldsName = this.getAllFieldsName();
     return flattenFields(
       fields,
       path => validFieldsName.indexOf(path) >= 0,
@@ -76,7 +76,7 @@ class FieldsStore {
     const { fields } = this;
     const names = ns ?
       this.getValidFieldsFullName(ns) :
-      this.getValidFieldsName();
+      this.getAllFieldsName();
     return names.reduce((acc, name) => {
       const field = fields[name];
       if (field && 'value' in field) {
@@ -115,6 +115,11 @@ class FieldsStore {
     return fieldsMeta ?
       Object.keys(fieldsMeta).filter(name => !this.getFieldMeta(name).hidden) :
       [];
+  }
+
+  getAllFieldsName() {
+    const { fieldsMeta } = this;
+    return fieldsMeta ? Object.keys(fieldsMeta) : [];
   }
 
   getValidFieldsFullName(maybePartialName) {
