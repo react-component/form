@@ -34,7 +34,7 @@ var _KeyCode = __webpack_require__(24);
 
 var _KeyCode2 = _interopRequireDefault(_KeyCode);
 
-var _createChainedFunction = __webpack_require__(75);
+var _createChainedFunction = __webpack_require__(76);
 
 var _createChainedFunction2 = _interopRequireDefault(_createChainedFunction);
 
@@ -1184,8 +1184,12 @@ var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
 
 var getComputedStyleX = void 0;
 
-function force(x, y) {
-  return x + y;
+// https://stackoverflow.com/a/3485654/3040605
+function forceRelayout(elem) {
+  var originalStyle = elem.style.display;
+  elem.style.display = 'none';
+  elem.offsetHeight; // eslint-disable-line
+  elem.style.display = originalStyle;
 }
 
 function css(el, name, v) {
@@ -1420,6 +1424,8 @@ function setLeftTop(elem, offset, option) {
     elem.style[oppositeVerticalProperty] = '';
     elem.style[verticalProperty] = presetV + 'px';
   }
+  // force relayout
+  forceRelayout(elem);
   var old = getOffset(elem);
   var originalStyle = {};
   for (var key in offset) {
@@ -1436,7 +1442,7 @@ function setLeftTop(elem, offset, option) {
   }
   css(elem, originalStyle);
   // force relayout
-  force(elem.offsetTop, elem.offsetLeft);
+  forceRelayout(elem);
   if ('left' in offset || 'top' in offset) {
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__propertyUtils__["b" /* setTransitionProperty */])(elem, originalTransition);
   }
@@ -9285,7 +9291,7 @@ function defaultFilterFn(input, child) {
 
 /***/ }),
 
-/***/ 75:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
