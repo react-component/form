@@ -180,6 +180,13 @@ function createBaseForm(option = {}, mixins = []) {
             '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.'
           );
         }
+        if (this.clearedFieldMetaCache[name]) {
+          this.fieldsStore.setFields({
+            [name]: this.clearedFieldMetaCache[name].field,
+          });
+          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
+        }
+        delete this.clearedFieldMetaCache[name];
 
         const fieldOption = {
           name,
@@ -262,8 +269,10 @@ function createBaseForm(option = {}, mixins = []) {
 
       resetFields(ns) {
         const newFields = this.fieldsStore.resetFields(ns);
-        if (Object.keys(newFields).length > 0) {
+        const newFieldNames = Object.keys(newFields);
+        if (newFieldNames.length > 0) {
           this.setFields(newFields);
+          newFieldNames.forEach(name => delete this.clearedFieldMetaCache[name]);
         }
       },
 
@@ -306,13 +315,6 @@ function createBaseForm(option = {}, mixins = []) {
           delete this.cachedBind[name];
           return;
         }
-        if (this.clearedFieldMetaCache[name]) {
-          this.fieldsStore.setFields({
-            [name]: this.clearedFieldMetaCache[name].field,
-          });
-          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
-        }
-        delete this.clearedFieldMetaCache[name];
         const fieldMeta = this.fieldsStore.getFieldMeta(name);
         if (fieldMeta) {
           const ref = fieldMeta.ref;
