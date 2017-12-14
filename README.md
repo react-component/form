@@ -270,11 +270,11 @@ Whether one of the inputs is validating.
 
 ### isFieldTouched(name: String): Bool
 
-Whether this input's value had been change.
+Whether this input's value had been changed by user.
 
 ### isFieldsTouched(names: String[]): Bool
 
-Whether one of the inputs' values had been change.
+Whether one of the inputs' values had been changed by user.
 
 ### resetFields([names: String[]])
 
