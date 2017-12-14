@@ -274,10 +274,14 @@ function createBaseForm(option = {}, mixins = []) {
 
       resetFields(ns) {
         const newFields = this.fieldsStore.resetFields(ns);
-        const newFieldNames = Object.keys(newFields);
-        if (newFieldNames.length > 0) {
+        if (Object.keys(newFields).length > 0) {
           this.setFields(newFields);
-          newFieldNames.forEach(name => delete this.clearedFieldMetaCache[name]);
+        }
+        if (ns) {
+          const names = Array.isArray(ns) ? ns : [ns];
+          names.forEach(name => delete this.clearedFieldMetaCache[name]);
+        } else {
+          this.clearedFieldMetaCache = {};
         }
       },
 
