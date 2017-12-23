@@ -44,6 +44,57 @@ describe('binding dynamic fields without any errors', () => {
     });
   });
 
+  it('hidden input', (done) => {
+    const Test = createForm({
+      withRef: true,
+    })(
+      class extends React.Component {
+        render() {
+          const { form, mode } = this.props;
+          const { getFieldDecorator } = form;
+          return (
+            <form>
+              <span>text content</span>
+              {mode ? getFieldDecorator('input1')(<input id="text1" />) : null}
+              <span>text content</span>
+              <span>text content</span>
+              <span>text content</span>
+              {mode ? getFieldDecorator('input2')(<input id="text2" />) : null}
+              <span>text content</span>
+            </form>
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test mode />);
+    const form = wrapper.ref('wrappedComponent').props.form;
+    wrapper.find('#text1').simulate('change', { target: { value: '123' } });
+    wrapper.find('#text2').simulate('change', { target: { value: '456' } });
+    expect(wrapper.find('#text1').getDOMNode().value).toBe('123');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('456');
+    expect(form.getFieldValue('input1')).toBe('123');
+    expect(form.getFieldValue('input2')).toBe('456');
+    wrapper.setProps({ mode: false });
+    expect(form.getFieldValue('input1')).toBe(undefined);
+    expect(form.getFieldValue('input2')).toBe(undefined);
+    wrapper.setProps({ mode: true });
+    expect(wrapper.find('#text1').getDOMNode().value).toBe('123');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('456');
+    expect(form.getFieldValue('input1')).toBe('123');
+    expect(form.getFieldValue('input2')).toBe('456');
+    wrapper.find('#text1').simulate('change', { target: { value: '789' } });
+    expect(wrapper.find('#text1').getDOMNode().value).toBe('789');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('456');
+    expect(form.getFieldValue('input1')).toBe('789');
+    expect(form.getFieldValue('input2')).toBe('456');
+    form.validateFields((errors, values) => {
+      expect(errors).toBe(null);
+      expect(values.input1).toBe('789');
+      expect(values.input2).toBe('456');
+      done();
+    });
+  });
+
   it('nested fields', (done) => {
     const Test = createForm({
       withRef: true,
@@ -152,6 +203,61 @@ describe('binding dynamic fields without any errors', () => {
         expect('name4' in values2).toBe(false);
         done();
       });
+    });
+  });
+
+  it('reset fields', (done) => {
+    const Test = createForm({
+      withRef: true,
+    })(
+      class extends React.Component {
+        render() {
+          const { form, mode } = this.props;
+          const { getFieldDecorator } = form;
+          return (
+            <form>
+              <span>text content</span>
+              {mode ? getFieldDecorator('input1')(<input id="text1" />) : null}
+              <span>text content</span>
+              <span>text content</span>
+              <span>text content</span>
+              {mode ? getFieldDecorator('input2')(<input id="text2" />) : null}
+              <span>text content</span>
+            </form>
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test mode />);
+    const form = wrapper.ref('wrappedComponent').props.form;
+    wrapper.find('#text1').simulate('change', { target: { value: '123' } });
+    wrapper.find('#text2').simulate('change', { target: { value: '456' } });
+    expect(wrapper.find('#text1').getDOMNode().value).toBe('123');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('456');
+    expect(form.getFieldValue('input1')).toBe('123');
+    expect(form.getFieldValue('input2')).toBe('456');
+    wrapper.setProps({ mode: false });
+    expect(form.getFieldValue('input1')).toBe(undefined);
+    expect(form.getFieldValue('input2')).toBe(undefined);
+    form.resetFields();
+    wrapper.setProps({ mode: true });
+    expect(wrapper.find('#text1').getDOMNode().value).toBe('');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('');
+    expect(form.getFieldValue('input1')).toBe(undefined);
+    expect(form.getFieldValue('input2')).toBe(undefined);
+    wrapper.find('#text1').simulate('change', { target: { value: '789' } });
+    expect(wrapper.find('#text1').getDOMNode().value).toBe('789');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('');
+    expect(form.getFieldValue('input1')).toBe('789');
+    expect(form.getFieldValue('input2')).toBe(undefined);
+    wrapper.find('#text2').simulate('change', { target: { value: '456' } });
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('456');
+    expect(form.getFieldValue('input2')).toBe('456');
+    form.validateFields((errors, values) => {
+      expect(errors).toBe(null);
+      expect(values.input1).toBe('789');
+      expect(values.input2).toBe('456');
+      done();
     });
   });
 });
