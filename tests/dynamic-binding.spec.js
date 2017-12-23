@@ -78,19 +78,19 @@ describe('binding dynamic fields without any errors', () => {
     expect(form.getFieldValue('input1')).toBe(undefined);
     expect(form.getFieldValue('input2')).toBe(undefined);
     wrapper.setProps({ mode: true });
-    expect(wrapper.find('#text1').getDOMNode().value).toBe('123');
-    expect(wrapper.find('#text2').getDOMNode().value).toBe('456');
-    expect(form.getFieldValue('input1')).toBe('123');
-    expect(form.getFieldValue('input2')).toBe('456');
+    expect(wrapper.find('#text1').getDOMNode().value).toBe('');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('');
+    expect(form.getFieldValue('input1')).toBe(undefined);
+    expect(form.getFieldValue('input2')).toBe(undefined);
     wrapper.find('#text1').simulate('change', { target: { value: '789' } });
     expect(wrapper.find('#text1').getDOMNode().value).toBe('789');
-    expect(wrapper.find('#text2').getDOMNode().value).toBe('456');
+    expect(wrapper.find('#text2').getDOMNode().value).toBe('');
     expect(form.getFieldValue('input1')).toBe('789');
-    expect(form.getFieldValue('input2')).toBe('456');
+    expect(form.getFieldValue('input2')).toBe(undefined);
     form.validateFields((errors, values) => {
       expect(errors).toBe(null);
       expect(values.input1).toBe('789');
-      expect(values.input2).toBe('456');
+      expect(values.input2).toBe(undefined);
       done();
     });
   });
