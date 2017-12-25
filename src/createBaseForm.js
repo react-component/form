@@ -191,7 +191,7 @@ function createBaseForm(option = {}, mixins = []) {
           );
         }
 
-        this.recoverClearedField(name);
+        delete this.clearedFieldMetaCache[name];
 
         const fieldOption = {
           name,
