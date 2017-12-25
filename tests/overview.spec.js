@@ -10,6 +10,7 @@ describe('getFieldProps\' behaviors', () => {
       class extends React.Component {
         render() {
           const { getFieldProps } = this.props.form;
+          getFieldProps('nested2'); // array value
           return (
             <form>
               <input {...getFieldProps('normal')} />
