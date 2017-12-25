@@ -1872,6 +1872,13 @@ function createBaseForm() {
         }
         return cache[action];
       },
+      recoverClearedField: function recoverClearedField(name) {
+        if (this.clearedFieldMetaCache[name]) {
+          this.fieldsStore.setFields(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()({}, name, this.clearedFieldMetaCache[name].field));
+          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
+          delete this.clearedFieldMetaCache[name];
+        }
+      },
       getFieldDecorator: function getFieldDecorator(name, fieldOption) {
         var _this2 = this;
 
@@ -1902,6 +1909,8 @@ function createBaseForm() {
           __WEBPACK_IMPORTED_MODULE_7_warning___default()(this.fieldsStore.isValidNestedFieldName(name), 'One field name cannot be part of another, e.g. `a` and `a.b`.');
           __WEBPACK_IMPORTED_MODULE_7_warning___default()(!('exclusive' in usersFieldOption), '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.');
         }
+
+        delete this.clearedFieldMetaCache[name];
 
         var fieldOption = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({
           name: name,
@@ -1980,9 +1989,19 @@ function createBaseForm() {
         this.forceUpdate();
       },
       resetFields: function resetFields(ns) {
+        var _this5 = this;
+
         var newFields = this.fieldsStore.resetFields(ns);
         if (Object.keys(newFields).length > 0) {
           this.setFields(newFields);
+        }
+        if (ns) {
+          var names = Array.isArray(ns) ? ns : [ns];
+          names.forEach(function (name) {
+            return delete _this5.clearedFieldMetaCache[name];
+          });
+        } else {
+          this.clearedFieldMetaCache = {};
         }
       },
       setFieldsValue: function setFieldsValue(changedValues) {
@@ -2020,11 +2039,7 @@ function createBaseForm() {
           delete this.cachedBind[name];
           return;
         }
-        if (this.clearedFieldMetaCache[name]) {
-          this.fieldsStore.setFields(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default()({}, name, this.clearedFieldMetaCache[name].field));
-          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
-        }
-        delete this.clearedFieldMetaCache[name];
+        this.recoverClearedField(name);
         var fieldMeta = this.fieldsStore.getFieldMeta(name);
         if (fieldMeta) {
           var ref = fieldMeta.ref;
@@ -2038,7 +2053,7 @@ function createBaseForm() {
         this.instances[name] = component;
       },
       validateFieldsInternal: function validateFieldsInternal(fields, _ref, callback) {
-        var _this5 = this;
+        var _this6 = this;
 
         var fieldNames = _ref.fieldNames,
             action = _ref.action,
@@ -2057,19 +2072,19 @@ function createBaseForm() {
             }
             return;
           }
-          var fieldMeta = _this5.fieldsStore.getFieldMeta(name);
+          var fieldMeta = _this6.fieldsStore.getFieldMeta(name);
           var newField = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, field);
           newField.errors = undefined;
           newField.validating = true;
           newField.dirty = true;
-          allRules[name] = _this5.getRules(fieldMeta, action);
+          allRules[name] = _this6.getRules(fieldMeta, action);
           allValues[name] = newField.value;
           allFields[name] = newField;
         });
         this.setFields(allFields);
         // in case normalize
         Object.keys(allValues).forEach(function (f) {
-          allValues[f] = _this5.fieldsStore.getFieldValue(f);
+          allValues[f] = _this6.fieldsStore.getFieldValue(f);
         });
         if (callback && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils__["g" /* isEmptyObject */])(allFields)) {
           callback(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils__["g" /* isEmptyObject */])(alreadyErrors) ? null : alreadyErrors, this.fieldsStore.getFieldsValue(fieldNames));
@@ -2095,7 +2110,7 @@ function createBaseForm() {
           var nowAllFields = {};
           Object.keys(allRules).forEach(function (name) {
             var fieldErrors = __WEBPACK_IMPORTED_MODULE_8_lodash_get___default()(errorsGroup, name);
-            var nowField = _this5.fieldsStore.getField(name);
+            var nowField = _this6.fieldsStore.getField(name);
             // avoid concurrency problems
             if (nowField.value !== allValues[name]) {
               expired.push({
@@ -2109,7 +2124,7 @@ function createBaseForm() {
               nowAllFields[name] = nowField;
             }
           });
-          _this5.setFields(nowAllFields);
+          _this6.setFields(nowAllFields);
           if (callback) {
             if (expired.length) {
               expired.forEach(function (_ref2) {
@@ -2126,12 +2141,12 @@ function createBaseForm() {
               });
             }
 
-            callback(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils__["g" /* isEmptyObject */])(errorsGroup) ? null : errorsGroup, _this5.fieldsStore.getFieldsValue(fieldNames));
+            callback(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils__["g" /* isEmptyObject */])(errorsGroup) ? null : errorsGroup, _this6.fieldsStore.getFieldsValue(fieldNames));
           }
         });
       },
       validateFields: function validateFields(ns, opt, cb) {
-        var _this6 = this;
+        var _this7 = this;
 
         var _getParams = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils__["h" /* getParams */])(ns, opt, cb),
             names = _getParams.names,
@@ -2140,11 +2155,11 @@ function createBaseForm() {
 
         var fieldNames = names ? this.fieldsStore.getValidFieldsFullName(names) : this.fieldsStore.getValidFieldsName();
         var fields = fieldNames.filter(function (name) {
-          var fieldMeta = _this6.fieldsStore.getFieldMeta(name);
+          var fieldMeta = _this7.fieldsStore.getFieldMeta(name);
           return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils__["c" /* hasRules */])(fieldMeta.validate);
         }).map(function (name) {
-          var field = _this6.fieldsStore.getField(name);
-          field.value = _this6.fieldsStore.getFieldValue(name);
+          var field = _this7.fieldsStore.getField(name);
+          field.value = _this7.fieldsStore.getFieldValue(name);
           return field;
         });
         if (!fields.length) {
@@ -2155,7 +2170,7 @@ function createBaseForm() {
         }
         if (!('firstFields' in options)) {
           options.firstFields = fieldNames.filter(function (name) {
-            var fieldMeta = _this6.fieldsStore.getFieldMeta(name);
+            var fieldMeta = _this7.fieldsStore.getFieldMeta(name);
             return !!fieldMeta.validateFirst;
           });
         }
@@ -2171,13 +2186,13 @@ function createBaseForm() {
         return this.state.submitting;
       },
       submit: function submit(callback) {
-        var _this7 = this;
+        var _this8 = this;
 
         if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
           __WEBPACK_IMPORTED_MODULE_7_warning___default()(false, '`submit` is deprecated.' + 'Actually, it\'s more convenient to handle submitting status by yourself.');
         }
         var fn = function fn() {
-          _this7.setState({
+          _this8.setState({
             submitting: false
           });
         };
