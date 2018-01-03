@@ -192,7 +192,7 @@ class FieldsStore {
     ) {
       return getter(name);
     }
-    const isArrayValue = fullNames[0][name.length] === '[';
+    const isArrayValue = fullNames[fullNames.length - 1][name.length] === '[';
     const suffixNameStartIndex = isArrayValue ? name.length : name.length + 1;
     return fullNames
       .reduce(
