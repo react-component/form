@@ -71,6 +71,14 @@ class Form extends React.Component {
 export createForm()(Form);
 ```
 
+### use width react native
+
+Expo preview   
+
+![avatar](./examples/react-native/expo.jpg)
+
+[View the source code](./examples/react-native/App.js)
+
 Or a quicker version:
 
 ```js
