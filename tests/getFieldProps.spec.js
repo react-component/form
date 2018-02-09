@@ -4,6 +4,37 @@ import React from 'react';
 import { mount } from 'enzyme';
 import createForm from '../src/createForm';
 
+describe('fieldname', () => {
+  // https://github.com/ant-design/ant-design/issues/8985
+  it('support disordered array', () => {
+    const Test = createForm({ withRef: true })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <div>
+              <input
+                {...getFieldProps('array[1]', {
+                  rules: [{ required: true }],
+                })}
+              />
+              <input
+                {...getFieldProps('array[0]', {
+                  rules: [{ required: true }],
+                })}
+              />
+            </div>
+          );
+        }
+      }
+    );
+
+    const wrapper = mount(<Test />);
+    const form = wrapper.ref('wrappedComponent').props.form;
+    expect(() => form.validateFields()).not.toThrow();
+  });
+});
+
 describe('initialValue', () => {
   it('works', () => {
     const Test = createForm({ withRef: true })(
