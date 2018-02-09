@@ -261,7 +261,7 @@ function createBaseForm(option = {}, mixins = []) {
         return flattenArray(actionRules);
       },
 
-      setFields(maybeNestedFields) {
+      setFields(maybeNestedFields, callback) {
         const fields = this.fieldsStore.flattenRegisteredFields(maybeNestedFields);
         this.fieldsStore.setFields(fields);
         if (onFieldsChange) {
@@ -269,7 +269,7 @@ function createBaseForm(option = {}, mixins = []) {
             .reduce((acc, name) => set(acc, name, this.fieldsStore.getField(name)), {});
           onFieldsChange(this.props, changedFields, this.fieldsStore.getNestedAllFields());
         }
-        this.forceUpdate();
+        this.forceUpdate(callback);
       },
 
       resetFields(ns) {
@@ -285,7 +285,7 @@ function createBaseForm(option = {}, mixins = []) {
         }
       },
 
-      setFieldsValue(changedValues) {
+      setFieldsValue(changedValues, callback) {
         const { fieldsMeta } = this.fieldsStore;
         const values = this.fieldsStore.flattenRegisteredFields(changedValues);
         const newFields = Object.keys(values).reduce((acc, name) => {
@@ -305,7 +305,7 @@ function createBaseForm(option = {}, mixins = []) {
           }
           return acc;
         }, {});
-        this.setFields(newFields);
+        this.setFields(newFields, callback);
         if (onValuesChange) {
           const allValues = this.fieldsStore.getAllValues();
           onValuesChange(this.props, changedValues, allValues);

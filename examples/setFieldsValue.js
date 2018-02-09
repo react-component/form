@@ -11,10 +11,15 @@ class Form extends React.Component {
     form: PropTypes.object,
   };
 
+  componentDidUpdate() {
+    console.log('didUpdate');
+  }
+
   setEmail = () => {
     this.props.form.setFieldsValue({
       email: 'yiminghe@gmail.com',
-    });
+    }, () => console.log('after'));
+    console.log('before');
   }
 
   render() {
