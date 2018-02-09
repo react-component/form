@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   StyleSheet,
   Button,
@@ -6,10 +7,35 @@ import {
   TextInput,
   Text,
   View,
-  Alert
-} from "react-native";
+  Alert,
+} from 'react-native';
 
-import { createForm } from "rc-form";
+import { createForm } from 'rc-form';
+
+const { width } = Dimensions.get('window');
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    padding: 50,
+    justifyContent: 'center',
+  },
+  inputView: {
+    width: width - 100,
+    paddingLeft: 10,
+  },
+  input: {
+    height: 42,
+    fontSize: 16,
+  },
+  errorinfo: {
+    marginTop: 10,
+  },
+  errorinfoText: {
+    color: 'red',
+  },
+});
 
 class FromItem extends React.PureComponent {
   getError = error => {
@@ -29,7 +55,7 @@ class FromItem extends React.PureComponent {
       <View style={styles.inputView}>
         <TextInput
           style={styles.input}
-          value={value || ""}
+          value={value || ''}
           label={`${label}：`}
           duration={150}
           onChangeText={onChange}
@@ -43,15 +69,23 @@ class FromItem extends React.PureComponent {
 }
 
 class App extends React.Component {
+  static propTypes = {
+    form: PropTypes.object.isRequired,
+  };
+
   checkUserNameOne = (value, callback) => {
     setTimeout(() => {
-      value === "15188888888" ? callback("手机号已经被注册") : callback();
+      if (value === '15188888888') {
+        callback('手机号已经被注册');
+      } else {
+        callback();
+      }
     }, 2000);
   };
   submit = () => {
-    this.props.form.validateFields((error, value) => {
+    this.props.form.validateFields((error) => {
       if (error) return;
-      Alert("通过了所有验证");
+      Alert('通过了所有验证'); // eslint-disable-line new-cap
     });
   };
   render() {
@@ -59,26 +93,26 @@ class App extends React.Component {
     return (
       <View style={styles.container}>
         <Text>简单的手机号验证</Text>
-        {getFieldDecorator("username", {
+        {getFieldDecorator('username', {
           validateFirst: true,
           rules: [
-            { required: true, message: "请输入手机号!" },
+            { required: true, message: '请输入手机号!' },
             {
               pattern: /^1\d{10}$/,
-              message: "请输入正确的手机号!"
+              message: '请输入正确的手机号!',
             },
             {
               validator: (rule, value, callback) => {
                 this.checkUserNameOne(value, callback);
               },
-              message: "手机号已经被注册!"
-            }
-          ]
+              message: '手机号已经被注册!',
+            },
+          ],
         })(
           <FromItem
             autoFocus
             placeholder="手机号"
-            error={getFieldError("username")}
+            error={getFieldError('username')}
           />
         )}
         <Button color="#40a9ff" onPress={this.submit} title="登陆" />
@@ -88,28 +122,3 @@ class App extends React.Component {
 }
 
 export default createForm()(App);
-
-const { width } = Dimensions.get("window");
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    padding: 50,
-    justifyContent: "center"
-  },
-  inputView: {
-    width: width - 100,
-    paddingLeft: 10
-  },
-  input: {
-    height: 42,
-    fontSize: 16
-  },
-  errorinfo: {
-    marginTop: 10
-  },
-  errorinfoText: {
-    color: "red"
-  }
-});
