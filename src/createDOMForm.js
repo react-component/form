@@ -50,7 +50,7 @@ function getScrollableContainer(n) {
   return nodeName === 'body' ? node.ownerDocument : node;
 }
 
-const mixin = {
+export const mixin = {
   getForm() {
     return {
       ...formMixin.getForm.call(this),
