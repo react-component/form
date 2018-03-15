@@ -146,6 +146,10 @@ this.refs.form.refs.wrappedComponent // => The instance of Form
 // Recommended
 const EnhancedForm = createForm()(Form);
 <EnhancedForm wrappedComponentRef={(inst) => this.formRef = inst} />
+
+// In your Form Component's render function, save the form instance to the container component
+wrappedComponentRef(this.props.form) 
+
 this.formRef // => The instance of Form
 ```
 
