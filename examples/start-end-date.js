@@ -1,16 +1,16 @@
 /* eslint no-console:0 */
 
 import DatePicker from 'antd/lib/date-picker';
+import { formShape } from 'rc-form';
 import 'antd/dist/antd.css';
 import createDOMForm from 'rc-form/src/createDOMForm';
 import { regionStyle, errorStyle } from './styles';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 class Form extends Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
 
   onSubmit = (e) => {

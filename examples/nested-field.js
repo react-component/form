@@ -1,13 +1,13 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import { formShape } from 'rc-form';
 import createForm from '../src/createDOMForm';
 
 class Form extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
 
   onSubmit = (e) => {

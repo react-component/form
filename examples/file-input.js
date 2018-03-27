@@ -1,8 +1,7 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { regionStyle, errorStyle } from './styles';
 
@@ -25,7 +24,7 @@ function getValueFromFileEvent({ target }) {
 
 class Form extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   onSubmit = (e) => {
     e.preventDefault();

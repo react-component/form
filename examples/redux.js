@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import { createForm, createFormField } from 'rc-form';
+import { createForm, createFormField, formShape } from 'rc-form';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
@@ -27,7 +27,7 @@ function form(state = {
 
 class Form extends Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   }
 
   render() {

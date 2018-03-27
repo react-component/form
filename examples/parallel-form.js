@@ -1,6 +1,6 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
@@ -10,7 +10,7 @@ import 'antd/dist/antd.css';
 
 class TopForm extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   render() {
     const { getFieldProps } = this.props.form;
@@ -29,7 +29,7 @@ class TopForm extends React.Component {
 
 class BottomForm extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
     on: PropTypes.bool,
   };
   render() {
@@ -56,7 +56,7 @@ class BottomForm extends React.Component {
 
 class Form extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   onSubmit = (e) => {
     e.preventDefault();

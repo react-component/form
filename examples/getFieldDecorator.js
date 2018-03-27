@@ -1,13 +1,12 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 
 class Form extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
 
   componentWillMount() {

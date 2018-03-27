@@ -1,8 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
+import { formShape } from 'rc-form';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Select, { Option } from 'antd/lib/select';
 import DatePicker from 'antd/lib/date-picker';
@@ -35,12 +35,12 @@ function Email(props) {
 }
 
 Email.propTypes = {
-  form: PropTypes.object,
+  form: formShape,
 };
 
 class User extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   userExists = (rule, value, callback) => {
     setTimeout(() => {
@@ -111,7 +111,7 @@ function CustomInput(props) {
 }
 
 CustomInput.propTypes = {
-  form: PropTypes.object,
+  form: formShape,
 };
 
 function DateInput(props) {
@@ -139,7 +139,7 @@ function DateInput(props) {
 }
 
 DateInput.propTypes = {
-  form: PropTypes.object,
+  form: formShape,
 };
 
 function toNumber(v) {
@@ -178,12 +178,12 @@ function NumberInput(props) {
 }
 
 NumberInput.propTypes = {
-  form: PropTypes.object,
+  form: formShape,
 };
 
 class Form extends Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
 
   onSubmit = (e) => {

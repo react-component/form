@@ -42,9 +42,13 @@ open http://localhost:8000/examples/
 ## Usage
 
 ```js
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 
 class Form extends React.Component {
+  static propTypes = {
+    form: formShape,
+  };
+
   submit = () => {
     this.props.form.validateFields((error, value) => {
       console.log(error, value);
