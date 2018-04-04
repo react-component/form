@@ -3,14 +3,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 import { Router, Route, hashHistory } from 'react-router';
 import { regionStyle } from './styles';
 
 class ChildForm extends React.Component {
   static propTypes = {
     initialValue: PropTypes.object,
-    form: PropTypes.object,
+    form: formShape,
     onDestroy: PropTypes.func,
   };
   componentWillUnmount() {
@@ -75,7 +75,7 @@ class Picker extends React.Component {
 class ParentForm extends React.Component {
   static propTypes = {
     initialValue: PropTypes.object,
-    form: PropTypes.object,
+    form: formShape,
     children: PropTypes.any,
   };
   onClick = () => {

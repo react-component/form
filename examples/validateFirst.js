@@ -1,8 +1,7 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
@@ -38,12 +37,12 @@ function Email(props) {
 }
 
 Email.propTypes = {
-  form: PropTypes.object,
+  form: formShape,
 };
 
 class User extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   userExists = (rule, value, callback) => {
     setTimeout(() => {
@@ -88,7 +87,7 @@ class User extends React.Component {
 
 class Form extends Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
 
   onSubmit = (e) => {

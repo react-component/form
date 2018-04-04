@@ -1,8 +1,8 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
+import { formShape } from 'rc-form';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Modal from 'antd/lib/modal';
 import 'antd/dist/antd.css';
@@ -10,7 +10,7 @@ import { regionStyle, errorStyle } from './styles';
 
 class Form extends Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
 
   constructor() {

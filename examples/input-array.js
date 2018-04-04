@@ -1,8 +1,7 @@
 /* eslint no-console:0 */
 
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { regionStyle } from './styles';
 
@@ -11,7 +10,7 @@ let uuid = 0;
 
 class Form extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   remove = (k) => {
     const { form } = this.props;

@@ -1,15 +1,14 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
 
 class CustomInput extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   state = {
     data: [],
@@ -50,7 +49,7 @@ class CustomInput extends React.Component {
 
 class MaxMin extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   normalizeMin = (value, prevValue, allValues) => {
     console.log('normalizeMin', allValues.min, allValues.max);
@@ -111,7 +110,7 @@ class MaxMin extends React.Component {
 
 class Form extends Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   }
 
   onSubmit = (e) => {

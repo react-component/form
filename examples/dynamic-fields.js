@@ -1,13 +1,12 @@
 /* eslint react/no-multi-comp:0, no-console:0 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 
 class Form1 extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   state = {
     useInput: true,
@@ -63,7 +62,7 @@ class Form1 extends React.Component {
 
 class Form2 extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   state = {
     useInput: true,
@@ -116,7 +115,7 @@ class Form2 extends React.Component {
 
 class Form3 extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   state = {
     useInput: false,
