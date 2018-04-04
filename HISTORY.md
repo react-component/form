@@ -1,6 +1,12 @@
 # History
 ----
 
+## 2.2.0 / 2018-04-04
+
+- Support callback in setFieldsValue [#144](https://github.com/react-component/form/pull/144)
+- Expose formShape [#154](https://github.com/react-component/form/pull/154) [@sylvainar](https://github.com/sylvainar)
+- Fix bug with disordered array [#143](https://github.com/react-component/form/pull/143)
+
 ## 2.1.0 / 2017-11-22
 
 - Support switching from different components with same field name. [#117](https://github.com/react-component/form/pull/117)
