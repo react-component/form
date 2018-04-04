@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>across-router.js - example - rc-form@2.1.7</title>
+  <title>across-router.js - example - rc-form@2.2.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@2.1.7</h1>
+      <h1>rc-form@2.2.0</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -274,14 +274,14 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
+<span class="hljs-keyword">import</span> { createForm, formShape } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
 <span class="hljs-keyword">import</span> { Router, Route, hashHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-router'</span>;
 <span class="hljs-keyword">import</span> { regionStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChildForm</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   static propTypes = {
     initialValue: PropTypes.object,
-    form: PropTypes.object,
+    form: formShape,
     onDestroy: PropTypes.func,
   };
   componentWillUnmount() {
@@ -346,7 +346,7 @@ ChildForm = createForm()(ChildForm);
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ParentForm</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   static propTypes = {
     initialValue: PropTypes.object,
-    form: PropTypes.object,
+    form: formShape,
     children: PropTypes.any,
   };
   onClick = () =&gt; {

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>dynamic-fields.js - example - rc-form@2.1.7</title>
+  <title>dynamic-fields.js - example - rc-form@2.2.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@2.1.7</h1>
+      <h1>rc-form@2.2.0</h1>
 
       <p>React High Order Form Component</p>
     </div>
@@ -272,13 +272,12 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { createForm } from 'rc-form';
+import { createForm, formShape } from 'rc-form';
 
 class Form1 extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   state = {
     useInput: true,
@@ -334,7 +333,7 @@ class Form1 extends React.Component {
 
 class Form2 extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   state = {
     useInput: true,
@@ -387,7 +386,7 @@ class Form2 extends React.Component {
 
 class Form3 extends React.Component {
   static propTypes = {
-    form: PropTypes.object,
+    form: formShape,
   };
   state = {
     useInput: false,

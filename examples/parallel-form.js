@@ -1,4 +1,4 @@
-webpackJsonp([6],{
+webpackJsonp([7],{
 
 /***/ 13:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -20,42 +20,14 @@ var errorStyle = {
 
 /***/ }),
 
-/***/ 14:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(15);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["b"]; });
-// export this package's api
-
-
-
-/***/ }),
-
-/***/ 15:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createForm__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__createFormField__ = __webpack_require__(20);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__createForm__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__createFormField__["b"]; });
-// export this package's api
-
-
-
-
-/***/ }),
-
-/***/ 26:
+/***/ 23:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 289:
+/***/ 292:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70,7 +42,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_form__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rc_form__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_prop_types__ = __webpack_require__(1);
@@ -78,9 +50,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__styles__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__ = __webpack_require__(306);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_antd_lib_switch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_antd_lib_switch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_antd_dist_antd_css__);
 
 
@@ -135,7 +107,7 @@ var TopForm = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Component);
 
 TopForm.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.object
+  form: __WEBPACK_IMPORTED_MODULE_5_rc_form__["formShape"]
 };
 
 var BottomForm = function (_React$Component2) {
@@ -182,7 +154,7 @@ var BottomForm = function (_React$Component2) {
 }(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Component);
 
 BottomForm.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.object,
+  form: __WEBPACK_IMPORTED_MODULE_5_rc_form__["formShape"],
   on: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.bool
 };
 
@@ -233,11 +205,11 @@ var Form = function (_React$Component3) {
 }(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Component);
 
 Form.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_7_prop_types___default.a.object
+  form: __WEBPACK_IMPORTED_MODULE_5_rc_form__["formShape"]
 };
 
 
-Form = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_rc_form__["a" /* createForm */])()(Form);
+Form = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_rc_form__["b" /* createForm */])()(Form);
 
 var App = function (_React$Component4) {
   __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(App, _React$Component4);
@@ -271,7 +243,7 @@ __WEBPACK_IMPORTED_MODULE_8_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 303:
+/***/ 306:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -313,7 +285,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _rcSwitch = __webpack_require__(449);
+var _rcSwitch = __webpack_require__(448);
 
 var _rcSwitch2 = _interopRequireDefault(_rcSwitch);
 
@@ -363,7 +335,7 @@ module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 448:
+/***/ 447:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -372,7 +344,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_defineProperty__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_objectWithoutProperties__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_classCallCheck__);
@@ -549,17 +521,17 @@ Switch.defaultProps = {
 
 /***/ }),
 
-/***/ 449:
+/***/ 448:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(448);
+module.exports = __webpack_require__(447);
 
 /***/ }),
 
-/***/ 497:
+/***/ 495:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(289);
+module.exports = __webpack_require__(292);
 
 
 /***/ }),
@@ -620,5 +592,5 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ })
 
-},[497]);
+},[495]);
 //# sourceMappingURL=parallel-form.js.map

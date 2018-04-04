@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([9],{
 
 /***/ 13:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -20,42 +20,14 @@ var errorStyle = {
 
 /***/ }),
 
-/***/ 14:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(15);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["b"]; });
-// export this package's api
-
-
-
-/***/ }),
-
-/***/ 15:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createForm__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__createFormField__ = __webpack_require__(20);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__createForm__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__createFormField__["b"]; });
-// export this package's api
-
-
-
-
-/***/ }),
-
-/***/ 26:
+/***/ 23:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 287:
+/***/ 290:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68,22 +40,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_form__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_form__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_antd_dist_antd_css__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_antd_dist_antd_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__styles__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd_dist_antd_css__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_antd_dist_antd_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__styles__ = __webpack_require__(13);
 
 
 
 
 /* eslint react/no-multi-comp:0, no-console:0 */
-
 
 
 
@@ -131,7 +100,7 @@ var CustomInput = function (_React$Component) {
       var errors = getFieldError('upper');
       return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'div',
-        { style: __WEBPACK_IMPORTED_MODULE_9__styles__["a" /* regionStyle */] },
+        { style: __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* regionStyle */] },
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
           null,
@@ -149,7 +118,7 @@ var CustomInput = function (_React$Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
-          { style: __WEBPACK_IMPORTED_MODULE_9__styles__["b" /* errorStyle */] },
+          { style: __WEBPACK_IMPORTED_MODULE_8__styles__["b" /* errorStyle */] },
           errors ? errors.join(',') : null
         )
       );
@@ -160,7 +129,7 @@ var CustomInput = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
 
 CustomInput.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.object
+  form: __WEBPACK_IMPORTED_MODULE_4_rc_form__["formShape"]
 };
 
 var MaxMin = function (_React$Component2) {
@@ -207,7 +176,7 @@ var MaxMin = function (_React$Component2) {
 
       return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'div',
-        { style: __WEBPACK_IMPORTED_MODULE_9__styles__["a" /* regionStyle */] },
+        { style: __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* regionStyle */] },
         __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
           null,
@@ -300,7 +269,7 @@ var MaxMin = function (_React$Component2) {
 }(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
 
 MaxMin.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.object
+  form: __WEBPACK_IMPORTED_MODULE_4_rc_form__["formShape"]
 };
 
 var Form = function (_Component) {
@@ -349,7 +318,7 @@ var Form = function (_Component) {
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(MaxMin, { form: form }),
           __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             'div',
-            { style: __WEBPACK_IMPORTED_MODULE_9__styles__["a" /* regionStyle */] },
+            { style: __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* regionStyle */] },
             __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'button',
               null,
@@ -365,23 +334,23 @@ var Form = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_5_react__["Component"]);
 
 Form.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_6_prop_types___default.a.object
+  form: __WEBPACK_IMPORTED_MODULE_4_rc_form__["formShape"]
 };
 
 
-var NewForm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_rc_form__["a" /* createForm */])()(Form);
+var NewForm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_rc_form__["b" /* createForm */])()(Form);
 
-__WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(NewForm, null), document.getElementById('__react-content'));
+__WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(NewForm, null), document.getElementById('__react-content'));
 
 /***/ }),
 
-/***/ 495:
+/***/ 493:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(287);
+module.exports = __webpack_require__(290);
 
 
 /***/ })
 
-},[495]);
+},[493]);
 //# sourceMappingURL=normalize.js.map
