@@ -3,7 +3,6 @@ import createReactClass from 'create-react-class';
 import AsyncValidator from 'async-validator';
 import warning from 'warning';
 import get from 'lodash/get';
-import has from 'lodash/has';
 import set from 'lodash/set';
 import createFieldsStore from './createFieldsStore';
 import {
@@ -387,7 +386,8 @@ function createBaseForm(option = {}, mixins = []) {
           if (errors && errors.length) {
             errors.forEach((e) => {
               const fieldName = e.field;
-              if (!has(errorsGroup, fieldName)) {
+              const field = get(errorsGroup, fieldName);
+              if (typeof field !== 'object' || Array.isArray(field)) {
                 set(errorsGroup, fieldName, { errors: [] });
               }
               const fieldErrors = get(errorsGroup, fieldName.concat('.errors'));
