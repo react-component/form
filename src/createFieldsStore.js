@@ -16,7 +16,7 @@ class FieldsStore {
     this.fieldsMeta = {};
   }
 
-  updateFields(fields) {
+  updateFields = (fields) => {
     this.fields = this.flattenFields(fields);
   }
 

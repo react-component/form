@@ -13,7 +13,7 @@ export const mixin = {
       getFieldProps: this.getFieldProps,
       getFieldsError: this.fieldsStore.getFieldsError,
       getFieldError: this.fieldsStore.getFieldError,
-      updateFields: this.updateFields,
+      updateFields: this.fieldsStore.updateFields,
       isFieldValidating: this.fieldsStore.isFieldValidating,
       isFieldsValidating: this.fieldsStore.isFieldsValidating,
       isFieldsTouched: this.fieldsStore.isFieldsTouched,

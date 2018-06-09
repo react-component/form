@@ -311,11 +311,6 @@ function createBaseForm(option = {}, mixins = []) {
         }
       },
 
-      // need this to save context for fieldsStore
-      updateFields(...args) {
-        this.fieldsStore.updateFields(...args);
-      },
-
       saveRef(name, _, component) {
         if (!component) {
           // after destroy, delete data
