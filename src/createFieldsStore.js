@@ -181,7 +181,7 @@ class FieldsStore {
 
   getNestedFields(names, getter) {
     const fields = names || this.getValidFieldsName();
-    return fields.reduce((acc, f) => set(acc, f, getter(f)), {});
+    return fields.map(f => ({ [f]: getter(f) }));
   }
 
   getNestedField(name, getter) {
