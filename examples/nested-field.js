@@ -10,7 +10,7 @@ module.exports = __webpack_require__(36);
 
 /***/ }),
 
-/***/ 289:
+/***/ 291:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28,7 +28,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_form__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_createDOMForm__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_createDOMForm__ = __webpack_require__(58);
 
 
 
@@ -877,15 +877,15 @@ module.exports = _extends({
 
 /***/ }),
 
-/***/ 492:
+/***/ 494:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(289);
+module.exports = __webpack_require__(291);
 
 
 /***/ }),
 
-/***/ 55:
+/***/ 58:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -895,11 +895,11 @@ module.exports = __webpack_require__(289);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_has__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createBaseForm__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__createForm__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createBaseForm__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__createForm__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils__ = __webpack_require__(77);
 
 
 
@@ -979,7 +979,7 @@ var mixin = {
               if (instance) {
                 var node = __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(instance);
                 var top = node.getBoundingClientRect().top;
-                if (firstTop === undefined || firstTop > top) {
+                if (node.type !== 'hidden' && (firstTop === undefined || firstTop > top)) {
                   firstTop = top;
                   firstNode = node;
                 }
@@ -1026,7 +1026,7 @@ function createDOMForm(option) {
 
 /***/ }),
 
-/***/ 65:
+/***/ 67:
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -1052,10 +1052,10 @@ module.exports = baseHas;
 
 /***/ }),
 
-/***/ 66:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(64),
+var baseGetTag = __webpack_require__(66),
     isObjectLike = __webpack_require__(34);
 
 /** `Object#toString` result references. */
@@ -1077,15 +1077,15 @@ module.exports = baseIsArguments;
 
 /***/ }),
 
-/***/ 67:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(82),
-    isArguments = __webpack_require__(69),
-    isArray = __webpack_require__(70),
-    isIndex = __webpack_require__(104),
-    isLength = __webpack_require__(71),
-    toKey = __webpack_require__(83);
+var castPath = __webpack_require__(83),
+    isArguments = __webpack_require__(71),
+    isArray = __webpack_require__(72),
+    isIndex = __webpack_require__(106),
+    isLength = __webpack_require__(73),
+    toKey = __webpack_require__(84);
 
 /**
  * Checks if `path` exists on `object`.
@@ -1123,11 +1123,11 @@ module.exports = hasPath;
 
 /***/ }),
 
-/***/ 68:
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseHas = __webpack_require__(65),
-    hasPath = __webpack_require__(67);
+var baseHas = __webpack_require__(67),
+    hasPath = __webpack_require__(69);
 
 /**
  * Checks if `path` is a direct property of `object`.
@@ -1165,10 +1165,10 @@ module.exports = has;
 
 /***/ }),
 
-/***/ 69:
+/***/ 71:
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(66),
+var baseIsArguments = __webpack_require__(68),
     isObjectLike = __webpack_require__(34);
 
 /** Used for built-in method references. */
@@ -1208,7 +1208,7 @@ module.exports = isArguments;
 
 /***/ }),
 
-/***/ 71:
+/***/ 73:
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -1250,5 +1250,5 @@ module.exports = isLength;
 
 /***/ })
 
-},[492]);
+},[494]);
 //# sourceMappingURL=nested-field.js.map
