@@ -1,6 +1,11 @@
 # History
 ----
 
+## 2.2.1 / 2018-07-11
+
+- `validateFieldsAndScroll` should ignore `input[type=hidden]` [#169](https://github.com/react-component/form/pull/169) [@HsuTing](https://github.com/HsuTing)
+- `mapPropsToFields` and so on support field with `null` value [#159](https://github.com/react-component/form/pull/159) [@normanrz](https://github.com/normanrz)
+
 ## 2.2.0 / 2018-04-04
 
 - Support callback in setFieldsValue [#144](https://github.com/react-component/form/pull/144)
