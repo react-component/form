@@ -25,3 +25,4 @@ dist
 lib
 coverage
 yarn.lock
+es/

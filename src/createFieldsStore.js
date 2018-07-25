@@ -94,8 +94,10 @@ class FieldsStore {
     this.fieldsMeta[name] = meta;
   }
 
-  getFieldMeta(name) {
-    this.fieldsMeta[name] = this.fieldsMeta[name] || {};
+  getFieldMeta(name, create) {
+    if (create) {
+      this.fieldsMeta[name] = this.fieldsMeta[name] || {};
+    }
     return this.fieldsMeta[name];
   }
 
@@ -162,7 +164,7 @@ class FieldsStore {
       .map(name => ({
         name,
         dirty: false,
-        value: this.getFieldMeta(name).initialValue,
+        value: this.getFieldMeta(name) && this.getFieldMeta(name).initialValue,
       }))
       .reduce((acc, field) => set(acc, field.name, createFormField(field)), {});
   }
