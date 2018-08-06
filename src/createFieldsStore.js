@@ -95,8 +95,7 @@ class FieldsStore {
   }
 
   getFieldMeta(name) {
-    this.fieldsMeta[name] = this.fieldsMeta[name] || {};
-    return this.fieldsMeta[name];
+    return this.fieldsMeta[name] || (this.fieldsMeta[name] = {});
   }
 
   getValueFromFields(name, fields) {
