@@ -480,14 +480,17 @@ function createBaseForm(option = {}, mixins = []) {
         return new Promise((resolve, reject) => {
           const { names, options } = getParams(ns, opt, cb);
           let { callback } = getParams(ns, opt, cb);
-          if (typeof callback === 'function') {
+          if (!callback || typeof callback === 'function') {
             const oldCb = callback;
             callback = (errors, values) => {
-              oldCb(errors, values);
-              if (!errors) {
-                reject({ errors, values });
+              if (oldCb) {
+                oldCb(errors, values);
               } else {
-                resolve(values);
+                if (errors) {
+                  reject({ errors, values });
+                } else {
+                  resolve(values);
+                }
               }
             };
           }
