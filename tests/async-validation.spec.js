@@ -108,6 +108,17 @@ describe('Async Validation', () => {
     });
   });
 
+  it('promise validateFields works for ok', (done) => {
+    form.getFieldInstance('async').value = '1';
+    Simulate.change(form.getFieldInstance('async'));
+    return form.validateFields()
+      .then(values => {
+        expect(values.normal).toBe(undefined);
+        expect(values.async).toBe('1');
+        done();
+      });
+  });
+
   it('will error if change when validating', (done) => {
     form.validateFields((errors) => {
       expect(Object.keys(errors).length).toBe(1);
