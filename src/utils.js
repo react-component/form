@@ -1,4 +1,5 @@
 import hoistStatics from 'hoist-non-react-statics';
+import warning from 'warning';
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'WrappedComponent';
@@ -34,7 +35,7 @@ export function treeTraverse(path = '', tree, isLeafNode, errorMessage, callback
     ));
   } else { // It's object and not a leaf node
     if (typeof tree !== 'object') {
-      console.error(errorMessage);
+      warning(false, errorMessage);
       return;
     }
     Object.keys(tree).forEach(subTreeKey => {
