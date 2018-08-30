@@ -7,7 +7,13 @@ class MyPage extends React.Component {
     result: 0,
   }
 
-  form;
+  componentDidMount() {
+    this.setValue();
+  }
+
+  setValue = () => {
+    this.form.setFieldsValue({ value: 100 });
+  }
 
   handleAdd = (e) => {
     e.preventDefault();
@@ -17,6 +23,8 @@ class MyPage extends React.Component {
       }
     });
   }
+
+  form
 
   render() {
     const { result } = this.state;
