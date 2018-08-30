@@ -1,23 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Component from '@reactions/component';
 import { FormCreate } from '../src';
 
-const Form = () => (
-  <FormCreate>
-    {({ getFieldDecorator, validateFields }) => (
-      <Component initialState={{ result: 0 }}>
-        {({ setState, state: { result } }) => {
-          const handleAdd = (e) => {
-            e.preventDefault();
-            validateFields((err, { value }) => {
-              if (!err) {
-                setState({ result: result + +value });
-              }
-            });
-          };
+class MyPage extends React.Component {
+  state = {
+    result: 0,
+  }
+
+  form;
+
+  handleAdd = (e) => {
+    e.preventDefault();
+    this.form.validateFields((err, { value }) => {
+      if (!err) {
+        this.setState({ result: this.state.result + +value });
+      }
+    });
+  }
+
+  render() {
+    const { result } = this.state;
+    return (
+      <FormCreate>
+        {form => {
+          const { getFieldDecorator } = form;
+          this.form = form;
           return (
-            <form onSubmit={handleAdd}>
+            <form onSubmit={this.handleAdd}>
               result:{result}
               <br/>
               value:
@@ -30,9 +39,9 @@ const Form = () => (
             </form>
           );
         }}
-      </Component>
-    )}
-  </FormCreate>
-);
+      </FormCreate>
+    );
+  }
+}
 
-ReactDOM.render(<Form />, document.getElementById('__react-content'));
+ReactDOM.render(<MyPage />, document.getElementById('__react-content'));

@@ -61,22 +61,21 @@
     }
   },
   "devDependencies": {
-    "@reactions/component": "^2.0.2",
     "antd": "2.x",
     "async": "^1.5.2",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.1.4",
-    "history": "^1.16.0",
     "jest": "^21.2.1",
     "pre-commit": "1.x",
-    "prop-types": "^15.5.10",
     "rc-tools": "6.x",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
+    "react-test-renderer": "^16.1.1",
+    "history": "^1.16.0",
+    "prop-types": "^15.5.10",
     "react-redux": "^4.0.0",
     "react-router": "^3.0.0",
-    "react-test-renderer": "^16.1.1",
     "redux": "^3.0.4"
   },
   "pre-commit": [
