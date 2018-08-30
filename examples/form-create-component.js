@@ -27,7 +27,6 @@ class MyPage extends React.Component {
   form
 
   render() {
-    const { result } = this.state;
     return (
       <FormCreate>
         {form => {
@@ -35,15 +34,11 @@ class MyPage extends React.Component {
           this.form = form;
           return (
             <form onSubmit={this.handleAdd}>
-              result:{result}
-              <br/>
-              value:
+              result:{this.state.result}
               {getFieldDecorator('value', {
                 rules: [{ required: true }],
               })(<input type="number" />)}
-              <br/>
               <button type="submit">Add</button>
-              <br/>
             </form>
           );
         }}
