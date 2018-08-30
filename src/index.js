@@ -4,4 +4,6 @@ import FormCreate from './createFormComponent';
 import createFormField from './createFormField';
 import formShape from './propTypes';
 
-export { createForm, createFormField, formShape, FormCreate };
+export { createFormField, formShape, FormCreate };
+
+export default createForm;
