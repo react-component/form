@@ -2,49 +2,53 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { FormCreate } from '../src';
 
-class MyPage extends React.Component {
-  state = {
-    result: 0,
-  }
-
+class Page extends React.Component {
   componentDidMount() {
-    this.setValue();
+    setTimeout(() => {
+      this.formA.setFieldsValue({ field_a: 'this is field_a.' });
+      this.formB.setFieldsValue({ field_b: 'this is field_b.' });
+    }, 2000);
+  }
+  resetAll = () => {
+    this.formA.resetFields();
+    this.formB.resetFields();
   }
 
-  setValue = () => {
-    this.form.setFieldsValue({ value: 100 });
-  }
-
-  handleAdd = (e) => {
-    e.preventDefault();
-    this.form.validateFields((err, { value }) => {
-      if (!err) {
-        this.setState({ result: this.state.result + +value });
-      }
-    });
-  }
-
-  form
+  formA;
+  formB;
 
   render() {
     return (
-      <FormCreate>
-        {form => {
-          const { getFieldDecorator } = form;
-          this.form = form;
-          return (
-            <form onSubmit={this.handleAdd}>
-              result:{this.state.result}
-              {getFieldDecorator('value', {
-                rules: [{ required: true }],
-              })(<input type="number" />)}
-              <button type="submit">Add</button>
-            </form>
-          );
-        }}
-      </FormCreate>
+      <div>
+        <FormCreate>
+          {form => {
+            this.formA = form;
+            return (
+              <div>
+                Group A
+                <input {...form.getFieldProps('field_a')}/>
+                {/* more fields or complex logic */}
+              </div>
+            );
+          }}
+        </FormCreate>
+        <FormCreate>
+          {form => {
+            this.formB = form;
+            return (
+              <div>
+                Group B
+                <input {...form.getFieldProps('field_b')}/>
+                {/* more fields or complex logic */}
+              </div>
+            );
+          }}
+        </FormCreate>
+
+        <button onClick={this.resetAll}>Reset All</button>
+      </div>
     );
   }
 }
 
-ReactDOM.render(<MyPage />, document.getElementById('__react-content'));
+ReactDOM.render(<Page />, document.getElementById('__react-content'));
