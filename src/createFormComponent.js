@@ -1,18 +1,19 @@
 import React from 'react';
 import createDOMForm from './createDOMForm';
+import PropTypes from 'prop-types';
 
-const FormCreate = ({ children, setRef, ...options }) => {
-  const WrappedComponent = createDOMForm(options)(({ form }) => {
-    if (setRef) {
-      if (typeof setRef === 'function') {
-        setRef(form);
-      } else if (setRef.current === null) {
-        setRef.current = form;
-      }
-    }
-    return children(form);
-  });
-  return <WrappedComponent />;
-};
+class FormCreate extends React.Component {
+  static propTypes = {
+    children: PropTypes.func,
+  };
+  render() {
+    const { children, ...options } = this.props;
+    const WrappedComponent = createDOMForm(options)(({ form }) => {
+      Object.assign(this, form);
+      return children(form);
+    });
+    return <WrappedComponent />;
+  }
+}
 
 export default FormCreate;

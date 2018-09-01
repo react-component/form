@@ -5,22 +5,22 @@ import { FormCreate } from '../src';
 class Page extends React.Component {
   componentDidMount() {
     setTimeout(() => {
-      this.formA.current.setFieldsValue({ field_a: 'this is field_a.' });
-      this.formB.current.setFieldsValue({ field_b: 'this is field_b.' });
+      this.formA.setFieldsValue({ field_a: 'this is field_a.' });
+      this.formB.setFieldsValue({ field_b: 'this is field_b.' });
     }, 2000);
   }
   resetAll = () => {
-    this.formA.current.resetFields();
-    this.formB.current.resetFields();
+    this.formA.resetFields();
+    this.formB.resetFields();
   }
 
-  formA = React.createRef();
-  formB = React.createRef();
+  formA
+  formB
 
   render() {
     return (
       <div>
-        <FormCreate setRef={this.formA}>
+        <FormCreate ref={form => this.formA = form}>
           {({ getFieldProps }) => (
             <div>
               Group A
@@ -29,7 +29,7 @@ class Page extends React.Component {
             </div>
           )}
         </FormCreate>
-        <FormCreate setRef={this.formB}>
+        <FormCreate ref={form => this.formB = form}>
           {({ getFieldProps }) => (
             <div>
               Group B
