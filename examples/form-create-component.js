@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FormCreate } from '../src';
+import { FormScope } from '../src';
 
 class Page extends React.Component {
   componentDidMount() {
@@ -20,7 +20,7 @@ class Page extends React.Component {
   render() {
     return (
       <div>
-        <FormCreate ref={form => this.formA = form}>
+        <FormScope ref={form => this.formA = form}>
           {({ getFieldProps }) => (
             <div>
               Group A
@@ -28,8 +28,8 @@ class Page extends React.Component {
               {/* more fields or complex logic */}
             </div>
           )}
-        </FormCreate>
-        <FormCreate ref={form => this.formB = form}>
+        </FormScope>
+        <FormScope ref={form => this.formB = form}>
           {({ getFieldProps }) => (
             <div>
               Group B
@@ -37,7 +37,7 @@ class Page extends React.Component {
               {/* more fields or complex logic */}
             </div>
           )}
-        </FormCreate>
+        </FormScope>
 
         <button onClick={this.resetAll}>Reset All</button>
       </div>
