@@ -2,7 +2,7 @@ import React from 'react';
 import createDOMForm from './createDOMForm';
 import PropTypes from 'prop-types';
 
-class FormCreate extends React.Component {
+class FormScope extends React.Component {
   static propTypes = {
     children: PropTypes.func,
     validateMessages: PropTypes.object,
@@ -26,4 +26,4 @@ class FormCreate extends React.Component {
   }
 }
 
-export default FormCreate;
+export default FormScope;

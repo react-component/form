@@ -1,7 +1,7 @@
 // export this package's api
 import createForm from './createForm';
-import FormCreate from './createFormComponent';
+import FormScope from './FormScope';
 import createFormField from './createFormField';
 import formShape from './propTypes';
 
-export { createFormField, formShape, createForm, FormCreate };
+export { createFormField, formShape, createForm, FormScope };
