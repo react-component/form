@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>dynamic-fields.js - example - rc-form@2.2.2</title>
+  <title>form-create-component.js - example - rc-form@2.2.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -269,186 +269,54 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
-
-import React from 'react';
+    <div class="highlight"><pre><code language="undefined">import React from 'react';
 import ReactDOM from 'react-dom';
-import { createForm, formShape } from 'rc-form';
+import { FormScope } from '../src';
 
-class Form1 extends React.Component {
-  static propTypes = {
-    form: formShape,
-  };
-  state = {
-    useInput: true,
-  };
-  onSubmit = (e) =&gt; {
-    e.preventDefault();
-    this.props.form.validateFields((error, values) =&gt; {
-      if (!error) {
-        console.log('ok', values);
-      } else {
-        console.log('error', error, values);
-      }
-    });
-  };
-  changeUseInput = (e) =&gt; {
-    this.setState({
-      useInput: e.target.checked,
-    });
+class Page extends React.Component {
+  componentDidMount() {
+    setTimeout(() =&gt; {
+      this.formA.setFieldsValue({ field_a: 'this is field_a.' });
+      this.formB.setFieldsValue({ field_b: 'this is field_b.' });
+    }, 2000);
   }
-  render() {
-    const { getFieldError, getFieldDecorator } = this.props.form;
+  resetAll = () =&gt; {
+    this.formA.resetFields();
+    this.formB.resetFields();
+  }
 
+  formA
+  formB
+
+  render() {
     return (
-      &lt;form onSubmit={this.onSubmit}&gt;
-        &lt;h2&gt;situation 1&lt;/h2&gt;
-        {this.state.useInput ? getFieldDecorator('name', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s your name 1?',
-          }],
-        })(&lt;input /&gt;) : null}
-        &lt;span&gt;text content&lt;/span&gt;
-        {this.state.useInput ? null : getFieldDecorator('name', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s your name 2?',
-          }],
-        })(&lt;input /&gt;)}
-        &lt;div&gt;
-          &lt;label&gt;
-            &lt;input type="checkbox" checked={this.state.useInput} onChange={this.changeUseInput} /&gt;
-            change input
-          &lt;/label&gt;
-          {(getFieldError('name') || []).join(', ')}
-        &lt;/div&gt;
-        &lt;button&gt;Submit&lt;/button&gt;
-      &lt;/form&gt;
+      &lt;div&gt;
+        &lt;FormScope ref={form =&gt; this.formA = form}&gt;
+          {({ getFieldProps }) =&gt; (
+            &lt;div&gt;
+              Group A
+              &lt;input {...getFieldProps('field_a')}/&gt;
+              {/* more fields or complex logic */}
+            &lt;/div&gt;
+          )}
+        &lt;/FormScope&gt;
+        &lt;FormScope ref={form =&gt; this.formB = form}&gt;
+          {({ getFieldProps }) =&gt; (
+            &lt;div&gt;
+              Group B
+              &lt;input {...getFieldProps('field_b')}/&gt;
+              {/* more fields or complex logic */}
+            &lt;/div&gt;
+          )}
+        &lt;/FormScope&gt;
+
+        &lt;button onClick={this.resetAll}&gt;Reset All&lt;/button&gt;
+      &lt;/div&gt;
     );
   }
 }
 
-class Form2 extends React.Component {
-  static propTypes = {
-    form: formShape,
-  };
-  state = {
-    useInput: true,
-  };
-  componentWillMount() {
-    const { getFieldDecorator } = this.props.form;
-    this.nameDecorator = getFieldDecorator('name', {
-      initialValue: '',
-      rules: [{
-        required: true,
-        message: 'What\'s your name?',
-      }],
-    });
-  }
-  onSubmit = (e) =&gt; {
-    e.preventDefault();
-    this.props.form.validateFields((error, values) =&gt; {
-      if (!error) {
-        console.log('ok', values);
-      } else {
-        console.log('error', error, values);
-      }
-    });
-  };
-  changeUseInput = (e) =&gt; {
-    this.setState({
-      useInput: e.target.checked,
-    });
-  }
-  render() {
-    const { getFieldError } = this.props.form;
-    return (
-      &lt;form onSubmit={this.onSubmit}&gt;
-        &lt;h2&gt;situation 2&lt;/h2&gt;
-        {this.state.useInput ? this.nameDecorator(&lt;input /&gt;) : null}
-        &lt;span&gt;text content&lt;/span&gt;
-        {this.state.useInput ? null : this.nameDecorator(&lt;input /&gt;)}
-        &lt;div&gt;
-          &lt;label&gt;
-            &lt;input type="checkbox" checked={this.state.useInput} onChange={this.changeUseInput} /&gt;
-            change input
-          &lt;/label&gt;
-          {(getFieldError('name') || []).join(', ')}
-        &lt;/div&gt;
-        &lt;button&gt;Submit&lt;/button&gt;
-      &lt;/form&gt;
-    );
-  }
-}
-
-class Form3 extends React.Component {
-  static propTypes = {
-    form: formShape,
-  };
-  state = {
-    useInput: false,
-  };
-  onSubmit = (e) =&gt; {
-    e.preventDefault();
-    this.props.form.validateFields((error, values) =&gt; {
-      if (!error) {
-        console.log('ok', values);
-      } else {
-        console.log('error', error, values);
-      }
-    });
-  };
-  changeUseInput = (e) =&gt; {
-    this.setState({
-      useInput: e.target.checked,
-    });
-  }
-  render() {
-    const { getFieldError, getFieldDecorator } = this.props.form;
-    return (
-      &lt;form onSubmit={this.onSubmit}&gt;
-        &lt;h2&gt;situation 3&lt;/h2&gt;
-        {getFieldDecorator('name', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s your name 1?',
-          }],
-        })(&lt;input /&gt;)}
-        {this.state.useInput ? null : getFieldDecorator('name2', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s your name 2?',
-          }],
-        })(&lt;input /&gt;)}
-        &lt;div&gt;
-          &lt;label&gt;
-            &lt;input type="checkbox" checked={this.state.useInput} onChange={this.changeUseInput} /&gt;
-            Hide second input
-          &lt;/label&gt;
-          {(getFieldError('name') || []).join(', ')}
-        &lt;/div&gt;
-        &lt;button&gt;Submit&lt;/button&gt;
-      &lt;/form&gt;
-    );
-  }
-}
-
-const WrappedForm1 = createForm()(Form1);
-const WrappedForm2 = createForm()(Form2);
-const WrappedForm3 = createForm()(Form3);
-
-ReactDOM.render(
-  &lt;div&gt;
-    &lt;WrappedForm1 /&gt;
-    &lt;WrappedForm2 /&gt;
-    &lt;WrappedForm3 /&gt;
-  &lt;/div&gt;
-, document.getElementById('__react-content'));
+ReactDOM.render(&lt;Page /&gt;, document.getElementById('__react-content'));
 </code></pre></div>
   </div>
   <a href="https://github.com/react-component/form">
@@ -459,7 +327,7 @@ ReactDOM.render(
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="dynamic-fields.js?nowrap"></script>
+  <script src="form-create-component.js?nowrap"></script>
 </body>
 
 </html>
