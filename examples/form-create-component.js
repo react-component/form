@@ -1,6 +1,6 @@
 webpackJsonp([19],{
 
-/***/ 281:
+/***/ 289:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65,7 +65,7 @@ var Page = function (_React$Component) {
         'div',
         null,
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_6__src__["c" /* FormScope */],
+          __WEBPACK_IMPORTED_MODULE_6__src__["FormScope"],
           { ref: function ref(form) {
               return _this3.formA = form;
             } },
@@ -80,7 +80,7 @@ var Page = function (_React$Component) {
           }
         ),
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_6__src__["c" /* FormScope */],
+          __WEBPACK_IMPORTED_MODULE_6__src__["FormScope"],
           { ref: function ref(form) {
               return _this3.formB = form;
             } },
@@ -110,13 +110,13 @@ __WEBPACK_IMPORTED_MODULE_5_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ }),
 
-/***/ 493:
+/***/ 492:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(281);
+module.exports = __webpack_require__(289);
 
 
 /***/ })
 
-},[493]);
+},[492]);
 //# sourceMappingURL=form-create-component.js.map
