@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class FormScope extends React.Component {
   static propTypes = {
-    children: PropTypes.func,
+    children: PropTypes.func.isRequired,
     validateMessages: PropTypes.object,
     onFieldsChange: PropTypes.func,
     onValuesChange: PropTypes.func,
