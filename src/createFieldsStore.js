@@ -51,6 +51,12 @@ class FieldsStore {
   }
 
   setFields(fields) {
+    Object.keys(fields).forEach(f => {
+      if (this.fields[f] && fields[f].$update) {
+        fields[f] = Object.assign(this.fields[f], fields[f]);
+        delete fields[f].$update;
+      }
+    });
     const fieldsMeta = this.fieldsMeta;
     const nowFields = {
       ...this.fields,
