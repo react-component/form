@@ -53,3 +53,26 @@ describe('resetFields', () => {
     expect(form.getFieldsValue(['normal'])).toEqual({ normal: '' });
   });
 });
+
+describe('form name', () => {
+  it('set id', () => {
+    const Test = createForm({
+      fieldNameProp: 'id',
+      name: 'test',
+    })(
+      class extends React.Component {
+        render() {
+          const { getFieldProps } = this.props.form;
+          return (
+            <input
+              {...getFieldProps('user')}
+            />
+          );
+        }
+      }
+    );
+    const wrapper = mount(<Test />);
+    const input = wrapper.find('input').instance();
+    expect(input.id).toBe('test_user');
+  });
+});
