@@ -30,6 +30,7 @@ function createBaseForm(option = {}, mixins = []) {
     fieldMetaProp,
     fieldDataProp,
     formPropName = 'form',
+    name: formName,
     // @deprecated
     withRef,
   } = option;
@@ -217,7 +218,7 @@ function createBaseForm(option = {}, mixins = []) {
           ref: this.getCacheBind(name, `${name}__ref`, this.saveRef),
         };
         if (fieldNameProp) {
-          inputProps[fieldNameProp] = name;
+          inputProps[fieldNameProp] = formName ? `${formName}_${name}` : name;
         }
 
         const validateRules = normalizeValidateRules(validate, rules, validateTrigger);
