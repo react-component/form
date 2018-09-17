@@ -24,7 +24,7 @@ class Page extends React.Component {
           {({ getFieldProps }) => (
             <div>
               Group A
-              <input {...getFieldProps('field_a')}/>
+              <input {...getFieldProps('field_a', { initialValue: '' })}/>
               {/* more fields or complex logic */}
             </div>
           )}
@@ -33,7 +33,7 @@ class Page extends React.Component {
           {({ getFieldProps }) => (
             <div>
               Group B
-              <input {...getFieldProps('field_b')}/>
+              <input {...getFieldProps('field_b', { initialValue: '' })}/>
               {/* more fields or complex logic */}
             </div>
           )}
