@@ -50,7 +50,14 @@ class FieldsStore {
     });
   }
 
-  setFields(fields) {
+  setFields(fields, opt) {
+    if (opt && opt.validate) {
+      Object.keys(fields).forEach(f => {
+        if (this.fields[f]) {
+          fields[f] = Object.assign(this.fields[f], fields[f]);
+        }
+      });
+    }
     const fieldsMeta = this.fieldsMeta;
     const nowFields = {
       ...this.fields,
