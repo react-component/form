@@ -78,7 +78,7 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       onCollectCommon(name, action, args) {
-        const fieldMeta = this.fieldsStore.getFieldMeta(name);
+        const fieldMeta = this.fieldsStore.getFieldMeta(name) || {};
         if (fieldMeta[action]) {
           fieldMeta[action](...args);
         } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
@@ -148,7 +148,7 @@ function createBaseForm(option = {}, mixins = []) {
       getFieldDecorator(name, fieldOption) {
         const props = this.getFieldProps(name, fieldOption);
         return (fieldElem) => {
-          const fieldMeta = this.fieldsStore.getFieldMeta(name);
+          const fieldMeta = this.fieldsStore.getFieldMeta(name, true);
           const originalProps = fieldElem.props;
           if (process.env.NODE_ENV !== 'production') {
             const valuePropName = fieldMeta.valuePropName;
@@ -208,7 +208,7 @@ function createBaseForm(option = {}, mixins = []) {
           validate,
         } = fieldOption;
 
-        const fieldMeta = this.fieldsStore.getFieldMeta(name);
+        const fieldMeta = this.fieldsStore.getFieldMeta(name, true);
         if ('initialValue' in fieldOption) {
           fieldMeta.initialValue = fieldOption.initialValue;
         }
