@@ -129,10 +129,13 @@ function createBaseForm(option = {}, mixins = []) {
           this.cachedBind[name] = {};
         }
         const cache = this.cachedBind[name];
-        if (!cache[action]) {
-          cache[action] = fn.bind(this, name, action);
+        if (!cache[action] || cache[action].oriFn !== fn) {
+          cache[action] = {
+            fn: fn.bind(this, name, action),
+            oriFn: fn,
+          };
         }
-        return cache[action];
+        return cache[action].fn;
       },
 
       recoverClearedField(name) {
