@@ -1,51 +1,51 @@
-/* eslint-disable no-undef, react/prop-types */
+/* eslint-disable no-undef, react/prop-types, react/no-multi-comp */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import createForm from '../src/createForm';
 
-class Test extends React.Component {
-  componentWillMount() {
-    const { getFieldDecorator } = this.props.form;
-    this.normalInput = getFieldDecorator('normal');
-    this.requiredInput = getFieldDecorator('required', {
-      rules: [{
-        required: true,
-      }],
-    });
-    this.blurRequiredInput = getFieldDecorator('blurRequired', {
-      validate: [{
-        trigger: 'onBlur',
+describe('getFieldDecorator', () => {
+  class Test extends React.Component {
+    componentWillMount() {
+      const { getFieldDecorator } = this.props.form;
+      this.normalInput = getFieldDecorator('normal');
+      this.requiredInput = getFieldDecorator('required', {
         rules: [{
           required: true,
         }],
-      }],
-    });
+      });
+      this.blurRequiredInput = getFieldDecorator('blurRequired', {
+        validate: [{
+          trigger: 'onBlur',
+          rules: [{
+            required: true,
+          }],
+        }],
+      });
+    }
+    render() {
+      return (<div>
+        {this.normalInput(
+          <input />
+        )}
+
+        {this.requiredInput(
+          <input />
+        )}
+
+        {this.blurRequiredInput(
+          <input/>
+        )}
+        />
+      </div>);
+    }
   }
-  render() {
-    return (<div>
-      {this.normalInput(
-        <input />
-      )}
 
-      {this.requiredInput(
-        <input />
-      )}
+  Test = createForm({
+    withRef: true,
+  })(Test);
 
-      {this.blurRequiredInput(
-        <input/>
-      )}
-      />
-    </div>);
-  }
-}
-
-Test = createForm({
-  withRef: true,
-})(Test);
-
-describe('getFieldDecorator', () => {
   let container;
   let component;
   let form;
@@ -144,5 +144,50 @@ describe('getFieldDecorator', () => {
     expect(form.getFieldValue('normal')).toBe('2');
     form.resetFields();
     expect(form.getFieldValue('normal')).toBe('4');
+  });
+});
+
+describe('dynamic', () => {
+  it('change validateTrigger', () => {
+    class Test extends React.Component {
+      state = {
+        inited: false,
+      };
+
+      render() {
+        const { getFieldDecorator } = this.props.form;
+        return (
+          <div>
+            {getFieldDecorator('title', {
+              validateTrigger: this.state.inited ? 'onChange' : 'onBlur',
+              rules: [
+                { required: true, message: 'Title is required' },
+                { min: 3, message: 'Title should be 3+ characters' },
+              ],
+            })(<input />)}
+          </div>
+        );
+      }
+    }
+
+    Test = createForm({
+      withRef: true,
+    })(Test);
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const app = ReactDOM.render(<Test />, container);
+    const component = app.refs.wrappedComponent;
+    const form = component.props.form;
+
+    Simulate.blur(form.getFieldInstance('title'));
+    expect(form.getFieldError('title')).toEqual(['Title is required']);
+
+    component.setState({ inited: true });
+
+    form.getFieldInstance('title').value = '1';
+    Simulate.change(form.getFieldInstance('title'));
+    expect(form.getFieldValue('title')).toBe('1');
+    expect(form.getFieldError('title')).toEqual(['Title should be 3+ characters']);
   });
 });
