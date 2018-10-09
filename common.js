@@ -1882,10 +1882,13 @@ function createBaseForm() {
           this.cachedBind[name] = {};
         }
         var cache = this.cachedBind[name];
-        if (!cache[action]) {
-          cache[action] = fn.bind(this, name, action);
+        if (!cache[action] || cache[action].oriFn !== fn) {
+          cache[action] = {
+            fn: fn.bind(this, name, action),
+            oriFn: fn
+          };
         }
-        return cache[action];
+        return cache[action].fn;
       },
       recoverClearedField: function recoverClearedField(name) {
         if (this.clearedFieldMetaCache[name]) {
