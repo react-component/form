@@ -253,6 +253,10 @@ Set fields initialValue by kv object. use for reset and initial display/value.
 
 Set fields by kv object. each field can contain errors and value member.
 
+### updateFields(obj: Object)
+
+Set fields by kv object. each field must be wrapped with `createFormField`.
+
 ### validateFields([fieldNames: String[]], [options: Object], callback: (errors, values) => void)
 
 Validate and get fields value by fieldNames.
