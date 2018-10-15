@@ -60,17 +60,17 @@ function createBaseForm(option = {}, mixins = []) {
           'isFieldsValidating',
           'isFieldsTouched',
           'isFieldTouched'].forEach(key => {
-            this[key] = (...args) => {
-              if (process.env.NODE_ENV !== 'production') {
-                warning(
-                  false,
-                  'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
+          this[key] = (...args) => {
+            if (process.env.NODE_ENV !== 'production') {
+              warning(
+                false,
+                'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
                       'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
-                );
-              }
-              return this.fieldsStore[key](...args);
-            };
-          });
+              );
+            }
+            return this.fieldsStore[key](...args);
+          };
+        });
 
         return {
           submitting: false,
