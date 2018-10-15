@@ -20,7 +20,7 @@ class Page extends React.Component {
   render() {
     return (
       <div>
-        <FormScope ref={form => this.formA = form}>
+        <FormScope ref={form => { this.formA = form; }}>
           {({ getFieldProps }) => (
             <div>
               Group A
@@ -29,7 +29,7 @@ class Page extends React.Component {
             </div>
           )}
         </FormScope>
-        <FormScope ref={form => this.formB = form}>
+        <FormScope ref={form => { this.formB = form; }}>
           {({ getFieldProps }) => (
             <div>
               Group B

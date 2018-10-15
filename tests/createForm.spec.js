@@ -1,4 +1,5 @@
-/* eslint-disable no-undef, space-before-keywords, react/prop-types, react/no-multi-comp */
+/* eslint-disable no-undef, space-before-keywords, react/prop-types, react/no-multi-comp,
+react/prefer-stateless-function, react/no-string-refs */
 
 import React from 'react';
 import { mount } from 'enzyme';
@@ -202,13 +203,13 @@ describe('onValuesChange', () => {
     form.setFieldsValue({ user: { name: 'Benjy' } });
     expect(onValuesChange.mock.calls[0][1]).toMatchObject({ user: { name: 'Benjy' } });
     expect(onValuesChange.mock.calls[0][2])
-    .toMatchObject({
-      user: {
-        name: 'Benjy',
-        age: undefined,
-      },
-      agreement: undefined,
-    });
+      .toMatchObject({
+        user: {
+          name: 'Benjy',
+          age: undefined,
+        },
+        agreement: undefined,
+      });
   });
 });
 

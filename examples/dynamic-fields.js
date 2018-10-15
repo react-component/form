@@ -177,4 +177,4 @@ ReactDOM.render(
     <WrappedForm2 />
     <WrappedForm3 />
   </div>
-, document.getElementById('__react-content'));
+  , document.getElementById('__react-content'));

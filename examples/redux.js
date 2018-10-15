@@ -1,10 +1,9 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint react/no-multi-comp:0, no-console:0, react/prefer-stateless-function:0 */
 
 import { createForm, createFormField, formShape } from 'rc-form';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { combineReducers } from 'redux';
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { regionStyle, errorStyle } from './styles';
