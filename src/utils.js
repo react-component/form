@@ -24,7 +24,7 @@ export function treeTraverse(path = '', tree, isLeafNode, errorMessage, callback
   if (isLeafNode(path, tree)) {
     callback(path, tree);
   } else if (tree === undefined || tree === null) {
-    return;
+    // Do nothing
   } else if (Array.isArray(tree)) {
     tree.forEach((subTree, index) => treeTraverse(
       `${path}[${index}]`,

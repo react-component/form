@@ -1,4 +1,5 @@
-/* eslint-disable no-undef, space-before-keywords, react/prop-types, react/no-multi-comp, react/prefer-stateless-function, react/no-string-refs */
+/* eslint-disable no-undef, space-before-keywords, react/prop-types, react/no-multi-comp,
+react/prefer-stateless-function, react/no-string-refs */
 
 import React from 'react';
 import { mount } from 'enzyme';

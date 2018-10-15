@@ -1,4 +1,5 @@
-/* eslint-disable no-undef, react/prop-types, react/no-multi-comp, react/prefer-stateless-function */
+/* eslint-disable no-undef, react/prop-types, react/no-multi-comp,
+react/prefer-stateless-function */
 import React from 'react';
 import { mount } from 'enzyme';
 import createDOMForm from '../src/createDOMForm';
@@ -16,15 +17,15 @@ describe('clean field if did update removed', () => {
       </div>
     );
   };
-  
+
   class Demo extends React.Component {
     render() {
       const { init, show } = this.props;
       const { getFieldDecorator } = this.props.form;
-  
+
       let name;
       let age;
-  
+
       if (init) {
         name = (
           <div>
@@ -44,7 +45,7 @@ describe('clean field if did update removed', () => {
           </div>
         );
       }
-  
+
       return (
         <Popup visible={show}>
           {name}
@@ -53,17 +54,17 @@ describe('clean field if did update removed', () => {
       );
     }
   }
-  
+
   const FormDemo = createDOMForm({
     withRef: true,
   })(Demo);
-  
+
   class Test extends React.Component {
     state = {
       show: false,
       init: false,
     };
-  
+
     onClick = () => {
       this.setState({ show: true });
       this.setState({ init: true });
@@ -72,7 +73,7 @@ describe('clean field if did update removed', () => {
     setRef = (demo) => {
       this.demo = demo;
     };
-  
+
     render() {
       const { show, init } = this.state;
       return (
