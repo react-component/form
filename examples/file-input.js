@@ -1,4 +1,5 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint react/no-multi-comp:0, no-console:0, react/prefer-stateless-function:0,
+no-undef:0, react/no-unescaped-entities:0 */
 
 import { createForm, formShape } from 'rc-form';
 import React from 'react';

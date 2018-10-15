@@ -1,4 +1,4 @@
-/* eslint no-console:0 */
+/* eslint no-console:0, react/jsx-no-bind:0 */
 
 import { createForm, formShape } from 'rc-form';
 import React from 'react';

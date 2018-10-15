@@ -1,4 +1,5 @@
-/* eslint-disable no-undef, react/prop-types, react/no-multi-comp */
+/* eslint-disable no-undef, react/prop-types, react/no-multi-comp,
+react/prefer-stateless-function */
 
 import React from 'react';
 import { mount } from 'enzyme';

@@ -1,10 +1,10 @@
-/* eslint-disable no-undef, react/prop-types */
-jest.mock('dom-scroll-into-view', () => jest.fn());
-
+/* eslint-disable no-undef, react/prop-types, react/prefer-stateless-function */
 import React from 'react';
 import { mount } from 'enzyme';
 import scrollIntoView from 'dom-scroll-into-view';
 import createDOMForm from '../src/createDOMForm';
+
+jest.mock('dom-scroll-into-view', () => jest.fn());
 
 class Test extends React.Component {
   render() {

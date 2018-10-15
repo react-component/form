@@ -1,3 +1,5 @@
+/* eslint-disable react/prefer-es6-class */
+
 import React from 'react';
 import createReactClass from 'create-react-class';
 import AsyncValidator from 'async-validator';
@@ -45,35 +47,48 @@ function createBaseForm(option = {}, mixins = []) {
         this.instances = {};
         this.cachedBind = {};
         this.clearedFieldMetaCache = {};
+
+        this.renderFields = {};
+
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
-         'getFieldValue',
-         'setFieldsInitialValue',
-         'getFieldsError',
-         'getFieldError',
-         'isFieldValidating',
-         'isFieldsValidating',
-         'isFieldsTouched',
-         'isFieldTouched'].forEach(key => this[key] = (...args) => {
-           if (process.env.NODE_ENV !== 'production') {
-             warning(
-               false,
-               'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
-                 'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
-             );
-           }
-           return this.fieldsStore[key](...args);
-         });
+          'getFieldValue',
+          'setFieldsInitialValue',
+          'getFieldsError',
+          'getFieldError',
+          'isFieldValidating',
+          'isFieldsValidating',
+          'isFieldsTouched',
+          'isFieldTouched'].forEach(key => {
+          this[key] = (...args) => {
+            if (process.env.NODE_ENV !== 'production') {
+              warning(
+                false,
+                'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
+                      'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
+              );
+            }
+            return this.fieldsStore[key](...args);
+          };
+        });
 
         return {
           submitting: false,
         };
       },
 
+      componentDidMount() {
+        this.cleanUpUselessFields();
+      },
+
       componentWillReceiveProps(nextProps) {
         if (mapPropsToFields) {
           this.fieldsStore.updateFields(mapPropsToFields(nextProps));
         }
+      },
+
+      componentDidUpdate() {
+        this.cleanUpUselessFields();
       },
 
       onCollectCommon(name, action, args) {
@@ -137,19 +152,12 @@ function createBaseForm(option = {}, mixins = []) {
         return cache[action].fn;
       },
 
-      recoverClearedField(name) {
-        if (this.clearedFieldMetaCache[name]) {
-          this.fieldsStore.setFields({
-            [name]: this.clearedFieldMetaCache[name].field,
-          });
-          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
-          delete this.clearedFieldMetaCache[name];
-        }
-      },
-
       getFieldDecorator(name, fieldOption) {
         const props = this.getFieldProps(name, fieldOption);
         return (fieldElem) => {
+          // We should put field in record if it is rendered
+          this.renderFields[name] = true;
+
           const fieldMeta = this.fieldsStore.getFieldMeta(name);
           const originalProps = fieldElem.props;
           if (process.env.NODE_ENV !== 'production') {
@@ -249,6 +257,9 @@ function createBaseForm(option = {}, mixins = []) {
           inputProps[fieldDataProp] = this.fieldsStore.getField(name);
         }
 
+        // This field is rendered, record it
+        this.renderFields[name] = true;
+
         return inputProps;
       },
 
@@ -272,19 +283,6 @@ function createBaseForm(option = {}, mixins = []) {
           onFieldsChange(this.props, changedFields, this.fieldsStore.getNestedAllFields());
         }
         this.forceUpdate(callback);
-      },
-
-      resetFields(ns) {
-        const newFields = this.fieldsStore.resetFields(ns);
-        if (Object.keys(newFields).length > 0) {
-          this.setFields(newFields);
-        }
-        if (ns) {
-          const names = Array.isArray(ns) ? ns : [ns];
-          names.forEach(name => delete this.clearedFieldMetaCache[name]);
-        } else {
-          this.clearedFieldMetaCache = {};
-        }
       },
 
       setFieldsValue(changedValues, callback) {
@@ -321,9 +319,7 @@ function createBaseForm(option = {}, mixins = []) {
             field: this.fieldsStore.getField(name),
             meta: this.fieldsStore.getFieldMeta(name),
           };
-          this.fieldsStore.clearField(name);
-          delete this.instances[name];
-          delete this.cachedBind[name];
+          this.clearField(name);
           return;
         }
         this.recoverClearedField(name);
@@ -338,6 +334,44 @@ function createBaseForm(option = {}, mixins = []) {
           }
         }
         this.instances[name] = component;
+      },
+
+      cleanUpUselessFields() {
+        const fieldList = this.fieldsStore.getAllFieldsName();
+        const removedList = fieldList.filter(field => !this.renderFields[field]);
+        if (removedList.length) {
+          removedList.forEach(this.clearField);
+        }
+        this.renderFields = {};
+      },
+
+      clearField(name) {
+        this.fieldsStore.clearField(name);
+        delete this.instances[name];
+        delete this.cachedBind[name];
+      },
+
+      resetFields(ns) {
+        const newFields = this.fieldsStore.resetFields(ns);
+        if (Object.keys(newFields).length > 0) {
+          this.setFields(newFields);
+        }
+        if (ns) {
+          const names = Array.isArray(ns) ? ns : [ns];
+          names.forEach(name => delete this.clearedFieldMetaCache[name]);
+        } else {
+          this.clearedFieldMetaCache = {};
+        }
+      },
+
+      recoverClearedField(name) {
+        if (this.clearedFieldMetaCache[name]) {
+          this.fieldsStore.setFields({
+            [name]: this.clearedFieldMetaCache[name].field,
+          });
+          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
+          delete this.clearedFieldMetaCache[name];
+        }
       },
 
       validateFieldsInternal(fields, {
