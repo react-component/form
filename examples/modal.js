@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint react/no-multi-comp:0, no-console:0, react/no-string-refs:0 */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
 import { formShape } from 'rc-form';

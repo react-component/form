@@ -10,9 +10,7 @@ class CustomInput extends React.Component {
   static propTypes = {
     form: formShape,
   };
-  state = {
-    data: [],
-  };
+  state = {};
   checkUpper = (rule, value, callback) => {
     if (value !== value.toUpperCase()) {
       callback(new Error('need to be upper!'));

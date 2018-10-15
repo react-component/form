@@ -1,3 +1,5 @@
+/* eslint react/no-multi-comp:0, no-console:0, react/no-multi-comp:0 */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -38,6 +40,12 @@ const styles = StyleSheet.create({
 });
 
 class FromItem extends React.PureComponent {
+  static propTypes = {
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.string,
+    error: PropTypes.array,
+  };
   getError = error => {
     if (error) {
       return error.map(info => {
@@ -48,6 +56,7 @@ class FromItem extends React.PureComponent {
         );
       });
     }
+    return null;
   };
   render() {
     const { label, onChange, value, error } = this.props;

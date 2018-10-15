@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, react/prop-types, react/no-multi-comp */
+/* eslint-disable no-undef, react/prop-types, react/no-multi-comp, react/no-render-return-value */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -37,7 +37,6 @@ describe('getFieldDecorator', () => {
         {this.blurRequiredInput(
           <input/>
         )}
-        />
       </div>);
     }
   }

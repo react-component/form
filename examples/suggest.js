@@ -7,6 +7,7 @@ import Select, { Option } from 'antd/lib/select';
 
 import 'antd/dist/antd.css';
 import { regionStyle, errorStyle } from './styles';
+
 const emailTpl = ['@gmail.com', '@outlook.com', '@qq.com'];
 
 class CustomInput extends React.Component {

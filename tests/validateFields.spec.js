@@ -14,7 +14,7 @@ class Test extends React.Component {
         const es = Object.keys(errors).map((name) => {
           return errors[name].errors;
         }).reduce((result, current) => {
-          return result.concat.apply(result, current);
+          return result.concat(...current);
         }, []);
         callback(es);
       } else {

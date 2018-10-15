@@ -45,6 +45,9 @@ function createBaseForm(option = {}, mixins = []) {
         this.instances = {};
         this.cachedBind = {};
         this.clearedFieldMetaCache = {};
+
+        this.renderFields = {};
+
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
          'getFieldValue',
@@ -74,6 +77,21 @@ function createBaseForm(option = {}, mixins = []) {
         if (mapPropsToFields) {
           this.fieldsStore.updateFields(mapPropsToFields(nextProps));
         }
+      },
+
+      componentDidMount() {
+        this.cleanUpUselessFields();
+      },
+      componentDidUpdate() {
+        this.cleanUpUselessFields();
+      },
+      cleanUpUselessFields() {
+        const fieldList = this.fieldsStore.getAllFieldsName();
+        const removedList = fieldList.filter(field => !this.renderFields[field]);
+        if (removedList.length) {
+          removedList.forEach(this.clearField);
+        }
+        this.renderFields = {};
       },
 
       onCollectCommon(name, action, args) {
@@ -150,6 +168,9 @@ function createBaseForm(option = {}, mixins = []) {
       getFieldDecorator(name, fieldOption) {
         const props = this.getFieldProps(name, fieldOption);
         return (fieldElem) => {
+          // We should put field in record if it is rendered
+          this.renderFields[name] = true;
+
           const fieldMeta = this.fieldsStore.getFieldMeta(name);
           const originalProps = fieldElem.props;
           if (process.env.NODE_ENV !== 'production') {
@@ -249,6 +270,9 @@ function createBaseForm(option = {}, mixins = []) {
           inputProps[fieldDataProp] = this.fieldsStore.getField(name);
         }
 
+        // This field is rendered, record it
+        this.renderFields[name] = true;
+
         return inputProps;
       },
 
@@ -321,9 +345,7 @@ function createBaseForm(option = {}, mixins = []) {
             field: this.fieldsStore.getField(name),
             meta: this.fieldsStore.getFieldMeta(name),
           };
-          this.fieldsStore.clearField(name);
-          delete this.instances[name];
-          delete this.cachedBind[name];
+          this.clearField(name);
           return;
         }
         this.recoverClearedField(name);
@@ -338,6 +360,12 @@ function createBaseForm(option = {}, mixins = []) {
           }
         }
         this.instances[name] = component;
+      },
+
+      clearField(name) {
+        this.fieldsStore.clearField(name);
+        delete this.instances[name];
+        delete this.cachedBind[name];
       },
 
       validateFieldsInternal(fields, {

@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint react/no-multi-comp:0, no-console:0, react/prefer-stateless-function:0 */
 
 import React from 'react';
 import ReactDOM from 'react-dom';

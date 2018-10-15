@@ -1,6 +1,6 @@
 import React from 'react';
-import createDOMForm from './createDOMForm';
 import PropTypes from 'prop-types';
+import createDOMForm from './createDOMForm';
 
 class FormScope extends React.Component {
   static propTypes = {

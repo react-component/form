@@ -1,12 +1,12 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint react/no-multi-comp:0, no-console:0, react/prefer-stateless-function:0 */
 
 import { createForm, formShape } from 'rc-form';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { regionStyle } from './styles';
 import Switch from 'antd/lib/switch';
 import 'antd/dist/antd.css';
+import { regionStyle } from './styles';
 
 class TopForm extends React.Component {
   static propTypes = {
