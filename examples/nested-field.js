@@ -4,317 +4,32 @@ webpackJsonp([6],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(17);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src___ = __webpack_require__(16);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__src___["c"]; });
 // export this package's api
 
 
 
 /***/ }),
 
-/***/ 28:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(37);
+module.exports = __webpack_require__(36);
 
 /***/ }),
 
-/***/ 293:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_form__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_createDOMForm__ = __webpack_require__(59);
-
-
-
-
-/* eslint react/no-multi-comp:0, no-console:0 */
-
-
-
-
-
-
-var Form = function (_React$Component) {
-  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Form, _React$Component);
-
-  function Form() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Form);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref, [this].concat(args))), _this), _this.onSubmit = function (e) {
-      e.preventDefault();
-      console.log('Values of member[0].name.firstname and a[0][1].b.c[0]');
-      console.log(_this.props.form.getFieldsValue(['member[0].name.firstname', 'a[0][1].b.c[0]']));
-      console.log('Values of all fields');
-      console.log(_this.props.form.getFieldsValue());
-
-      _this.props.form.validateFieldsAndScroll(function (error, values) {
-        if (!error) {
-          console.log('ok', values);
-        } else {
-          console.log('error', error, values);
-        }
-      });
-    }, _this.onChange = function (e) {
-      console.log(e.target.value);
-    }, _this.setField = function () {
-      _this.props.form.setFieldsValue({
-        member: [{
-          name: {
-            firstname: 'm1 first',
-            lastname: 'm1 last'
-          }
-        }, {
-          name: {
-            firstname: 'm2 first',
-            lastname: 'm2 last'
-          }
-        }],
-        a: [[undefined, {
-          b: {
-            c: ['Value of a[0][1].b.c[0]']
-          }
-        }]],
-        w: {
-          x: {
-            y: {
-              z: ['Value of w.x.y.z[0]']
-            }
-          }
-        }
-      });
-    }, _this.resetFields = function () {
-      console.log('reset');
-      _this.props.form.resetFields();
-    }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Form, [{
-    key: 'render',
-    value: function render() {
-      var _props$form = this.props.form,
-          getFieldDecorator = _props$form.getFieldDecorator,
-          getFieldError = _props$form.getFieldError;
-
-
-      return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-        'form',
-        { onSubmit: this.onSubmit },
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          null,
-          'Member 0 firstname'
-        ),
-        getFieldDecorator('member[0].name.firstname', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s the member_0 firstname?'
-          }]
-        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
-          onChange: this.onChange
-        })),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          { style: { color: 'red' } },
-          (getFieldError('member[0].name.firstname') || []).join(', ')
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          null,
-          'Member 0 lastname'
-        ),
-        getFieldDecorator('member[0].name.lastname', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s the member_0 lastname?'
-          }]
-        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
-          onChange: this.onChange
-        })),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          { style: { color: 'red' } },
-          (getFieldError('member[0].name.firstname') || []).join(', ')
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          null,
-          'Member 1 firstname'
-        ),
-        getFieldDecorator('member[1].name.firstname', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s the member_1 fistname?'
-          }]
-        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
-          onChange: this.onChange
-        })),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          { style: { color: 'red' } },
-          (getFieldError('member[1].name.firstname') || []).join(', ')
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          null,
-          'Member 1 lastname'
-        ),
-        getFieldDecorator('member[1].name.lastname', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s the member_1 lastname?'
-          }]
-        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
-          onChange: this.onChange
-        })),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          { style: { color: 'red' } },
-          (getFieldError('member[1].name.firstname') || []).join(', ')
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          null,
-          'a[0][1].b.c[0]'
-        ),
-        getFieldDecorator('a[0][1].b.c[0]', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s a[0][1].b.c[0]?'
-          }]
-        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
-          onChange: this.onChange
-        })),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          { style: { color: 'red' } },
-          (getFieldError('a[0][1].b.c[0]') || []).join(', ')
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          null,
-          'w.x.y.z[0]'
-        ),
-        getFieldDecorator('w.x.y.z[0]', {
-          initialValue: '',
-          rules: [{
-            required: true,
-            message: 'What\'s w.x.y.z[0]?'
-          }]
-        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
-          onChange: this.onChange
-        })),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          { style: { color: 'red' } },
-          (getFieldError('w.x.y.z[0]') || []).join(', ')
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'button',
-          { onClick: this.setField },
-          'Set field'
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'button',
-          { onClick: this.resetFields },
-          'Reset fields'
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'button',
-          null,
-          'Submit'
-        )
-      );
-    }
-  }]);
-
-  return Form;
-}(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
-
-Form.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_6_rc_form__["formShape"]
-};
-
-
-Form = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__src_createDOMForm__["a" /* default */])({
-  onFieldsChange: function onFieldsChange(_, changedFields, allFields) {
-    console.log('onFieldsChange: ', changedFields, allFields);
-  },
-  onValuesChange: function onValuesChange(_, changedValues, allValues) {
-    console.log('onValuesChange: ', changedValues, allValues);
-  }
-})(Form);
-
-var App = function (_React$Component2) {
-  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(App, _React$Component2);
-
-  function App() {
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, App);
-
-    return __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(App, [{
-    key: 'render',
-    value: function render() {
-      return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'h2',
-          null,
-          'setFieldsValue'
-        ),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(Form, null)
-      );
-    }
-  }]);
-
-  return App;
-}(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
-
-__WEBPACK_IMPORTED_MODULE_5_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(App, null), document.getElementById('__react-content'));
-
-/***/ }),
-
-/***/ 37:
+/***/ 36:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var util = __webpack_require__(38);
+var util = __webpack_require__(37);
 
 function scrollIntoView(elem, container, config) {
   config = config || {};
@@ -444,7 +159,7 @@ module.exports = scrollIntoView;
 
 /***/ }),
 
-/***/ 38:
+/***/ 37:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -890,29 +605,314 @@ module.exports = _extends({
 
 /***/ }),
 
-/***/ 496:
+/***/ 444:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(293);
+module.exports = __webpack_require__(445);
 
 
 /***/ }),
 
-/***/ 59:
+/***/ 445:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(5);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rc_form__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_createDOMForm__ = __webpack_require__(62);
+
+
+
+
+/* eslint react/no-multi-comp:0, no-console:0, react/prefer-stateless-function:0 */
+
+
+
+
+
+
+var Form = function (_React$Component) {
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Form, _React$Component);
+
+  function Form() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Form);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref, [this].concat(args))), _this), _this.onSubmit = function (e) {
+      e.preventDefault();
+      console.log('Values of member[0].name.firstname and a[0][1].b.c[0]');
+      console.log(_this.props.form.getFieldsValue(['member[0].name.firstname', 'a[0][1].b.c[0]']));
+      console.log('Values of all fields');
+      console.log(_this.props.form.getFieldsValue());
+
+      _this.props.form.validateFieldsAndScroll(function (error, values) {
+        if (!error) {
+          console.log('ok', values);
+        } else {
+          console.log('error', error, values);
+        }
+      });
+    }, _this.onChange = function (e) {
+      console.log(e.target.value);
+    }, _this.setField = function () {
+      _this.props.form.setFieldsValue({
+        member: [{
+          name: {
+            firstname: 'm1 first',
+            lastname: 'm1 last'
+          }
+        }, {
+          name: {
+            firstname: 'm2 first',
+            lastname: 'm2 last'
+          }
+        }],
+        a: [[undefined, {
+          b: {
+            c: ['Value of a[0][1].b.c[0]']
+          }
+        }]],
+        w: {
+          x: {
+            y: {
+              z: ['Value of w.x.y.z[0]']
+            }
+          }
+        }
+      });
+    }, _this.resetFields = function () {
+      console.log('reset');
+      _this.props.form.resetFields();
+    }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Form, [{
+    key: 'render',
+    value: function render() {
+      var _props$form = this.props.form,
+          getFieldDecorator = _props$form.getFieldDecorator,
+          getFieldError = _props$form.getFieldError;
+
+
+      return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+        'form',
+        { onSubmit: this.onSubmit },
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          null,
+          'Member 0 firstname'
+        ),
+        getFieldDecorator('member[0].name.firstname', {
+          initialValue: '',
+          rules: [{
+            required: true,
+            message: 'What\'s the member_0 firstname?'
+          }]
+        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
+          onChange: this.onChange
+        })),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          { style: { color: 'red' } },
+          (getFieldError('member[0].name.firstname') || []).join(', ')
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          null,
+          'Member 0 lastname'
+        ),
+        getFieldDecorator('member[0].name.lastname', {
+          initialValue: '',
+          rules: [{
+            required: true,
+            message: 'What\'s the member_0 lastname?'
+          }]
+        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
+          onChange: this.onChange
+        })),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          { style: { color: 'red' } },
+          (getFieldError('member[0].name.firstname') || []).join(', ')
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          null,
+          'Member 1 firstname'
+        ),
+        getFieldDecorator('member[1].name.firstname', {
+          initialValue: '',
+          rules: [{
+            required: true,
+            message: 'What\'s the member_1 fistname?'
+          }]
+        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
+          onChange: this.onChange
+        })),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          { style: { color: 'red' } },
+          (getFieldError('member[1].name.firstname') || []).join(', ')
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          null,
+          'Member 1 lastname'
+        ),
+        getFieldDecorator('member[1].name.lastname', {
+          initialValue: '',
+          rules: [{
+            required: true,
+            message: 'What\'s the member_1 lastname?'
+          }]
+        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
+          onChange: this.onChange
+        })),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          { style: { color: 'red' } },
+          (getFieldError('member[1].name.firstname') || []).join(', ')
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          null,
+          'a[0][1].b.c[0]'
+        ),
+        getFieldDecorator('a[0][1].b.c[0]', {
+          initialValue: '',
+          rules: [{
+            required: true,
+            message: 'What\'s a[0][1].b.c[0]?'
+          }]
+        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
+          onChange: this.onChange
+        })),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          { style: { color: 'red' } },
+          (getFieldError('a[0][1].b.c[0]') || []).join(', ')
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          null,
+          'w.x.y.z[0]'
+        ),
+        getFieldDecorator('w.x.y.z[0]', {
+          initialValue: '',
+          rules: [{
+            required: true,
+            message: 'What\'s w.x.y.z[0]?'
+          }]
+        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
+          onChange: this.onChange
+        })),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'div',
+          { style: { color: 'red' } },
+          (getFieldError('w.x.y.z[0]') || []).join(', ')
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'button',
+          { onClick: this.setField },
+          'Set field'
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'button',
+          { onClick: this.resetFields },
+          'Reset fields'
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'button',
+          null,
+          'Submit'
+        )
+      );
+    }
+  }]);
+
+  return Form;
+}(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
+
+Form.propTypes = {
+  form: __WEBPACK_IMPORTED_MODULE_6_rc_form__["formShape"]
+};
+
+
+Form = Object(__WEBPACK_IMPORTED_MODULE_7__src_createDOMForm__["a" /* default */])({
+  onFieldsChange: function onFieldsChange(_, changedFields, allFields) {
+    console.log('onFieldsChange: ', changedFields, allFields);
+  },
+  onValuesChange: function onValuesChange(_, changedValues, allValues) {
+    console.log('onValuesChange: ', changedValues, allValues);
+  }
+})(Form);
+
+var App = function (_React$Component2) {
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(App, _React$Component2);
+
+  function App() {
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, App);
+
+    return __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(App, [{
+    key: 'render',
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
+          'h2',
+          null,
+          'setFieldsValue'
+        ),
+        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(Form, null)
+      );
+    }
+  }]);
+
+  return App;
+}(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
+
+__WEBPACK_IMPORTED_MODULE_5_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(App, null), document.getElementById('__react-content'));
+
+/***/ }),
+
+/***/ 62:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_dom_scroll_into_view__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_has___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_has__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createBaseForm__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__createForm__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__createBaseForm__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__createForm__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils__ = __webpack_require__(91);
 
 
 
@@ -969,7 +969,7 @@ var mixin = {
   validateFieldsAndScroll: function validateFieldsAndScroll(ns, opt, cb) {
     var _this = this;
 
-    var _getParams = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils__["h" /* getParams */])(ns, opt, cb),
+    var _getParams = Object(__WEBPACK_IMPORTED_MODULE_6__utils__["e" /* getParams */])(ns, opt, cb),
         names = _getParams.names,
         callback = _getParams.callback,
         options = _getParams.options;
@@ -979,40 +979,20 @@ var mixin = {
         var validNames = _this.fieldsStore.getValidFieldsName();
         var firstNode = void 0;
         var firstTop = void 0;
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
 
-        try {
-          for (var _iterator = validNames[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var name = _step.value;
-
-            if (__WEBPACK_IMPORTED_MODULE_3_lodash_has___default()(error, name)) {
-              var instance = _this.getFieldInstance(name);
-              if (instance) {
-                var node = __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(instance);
-                var top = node.getBoundingClientRect().top;
-                if (node.type !== 'hidden' && (firstTop === undefined || firstTop > top)) {
-                  firstTop = top;
-                  firstNode = node;
-                }
+        validNames.forEach(function (name) {
+          if (__WEBPACK_IMPORTED_MODULE_3_lodash_has___default()(error, name)) {
+            var instance = _this.getFieldInstance(name);
+            if (instance) {
+              var node = __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(instance);
+              var top = node.getBoundingClientRect().top;
+              if (node.type !== 'hidden' && (firstTop === undefined || firstTop > top)) {
+                firstTop = top;
+                firstNode = node;
               }
             }
           }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator['return']) {
-              _iterator['return']();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
+        });
 
         if (firstNode) {
           var c = options.container || getScrollableContainer(firstNode);
@@ -1032,115 +1012,18 @@ var mixin = {
 };
 
 function createDOMForm(option) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__createBaseForm__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, option), [mixin]);
+  return Object(__WEBPACK_IMPORTED_MODULE_4__createBaseForm__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, option), [mixin]);
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (createDOMForm);
 
 /***/ }),
 
-/***/ 68:
-/***/ (function(module, exports) {
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * The base implementation of `_.has` without support for deep paths.
- *
- * @private
- * @param {Object} [object] The object to query.
- * @param {Array|string} key The key to check.
- * @returns {boolean} Returns `true` if `key` exists, else `false`.
- */
-function baseHas(object, key) {
-  return object != null && hasOwnProperty.call(object, key);
-}
-
-module.exports = baseHas;
-
-
-/***/ }),
-
-/***/ 69:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(67),
-    isObjectLike = __webpack_require__(35);
-
-/** `Object#toString` result references. */
-var argsTag = '[object Arguments]';
-
-/**
- * The base implementation of `_.isArguments`.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an `arguments` object,
- */
-function baseIsArguments(value) {
-  return isObjectLike(value) && baseGetTag(value) == argsTag;
-}
-
-module.exports = baseIsArguments;
-
-
-/***/ }),
-
-/***/ 70:
-/***/ (function(module, exports, __webpack_require__) {
-
-var castPath = __webpack_require__(84),
-    isArguments = __webpack_require__(72),
-    isArray = __webpack_require__(73),
-    isIndex = __webpack_require__(107),
-    isLength = __webpack_require__(74),
-    toKey = __webpack_require__(85);
-
-/**
- * Checks if `path` exists on `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {Array|string} path The path to check.
- * @param {Function} hasFunc The function to check properties.
- * @returns {boolean} Returns `true` if `path` exists, else `false`.
- */
-function hasPath(object, path, hasFunc) {
-  path = castPath(path, object);
-
-  var index = -1,
-      length = path.length,
-      result = false;
-
-  while (++index < length) {
-    var key = toKey(path[index]);
-    if (!(result = object != null && hasFunc(object, key))) {
-      break;
-    }
-    object = object[key];
-  }
-  if (result || ++index != length) {
-    return result;
-  }
-  length = object == null ? 0 : object.length;
-  return !!length && isLength(length) && isIndex(key, length) &&
-    (isArray(object) || isArguments(object));
-}
-
-module.exports = hasPath;
-
-
-/***/ }),
-
-/***/ 71:
-/***/ (function(module, exports, __webpack_require__) {
-
-var baseHas = __webpack_require__(68),
-    hasPath = __webpack_require__(70);
+var baseHas = __webpack_require__(64),
+    hasPath = __webpack_require__(65);
 
 /**
  * Checks if `path` is a direct property of `object`.
@@ -1178,11 +1061,83 @@ module.exports = has;
 
 /***/ }),
 
-/***/ 72:
+/***/ 64:
+/***/ (function(module, exports) {
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * The base implementation of `_.has` without support for deep paths.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {Array|string} key The key to check.
+ * @returns {boolean} Returns `true` if `key` exists, else `false`.
+ */
+function baseHas(object, key) {
+  return object != null && hasOwnProperty.call(object, key);
+}
+
+module.exports = baseHas;
+
+
+/***/ }),
+
+/***/ 65:
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(69),
-    isObjectLike = __webpack_require__(35);
+var castPath = __webpack_require__(89),
+    isArguments = __webpack_require__(66),
+    isArray = __webpack_require__(59),
+    isIndex = __webpack_require__(100),
+    isLength = __webpack_require__(68),
+    toKey = __webpack_require__(90);
+
+/**
+ * Checks if `path` exists on `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Array|string} path The path to check.
+ * @param {Function} hasFunc The function to check properties.
+ * @returns {boolean} Returns `true` if `path` exists, else `false`.
+ */
+function hasPath(object, path, hasFunc) {
+  path = castPath(path, object);
+
+  var index = -1,
+      length = path.length,
+      result = false;
+
+  while (++index < length) {
+    var key = toKey(path[index]);
+    if (!(result = object != null && hasFunc(object, key))) {
+      break;
+    }
+    object = object[key];
+  }
+  if (result || ++index != length) {
+    return result;
+  }
+  length = object == null ? 0 : object.length;
+  return !!length && isLength(length) && isIndex(key, length) &&
+    (isArray(object) || isArguments(object));
+}
+
+module.exports = hasPath;
+
+
+/***/ }),
+
+/***/ 66:
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIsArguments = __webpack_require__(67),
+    isObjectLike = __webpack_require__(32);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -1221,7 +1176,32 @@ module.exports = isArguments;
 
 /***/ }),
 
-/***/ 74:
+/***/ 67:
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(60),
+    isObjectLike = __webpack_require__(32);
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]';
+
+/**
+ * The base implementation of `_.isArguments`.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ */
+function baseIsArguments(value) {
+  return isObjectLike(value) && baseGetTag(value) == argsTag;
+}
+
+module.exports = baseIsArguments;
+
+
+/***/ }),
+
+/***/ 68:
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -1263,5 +1243,5 @@ module.exports = isLength;
 
 /***/ })
 
-},[496]);
+},[444]);
 //# sourceMappingURL=nested-field.js.map

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>parallel-form.js - example - rc-form@2.2.4</title>
+  <title>parallel-form.js - example - rc-form@2.2.5</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,21 +263,21 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@2.2.4</h1>
+      <h1>rc-form@2.2.5</h1>
 
       <p>React High Order Form Component</p>
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0 */</span>
+    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint react/no-multi-comp:0, no-console:0, react/prefer-stateless-function:0 */</span>
 
 <span class="hljs-keyword">import</span> { createForm, formShape } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> PropTypes <span class="hljs-keyword">from</span> <span class="hljs-string">'prop-types'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> { regionStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 <span class="hljs-keyword">import</span> Switch <span class="hljs-keyword">from</span> <span class="hljs-string">'antd/lib/switch'</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">'antd/dist/antd.css'</span>;
+<span class="hljs-keyword">import</span> { regionStyle } <span class="hljs-keyword">from</span> <span class="hljs-string">'./styles'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TopForm</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   static propTypes = {
