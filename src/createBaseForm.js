@@ -367,6 +367,8 @@ function createBaseForm(option = {}, mixins = []) {
         if (removedList.length) {
           removedList.forEach(this.clearField);
         }
+        this.fieldsToAdd = {};
+        this.fieldsToRemove = {};
         // this.renderFields = {};
       },
 
