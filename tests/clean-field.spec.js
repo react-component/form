@@ -100,3 +100,54 @@ describe('clean field if did update removed', () => {
     });
   });
 });
+
+// https://github.com/react-component/form/issues/205
+describe('Do not clean if field dom exist', () => {
+  class Demo extends React.Component {
+    state = {
+      visible: true,
+    };
+
+    componentWillMount() {
+      this.tmp = this.props.form.getFieldDecorator('age', {
+        rules: [{ required: true }],
+      });
+    }
+
+    render() {
+      const { visible } = this.state;
+      return (
+        <div>
+          {visible && this.tmp(<input />)}
+        </div>
+      );
+    }
+  }
+
+  const FormDemo = createDOMForm({
+    withRef: true,
+  })(Demo);
+
+  // Do the test
+  it('Remove when mount', () => {
+    const wrapper = mount(<FormDemo />, { attachTo: document.body });
+    const form = wrapper.find('Demo').props().form;
+
+    // Init
+    form.validateFields((error) => {
+      expect(Object.keys(error)).toEqual(['age']);
+    });
+
+    // Refresh
+    wrapper.update();
+    form.validateFields((error) => {
+      expect(Object.keys(error)).toEqual(['age']);
+    });
+
+    // Hide
+    wrapper.find('Demo').setState({ visible: false });
+    form.validateFields((error) => {
+      expect(Object.keys(error || {})).toEqual([]);
+    });
+  });
+});

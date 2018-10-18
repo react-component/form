@@ -50,6 +50,7 @@ function createBaseForm(option = {}, mixins = []) {
         this.clearedFieldMetaCache = {};
 
         this.renderFields = {};
+        this.domFields = {};
 
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
@@ -321,8 +322,10 @@ function createBaseForm(option = {}, mixins = []) {
             meta: this.fieldsStore.getFieldMeta(name),
           };
           this.clearField(name);
+          delete this.domFields[name];
           return;
         }
+        this.domFields[name] = true;
         this.recoverClearedField(name);
         const fieldMeta = this.fieldsStore.getFieldMeta(name);
         if (fieldMeta) {
@@ -339,7 +342,9 @@ function createBaseForm(option = {}, mixins = []) {
 
       cleanUpUselessFields() {
         const fieldList = this.fieldsStore.getAllFieldsName();
-        const removedList = fieldList.filter(field => !this.renderFields[field]);
+        const removedList = fieldList.filter(field => (
+          !this.renderFields[field] && !this.domFields[field]
+        ));
         if (removedList.length) {
           removedList.forEach(this.clearField);
         }
