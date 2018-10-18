@@ -1,4 +1,4 @@
-/* eslint-disable react/prefer-es6-class */
+/* eslint-disable react/prefer-es6-class, react/prop-types */
 
 import React from 'react';
 import createReactClass from 'create-react-class';
@@ -6,6 +6,7 @@ import AsyncValidator from 'async-validator';
 import warning from 'warning';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import LifecycleDetector from './LifecycleDetector';
 import createFieldsStore from './createFieldsStore';
 import {
   argumentContainer,
@@ -154,35 +155,43 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       getFieldDecorator(name, fieldOption) {
-        const props = this.getFieldProps(name, fieldOption);
+        const _this = this;
         return (fieldElem) => {
           // We should put field in record if it is rendered
-          this.renderFields[name] = true;
+          // this.renderFields[name] = true;
 
-          const fieldMeta = this.fieldsStore.getFieldMeta(name);
-          const originalProps = fieldElem.props;
-          if (process.env.NODE_ENV !== 'production') {
-            const valuePropName = fieldMeta.valuePropName;
-            warning(
-              !(valuePropName in originalProps),
-              `\`getFieldDecorator\` will override \`${valuePropName}\`, ` +
-              `so please don't set \`${valuePropName}\` directly ` +
-              `and use \`setFieldsValue\` to set it.`
-            );
-            const defaultValuePropName =
-              `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
-            warning(
-              !(defaultValuePropName in originalProps),
-              `\`${defaultValuePropName}\` is invalid ` +
-              `for \`getFieldDecorator\` will set \`${valuePropName}\`,` +
-              ` please use \`option.initialValue\` instead.`
-            );
-          }
-          fieldMeta.originalProps = originalProps;
-          fieldMeta.ref = fieldElem.ref;
-          return React.cloneElement(fieldElem, {
-            ...props,
-            ...this.fieldsStore.getFieldValuePropValue(fieldMeta),
+          return React.createElement(LifecycleDetector, {
+            name,
+            formCtx: _this,
+            fieldOption,
+          }, (props) => {
+
+            const fieldMeta = _this.fieldsStore.getFieldMeta(name);
+            const originalProps = fieldElem.props;
+            if (process.env.NODE_ENV !== 'production') {
+              const valuePropName = fieldMeta.valuePropName;
+              warning(
+                !(valuePropName in originalProps),
+                `\`getFieldDecorator\` will override \`${valuePropName}\`, ` +
+                `so please don't set \`${valuePropName}\` directly ` +
+                `and use \`setFieldsValue\` to set it.`
+              );
+              const defaultValuePropName =
+                `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
+              warning(
+                !(defaultValuePropName in originalProps),
+                `\`${defaultValuePropName}\` is invalid ` +
+                `for \`getFieldDecorator\` will set \`${valuePropName}\`,` +
+                ` please use \`option.initialValue\` instead.`
+              );
+            }
+            fieldMeta.originalProps = originalProps;
+            fieldMeta.ref = fieldElem.ref;
+
+            return React.cloneElement(fieldElem, {
+              ...props,
+              ..._this.fieldsStore.getFieldValuePropValue(fieldMeta),
+            })
           });
         };
       },
@@ -343,7 +352,7 @@ function createBaseForm(option = {}, mixins = []) {
         if (removedList.length) {
           removedList.forEach(this.clearField);
         }
-        this.renderFields = {};
+        // this.renderFields = {};
       },
 
       clearField(name) {

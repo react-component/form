@@ -73,6 +73,10 @@ describe('clean field if did update removed', () => {
     setRef = (demo) => {
       this.demo = demo;
     };
+    
+    changeField = () => {
+      this.setState({ init: false });
+    };
 
     render() {
       const { show, init } = this.state;
@@ -80,6 +84,7 @@ describe('clean field if did update removed', () => {
         <div>
           <FormDemo ref={this.setRef} show={show} init={init} />
           <button className="my-btn" onClick={this.onClick}>Show</button>
+          <button className="my-btn2" onClick={this.changeField}>ChangeField</button>
         </div>
       );
     }
@@ -89,14 +94,24 @@ describe('clean field if did update removed', () => {
   it('Remove when mount', () => {
     const wrapper = mount(<Test />, { attachTo: document.body });
     const form = wrapper.find('Demo').props().form;
+    // when visible is false, age is also didn't mount;
     form.validateFields((error) => {
-      expect(Object.keys(error)).toEqual(['age']);
+      expect(error).toEqual(null);
     });
+    // form.validateFields((error) => {
+    //   expect(Object.keys(error)).toEqual(['age']);
+    // });
 
     wrapper.find('.my-btn').simulate('click');
 
     form.validateFields((error) => {
       expect(Object.keys(error)).toEqual(['name']);
+    });
+
+    wrapper.find('.my-btn2').simulate('click');
+
+    form.validateFields((error) => {
+      expect(Object.keys(error)).toEqual(['age']);
     });
   });
 });
