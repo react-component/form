@@ -1867,6 +1867,7 @@ function createBaseForm() {
         this.clearedFieldMetaCache = {};
 
         this.renderFields = {};
+        this.domFields = {};
 
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue', 'getFieldValue', 'setFieldsInitialValue', 'getFieldsError', 'getFieldError', 'isFieldValidating', 'isFieldsValidating', 'isFieldsTouched', 'isFieldTouched'].forEach(function (key) {
@@ -2112,8 +2113,10 @@ function createBaseForm() {
             meta: this.fieldsStore.getFieldMeta(name)
           };
           this.clearField(name);
+          delete this.domFields[name];
           return;
         }
+        this.domFields[name] = true;
         this.recoverClearedField(name);
         var fieldMeta = this.fieldsStore.getFieldMeta(name);
         if (fieldMeta) {
@@ -2132,7 +2135,7 @@ function createBaseForm() {
 
         var fieldList = this.fieldsStore.getAllFieldsName();
         var removedList = fieldList.filter(function (field) {
-          return !_this5.renderFields[field];
+          return !_this5.renderFields[field] && !_this5.domFields[field];
         });
         if (removedList.length) {
           removedList.forEach(this.clearField);
