@@ -9,13 +9,13 @@ const LifecycleDetector = createReactClass({
   componentDidUpdate(prevProps) {
     const { formCtx, name } = this.props;
     if (prevProps.name !== name) {
-      delete formCtx.renderFields[prevProps.name];
-      formCtx.renderFields[name] = true;
+      delete formCtx.fieldsToRemove[prevProps.name];
+      formCtx.fieldsToAdd[name] = true;
     }
   },
   componentWillUnmount () {
     const { formCtx, name } = this.props;
-    delete formCtx.renderFields[name];
+    delete formCtx.fieldsToRemove[name];
   },
   getProps() {
     const { formCtx, name, fieldOption } = this.props;

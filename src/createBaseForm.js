@@ -1,4 +1,4 @@
-/* eslint-disable react/prefer-es6-class, react/prop-types */
+/* eslint-disable react/prefer-es6-class */
 
 import React from 'react';
 import createReactClass from 'create-react-class';
@@ -51,6 +51,8 @@ function createBaseForm(option = {}, mixins = []) {
         this.clearedFieldMetaCache = {};
 
         this.renderFields = {};
+        this.fieldsToAdd = {};
+        this.fieldsToRemove = {};
 
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
@@ -348,6 +350,19 @@ function createBaseForm(option = {}, mixins = []) {
 
       cleanUpUselessFields() {
         const fieldList = this.fieldsStore.getAllFieldsName();
+        let nextFields = {
+          ...this.renderFields,
+        };
+        fieldList.forEach(field => {
+          if (this.fieldsToRemove[field]) {
+            delete nextFields[field];
+          }
+        });
+        nextFields = {
+          ...nextFields,
+          ...this.fieldsToAdd,
+        }
+        this.renderFields = nextFields;
         const removedList = fieldList.filter(field => !this.renderFields[field]);
         if (removedList.length) {
           removedList.forEach(this.clearField);
