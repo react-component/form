@@ -477,7 +477,7 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       validateFields(ns, opt, cb) {
-        return new Promise((resolve, reject) => {
+        const pending = new Promise((resolve, reject) => {
           const { names, options } = getParams(ns, opt, cb);
           let { callback } = getParams(ns, opt, cb);
           if (!callback || typeof callback === 'function') {
@@ -523,6 +523,8 @@ function createBaseForm(option = {}, mixins = []) {
             options,
           }, callback);
         });
+        pending.catch((e) => e);
+        return pending;
       },
 
       isSubmitting() {
