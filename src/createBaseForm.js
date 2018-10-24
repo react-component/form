@@ -225,15 +225,20 @@ function createBaseForm(option = {}, mixins = []) {
           fieldMeta.initialValue = fieldOption.initialValue;
         }
 
+        const validateRules = normalizeValidateRules(validate, rules, validateTrigger);
+        const meta = {
+          ...fieldMeta,
+          ...fieldOption,
+          validate: validateRules,
+        };
         const inputProps = {
-          ...this.fieldsStore.getFieldValuePropValue(fieldOption),
+          ...this.fieldsStore.getFieldValuePropValue(meta),
           ref: this.getCacheBind(name, `${name}__ref`, this.saveRef),
         };
         if (fieldNameProp) {
           inputProps[fieldNameProp] = formName ? `${formName}_${name}` : name;
         }
 
-        const validateRules = normalizeValidateRules(validate, rules, validateTrigger);
         const validateTriggers = getValidateTriggers(validateRules);
         validateTriggers.forEach((action) => {
           if (inputProps[action]) return;
@@ -245,11 +250,6 @@ function createBaseForm(option = {}, mixins = []) {
           inputProps[trigger] = this.getCacheBind(name, trigger, this.onCollect);
         }
 
-        const meta = {
-          ...fieldMeta,
-          ...fieldOption,
-          validate: validateRules,
-        };
         this.fieldsStore.setFieldMeta(name, meta);
         if (fieldMetaProp) {
           inputProps[fieldMetaProp] = meta;
