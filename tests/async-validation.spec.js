@@ -131,6 +131,19 @@ describe('Async Validation', () => {
     Simulate.change(form.getFieldInstance('async'));
   });
 
+  it('Whether to catch when an error occurs', (done) => {
+    form.validateFields()
+      .catch(({ errors }) => {
+        expect(Object.keys(errors).length).toBe(1);
+        expect(errors.async.errors.map(e => e.message)).toEqual(['async need to revalidate']);
+        setTimeout(() => {
+          done();
+        }, 500);
+      });
+    form.getFieldInstance('async').value = '1';
+    Simulate.change(form.getFieldInstance('async'));
+  });
+
   // TODO: submit and isSubmitting are deprecated
   it('submit works', (done) => {
     expect(form.isSubmitting()).toBe(false);
