@@ -486,10 +486,12 @@ function createBaseForm(option = {}, mixins = []) {
             callback = (errors, values) => {
               if (oldCb) {
                 oldCb(errors, values);
-              } else if (errors) {
-                reject({ errors, values });
               } else {
-                resolve(values);
+                if (errors) {
+                  reject({ errors, values });
+                } else {
+                  resolve(values);
+                }
               }
             };
           }
