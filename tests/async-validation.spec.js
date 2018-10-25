@@ -136,9 +136,8 @@ describe('Async Validation', () => {
       .catch(({ errors }) => {
         expect(Object.keys(errors).length).toBe(1);
         expect(errors.async.errors.map(e => e.message)).toEqual(['async need to revalidate']);
-        setTimeout(() => {
-          done();
-        }, 500);
+        expect.assertions(2);
+        done();
       });
     form.getFieldInstance('async').value = '1';
     Simulate.change(form.getFieldInstance('async'));
