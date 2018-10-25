@@ -26,7 +26,7 @@ class Form extends React.Component {
             required: true,
           }],
         })(<input/>)}
-        <button type={'submit'}>submit</button>
+        <button type="submit">submit</button>
       </form>
     );
   }
