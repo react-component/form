@@ -1,4 +1,5 @@
 /* eslint-disable react/prefer-es6-class */
+/* eslint-disable prefer-promise-reject-errors */
 
 import React from 'react';
 import createReactClass from 'create-react-class';
@@ -485,12 +486,10 @@ function createBaseForm(option = {}, mixins = []) {
             callback = (errors, values) => {
               if (oldCb) {
                 oldCb(errors, values);
+              } else if (errors) {
+                reject({ errors, values });
               } else {
-                if (errors) {
-                  reject({ errors, values });
-                } else {
-                  resolve(values);
-                }
+                resolve(values);
               }
             };
           }
