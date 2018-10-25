@@ -1,4 +1,5 @@
 /* eslint-disable react/prefer-es6-class */
+/* eslint-disable prefer-promise-reject-errors */
 
 import React from 'react';
 import createReactClass from 'create-react-class';
@@ -477,35 +478,52 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       validateFields(ns, opt, cb) {
-        const { names, callback, options } = getParams(ns, opt, cb);
-        const fieldNames = names ?
-          this.fieldsStore.getValidFieldsFullName(names) :
-          this.fieldsStore.getValidFieldsName();
-        const fields = fieldNames
-          .filter(name => {
-            const fieldMeta = this.fieldsStore.getFieldMeta(name);
-            return hasRules(fieldMeta.validate);
-          }).map((name) => {
-            const field = this.fieldsStore.getField(name);
-            field.value = this.fieldsStore.getFieldValue(name);
-            return field;
-          });
-        if (!fields.length) {
-          if (callback) {
-            callback(null, this.fieldsStore.getFieldsValue(fieldNames));
+        const pending = new Promise((resolve, reject) => {
+          const { names, options } = getParams(ns, opt, cb);
+          let { callback } = getParams(ns, opt, cb);
+          if (!callback || typeof callback === 'function') {
+            const oldCb = callback;
+            callback = (errors, values) => {
+              if (oldCb) {
+                oldCb(errors, values);
+              } else if (errors) {
+                reject({ errors, values });
+              } else {
+                resolve(values);
+              }
+            };
           }
-          return;
-        }
-        if (!('firstFields' in options)) {
-          options.firstFields = fieldNames.filter((name) => {
-            const fieldMeta = this.fieldsStore.getFieldMeta(name);
-            return !!fieldMeta.validateFirst;
-          });
-        }
-        this.validateFieldsInternal(fields, {
-          fieldNames,
-          options,
-        }, callback);
+          const fieldNames = names ?
+            this.fieldsStore.getValidFieldsFullName(names) :
+            this.fieldsStore.getValidFieldsName();
+          const fields = fieldNames
+            .filter(name => {
+              const fieldMeta = this.fieldsStore.getFieldMeta(name);
+              return hasRules(fieldMeta.validate);
+            }).map((name) => {
+              const field = this.fieldsStore.getField(name);
+              field.value = this.fieldsStore.getFieldValue(name);
+              return field;
+            });
+          if (!fields.length) {
+            if (callback) {
+              callback(null, this.fieldsStore.getFieldsValue(fieldNames));
+            }
+            return;
+          }
+          if (!('firstFields' in options)) {
+            options.firstFields = fieldNames.filter((name) => {
+              const fieldMeta = this.fieldsStore.getFieldMeta(name);
+              return !!fieldMeta.validateFirst;
+            });
+          }
+          this.validateFieldsInternal(fields, {
+            fieldNames,
+            options,
+          }, callback);
+        });
+        pending.catch((e) => e);
+        return pending;
       },
 
       isSubmitting() {

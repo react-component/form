@@ -108,6 +108,17 @@ describe('Async Validation', () => {
     });
   });
 
+  it('promise validateFields works for ok', (done) => {
+    form.getFieldInstance('async').value = '1';
+    Simulate.change(form.getFieldInstance('async'));
+    return form.validateFields()
+      .then(values => {
+        expect(values.normal).toBe(undefined);
+        expect(values.async).toBe('1');
+        done();
+      });
+  });
+
   it('will error if change when validating', (done) => {
     form.validateFields((errors) => {
       expect(Object.keys(errors).length).toBe(1);
@@ -116,6 +127,18 @@ describe('Async Validation', () => {
         done();
       }, 500);
     });
+    form.getFieldInstance('async').value = '1';
+    Simulate.change(form.getFieldInstance('async'));
+  });
+
+  it('Whether to catch when an error occurs', (done) => {
+    form.validateFields()
+      .catch(({ errors }) => {
+        expect(Object.keys(errors).length).toBe(1);
+        expect(errors.async.errors.map(e => e.message)).toEqual(['async need to revalidate']);
+        expect.assertions(2);
+        done();
+      });
     form.getFieldInstance('async').value = '1';
     Simulate.change(form.getFieldInstance('async'));
   });
