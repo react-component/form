@@ -392,12 +392,12 @@ function createBaseForm(option = {}, mixins = []) {
         const alreadyErrors = {};
         fields.forEach((field) => {
           const name = field.name;
-          if (options.force !== true && field.dirty === false) {
-            if (field.errors) {
-              set(alreadyErrors, name, { errors: field.errors });
-            }
-            return;
-          }
+          // if (options.force !== true && field.dirty === false) {
+          //   if (field.errors) {
+          //     set(alreadyErrors, name, { errors: field.errors });
+          //   }
+          //   return;
+          // }
           const fieldMeta = this.fieldsStore.getFieldMeta(name);
           const newField = {
             ...field,

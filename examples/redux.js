@@ -19,6 +19,11 @@ function form(state = {
         ...state,
         ...action.payload,
       };
+    case 'saveForm':
+      return {
+        ...state,
+        formData:action.payload
+      }
     default:
       return state;
   }
@@ -29,6 +34,21 @@ class Form extends Component {
     form: formShape,
   }
 
+  componentDidMount (){
+    this.props.dispatch({ type:'saveForm',payload:this.props.form})
+    setTimeout(()=>{
+      this.props.formData.validateFields((e,value)=>{
+        console.log('object')
+      })
+    },3000)
+  }
+
+  onClick = () =>{
+    this.props.formData.validateFields((error, value) => {
+      console.log("object0");
+    }); 
+  }
+  
   render() {
     const { getFieldProps, getFieldError } = this.props.form;
     const errors = getFieldError('email');
@@ -37,10 +57,22 @@ class Form extends Component {
       <div>
         <input {...getFieldProps('email', {
           rules: [{
+            required:true,
             type: 'email',
           }],
         })}
         /></div>
+        <input
+          {...getFieldProps('test',{
+            rules:[
+              {
+                required:true,
+                message:'请输入内容'
+              }
+            ]
+          })}
+        />
+        <button onClick={this.onClick}>表单点击测试</button>
       <div style={errorStyle}>
         {(errors) ? errors.join(',') : null}
       </div>
@@ -89,6 +121,7 @@ const NewForm = connect((state) => {
     formState: {
       email: state.form.email,
     },
+    formData: state.form.formData
   };
 })(createForm({
   mapPropsToFields(props) {
@@ -97,12 +130,9 @@ const NewForm = connect((state) => {
       email: createFormField(props.formState.email),
     };
   },
-  onFieldsChange(props, fields) {
+  onFieldsChange(props, fields,allfields) {
     console.log('onFieldsChange', fields);
-    props.dispatch({
-      type: 'save_fields',
-      payload: fields,
-    });
+    props.dispatch({ type: "save_fields", payload: allfields });
   },
 })(Form));
 

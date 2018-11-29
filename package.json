@@ -19,7 +19,6 @@
   },
   "files": [
     "lib",
-    "es",
     "dist",
     "assets/*.css"
   ],
@@ -37,14 +36,7 @@
   "scripts": {
     "build": "rc-tools run build",
     "compile": "rc-tools run compile --babel-runtime",
-    "gh-pages": "rc-tools run gh-pages",
-    "start": "rc-tools run server",
-    "pub": "rc-tools run pub --babel-runtime",
-    "lint": "rc-tools run lint",
-    "lint:fix": "rc-tools run lint --fix",
-    "test": "jest",
-    "prepublish": "rc-tools run guard",
-    "coverage": "jest --coverage"
+    "start": "rc-tools run server"
   },
   "jest": {
     "setupFiles": [
@@ -67,7 +59,6 @@
     "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.1.4",
     "jest": "^21.2.1",
-    "pre-commit": "1.x",
     "rc-tools": "8.x",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
@@ -78,9 +69,6 @@
     "react-router": "^3.0.0",
     "redux": "^3.0.4"
   },
-  "pre-commit": [
-    "lint"
-  ],
   "dependencies": {
     "async-validator": "~1.8.5",
     "babel-runtime": "6.x",
@@ -89,8 +77,5 @@
     "hoist-non-react-statics": "^2.3.1",
     "lodash": "^4.17.4",
     "warning": "^3.0.0"
-  },
-  "peerDependencies": {
-    "prop-types": "^15.0"
   }
 }
