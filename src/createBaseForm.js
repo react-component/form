@@ -332,8 +332,11 @@ function createBaseForm(option = {}, mixins = []) {
           if (ref) {
             if (typeof ref === 'string') {
               throw new Error(`can not set ref string for ${name}`);
+            } else if (typeof ref === 'function') {
+              ref(component);
+            } else if (Object.prototype.hasOwnProperty.call(ref, 'current')) {
+              ref.current = component;
             }
-            ref(component);
           }
         }
         this.instances[name] = component;
