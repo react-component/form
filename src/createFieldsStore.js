@@ -60,6 +60,9 @@ class FieldsStore {
     Object.keys(fieldsMeta)
       .forEach((f) => {
         nowValues[f] = this.getValueFromFields(f, nowFields);
+        if (fields[f] && this.fields[f] && !('touched' in fields[f]) ) {
+          nowFields[f].touched = this.fields[f].touched;
+        }
       });
     Object.keys(nowValues).forEach((f) => {
       const value = nowValues[f];
