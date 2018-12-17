@@ -1,6 +1,10 @@
 # History
 ----
 
+## 2.3.0 / 2018-12-17
+
+- `createForm` add `name` prop. It will be as prefix with `fieldNameProp`
+
 ## 2.2.1 / 2018-07-11
 
 - `validateFieldsAndScroll` should ignore `input[type=hidden]` [#169](https://github.com/react-component/form/pull/169) [@HsuTing](https://github.com/HsuTing)
