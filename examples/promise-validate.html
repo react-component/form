@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>form-create-component.js - example - rc-form@2.2.7</title>
+  <title>promise-validate.js - example - rc-form@2.3.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,60 +263,49 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-form@2.2.7</h1>
+      <h1>rc-form@2.3.0</h1>
 
       <p>React High Order Form Component</p>
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="undefined">import React from 'react';
+    <div class="highlight"><pre><code language="undefined">/* eslint no-console:0 */
+
+import { createForm, formShape } from 'rc-form';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { FormScope } from '../src';
 
-class Page extends React.Component {
-  componentDidMount() {
-    setTimeout(() =&gt; {
-      this.formA.setFieldsValue({ field_a: 'this is field_a.' });
-      this.formB.setFieldsValue({ field_b: 'this is field_b.' });
-    }, 2000);
-  }
-  resetAll = () =&gt; {
-    this.formA.resetFields();
-    this.formB.resetFields();
-  }
+class Form extends React.Component {
+  static propTypes = {
+    form: formShape,
+  };
 
-  formA
-  formB
+  handleSubmit = (e) =&gt; {
+    e.preventDefault();
+    const { validateFields } = this.props.form;
+    validateFields()
+      .then(console.log)
+      .catch(console.error);
+  }
 
   render() {
+    const { getFieldDecorator } = this.props.form;
     return (
-      &lt;div&gt;
-        &lt;FormScope ref={form =&gt; { this.formA = form; }}&gt;
-          {({ getFieldProps }) =&gt; (
-            &lt;div&gt;
-              Group A
-              &lt;input {...getFieldProps('field_a')}/&gt;
-              {/* more fields or complex logic */}
-            &lt;/div&gt;
-          )}
-        &lt;/FormScope&gt;
-        &lt;FormScope ref={form =&gt; { this.formB = form; }}&gt;
-          {({ getFieldProps }) =&gt; (
-            &lt;div&gt;
-              Group B
-              &lt;input {...getFieldProps('field_b')}/&gt;
-              {/* more fields or complex logic */}
-            &lt;/div&gt;
-          )}
-        &lt;/FormScope&gt;
-
-        &lt;button onClick={this.resetAll}&gt;Reset All&lt;/button&gt;
-      &lt;/div&gt;
+      &lt;form onSubmit={this.handleSubmit}&gt;
+        {getFieldDecorator('name', {
+          rules: [{
+            required: true,
+          }],
+        })(&lt;input/&gt;)}
+        &lt;button type="submit"&gt;submit&lt;/button&gt;
+      &lt;/form&gt;
     );
   }
 }
 
-ReactDOM.render(&lt;Page /&gt;, document.getElementById('__react-content'));
+const NewForm = createForm()(Form);
+
+ReactDOM.render(&lt;NewForm /&gt;, document.getElementById('__react-content'));
 </code></pre></div>
   </div>
   <a href="https://github.com/react-component/form">
@@ -327,7 +316,7 @@ ReactDOM.render(&lt;Page /&gt;, document.getElementById('__react-content'));
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="form-create-component.js?nowrap"></script>
+  <script src="promise-validate.js?nowrap"></script>
 </body>
 
 </html>
