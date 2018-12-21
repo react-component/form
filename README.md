@@ -190,6 +190,7 @@ This input's unique name.
 | option.validate[n].trigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
 | option.validate[n].rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
 | option.hidden | Ignore current field while validating or gettting fields | boolean | false |
+| option.preserve | Whether to preserve the value. That will remain the value when the field be unmounted and be mounted again | boolean | false |
 
 ##### Default value of `getValueFromEvent`
 
