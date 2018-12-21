@@ -322,8 +322,10 @@ function createBaseForm(option = {}, mixins = []) {
             field: this.fieldsStore.getField(name),
             meta: this.fieldsStore.getFieldMeta(name),
           };
-          this.clearField(name);
-          delete this.domFields[name];
+          if (!this.fieldsStore.getFieldMeta(name).preserve) {
+            this.clearField(name);
+            delete this.domFields[name];
+          }
           return;
         }
         this.domFields[name] = true;
