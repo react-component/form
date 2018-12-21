@@ -2094,12 +2094,15 @@ function createBaseForm() {
       },
       saveRef: function saveRef(name, _, component) {
         if (!component) {
-          // after destroy, delete data
-          this.clearedFieldMetaCache[name] = {
-            field: this.fieldsStore.getField(name),
-            meta: this.fieldsStore.getFieldMeta(name)
-          };
-          this.clearField(name);
+          var _fieldMeta = this.fieldsStore.getFieldMeta(name);
+          if (!_fieldMeta.preserve) {
+            // after destroy, delete data
+            this.clearedFieldMetaCache[name] = {
+              field: this.fieldsStore.getField(name),
+              meta: _fieldMeta
+            };
+            this.clearField(name);
+          }
           delete this.domFields[name];
           return;
         }
@@ -2125,7 +2128,8 @@ function createBaseForm() {
 
         var fieldList = this.fieldsStore.getAllFieldsName();
         var removedList = fieldList.filter(function (field) {
-          return !_this5.renderFields[field] && !_this5.domFields[field];
+          var fieldMeta = _this5.fieldsStore.getFieldMeta(field);
+          return !_this5.renderFields[field] && !_this5.domFields[field] && !fieldMeta.preserve;
         });
         if (removedList.length) {
           removedList.forEach(this.clearField);
