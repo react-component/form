@@ -52,6 +52,7 @@ function createBaseForm(option = {}, mixins = []) {
 
         this.renderFields = {};
         this.domFields = {};
+        this.preserveFields = {};
 
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
@@ -204,6 +205,12 @@ function createBaseForm(option = {}, mixins = []) {
           );
         }
 
+        if (!usersFieldOption.preserve){
+          delete this.preserveFields[name];
+        } else {
+          this.preserveFields[name] = true;
+        }
+        
         delete this.clearedFieldMetaCache[name];
 
         const fieldOption = {
@@ -317,13 +324,15 @@ function createBaseForm(option = {}, mixins = []) {
 
       saveRef(name, _, component) {
         if (!component) {
-          // after destroy, delete data
-          this.clearedFieldMetaCache[name] = {
-            field: this.fieldsStore.getField(name),
-            meta: this.fieldsStore.getFieldMeta(name),
-          };
-          this.clearField(name);
-          delete this.domFields[name];
+          if (!this.preserveFields[name]) {
+            // after destroy, delete data
+            this.clearedFieldMetaCache[name] = {
+              field: this.fieldsStore.getField(name),
+              meta: this.fieldsStore.getFieldMeta(name),
+            };
+            this.clearField(name);
+            delete this.domFields[name];
+          }
           return;
         }
         this.domFields[name] = true;
@@ -347,7 +356,7 @@ function createBaseForm(option = {}, mixins = []) {
       cleanUpUselessFields() {
         const fieldList = this.fieldsStore.getAllFieldsName();
         const removedList = fieldList.filter(field => (
-          !this.renderFields[field] && !this.domFields[field]
+          !this.renderFields[field] && !this.domFields[field] && !this.preserveFields[field]
         ));
         if (removedList.length) {
           removedList.forEach(this.clearField);
