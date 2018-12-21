@@ -52,7 +52,6 @@ function createBaseForm(option = {}, mixins = []) {
 
         this.renderFields = {};
         this.domFields = {};
-        this.preserveFields = {};
 
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
@@ -204,12 +203,6 @@ function createBaseForm(option = {}, mixins = []) {
             '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.'
           );
         }
-
-        if (!usersFieldOption.preserve){
-          delete this.preserveFields[name];
-        } else {
-          this.preserveFields[name] = true;
-        }
         
         delete this.clearedFieldMetaCache[name];
 
@@ -324,11 +317,12 @@ function createBaseForm(option = {}, mixins = []) {
 
       saveRef(name, _, component) {
         if (!component) {
-          if (!this.preserveFields[name]) {
+          const fieldMeta = this.fieldsStore.getFieldMeta(name);
+          if (!fieldMeta.preserve) {
             // after destroy, delete data
             this.clearedFieldMetaCache[name] = {
               field: this.fieldsStore.getField(name),
-              meta: this.fieldsStore.getFieldMeta(name),
+              meta: fieldMeta,
             };
             this.clearField(name);
             delete this.domFields[name];
@@ -355,9 +349,10 @@ function createBaseForm(option = {}, mixins = []) {
 
       cleanUpUselessFields() {
         const fieldList = this.fieldsStore.getAllFieldsName();
-        const removedList = fieldList.filter(field => (
-          !this.renderFields[field] && !this.domFields[field] && !this.preserveFields[field]
-        ));
+        const removedList = fieldList.filter(field => {
+          const fieldMeta = this.fieldsStore.getFieldMeta(field);
+          return (!this.renderFields[field] && !this.domFields[field] && !fieldMeta.preserve);
+        });
         if (removedList.length) {
           removedList.forEach(this.clearField);
         }
