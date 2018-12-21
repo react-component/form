@@ -203,7 +203,7 @@ function createBaseForm(option = {}, mixins = []) {
             '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.'
           );
         }
-        
+
         delete this.clearedFieldMetaCache[name];
 
         const fieldOption = {
