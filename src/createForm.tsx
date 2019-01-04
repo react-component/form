@@ -1,5 +1,4 @@
 import createBaseForm from './createBaseForm';
-
 export const mixin = {
   getForm() {
     return {
@@ -20,13 +19,11 @@ export const mixin = {
       isSubmitting: this.isSubmitting,
       submit: this.submit,
       validateFields: this.validateFields,
-      resetFields: this.resetFields,
+      resetFields: this.resetFields
     };
-  },
+  }
 };
-
 function createForm(options) {
   return createBaseForm(options, [mixin]);
 }
-
 export default createForm;

@@ -18,7 +18,6 @@ const formShape = PropTypes.shape({
   isSubmitting: PropTypes.func,
   submit: PropTypes.func,
   validateFields: PropTypes.func,
-  resetFields: PropTypes.func,
+  resetFields: PropTypes.func
 });
-
 export default formShape;
