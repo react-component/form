@@ -81,7 +81,7 @@ class Form extends React.Component {
 export createForm()(Form);
 ```
 
-### use width react native
+### Use with React Native
 
 Expo preview   
 
