@@ -529,7 +529,10 @@ function createBaseForm(option = {}, mixins = []) {
             options,
           }, callback);
         });
-        pending.catch((e) => e);
+        pending.catch((e) => {
+          console.error(e)
+          return e
+        });
         return pending;
       },
 
