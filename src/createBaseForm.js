@@ -530,8 +530,10 @@ function createBaseForm(option = {}, mixins = []) {
           }, callback);
         });
         pending.catch((e) => {
-          console.error(e)
-          return e
+          if (console.error) { // eslint-disable-line
+            console.error(e); // eslint-disable-line
+          }
+          return e;
         });
         return pending;
       },
@@ -567,7 +569,7 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       render() {
-        const { wrappedComponentRef, ...restProps } = this.props;
+        const { wrappedComponentRef, ...restProps } = this.props; // eslint-disable-line
         const formProps = {
           [formPropName]: this.getForm(),
         };
