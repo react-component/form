@@ -14,7 +14,9 @@ class Test extends React.Component {
         const es = Object.keys(errors).map((name) => {
           return errors[name].errors;
         }).reduce((result, current) => {
-          return result.concat(...current);
+          return result.concat(...current.map(entity => ({
+            ...entity, message: `${entity.message}_force`,
+          })));
         }, []);
         callback(es);
       } else {
@@ -82,8 +84,8 @@ describe('validateFields', () => {
     form.validateFields((errors) => {
       expect(errors).toBeTruthy();
       expect(Object.keys(errors).length).toBe(1);
-      expect(form.getFieldError('check')).toEqual(['error']);
-      expect(errors.check.errors.map(e => e.message)).toEqual(['error']);
+      expect(form.getFieldError('check')).toEqual(['error', 'error_force']);
+      expect(errors.check.errors.map(e => e.message)).toEqual(['error', 'error_force']);
       expect(form.getFieldError('force')).toBeFalsy();
       done();
     });
