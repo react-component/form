@@ -13,8 +13,6 @@ describe('reset form validate when rule changed', () => {
       const { getFieldDecorator } = form;
       const type = form.getFieldValue("type");
 
-      console.log('change render:', type);
-
       return (
         <div>
           {getFieldDecorator('type')(
