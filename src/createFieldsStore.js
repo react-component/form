@@ -96,6 +96,18 @@ class FieldsStore {
     this.fieldsMeta[name] = meta;
   }
 
+  setFieldsAsDirty(names) {
+    names.forEach((name) => {
+      const field = this.fields[name];
+      if (field) {
+        this.fields[name] = {
+          ...field,
+          dirty: true,
+        };
+      }
+    });
+  }
+
   getFieldMeta(name) {
     this.fieldsMeta[name] = this.fieldsMeta[name] || {};
     return this.fieldsMeta[name];

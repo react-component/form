@@ -133,6 +133,11 @@ function createBaseForm(option = {}, mixins = []) {
           ...field,
           dirty: true,
         };
+
+        this.fieldsStore.setFieldsAsDirty(
+          this.fieldsStore.getAllFieldsName()
+        );
+
         this.validateFieldsInternal([newField], {
           action,
           options: {
