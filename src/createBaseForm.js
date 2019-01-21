@@ -7,6 +7,7 @@ import AsyncValidator from 'async-validator';
 import warning from 'warning';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import eq from 'lodash/eq';
 import createFieldsStore from './createFieldsStore';
 import {
   argumentContainer,
@@ -451,7 +452,7 @@ function createBaseForm(option = {}, mixins = []) {
             const fieldErrors = get(errorsGroup, name);
             const nowField = this.fieldsStore.getField(name);
             // avoid concurrency problems
-            if (nowField.value !== allValues[name]) {
+            if (!eq(nowField.value,allValues[name])) {
               expired.push({
                 name,
               });
