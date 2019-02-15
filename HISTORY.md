@@ -1,6 +1,10 @@
 # History
 ----
 
+## 2.4.0 / 2018-12-21
+
+- Field option add `preserve` to enable you keep value even if field removed.
+
 ## 2.3.0 / 2018-12-17
 
 - `createForm` add `name` prop. It will be as prefix with `fieldNameProp`

@@ -8,6 +8,8 @@ React High Order Form Component.
 [![gemnasium deps][gemnasium-image]][gemnasium-url]
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
+[![Code Quality: Javascript][lgtm-badge]][lgtm-badge-url]
+[![Total alerts][lgtm-alerts]][lgtm-alerts-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-form.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-form
@@ -21,6 +23,10 @@ React High Order Form Component.
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/rc-form.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-form
+[lgtm-badge]: https://img.shields.io/lgtm/grade/javascript/g/react-component/form.svg?logo=lgtm&logoWidth=18
+[lgtm-badge-url]: https://lgtm.com/projects/g/react-component/form/context:javascript
+[lgtm-alerts]: https://img.shields.io/lgtm/alerts/g/react-component/form.svg?logo=lgtm&logoWidth=18
+[lgtm-alerts-url]: https://lgtm.com/projects/g/react-component/form/alerts
 
 ## Development
 
@@ -75,7 +81,7 @@ class Form extends React.Component {
 export createForm()(Form);
 ```
 
-### use width react native
+### Use with React Native
 
 Expo preview   
 
@@ -190,6 +196,7 @@ This input's unique name.
 | option.validate[n].trigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
 | option.validate[n].rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
 | option.hidden | Ignore current field while validating or gettting fields | boolean | false |
+| option.preserve | Whether to preserve the value. That will remain the value when the field be unmounted and be mounted again | boolean | false |
 
 ##### Default value of `getValueFromEvent`
 
@@ -214,7 +221,7 @@ function defaultGetValueFromEvent(e) {
 {
   validate: [{
     trigger: 'onBlur',
-    rules: [required: true],
+    rules: [{required: true}],
   }],
 }
 ```
