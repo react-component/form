@@ -529,9 +529,7 @@ function createBaseForm(option = {}, mixins = []) {
               return field;
             });
           if (!fields.length) {
-            if (callback) {
-              callback(null, this.fieldsStore.getFieldsValue(fieldNames));
-            }
+            callback(null, this.fieldsStore.getFieldsValue(fieldNames));
             return;
           }
           if (!('firstFields' in options)) {
@@ -569,7 +567,7 @@ function createBaseForm(option = {}, mixins = []) {
         if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
           warning(
             false,
-            '`submit` is deprecated.' +
+            '`submit` is deprecated. ' +
               'Actually, it\'s more convenient to handle submitting status by yourself.'
           );
         }
