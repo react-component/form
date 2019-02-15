@@ -221,7 +221,7 @@ function defaultGetValueFromEvent(e) {
 {
   validate: [{
     trigger: 'onBlur',
-    rules: [required: true],
+    rules: [{required: true}],
   }],
 }
 ```
