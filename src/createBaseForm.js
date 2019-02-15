@@ -118,6 +118,9 @@ function createBaseForm(option = {}, mixins = []) {
       onCollect(name_, action, ...args) {
         const { name, field, fieldMeta } = this.onCollectCommon(name_, action, args);
         const { validate } = fieldMeta;
+
+        this.fieldsStore.setFieldsAsDirty();
+
         const newField = {
           ...field,
           dirty: hasRules(validate),
@@ -133,6 +136,9 @@ function createBaseForm(option = {}, mixins = []) {
           ...field,
           dirty: true,
         };
+
+        this.fieldsStore.setFieldsAsDirty();
+
         this.validateFieldsInternal([newField], {
           action,
           options: {

@@ -1,6 +1,7 @@
 import set from 'lodash/set';
 import createFormField, { isFormField } from './createFormField';
 import {
+  hasRules,
   flattenFields,
   getErrorStrs,
   startsWith,
@@ -94,6 +95,19 @@ class FieldsStore {
 
   setFieldMeta(name, meta) {
     this.fieldsMeta[name] = meta;
+  }
+
+  setFieldsAsDirty() {
+    Object.keys(this.fields).forEach((name) => {
+      const field = this.fields[name];
+      const fieldMeta = this.fieldsMeta[name];
+      if (field && fieldMeta && hasRules(fieldMeta.validate)) {
+        this.fields[name] = {
+          ...field,
+          dirty: true,
+        };
+      }
+    });
   }
 
   getFieldMeta(name) {
