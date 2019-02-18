@@ -35,6 +35,7 @@ function createBaseForm(option = {}, mixins = []) {
     fieldDataProp,
     formPropName = 'form',
     name: formName,
+    defaultValidateTrigger = DEFAULT_TRIGGER,
     // @deprecated
     withRef,
   } = option;
@@ -218,7 +219,7 @@ function createBaseForm(option = {}, mixins = []) {
 
         const fieldOption = {
           name,
-          trigger: DEFAULT_TRIGGER,
+          trigger: defaultValidateTrigger,
           valuePropName: 'value',
           validate: [],
           ...usersFieldOption,
