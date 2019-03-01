@@ -452,7 +452,35 @@ function createBaseForm(option = {}, mixins = []) {
           };
           if (errors && errors.length) {
             errors.forEach((e) => {
-              const fieldName = e.field;
+              const errorFieldName = e.field;
+              let fieldName = errorFieldName;
+
+              // Handle using array validation rule.
+              // ref: https://github.com/ant-design/ant-design/issues/14275
+              Object.keys(allRules).some((ruleFieldName) => {
+                const rules = allRules[ruleFieldName] || [];
+
+                // Exist if match rule
+                if (ruleFieldName === errorFieldName) {
+                  fieldName = ruleFieldName;
+                  return true;
+                }
+
+                // Skip if not match array type
+                if (rules.every(({ type }) => type !== 'array') && errorFieldName.indexOf(ruleFieldName) !== 0) {
+                  return false;
+                }
+
+                // Exist if match the field name
+                const restPath = errorFieldName.slice(ruleFieldName.length + 1);
+                if (/\d+/.test(restPath)) {
+                  fieldName = ruleFieldName;
+                  return true;
+                }
+
+                return false;
+              });
+
               const field = get(errorsGroup, fieldName);
               if (typeof field !== 'object' || Array.isArray(field)) {
                 set(errorsGroup, fieldName, { errors: [] });
