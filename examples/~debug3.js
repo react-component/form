@@ -1,14 +1,14 @@
-webpackJsonp([22],{
+webpackJsonp([18],{
 
-/***/ 451:
+/***/ 519:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(452);
+module.exports = __webpack_require__(520);
 
 
 /***/ }),
 
-/***/ 452:
+/***/ 520:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30,89 +30,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint-disable */
 
 
 
 
 
-var Form = function (_React$Component) {
-  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Form, _React$Component);
+var Test = function (_React$Component) {
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Test, _React$Component);
 
-  function Form() {
+  function Test() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Form);
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Test);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref, [this].concat(args))), _this), _this.onSubmit = function (e) {
-      e.preventDefault();
-      _this.props.form.validateFields(function (error, values) {
-        if (!error) {
-          console.log('ok', values);
-        } else {
-          console.log('error', error, values);
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = Test.__proto__ || Object.getPrototypeOf(Test)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      name: { value: '' },
+      age: { value: '' }
+    }, _this.onClick = function () {
+      _this.props.form.setFields({
+        name: {
+          value: '23333',
+          errors: [new Error('ffff')]
         }
       });
-    }, _this.onChange = function (e) {
-      console.log(e.target.value);
+
+      setTimeout(function () {
+        console.log('>>>', _this.props.form.getFieldsError());
+      }, 1000);
     }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Form, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.nameDecorator = this.props.form.getFieldDecorator('name', {
-        initialValue: '',
-        rules: [{
-          required: true,
-          message: 'What\'s your name?'
-        }]
-      });
-    }
-  }, {
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Test, [{
     key: 'render',
     value: function render() {
-      var getFieldError = this.props.form.getFieldError;
+      var getFieldDecorator = this.props.form.getFieldDecorator;
 
 
       return __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-        'form',
-        { onSubmit: this.onSubmit },
-        this.nameDecorator(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', {
-          onChange: this.onChange
-        })),
-        __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
-          'div',
-          { style: { color: 'red' } },
-          (getFieldError('name') || []).join(', ')
-        ),
+        'div',
+        null,
+        getFieldDecorator('name', {
+          rules: [{ required: true }]
+        })(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement('input', null)),
         __WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(
           'button',
-          null,
-          'Submit'
+          { onClick: this.onClick },
+          'aaa'
         )
       );
     }
   }]);
 
-  return Form;
+  return Test;
 }(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
 
-Form.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_6_rc_form__["formShape"]
-};
+Test = Object(__WEBPACK_IMPORTED_MODULE_6_rc_form__["a" /* createForm */])()(Test);
 
+__WEBPACK_IMPORTED_MODULE_5_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(Test, null), document.getElementById('__react-content'));
 
-var WrappedForm = Object(__WEBPACK_IMPORTED_MODULE_6_rc_form__["a" /* createForm */])()(Form);
-__WEBPACK_IMPORTED_MODULE_5_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_4_react___default.a.createElement(WrappedForm, null), document.getElementById('__react-content'));
+/* eslint-enable */
 
 /***/ })
 
-},[451]);
-//# sourceMappingURL=getFieldDecorator.js.map
+},[519]);
+//# sourceMappingURL=~debug3.js.map
