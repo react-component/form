@@ -38,7 +38,7 @@ class Form1 extends React.Component {
             required: true,
             message: 'What\'s your name 1?',
           }],
-        })(<input />) : null}
+        })(props => <input {...props} />) : null}
         <span>text content</span>
         {this.state.useInput ? null : getFieldDecorator('name', {
           initialValue: '',
@@ -46,7 +46,7 @@ class Form1 extends React.Component {
             required: true,
             message: 'What\'s your name 2?',
           }],
-        })(<input />)}
+        })(props => <input {...props} />)}
         <div>
           <label>
             <input type="checkbox" checked={this.state.useInput} onChange={this.changeUseInput} />
@@ -97,9 +97,9 @@ class Form2 extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         <h2>situation 2</h2>
-        {this.state.useInput ? this.nameDecorator(<input />) : null}
+        {this.state.useInput ? this.nameDecorator(props => <input {...props} />) : null}
         <span>text content</span>
-        {this.state.useInput ? null : this.nameDecorator(<input />)}
+        {this.state.useInput ? null : this.nameDecorator(props => <input {...props} />)}
         <div>
           <label>
             <input type="checkbox" checked={this.state.useInput} onChange={this.changeUseInput} />
@@ -146,14 +146,14 @@ class Form3 extends React.Component {
             required: true,
             message: 'What\'s your name 1?',
           }],
-        })(<input />)}
+        })(props => <input {...props} />)}
         {this.state.useInput ? null : getFieldDecorator('name2', {
           initialValue: '',
           rules: [{
             required: true,
             message: 'What\'s your name 2?',
           }],
-        })(<input />)}
+        })(props => <input {...props} />)}
         <div>
           <label>
             <input type="checkbox" checked={this.state.useInput} onChange={this.changeUseInput} />

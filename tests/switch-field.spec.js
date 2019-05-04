@@ -35,9 +35,9 @@ describe('switch field should not lost field', () => {
       // react will detect it by key and knowing there was a change on order.
       // we need to test [custom reparenting], so use hard written three element.
       return <div>
-        {getFieldDecorator(one)(<input className="one"/>)}
-        {getFieldDecorator(two)(<input className="two"/>)}
-        {getFieldDecorator(three)(<input className="three"/>)}
+        {getFieldDecorator(one)(props => <input {...props} className="one"/>)}
+        {getFieldDecorator(two)(props => <input {...props} className="two"/>)}
+        {getFieldDecorator(three)(props => <input {...props} className="three"/>)}
         <button className="sw" onClick={this.switch}>Switch a with b</button>
       </div>
     }

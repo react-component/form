@@ -17,11 +17,11 @@ describe('binding dynamic fields without any errors', () => {
           return (
             <form>
               <span>text content</span>
-              {mode ? getFieldDecorator('name')(<input id="text" />) : null}
+              {mode ? getFieldDecorator('name')(props => <input {...props} id="text" />) : null}
               <span>text content</span>
               <span>text content</span>
               <span>text content</span>
-              {mode ? null : getFieldDecorator('name')(<input id="number" type="number" />)}
+              {mode ? null : getFieldDecorator('name')(props => <input {...props} id="number" type="number" />)}
               <span>text content</span>
             </form>
           );
@@ -56,11 +56,11 @@ describe('binding dynamic fields without any errors', () => {
           return (
             <form>
               <span>text content</span>
-              {mode ? getFieldDecorator('input1')(<input id="text1" />) : null}
+              {mode ? getFieldDecorator('input1')(props => <input {...props} id="text1" />) : null}
               <span>text content</span>
               <span>text content</span>
               <span>text content</span>
-              {mode ? getFieldDecorator('input2')(<input id="text2" />) : null}
+              {mode ? getFieldDecorator('input2')(props => <input {...props} id="text2" />) : null}
               <span>text content</span>
             </form>
           );
@@ -106,9 +106,9 @@ describe('binding dynamic fields without any errors', () => {
           const { getFieldDecorator } = form;
           return (
             <form>
-              {mode ? getFieldDecorator('name.xxx')(<input id="text" />) : null}
+              {mode ? getFieldDecorator('name.xxx')(props => <input {...props} id="text" />) : null}
               <span>text content</span>
-              {mode ? null : getFieldDecorator('name.xxx')(<input id="number" type="number" />)}
+              {mode ? null : getFieldDecorator('name.xxx')(props => <input {...props} id="number" type="number" />)}
             </form>
           );
         }
@@ -142,9 +142,9 @@ describe('binding dynamic fields without any errors', () => {
           const { getFieldDecorator } = form;
           return (
             <form>
-              {mode ? getFieldDecorator('name')(<input key="text" id="text" />) : null}
+              {mode ? getFieldDecorator('name')(props => <input {...props} key="text" id="text" />) : null}
               {mode ? null : getFieldDecorator('name')(
-                <input key="number" id="number" type="number" />
+                props => <input {...props} key="number" id="number" type="number" />
               )}
             </form>
           );
@@ -178,10 +178,10 @@ describe('binding dynamic fields without any errors', () => {
           const { getFieldDecorator } = form;
           return (
             <form>
-              {getFieldDecorator('name1')(<input />)}
-              {getFieldDecorator('name2')(<input />)}
-              {mode ? null : getFieldDecorator('name3')(<input />)}
-              {mode ? null : getFieldDecorator('name4')(<input />)}
+              {getFieldDecorator('name1')(props => <input {...props} />)}
+              {getFieldDecorator('name2')(props => <input {...props} />)}
+              {mode ? null : getFieldDecorator('name3')(props => <input {...props} />)}
+              {mode ? null : getFieldDecorator('name4')(props => <input {...props} />)}
             </form>
           );
         }
@@ -218,11 +218,11 @@ describe('binding dynamic fields without any errors', () => {
           return (
             <form>
               <span>text content</span>
-              {mode ? getFieldDecorator('input1')(<input id="text1" />) : null}
+              {mode ? getFieldDecorator('input1')(props => <input {...props} id="text1" />) : null}
               <span>text content</span>
               <span>text content</span>
               <span>text content</span>
-              {mode ? getFieldDecorator('input2')(<input id="text2" />) : null}
+              {mode ? getFieldDecorator('input2')(props => <input {...props} id="text2" />) : null}
               <span>text content</span>
             </form>
           );

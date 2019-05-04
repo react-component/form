@@ -113,11 +113,14 @@ class Form extends React.Component {
     return (
       <div>
         {this.requiredDecorator(
-          <input
-            onChange={
-              // can still write your own onChange
-            }
-          />
+          props => (
+            <input
+              {...props}
+              onChange={
+                // can still write your own onChange
+              }
+            />
+          )
         )}
         {(errors = getFieldError('required')) ? errors.join(',') : null}
         <button onClick={this.submit}>submit</button>
@@ -226,13 +229,13 @@ function defaultGetValueFromEvent(e) {
 }
 ```
 
-### getFieldDecorator(name:String, option: Object) => (React.Node) => React.Node
+### getFieldDecorator(name:String, option: Object) => (props: Object) => React.Node
 
 Similar to `getFieldProps`, but add some helper warnings and you can write onXX directly inside React.Node props:
 
 ```jsx
 <form>
-  {getFieldDecorator('name', otherOptions)(<input />)}
+  {getFieldDecorator('name', otherOptions)(props => <input {...props} />)}
 </form>
 ```
 

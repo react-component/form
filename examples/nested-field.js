@@ -81,9 +81,12 @@ class Form extends React.Component {
             message: 'What\'s the member_0 firstname?',
           }],
         })(
-          <input
-            onChange={this.onChange}
-          />
+          props => (
+            <input
+              {...props}
+              onChange={this.onChange}
+            />
+          )
         )}
         <div style={{ color: 'red' }}>
           {(getFieldError('member[0].name.firstname') || []).join(', ')}
@@ -97,9 +100,12 @@ class Form extends React.Component {
             message: 'What\'s the member_0 lastname?',
           }],
         })(
-          <input
-            onChange={this.onChange}
-          />
+          props => (
+            <input
+              {...props}
+              onChange={this.onChange}
+            />
+          )
         )}
         <div style={{ color: 'red' }}>
           {(getFieldError('member[0].name.firstname') || []).join(', ')}
@@ -113,9 +119,12 @@ class Form extends React.Component {
             message: 'What\'s the member_1 fistname?',
           }],
         })(
-          <input
-            onChange={this.onChange}
-          />
+          props => (
+            <input
+              {...props}
+              onChange={this.onChange}
+            />
+          )
         )}
         <div style={{ color: 'red' }}>
           {(getFieldError('member[1].name.firstname') || []).join(', ')}
@@ -129,9 +138,12 @@ class Form extends React.Component {
             message: 'What\'s the member_1 lastname?',
           }],
         })(
-          <input
-            onChange={this.onChange}
-          />
+          props => (
+            <input
+              {...props}
+              onChange={this.onChange}
+            />
+          )
         )}
         <div style={{ color: 'red' }}>
           {(getFieldError('member[1].name.firstname') || []).join(', ')}
@@ -145,9 +157,12 @@ class Form extends React.Component {
             message: 'What\'s a[0][1].b.c[0]?',
           }],
         })(
-          <input
-            onChange={this.onChange}
-          />
+          props => (
+            <input
+              {...props}
+              onChange={this.onChange}
+            />
+          )
         )}
         <div style={{ color: 'red' }}>
           {(getFieldError('a[0][1].b.c[0]') || []).join(', ')}
@@ -161,9 +176,12 @@ class Form extends React.Component {
             message: 'What\'s w.x.y.z[0]?',
           }],
         })(
-          <input
-            onChange={this.onChange}
-          />
+          props => (
+            <input
+              {...props}
+              onChange={this.onChange}
+            />
+          )
         )}
         <div style={{ color: 'red' }}>
           {(getFieldError('w.x.y.z[0]') || []).join(', ')}

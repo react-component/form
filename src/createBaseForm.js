@@ -167,35 +167,18 @@ function createBaseForm(option = {}, mixins = []) {
 
       getFieldDecorator(name, fieldOption) {
         const props = this.getFieldProps(name, fieldOption);
-        return (fieldElem) => {
+        return (fieldFunc) => {
           // We should put field in record if it is rendered
           this.renderFields[name] = true;
 
           const fieldMeta = this.fieldsStore.getFieldMeta(name);
-          const originalProps = fieldElem.props;
-          if (process.env.NODE_ENV !== 'production') {
-            const valuePropName = fieldMeta.valuePropName;
-            warning(
-              !(valuePropName in originalProps),
-              `\`getFieldDecorator\` will override \`${valuePropName}\`, ` +
-              `so please don't set \`${valuePropName}\` directly ` +
-              `and use \`setFieldsValue\` to set it.`
-            );
-            const defaultValuePropName =
-              `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
-            warning(
-              !(defaultValuePropName in originalProps),
-              `\`${defaultValuePropName}\` is invalid ` +
-              `for \`getFieldDecorator\` will set \`${valuePropName}\`,` +
-              ` please use \`option.initialValue\` instead.`
-            );
-          }
-          fieldMeta.originalProps = originalProps;
-          fieldMeta.ref = fieldElem.ref;
-          return React.cloneElement(fieldElem, {
+
+          const values = {
             ...props,
-            ...this.fieldsStore.getFieldValuePropValue(fieldMeta),
-          });
+            ...this.fieldsStore.getFieldValuePropValue(fieldMeta)
+          }
+
+          return fieldFunc(values);
         };
       },
 

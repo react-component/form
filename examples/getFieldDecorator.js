@@ -40,9 +40,12 @@ class Form extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         {this.nameDecorator(
-          <input
-            onChange={this.onChange}
-          />
+          props => (
+            <input
+              {...props}
+              onChange={this.onChange}
+            />
+          )
         )}
         <div style={{ color: 'red' }}>
           {(getFieldError('name') || []).join(', ')}

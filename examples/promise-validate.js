@@ -25,7 +25,7 @@ class Form extends React.Component {
           rules: [{
             required: true,
           }],
-        })(<input/>)}
+        })(props => <input {...props} />)}
         <button type="submit">submit</button>
       </form>
     );

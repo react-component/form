@@ -118,11 +118,14 @@ class App extends React.Component {
             },
           ],
         })(
-          <FromItem
-            autoFocus
-            placeholder="手机号"
-            error={getFieldError('username')}
-          />
+          props => (
+            <FromItem
+              {...props}
+              autoFocus
+              placeholder="手机号"
+              error={getFieldError('username')}
+            />
+          )
         )}
         <Button color="#40a9ff" onPress={this.submit} title="登陆" />
       </View>

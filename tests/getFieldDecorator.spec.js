@@ -27,15 +27,15 @@ describe('getFieldDecorator', () => {
     render() {
       return (<div>
         {this.normalInput(
-          <input />
+          props => <input {...props} />
         )}
 
         {this.requiredInput(
-          <input />
+          props => <input {...props} />
         )}
 
         {this.blurRequiredInput(
-          <input/>
+          props => <input {...props} />
         )}
       </div>);
     }
@@ -163,7 +163,7 @@ describe('dynamic', () => {
                 { required: true, message: 'Title is required' },
                 { min: 3, message: 'Title should be 3+ characters' },
               ],
-            })(<input />)}
+            })(props => <input {...props} />)}
           </div>
         );
       }

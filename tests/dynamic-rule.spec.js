@@ -16,17 +16,17 @@ describe('reset form validate when rule changed', () => {
       return (
         <div>
           {getFieldDecorator('type')(
-            <input className="type" />
+            props => <input {...props} className="type" />
           )}
           {getFieldDecorator("val1", {
             rules: [{ required: type }]
           })(
-            <input className="val1" />
+            props => <input {...props} className="val1" />
           )}
           {getFieldDecorator("val2", {
             rules: [{ required: !type }]
           })(
-            <input className="val1" />
+            props => <input {...props} className="val1" />
           )}
           <button />
         </div>

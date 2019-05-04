@@ -44,7 +44,7 @@ describe('clean field', () => {
               name:
               {getFieldDecorator('name', {
                 rules: [{ required: true }],
-              })(<input />)}
+              })(props => <input {...props} />)}
             </div>
           );
         } else {
@@ -53,7 +53,7 @@ describe('clean field', () => {
               age:
               {getFieldDecorator('age', {
                 rules: [{ required: true }],
-              })(<input />)}
+              })(props => <input {...props} />)}
             </div>
           );
         }
@@ -130,7 +130,7 @@ describe('clean field', () => {
         const { visible } = this.state;
         return (
           <div>
-            {visible && this.tmp(<input />)}
+            {visible && this.tmp(props => <input {...props} />)}
           </div>
         );
       }
@@ -189,7 +189,7 @@ describe('clean field', () => {
               name:
               {getFieldDecorator('name', {
                 rules: [{ required: true }],
-              })(<input />)}
+              })(props => <input {...props} />)}
             </div>
           );
         } else {
@@ -199,7 +199,7 @@ describe('clean field', () => {
               {getFieldDecorator('age', {
                 rules: [{ required: true }],
                 preserve: true,
-              })(<input />)}
+              })(props => <input {...props} />)}
             </div>
           );
         }

@@ -16,7 +16,7 @@ class Test extends React.Component {
           rules: [{
             required: true,
           }],
-        })(<textarea style={{ overflowY: 'auto' }} />)}
+        })(props => <textarea {...props} style={{ overflowY: 'auto' }} />)}
       </div>
     );
   }

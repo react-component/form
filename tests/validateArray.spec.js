@@ -26,7 +26,7 @@ class Test extends React.Component {
           initialValue: ['test'],
           rules: [{ required: true, message: 'The tags must be urls', type: 'array', defaultField: { type: 'url' } }],
         })(
-          <MyInput />
+          props => <MyInput {...props} />
         )}
       </div>
     );
