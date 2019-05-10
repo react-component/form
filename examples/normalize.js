@@ -1,6 +1,6 @@
 webpackJsonp([9],{
 
-/***/ 11:
+/***/ 12:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20,41 +20,45 @@ var errorStyle = {
 
 /***/ }),
 
-/***/ 36:
+/***/ 30:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 459:
+/***/ 470:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(460);
+module.exports = __webpack_require__(471);
 
 
 /***/ }),
 
-/***/ 460:
+/***/ 471:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rc_form__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_antd_dist_antd_css__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_antd_dist_antd_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles__ = __webpack_require__(11);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rc_form__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd_dist_antd_css__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_antd_dist_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_antd_dist_antd_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__styles__ = __webpack_require__(12);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /* eslint react/no-multi-comp:0, no-console:0 */
 
@@ -65,20 +69,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var CustomInput = function (_React$Component) {
-  _inherits(CustomInput, _React$Component);
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(CustomInput, _React$Component);
 
   function CustomInput() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, CustomInput);
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, CustomInput);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CustomInput.__proto__ || Object.getPrototypeOf(CustomInput)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this.checkUpper = function (rule, value, callback) {
+    return _ret = (_temp = (_this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref = CustomInput.__proto__ || Object.getPrototypeOf(CustomInput)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this.checkUpper = function (rule, value, callback) {
       if (value !== value.toUpperCase()) {
         callback(new Error('need to be upper!'));
       } else {
@@ -89,10 +93,10 @@ var CustomInput = function (_React$Component) {
         return v;
       }
       return v.toUpperCase();
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    }, _temp), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this, _ret);
   }
 
-  _createClass(CustomInput, [{
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(CustomInput, [{
     key: 'render',
     value: function render() {
       var _props$form = this.props.form,
@@ -100,27 +104,27 @@ var CustomInput = function (_React$Component) {
           getFieldError = _props$form.getFieldError;
 
       var errors = getFieldError('upper');
-      return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'div',
-        { style: __WEBPACK_IMPORTED_MODULE_4__styles__["b" /* regionStyle */] },
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        { style: __WEBPACK_IMPORTED_MODULE_8__styles__["b" /* regionStyle */] },
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
           null,
           'upper normalize'
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
           null,
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', getFieldProps('upper', {
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement('input', getFieldProps('upper', {
             normalize: this.toUpper,
             rules: [{
               validator: this.checkUpper
             }]
           }))
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
-          { style: __WEBPACK_IMPORTED_MODULE_4__styles__["a" /* errorStyle */] },
+          { style: __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* errorStyle */] },
           errors ? errors.join(',') : null
         )
       );
@@ -128,27 +132,27 @@ var CustomInput = function (_React$Component) {
   }]);
 
   return CustomInput;
-}(__WEBPACK_IMPORTED_MODULE_1_react___default.a.Component);
+}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
 
 CustomInput.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_0_rc_form__["formShape"]
+  form: __WEBPACK_IMPORTED_MODULE_4_rc_form__["formShape"]
 };
 
 var MaxMin = function (_React$Component2) {
-  _inherits(MaxMin, _React$Component2);
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(MaxMin, _React$Component2);
 
   function MaxMin() {
     var _ref2;
 
     var _temp2, _this2, _ret2;
 
-    _classCallCheck(this, MaxMin);
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, MaxMin);
 
     for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
       args[_key2] = arguments[_key2];
     }
 
-    return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = MaxMin.__proto__ || Object.getPrototypeOf(MaxMin)).call.apply(_ref2, [this].concat(args))), _this2), _this2.normalizeMin = function (value, prevValue, allValues) {
+    return _ret2 = (_temp2 = (_this2 = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref2 = MaxMin.__proto__ || Object.getPrototypeOf(MaxMin)).call.apply(_ref2, [this].concat(args))), _this2), _this2.normalizeMin = function (value, prevValue, allValues) {
       console.log('normalizeMin', allValues.min, allValues.max);
       var previousAllValues = _this2.props.form.getFieldsValue();
       if (allValues.max !== previousAllValues.max) {
@@ -168,95 +172,95 @@ var MaxMin = function (_React$Component2) {
         }
       }
       return value;
-    }, _temp2), _possibleConstructorReturn(_this2, _ret2);
+    }, _temp2), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this2, _ret2);
   }
 
-  _createClass(MaxMin, [{
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(MaxMin, [{
     key: 'render',
     value: function render() {
       var getFieldProps = this.props.form.getFieldProps;
 
-      return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'div',
-        { style: __WEBPACK_IMPORTED_MODULE_4__styles__["b" /* regionStyle */] },
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        { style: __WEBPACK_IMPORTED_MODULE_8__styles__["b" /* regionStyle */] },
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
           null,
           'min: ',
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             'select',
             getFieldProps('min', {
               normalize: this.normalizeMin,
               initialValue: ''
             }),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '' },
               'empty'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '1' },
               '1'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '2' },
               '2'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '3' },
               '3'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '4' },
               '4'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '5' },
               '5'
             )
           )
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'div',
           null,
           'max: ',
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             'select',
             getFieldProps('max', {
               initialValue: '',
               normalize: this.normalizeMax
             }),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '' },
               'empty'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '1' },
               '1'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '2' },
               '2'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '3' },
               '3'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '4' },
               '4'
             ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'option',
               { value: '5' },
               '5'
@@ -268,27 +272,27 @@ var MaxMin = function (_React$Component2) {
   }]);
 
   return MaxMin;
-}(__WEBPACK_IMPORTED_MODULE_1_react___default.a.Component);
+}(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
 
 MaxMin.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_0_rc_form__["formShape"]
+  form: __WEBPACK_IMPORTED_MODULE_4_rc_form__["formShape"]
 };
 
 var Form = function (_Component) {
-  _inherits(Form, _Component);
+  __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(Form, _Component);
 
   function Form() {
     var _ref3;
 
     var _temp3, _this3, _ret3;
 
-    _classCallCheck(this, Form);
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Form);
 
     for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
       args[_key3] = arguments[_key3];
     }
 
-    return _ret3 = (_temp3 = (_this3 = _possibleConstructorReturn(this, (_ref3 = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref3, [this].concat(args))), _this3), _this3.onSubmit = function (e) {
+    return _ret3 = (_temp3 = (_this3 = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (_ref3 = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref3, [this].concat(args))), _this3), _this3.onSubmit = function (e) {
       e.preventDefault();
       _this3.props.form.validateFields(function (error, values) {
         if (!error) {
@@ -297,31 +301,31 @@ var Form = function (_Component) {
           console.log('error', error, values);
         }
       });
-    }, _temp3), _possibleConstructorReturn(_this3, _ret3);
+    }, _temp3), __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(_this3, _ret3);
   }
 
-  _createClass(Form, [{
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Form, [{
     key: 'render',
     value: function render() {
       var form = this.props.form;
 
-      return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+      return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
         'div',
         { style: { margin: 20 } },
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'h2',
           null,
           'normalize'
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
           'form',
           { onSubmit: this.onSubmit },
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(CustomInput, { form: form }),
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(MaxMin, { form: form }),
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(CustomInput, { form: form }),
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(MaxMin, { form: form }),
+          __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
             'div',
-            { style: __WEBPACK_IMPORTED_MODULE_4__styles__["b" /* regionStyle */] },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            { style: __WEBPACK_IMPORTED_MODULE_8__styles__["b" /* regionStyle */] },
+            __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
               'button',
               null,
               'submit'
@@ -333,18 +337,18 @@ var Form = function (_Component) {
   }]);
 
   return Form;
-}(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_5_react__["Component"]);
 
 Form.propTypes = {
-  form: __WEBPACK_IMPORTED_MODULE_0_rc_form__["formShape"]
+  form: __WEBPACK_IMPORTED_MODULE_4_rc_form__["formShape"]
 };
 
 
-var NewForm = Object(__WEBPACK_IMPORTED_MODULE_0_rc_form__["a" /* createForm */])()(Form);
+var NewForm = Object(__WEBPACK_IMPORTED_MODULE_4_rc_form__["a" /* createForm */])()(Form);
 
-__WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(NewForm, null), document.getElementById('__react-content'));
+__WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(NewForm, null), document.getElementById('__react-content'));
 
 /***/ })
 
-},[459]);
+},[470]);
 //# sourceMappingURL=normalize.js.map
