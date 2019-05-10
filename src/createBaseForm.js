@@ -206,7 +206,7 @@ function createBaseForm(option = {}, mixins = []) {
         if (process.env.NODE_ENV !== 'production') {
           warning(
             this.fieldsStore.isValidNestedFieldName(name),
-            'One field name cannot be part of another, e.g. `a` and `a.b`.'
+            `One field name cannot be part of another, e.g. \`a\` and \`a.b\`. Check field: ${name}`
           );
           warning(
             !('exclusive' in usersFieldOption),
