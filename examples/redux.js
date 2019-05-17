@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0, react/prefer-stateless-function:0 */
+/* eslint-disable */
 
 import { createForm, createFormField, formShape } from 'rc-form';
 import React, { Component } from 'react';
@@ -118,4 +118,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('__react-content'));
+export default ()=><App />

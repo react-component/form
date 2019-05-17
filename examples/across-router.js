@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint-disable */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -101,7 +101,7 @@ class ParentForm extends React.Component {
 
 ParentForm = createForm()(ParentForm);
 
-ReactDOM.render((<div
+export default ()=>(<div
   style={{
     height: 300,
     position: 'relative',
@@ -112,4 +112,4 @@ ReactDOM.render((<div
       <Route path="/open" component={ChildForm}/>
     </Route>
   </Router>
-</div>), document.getElementById('__react-content'));
+</div>)

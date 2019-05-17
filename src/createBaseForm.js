@@ -1,4 +1,4 @@
-/* eslint-disable react/prefer-es6-class */
+/* eslint-disable react/prefer-es6-class, react/destructuring-assignment */
 /* eslint-disable prefer-promise-reject-errors */
 
 import React from 'react';

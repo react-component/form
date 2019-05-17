@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint-disable */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -171,10 +171,10 @@ const WrappedForm1 = createForm()(Form1);
 const WrappedForm2 = createForm()(Form2);
 const WrappedForm3 = createForm()(Form3);
 
-ReactDOM.render(
+export default ()=>
   <div>
     <WrappedForm1 />
     <WrappedForm2 />
     <WrappedForm3 />
   </div>
-  , document.getElementById('__react-content'));
+  

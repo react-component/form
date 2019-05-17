@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import createFormField, { isFormField } from '../src/createFormField';
 import { flattenFields } from '../src/utils';
 

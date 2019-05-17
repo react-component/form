@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, react/prop-types, react/no-multi-comp, react/no-render-return-value */
+/* eslint-disable */
 
 import React from 'react';
 import ReactDOM from 'react-dom';

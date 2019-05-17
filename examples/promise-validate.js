@@ -1,4 +1,4 @@
-/* eslint no-console:0 */
+/* eslint-disable */
 
 import { createForm, formShape } from 'rc-form';
 import React from 'react';
@@ -34,4 +34,4 @@ class Form extends React.Component {
 
 const NewForm = createForm()(Form);
 
-ReactDOM.render(<NewForm />, document.getElementById('__react-content'));
+export default ()=><NewForm />

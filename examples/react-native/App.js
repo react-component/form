@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0, react/no-multi-comp:0 */
+/* eslint-disable */
 
 import React from 'react';
 import PropTypes from 'prop-types';

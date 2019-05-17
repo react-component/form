@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint-disable */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -54,4 +54,4 @@ class Form extends React.Component {
 }
 
 const WrappedForm = createForm()(Form);
-ReactDOM.render(<WrappedForm />, document.getElementById('__react-content'));
+export default ()=><WrappedForm />

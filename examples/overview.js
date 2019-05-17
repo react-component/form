@@ -1,4 +1,4 @@
-/* eslint react/no-multi-comp:0, no-console:0 */
+/* eslint-disable */
 
 import createDOMForm from 'rc-form/src/createDOMForm';
 import { formShape } from 'rc-form';
@@ -254,4 +254,4 @@ const NewForm = createDOMForm({
   },
 })(Form);
 
-ReactDOM.render(<NewForm />, document.getElementById('__react-content'));
+export default ()=><NewForm />
