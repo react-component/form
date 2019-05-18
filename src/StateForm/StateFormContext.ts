@@ -8,11 +8,11 @@ export interface StateFormContextProps {
   dispatch: (action: ReducerAction) => void;
 }
 
-const { Consumer, Provider } = createContext<StateFormContextProps>({
+const Context = createContext<StateFormContextProps>({
   store: {},
   dispatch() {
     throw new Error('StateForm is not defined.');
   },
 });
 
-export { Consumer, Provider };
+export default Context;

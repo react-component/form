@@ -1,5 +1,6 @@
 import setIn from 'lodash/fp/set';
 import get from 'lodash/get';
+import set from 'lodash/get';
 
 export function getNameList(path: string | number | Array<string | number>) {
   return Array.isArray(path) ? path : [path];
@@ -10,6 +11,7 @@ export function getValue(store: any, pathList: Array<string | number>) {
 }
 
 export function setValue(store: any, pathList: Array<string | number>, value: any) {
+  // return set(store, pathList, value);
   const newStore = setIn(pathList, value, store);
   return newStore;
 }

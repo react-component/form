@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Provider } from './StateFormContext';
+import StateFormContext from './StateFormContext';
 import StateFormField from './StateFormField';
 import { setValue } from './util';
 
@@ -37,7 +37,7 @@ const StateForm: StateForm = ({ children }: StateFormProps) => {
 
   const childrenNode = children ? children() : null;
 
-  return <Provider value={{ store, dispatch }}>{childrenNode}</Provider>;
+  return <StateFormContext.Provider value={{ store, dispatch }}>{childrenNode}</StateFormContext.Provider>;
 };
 
 StateForm.Field = StateFormField;

@@ -1,9 +1,13 @@
 import * as React from 'react';
-import { Consumer, StateFormContextProps } from './StateFormContext';
+import StateFormContext, { StateFormContextProps } from './StateFormContext';
 import { defaultGetValueFromEvent, getNameList, getValue } from './util';
 
 export interface StateFormFieldProps {
   name: string | number | Array<string | number>;
+}
+
+export interface StateFormFieldState {
+  prevValue: any;
 }
 
 interface ChildProps {
@@ -18,25 +22,20 @@ const StateFormField: React.FunctionComponent<StateFormFieldProps> = ({ name, ch
     return child as any;
   }
 
-  return (
-    <Consumer>
-      {({ store, dispatch }: StateFormContextProps) => {
-        const { value, onChange } = child.props as ChildProps;
-        return React.cloneElement(child, {
-          value: getValue(store, namePath),
-          onChange(...args: any[]) {
-            const newValue = defaultGetValueFromEvent(...args);
-            console.log('=>', newValue);
-            dispatch({
-              type: 'updateValue',
-              namePath,
-              value: newValue,
-            });
-          },
-        } as any as ChildProps);
-      }}
-    </Consumer>
-  );
+  const { store, dispatch } = React.useContext(StateFormContext);
+  const value = getValue(store, namePath);
+
+  return React.useMemo(() => (React.cloneElement(child, ({
+    value,
+    onChange(...args: any[]) {
+      const newValue = defaultGetValueFromEvent(...args);
+      dispatch({
+        type: 'updateValue',
+        namePath,
+        value: newValue,
+      });
+    },
+  } as any) as ChildProps)), [value]);
 };
 
 export default StateFormField;
