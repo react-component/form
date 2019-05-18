@@ -5,14 +5,15 @@ export interface Store {
   [name: string]: any;
 }
 export type SubscribeCallback = (store: any, namePath: Array<string | number>) => void;
-export type UnsubscribeCallback = (store: any) => void;
 
 export interface StateFormContextProps {
   getStore: () => Store;
   useSubscribe: (subscribable: boolean) => void;
+  updateValue: (name: string | number | Array<string | number>, value: any) => void;
+  updateValues: (value: any) => void;
   dispatch: (action: ReducerAction) => void;
   subscribe: (callback: SubscribeCallback) => void;
-  unsubscribe: (callback: UnsubscribeCallback) => void;
+  unsubscribe: (callback: SubscribeCallback) => void;
 }
 
 const warningFunc: any = () => {
@@ -21,6 +22,8 @@ const warningFunc: any = () => {
 
 const Context = React.createContext<StateFormContextProps>({
   getStore: warningFunc,
+  updateValue: warningFunc,
+  updateValues: warningFunc,
   useSubscribe: warningFunc,
   dispatch: warningFunc,
   subscribe: warningFunc,

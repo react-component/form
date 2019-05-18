@@ -10,6 +10,7 @@ export interface StateFormProps {
 
 interface StateForm extends React.FunctionComponent<StateFormProps> {
   Field: typeof StateFormField;
+  useForm: typeof useForm;
 }
 
 const StateForm: StateForm = ({ form, children }: StateFormProps) => {
@@ -35,5 +36,6 @@ const StateForm: StateForm = ({ form, children }: StateFormProps) => {
 };
 
 StateForm.Field = StateFormField;
+StateForm.useForm = useForm;
 
 export default StateForm;

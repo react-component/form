@@ -24,8 +24,13 @@ class StateFormField extends React.PureComponent<StateFormFieldProps, any> {
     subscribe(this.onStoreChange);
   }
 
+  public componentWillUnmount() {
+    const { unsubscribe }: StateFormContextProps = this.context;
+    unsubscribe(this.onStoreChange);
+  }
+
   // Check if need update the component
-  public onStoreChange = (store: any, changedNamePath: Array<string | number>) => {
+  public onStoreChange = (store: any, changedNamePath: Array<string | number> | null) => {
     const { name } = this.props;
     const namePath = getNameList(name);
     if (matchUpdateNamePath(namePath, changedNamePath)) {

@@ -3,7 +3,7 @@ import StateForm from '../src/StateForm';
 
 const { Field } = StateForm;
 
-const list = new Array(1111).fill();
+const list = new Array(0).fill();
 
 const Input = (props) => {
   return <input {...props} />;
@@ -36,6 +36,13 @@ export default class Demo extends React.Component {
                 <Field name="field_2">
                   <CustomizeInput placeholder="Field 2" />
                 </Field>
+
+                <h4>Show additional field when field 1 is `222`</h4>
+                {store.field_1 === '222' && (
+                  <Field name="secret">
+                    <CustomizeInput placeholder="Field Secret!" />
+                  </Field>
+                )}
 
                 {list.map((_, index) => (
                   <Field name={`list_field_${index}`}>

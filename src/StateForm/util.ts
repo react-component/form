@@ -15,6 +15,9 @@ export function setValue(store: any, pathList: Array<string | number>, value: an
 }
 
 export function matchUpdateNamePath(namePath: Array<string | number>, changedNamePath: Array<string | number>) {
+  if (!changedNamePath) {
+    return true;
+  }
   return namePath.every((nameUnit, i) => changedNamePath[i] === nameUnit);
 }
 
