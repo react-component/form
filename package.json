@@ -44,7 +44,8 @@
     "lint:fix": "rc-tools run lint --fix",
     "test": "jest",
     "prepublish": "rc-tools run guard",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "now-build": "npm run build"
   },
   "jest": {
     "setupFiles": [
