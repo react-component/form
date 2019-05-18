@@ -1,11 +1,10 @@
 import * as React from 'react';
 import StateFormContext from './StateFormContext';
 import StateFormField from './StateFormField';
-import { setValue } from './util';
-
-const { useReducer } = React;
+import useForm, { FormStore } from './useForm';
 
 export interface StateFormProps {
+  form?: FormStore;
   children?: () => JSX.Element | React.ReactNode;
 }
 
@@ -13,31 +12,17 @@ interface StateForm extends React.FunctionComponent<StateFormProps> {
   Field: typeof StateFormField;
 }
 
-interface ReducerState {
-  [name: string]: any;
-}
-
-export interface ReducerAction {
-  type: 'updateValue';
-  namePath: Array<string | number>;
-  value: any;
-}
-
-function reducer(store: ReducerState, action: ReducerAction): ReducerState {
-  switch (action.type) {
-    case 'updateValue':
-      return setValue(store, action.namePath, action.value);
-  }
-
-  return store;
-}
-
-const StateForm: StateForm = ({ children }: StateFormProps) => {
-  const [ store, dispatch ] = useReducer<React.Reducer<ReducerState, ReducerAction>>(reducer, {});
-
+const StateForm: StateForm = ({ form, children }: StateFormProps) => {
+  // We customize handle event since Context will makes all the consumer re-render:
+  // https://reactjs.org/docs/context.html#contextprovider
+  const formInstance = useForm(form);
   const childrenNode = children ? children() : null;
 
-  return <StateFormContext.Provider value={{ store, dispatch }}>{childrenNode}</StateFormContext.Provider>;
+  return (
+    <StateFormContext.Provider value={formInstance}>
+      {childrenNode}
+    </StateFormContext.Provider>
+  );
 };
 
 StateForm.Field = StateFormField;
