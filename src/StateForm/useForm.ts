@@ -1,6 +1,11 @@
 import * as React from 'react';
+import {
+  StateFormContextProps,
+  Store,
+  SubscribeCallback,
+  UnsubscribeCallback,
+} from './StateFormContext';
 import { setValue } from './util';
-import { StateFormContextProps, SubscribeCallback, UnsubscribeCallback, Store } from './StateFormContext';
 
 interface UpdateAction {
   type: 'updateValue';
@@ -13,18 +18,40 @@ export type ReducerAction = UpdateAction;
 export class FormStore {
   private store: Store = {};
   private subscribeList: any[] = [];
+  private subscribable: boolean = true;
+  private forceRootUpdate: () => void;
+
+  constructor(forceRootUpdate) {
+    this.forceRootUpdate = forceRootUpdate;
+  }
+
+  public getForm = (): StateFormContextProps => ({
+    getStore: this.getStore,
+    useSubscribe: this.useSubscribe,
+    dispatch: this.dispatch,
+    subscribe: this.subscribe,
+    unsubscribe: this.unsubscribe,
+  });
 
   private getStore = () => this.store;
+
+  private useSubscribe = (subscribable: boolean) => {
+    this.subscribable = subscribable;
+  };
 
   private dispatch = (action: ReducerAction) => {
     switch (action.type) {
       case 'updateValue': {
         const { namePath, value } = action;
         this.store = setValue(this.store, namePath, value);
-        this.subscribeList.forEach((callback: SubscribeCallback) => {
-          callback(this.store, namePath);
-        });
-        console.log('update!!!', this.store);
+
+        if (this.subscribable) {
+          this.subscribeList.forEach((callback: SubscribeCallback) => {
+            callback(this.store, namePath);
+          });
+        } else {
+          this.forceRootUpdate();
+        }
         return;
       }
     }
@@ -37,21 +64,19 @@ export class FormStore {
   private unsubscribe = (callback: UnsubscribeCallback) => {
     this.subscribeList = this.subscribeList.filter((func) => func !== callback);
   };
-
-  public getForm = (): StateFormContextProps => ({
-    getStore: this.getStore,
-    dispatch: this.dispatch,
-    subscribe: this.subscribe,
-    unsubscribe: this.unsubscribe,
-  });
 }
 
-export default function useForm(form: FormStore): StateFormContextProps {
+function useForm(form: StateFormContextProps): StateFormContextProps {
   const ref = React.useRef() as any;
+  const [, forceUpdate] = React.useState();
 
   if (!ref.current) {
-    ref.current = form || new FormStore().getForm();
+    ref.current = form || new FormStore(() => {
+      forceUpdate({});
+    }).getForm();
   }
 
   return ref.current;
 }
+
+export default useForm;

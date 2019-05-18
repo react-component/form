@@ -15,17 +15,17 @@ interface ChildProps {
   onChange?: (...args: any[]) => void;
 }
 
-// We use Component instead of Hooks here since it will cost much code by using Hooks.
-class StateFormField extends React.Component<StateFormFieldProps, any> {
-  static contextType = StateFormContext;
+// We use Class instead of Hooks here since it will cost much code by using Hooks.
+class StateFormField extends React.PureComponent<StateFormFieldProps, any> {
+  public static contextType = StateFormContext;
 
-  componentDidMount() {
+  public componentDidMount() {
     const { subscribe }: StateFormContextProps = this.context;
     subscribe(this.onStoreChange);
   }
 
   // Check if need update the component
-  private onStoreChange = (store: any, changedNamePath: Array<string | number>) => {
+  public onStoreChange = (store: any, changedNamePath: Array<string | number>) => {
     const { name } = this.props;
     const namePath = getNameList(name);
     if (matchUpdateNamePath(namePath, changedNamePath)) {
@@ -33,7 +33,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     }
   };
 
-  render() {
+  public render() {
     const { name, children } = this.props;
 
     const child = React.Children.only(children);
@@ -45,8 +45,6 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     const { getStore, dispatch }: StateFormContextProps = this.context;
     const store = getStore();
     const value = getValue(store, namePath);
-
-    console.log('=>', store, name, value);
 
     return React.cloneElement(child, ({
       value,
