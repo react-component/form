@@ -7,7 +7,7 @@ export interface Store {
 export type SubscribeCallback = (store: any, namePath: Array<string | number>) => void;
 
 export interface StateFormContextProps {
-  getStore: () => Store;
+  getFieldsValue: () => Store;
   useSubscribe: (subscribable: boolean) => void;
   updateValue: (name: string | number | Array<string | number>, value: any) => void;
   updateValues: (value: any) => void;
@@ -21,7 +21,7 @@ const warningFunc: any = () => {
 };
 
 const Context = React.createContext<StateFormContextProps>({
-  getStore: warningFunc,
+  getFieldsValue: warningFunc,
   updateValue: warningFunc,
   updateValues: warningFunc,
   useSubscribe: warningFunc,

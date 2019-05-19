@@ -47,8 +47,8 @@ class StateFormField extends React.PureComponent<StateFormFieldProps, any> {
       return child as any;
     }
 
-    const { getStore, dispatch }: StateFormContextProps = this.context;
-    const store = getStore();
+    const { getFieldsValue, dispatch }: StateFormContextProps = this.context;
+    const store = getFieldsValue();
     const value = getValue(store, namePath);
 
     return React.cloneElement(child, ({

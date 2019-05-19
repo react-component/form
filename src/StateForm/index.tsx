@@ -21,7 +21,7 @@ const StateForm: StateForm = ({ form, children }: StateFormProps) => {
   let childrenNode = children;
   const childrenRenderProps = typeof children === 'function';
   if (childrenRenderProps) {
-    const store = formInstance.getStore();
+    const store = formInstance.getFieldsValue();
     childrenNode = (children as any)(store);
   }
 

@@ -25,7 +25,7 @@ export class FormStore {
   }
 
   public getForm = (): StateFormContextProps => ({
-    getStore: this.getStore,
+    getFieldsValue: this.getFieldsValue,
     useSubscribe: this.useSubscribe,
     updateValue: this.updateValue,
     updateValues: this.updateValues,
@@ -34,7 +34,7 @@ export class FormStore {
     unsubscribe: this.unsubscribe,
   });
 
-  private getStore = () => this.store;
+  private getFieldsValue = () => this.store;
 
   private useSubscribe = (subscribable: boolean) => {
     this.subscribable = subscribable;
