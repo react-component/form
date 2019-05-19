@@ -3,7 +3,7 @@ import StateForm from '../src/StateForm';
 
 const { Field } = StateForm;
 
-const list = new Array(0).fill();
+const list = new Array(1111).fill();
 
 const Input = (props) => {
   return <input {...props} />;
