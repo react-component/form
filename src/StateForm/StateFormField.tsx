@@ -3,27 +3,17 @@ import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
 import { defaultGetValueFromEvent, getNameList, getValue, matchUpdateNamePath } from './util';
 
-export interface StateFormFieldProps {
-  name: string | number | Array<string | number>;
-  children?: React.ReactNode;
-}
-
-export interface StateFormFieldState {
-  prevValue: any;
-}
-
 interface ChildProps {
   value?: any;
   onChange?: (...args: any[]) => void;
 }
+export interface StateFormFieldProps {
+  name: string | number | Array<string | number>;
+  children?: React.ReactNode | ((control: ChildProps) => React.ReactNode);
+}
 
-function onlyChild(children: React.ReactNode): React.ReactElement | null {
-  const child = React.Children.only(children);
-  if (!React.isValidElement(child)) {
-    return null;
-  }
-
-  return child;
+export interface StateFormFieldState {
+  prevValue: any;
 }
 
 // We use Class instead of Hooks here since it will cost much code by using Hooks.
@@ -32,31 +22,33 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   private prevValue: any;
 
   public shouldComponentUpdate(nextProps: StateFormFieldProps) {
-    const prevChild = onlyChild(this.props.children);
-    const nextChild = onlyChild(nextProps.children);
+    const prevChild = this.getOnlyChild(this.props.children);
+    const nextChild = this.getOnlyChild(nextProps.children);
 
     if ((!prevChild && nextChild) || (prevChild && !nextChild)) {
       return true;
     }
 
     // Low cost equal check
-    if (!isEqualWith(this.props.name, nextProps.name) ||
-    prevChild.type !== nextChild.type ||
-    !isEqualWith(prevChild.props, nextChild.props)) {
+    if (
+      !isEqualWith(this.props.name, nextProps.name) ||
+      prevChild.type !== nextChild.type ||
+      !isEqualWith(prevChild.props, nextChild.props)
+    ) {
       return false;
     }
 
-    const { getFieldsValue }: StateFormContextProps = this.context;
-    const store = getFieldsValue();
-    const namePath = getNameList(nextProps.name);
-    const value = getValue(store, namePath);
-    return this.prevValue !== value;
-
+    return this.prevValue !== this.getValue(nextProps);
   }
 
   public componentDidMount() {
     const { subscribe }: StateFormContextProps = this.context;
     subscribe(this.onStoreChange);
+    this.prevValue = this.getValue();
+  }
+
+  public componentDidUpdate() {
+    this.prevValue = this.getValue();
   }
 
   public componentWillUnmount() {
@@ -64,30 +56,21 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     unsubscribe(this.onStoreChange);
   }
 
-  // Check if need update the component
-  public onStoreChange = (store: any, changedNamePath: Array<string | number> | null) => {
-    const { name } = this.props;
-    const namePath = getNameList(name);
-    if (matchUpdateNamePath(namePath, changedNamePath)) {
-      this.prevValue = getValue(store, namePath);
-      this.forceUpdate();
-    }
+  public getValue = (props?: StateFormFieldProps) => {
+    const { getFieldsValue }: StateFormContextProps = this.context;
+    const store = getFieldsValue();
+    const namePath = getNameList((props || this.props).name);
+    return getValue(store, namePath);
   };
 
-  public render() {
-    const { name, children } = this.props;
-
-    const child = onlyChild(children);
+  public getControlled = () => {
+    const { name } = this.props;
     const namePath = getNameList(name);
-    if (!child || !namePath.length) {
-      return children;
-    }
-
     const { getFieldsValue, dispatch }: StateFormContextProps = this.context;
     const store = getFieldsValue();
     const value = getValue(store, namePath);
 
-    return React.cloneElement(child, ({
+    return {
       value,
       onChange(...args: any[]) {
         const newValue = defaultGetValueFromEvent(...args);
@@ -97,7 +80,45 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
           value: newValue,
         });
       },
-    } as any) as ChildProps);
+    };
+  };
+
+  public getOnlyChild = (
+    children: React.ReactNode | ((control: ChildProps) => React.ReactNode),
+  ): React.ReactElement | null => {
+    // Support render props
+    if (typeof children === 'function') {
+      return this.getOnlyChild(children(this.getControlled()));
+    }
+
+    // Filed element only
+    const child = React.Children.only(children);
+    if (!React.isValidElement(child)) {
+      return null;
+    }
+
+    return child;
+  };
+
+  // Check if need update the component
+  public onStoreChange = (store: any, changedNamePath: Array<string | number> | null) => {
+    const { name } = this.props;
+    const namePath = getNameList(name);
+    if (matchUpdateNamePath(namePath, changedNamePath)) {
+      this.forceUpdate();
+    }
+  };
+
+  public render() {
+    const { name, children } = this.props;
+
+    const child = this.getOnlyChild(children);
+    const namePath = getNameList(name);
+    if (!child || !namePath.length) {
+      return children;
+    }
+
+    return React.cloneElement(child, this.getControlled());
   }
 }
 
