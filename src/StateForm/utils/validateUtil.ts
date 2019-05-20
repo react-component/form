@@ -1,18 +1,19 @@
 import AsyncValidator from 'async-validator';
 import { ValidateOptions } from '../StateFormContext';
-import { Rule } from '../StateFormField';
+import { InternalNamePath, Rule } from '../StateFormField';
 
 /**
  * We use `async-validator` to validate the value.
  * But only check one value in a time to avoid namePath validate issue.
  */
-export function validateRules(value: any, rules: Rule[], options: ValidateOptions) {
+export function validateRules(namePath: InternalNamePath, value: any, rules: Rule[], options: ValidateOptions) {
+  const name = namePath.join('.');
   const validator = new AsyncValidator({
-    value: rules,
+    [name]: rules,
   });
 
   const promise = new Promise((resolve, reject) => {
-    validator.validate({ value }, options || {}, (errors: any) => {
+    validator.validate({ [name]: value }, options || {}, (errors: any) => {
       if (!errors) {
         resolve();
       }

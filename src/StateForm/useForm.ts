@@ -116,6 +116,7 @@ export class FormStore {
         namePathList.some((namePath) => matchNamePath(fieldNamePath, namePath))
       ) {
         const promise = validateRules(
+          fieldNamePath,
           getValue(this.store, fieldNamePath),
           field.props.rules,
           options,

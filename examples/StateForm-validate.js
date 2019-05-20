@@ -14,14 +14,13 @@ export default class Demo extends React.Component {
         <StateForm>
           {(values, form) => {
             const usernameError = form.getFieldError('username');
+            const passwordError = form.getFieldError('password');
+            const password2Error = form.getFieldError('password2');
             console.log('=>', values, form.getFieldsError(), usernameError);
 
             return (
               <div style={{ padding: 16 }}>
-                <Field
-                  name="username"
-                  rules={[ { required: true }, { required: true, message: 'Hello world!' } ]}
-                >
+                <Field name="username" rules={[ { required: true } ]}>
                   <Input
                     placeholder="Username"
                     onChange={({ target: { value } }) => {
@@ -29,14 +28,23 @@ export default class Demo extends React.Component {
                     }}
                   />
                 </Field>
-                <Field name="password">
+                {usernameError}
+
+                <Field name="password" rules={[ { required: true } ]}>
                   <Input placeholder="Password" />
                 </Field>
-                <Field name="password2">
+                {passwordError}
+
+                <Field name="password2" rules={[ { required: true } ]}>
                   <Input placeholder="Password 2" />
                 </Field>
+                {password2Error}
 
-                <button type="button">Validate All</button>
+                <br />
+
+                <button type="button" onClick={() => {
+                  form.validateFields();
+                }}>Validate All</button>
               </div>
             );
           }}
