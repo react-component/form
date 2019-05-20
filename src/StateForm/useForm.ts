@@ -9,8 +9,8 @@ import {
 } from './StateFormContext';
 import { InternalNamePath, NamePath } from './StateFormField';
 import { allPromiseFinish } from './utils/asyncUtil';
-import { validateRules } from './utils/validateUtil';
-import { getNamePath, getValue, isSimilar, matchNamePath, setValue } from './utils/valueUtil';
+import { ErrorCache, validateRules } from './utils/validateUtil';
+import { getNamePath, getValue, matchNamePath, setValue } from './utils/valueUtil';
 
 interface UpdateAction {
   type: 'updateValue';
@@ -25,7 +25,7 @@ export class FormStore {
   private subscribable: boolean = true;
   private store: Store = {};
   private fieldEntities: FieldEntity[] = [];
-  private cacheErrors: FieldError[] = [];
+  private errorCache: ErrorCache = new ErrorCache();
 
   constructor(forceRootUpdate: () => void) {
     this.forceRootUpdate = forceRootUpdate;
@@ -124,7 +124,7 @@ export class FormStore {
 
         // Wrap promise with field
         promiseList.push(
-          promise.catch((errors) =>
+          promise.then(() => ({ name: fieldNamePath, errors: [] })).catch((errors) =>
             Promise.reject({
               name: fieldNamePath,
               errors,
@@ -134,24 +134,24 @@ export class FormStore {
       }
     });
 
-    const prevCacheError = this.cacheErrors;
+    const prevErrors = this.errorCache.getFieldsError();
 
     const summaryPromise = allPromiseFinish(promiseList)
-      .then(() => {
-        this.cacheErrors = [];
+      .then((results: any) => {
+        this.errorCache.updateError(results);
         return this.store;
       })
-      .catch((results) => {
-        const errorList = results.filter((result: any) => result);
-        this.cacheErrors = errorList;
+      .catch((results: any) => {
+        this.errorCache.updateError(results);
 
+        const errorList = results.filter((result: any) => result);
         return Promise.reject(errorList);
       });
 
     // Internal catch error to avoid console error log.
     summaryPromise.catch((e) => e).then(() => {
       // Force update
-      if (!isSimilar(prevCacheError, this.cacheErrors)) {
+      if (this.errorCache.isErrorsChange(prevErrors)) {
         this.updateValues();
       }
     });
@@ -159,17 +159,13 @@ export class FormStore {
     return summaryPromise;
   };
 
-  // TODO: check if fields validated
   private getFieldsError = (nameList?: NamePath[]) => {
     if (!nameList) {
-      return this.cacheErrors;
+      return this.errorCache.getFieldsError();
     }
 
     const namePathList = nameList.map(getNamePath);
-    return this.cacheErrors.filter(({ name }) => {
-      const errorNamePath = getNamePath(name);
-      return namePathList.some((namePath) => matchNamePath(namePath, errorNamePath));
-    });
+    return this.errorCache.getFieldsError(namePathList);
   };
 
   private getFieldError = (name: NamePath): string[] => {
