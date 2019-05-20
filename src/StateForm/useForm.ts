@@ -20,7 +20,7 @@ export class FormStore {
   private subscribable: boolean = true;
   private forceRootUpdate: () => void;
 
-  constructor(forceRootUpdate) {
+  constructor(forceRootUpdate: () => void) {
     this.forceRootUpdate = forceRootUpdate;
   }
 

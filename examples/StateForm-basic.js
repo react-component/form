@@ -1,19 +1,10 @@
 import React from 'react';
 import StateForm from '../src/StateForm';
+import Input from './components/Input';
 
 const { Field } = StateForm;
 
 const list = new Array(1111).fill();
-
-const Input = (props) => {
-  return <input {...props} />;
-};
-
-const CustomizeInput = (props) => (
-  <div style={{ padding: 10 }}>
-    <Input style={{ outline: 'none' }} {...props} />
-  </div>
-);
 
 export default class Demo extends React.Component {
   state = {};
@@ -25,21 +16,24 @@ export default class Demo extends React.Component {
         <StateForm>
           <React.Fragment>
             <Field name="username">
-              <CustomizeInput placeholder="Username" />
+              <Input placeholder="Username" />
             </Field>
             <Field name="password">
-              <CustomizeInput placeholder="Password" />
+              <Input placeholder="Password" />
             </Field>
             <Field name="username">
-              <CustomizeInput placeholder="Shadow of Username" />
+              <Input placeholder="Shadow of Username" />
             </Field>
             <Field name={[ 'path1', 'path2' ]}>
-              <CustomizeInput placeholder="nest" />
+              <Input placeholder="nest" />
+            </Field>
+            <Field name={[ 'renderProps' ]}>
+              {(control) => <Input {...control} placeholder="render props" />}
             </Field>
 
             {list.map((_, index) => (
               <Field name={`field_${index}`}>
-                <CustomizeInput placeholder={`field_${index}`} />
+                <Input placeholder={`field_${index}`} />
               </Field>
             ))}
           </React.Fragment>

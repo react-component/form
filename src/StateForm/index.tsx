@@ -21,8 +21,8 @@ const StateForm: StateForm = ({ form, children }: StateFormProps) => {
   let childrenNode = children;
   const childrenRenderProps = typeof children === 'function';
   if (childrenRenderProps) {
-    const store = formInstance.getFieldsValue();
-    childrenNode = (children as any)(store);
+    const values = formInstance.getFieldsValue();
+    childrenNode = (children as any)(values, formInstance);
   }
 
   // Not use subscribe when using render props
