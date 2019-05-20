@@ -14,7 +14,7 @@ export function setValue(store: any, pathList: Array<string | number>, value: an
   return newStore;
 }
 
-export function matchUpdateNamePath(namePath: Array<string | number>, changedNamePath: Array<string | number>) {
+export function matchUpdateNamePath(namePath: Array<string | number>, changedNamePath: Array<string | number> | null) {
   if (!changedNamePath) {
     return true;
   }

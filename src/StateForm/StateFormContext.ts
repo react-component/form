@@ -4,7 +4,7 @@ import { ReducerAction } from './useForm';
 export interface Store {
   [name: string]: any;
 }
-export type SubscribeCallback = (store: any, namePath: Array<string | number>) => void;
+export type SubscribeCallback = (store: any, namePath: Array<string | number> | null) => void;
 
 export interface StateFormContextProps {
   getFieldsValue: () => Store;

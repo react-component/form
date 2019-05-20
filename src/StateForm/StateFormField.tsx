@@ -1,4 +1,4 @@
-import AsyncValidator from 'async-validator';
+// import AsyncValidator from 'async-validator';
 import isEqualWith from 'lodash/isEqualWith';
 import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
@@ -50,7 +50,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     const prevChild = this.getOnlyChild(this.props.children);
     const nextChild = this.getOnlyChild(nextProps.children);
 
-    if ((!prevChild && nextChild) || (prevChild && !nextChild)) {
+    if (!prevChild || !nextChild) {
       return true;
     }
 
@@ -117,7 +117,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     const store = getFieldsValue();
     const value = getValue(store, namePath);
 
-    const originTriggerFunc: any = childProps[trigger];
+    const originTriggerFunc: any = childProps[trigger!];
 
     const control = {
       ...childProps,
@@ -125,7 +125,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     };
 
     // Add trigger
-    control[trigger] = (...args: any[]) => {
+    control[trigger!] = (...args: any[]) => {
       const newValue = defaultGetValueFromEvent(...args);
       dispatch({
         type: 'updateValue',
@@ -139,10 +139,10 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     };
 
     // Add validateTrigger
-    const validateTriggerList = Array.isArray(validateTrigger)
+    const validateTriggerList: string[] = Array.isArray(validateTrigger)
       ? validateTrigger
-      : [ validateTrigger ];
-    validateTriggerList.forEach((triggerName) => {
+      : [ validateTrigger! ];
+    validateTriggerList.forEach((triggerName: string) => {
       const originTrigger = control[triggerName];
       control[triggerName] = (...args: any[]) => {
         if (originTrigger) {
@@ -156,7 +156,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
         // rules.forEach((rule) => {
         //   rule.
         // });
-        const validator = new AsyncValidator(rules);
+        // const validator = new AsyncValidator(rules);
       }
     });
 
