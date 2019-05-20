@@ -13,11 +13,15 @@ export default class Demo extends React.Component {
         <h3>Validate Form</h3>
         <StateForm>
           {(values, form) => {
-            console.log('=>', values, form);
+            const usernameError = form.getFieldError('username');
+            console.log('=>', values, form.getFieldsError(), usernameError);
 
             return (
               <React.Fragment>
-                <Field name="username" rules={[ { required: true } ]}>
+                <Field
+                  name="username"
+                  rules={[ { required: true }, { required: true, message: 'Hello world!' } ]}
+                >
                   <Input
                     placeholder="Username"
                     onChange={({ target: { value } }) => {

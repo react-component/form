@@ -1,27 +1,49 @@
 import setIn from 'lodash/fp/set';
 import get from 'lodash/get';
+import { InternalNamePath, NamePath } from '../StateFormField';
 
-export function getNameList(path: string | number | Array<string | number> | null) {
+export function getNamePath(path: NamePath | null) {
   if (!path) {
     return [];
   }
   return Array.isArray(path) ? path : [path];
 }
 
-export function getValue(store: any, pathList: Array<string | number>) {
-  return get(store, pathList);
+export function getValue(store: any, namePath: InternalNamePath) {
+  return get(store, namePath);
 }
 
-export function setValue(store: any, pathList: Array<string | number>, value: any) {
-  const newStore = setIn(pathList, value, store);
+export function setValue(store: any, namePath: InternalNamePath, value: any) {
+  const newStore = setIn(namePath, value, store);
   return newStore;
 }
 
-export function matchUpdateNamePath(namePath: Array<string | number>, changedNamePath: Array<string | number> | null) {
+export function matchNamePath(namePath: InternalNamePath, changedNamePath: InternalNamePath | null) {
   if (!changedNamePath) {
     return true;
   }
   return namePath.every((nameUnit, i) => changedNamePath[i] === nameUnit);
+}
+
+// Like `shallowEqual`, but we not check the data which may cause re-render
+export function isSimilar(source: object | any[], target: object | any[]) {
+  if ((!source && target) || (source && !target)) {
+    return false;
+  }
+
+  const sourceKeys = Object.keys(source);
+  const targetKeys = Object.keys(target);
+  const keys = new Set([...sourceKeys, ...targetKeys]);
+
+  return [...keys].every((key) => {
+    const sourceValue = source[key];
+    const targetValue = target[key];
+
+    if (typeof sourceValue === 'function' && typeof targetValue === 'function') {
+      return true;
+    }
+    return sourceValue === targetValue;
+  });
 }
 
 export function defaultGetValueFromEvent(...args: any[]) {

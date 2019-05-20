@@ -1,13 +1,9 @@
-import isEqualWith from 'lodash/isEqualWith';
 import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
-import { validateRules } from './utils/validateUtil';
-import {
-  defaultGetValueFromEvent,
-  getNameList,
-  getValue,
-  matchUpdateNamePath,
-} from './utils/valueUtil';
+import { defaultGetValueFromEvent, getNamePath, getValue, isSimilar, matchNamePath } from './utils/valueUtil';
+
+export type InternalNamePath = Array<string | number>;
+export type NamePath = string | number | InternalNamePath;
 
 interface ChildProps {
   value?: any;
@@ -16,21 +12,27 @@ interface ChildProps {
   onBlur?: (...args: any[]) => void;
 }
 
-type Rule =
-  | {
-      required: boolean;
-      validateTrigger?: string | string[];
-    }
-  | {
-      type: string;
-    };
+export interface Rule {
+  enum?: any[];
+  len?: number;
+  max?: number;
+  message?: any;
+  min?: number;
+  pattern?: RegExp;
+  required?: boolean;
+  transform?: (value: any) => any;
+  type?: string;
+  validator?: (rule: Rule, value: any, callback: (error: any) => void) => void;
+  whitespace?: boolean;
+  validateTrigger?: string | string[];
+};
 
 interface DiffConfig {
   skipChildProps?: boolean;
 }
 
 export interface StateFormFieldProps {
-  name: string | number | Array<string | number>;
+  name: NamePath;
   children?: React.ReactNode | ((control: ChildProps) => React.ReactNode);
   diffConfig?: DiffConfig;
   rules?: Rule[];
@@ -65,9 +67,9 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     // Low cost equal check
     const { skipChildProps }: DiffConfig = nextProps.diffConfig || {};
     if (
-      !isEqualWith(this.props.name, nextProps.name) || // Check if name changed
+      !isSimilar(this.props.name, nextProps.name) || // Check if name changed
       prevChild.type !== nextChild.type || // Check if child type changed
-      (!skipChildProps && !isEqualWith(prevChild.props, nextChild.props)) // Check if child props changed
+      (!skipChildProps && !isSimilar(prevChild.props, nextChild.props)) // Check if child props changed
     ) {
       return true;
     }
@@ -77,22 +79,13 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
+    const { registerField }: StateFormContextProps = this.context;
+    this.cancelRegisterFunc = registerField(this);
     this.componentDidUpdate({} as any);
   }
 
   public componentDidUpdate(prevProps: StateFormFieldProps) {
-    const { registerField }: StateFormContextProps = this.context;
     this.prevValue = this.getValue();
-
-    // Update register if name changed
-    // TODO: Move to didMount
-    const { name } = this.props;
-
-    if (!isEqualWith(name, prevProps.name)) {
-      const namePath = getNameList(name);
-      this.cancelRegister();
-      this.cancelRegisterFunc = registerField(this);
-    }
   }
 
   public cancelRegister = () => {
@@ -129,14 +122,14 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   public getValue = (props?: StateFormFieldProps) => {
     const { getFieldsValue }: StateFormContextProps = this.context;
     const store = getFieldsValue();
-    const namePath = getNameList((props || this.props).name);
+    const namePath = getNamePath((props || this.props).name);
     return getValue(store, namePath);
   };
 
   public getControlled = (childProps: ChildProps = {}) => {
     const { name, trigger, validateTrigger } = this.props;
-    const namePath = getNameList(name);
-    const { getFieldsValue, dispatch }: StateFormContextProps = this.context;
+    const namePath = getNamePath(name);
+    const { getFieldsValue, dispatch, validateFields }: StateFormContextProps = this.context;
     const store = getFieldsValue();
     const value = getValue(store, namePath);
 
@@ -177,7 +170,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
         // Always use latest rules
         const { rules } = this.props;
         if (rules && rules.length) {
-          validateRules(this.getValue(), rules);
+          validateFields([ namePath ]);
         }
       };
     });
@@ -188,8 +181,9 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   // Trigger by store update. Check if need update the component
   public onStoreChange = (store: any, changedNamePath: Array<string | number> | null) => {
     const { name } = this.props;
-    const namePath = getNameList(name);
-    if (matchUpdateNamePath(namePath, changedNamePath)) {
+    const namePath = getNamePath(name);
+    if (matchNamePath(namePath, changedNamePath)) {
+      console.log('NNNN', namePath, changedNamePath);
       this.forceUpdate();
     }
   };
@@ -198,7 +192,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     const { name, children } = this.props;
 
     const child = this.getOnlyChild(children);
-    const namePath = getNameList(name);
+    const namePath = getNamePath(name);
     if (!child || !namePath.length) {
       return children;
     }
