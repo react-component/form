@@ -17,7 +17,7 @@ export default class Demo extends React.Component {
             console.log('=>', values, form.getFieldsError(), usernameError);
 
             return (
-              <React.Fragment>
+              <div style={{ padding: 16 }}>
                 <Field
                   name="username"
                   rules={[ { required: true }, { required: true, message: 'Hello world!' } ]}
@@ -37,7 +37,7 @@ export default class Demo extends React.Component {
                 </Field>
 
                 <button type="button">Validate All</button>
-              </React.Fragment>
+              </div>
             );
           }}
         </StateForm>
