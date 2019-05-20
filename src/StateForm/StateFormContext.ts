@@ -6,14 +6,17 @@ export interface Store {
 }
 export type SubscribeCallback = (store: any, namePath: Array<string | number> | null) => void;
 
+export interface FieldEntity {
+  onStoreChange: (store: any, namePath: Array<string | number> | null) => void;
+}
+
 export interface StateFormContextProps {
   getFieldsValue: () => Store;
   useSubscribe: (subscribable: boolean) => void;
   updateValue: (name: string | number | Array<string | number>, value: any) => void;
   updateValues: (value: any) => void;
   dispatch: (action: ReducerAction) => void;
-  subscribe: (callback: SubscribeCallback) => void;
-  unsubscribe: (callback: SubscribeCallback) => void;
+  registerField: (entity: FieldEntity) => (() => void);
 }
 
 const warningFunc: any = () => {
@@ -21,13 +24,12 @@ const warningFunc: any = () => {
 };
 
 const Context = React.createContext<StateFormContextProps>({
+  registerField: warningFunc,
   getFieldsValue: warningFunc,
   updateValue: warningFunc,
   updateValues: warningFunc,
   useSubscribe: warningFunc,
   dispatch: warningFunc,
-  subscribe: warningFunc,
-  unsubscribe: warningFunc,
 });
 
 export default Context;

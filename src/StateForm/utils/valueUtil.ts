@@ -1,7 +1,10 @@
 import setIn from 'lodash/fp/set';
 import get from 'lodash/get';
 
-export function getNameList(path: string | number | Array<string | number>) {
+export function getNameList(path: string | number | Array<string | number> | null) {
+  if (!path) {
+    return [];
+  }
   return Array.isArray(path) ? path : [path];
 }
 

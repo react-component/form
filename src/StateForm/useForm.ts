@@ -1,10 +1,6 @@
 import * as React from 'react';
-import {
-  StateFormContextProps,
-  Store,
-  SubscribeCallback,
-} from './StateFormContext';
-import { getNameList, setValue } from './util';
+import { FieldEntity, StateFormContextProps, Store } from './StateFormContext';
+import { getNameList, setValue } from './utils/valueUtil';
 
 interface UpdateAction {
   type: 'updateValue';
@@ -12,11 +8,17 @@ interface UpdateAction {
   value: any;
 }
 
+interface ValidateEntity {
+  namePath: Array<string | number>;
+  validating: boolean;
+  errors: any[];
+}
+
 export type ReducerAction = UpdateAction;
 
 export class FormStore {
   private store: Store = {};
-  private subscribeList: any[] = [];
+  private fieldEntities: FieldEntity[] = [];
   private subscribable: boolean = true;
   private forceRootUpdate: () => void;
 
@@ -30,8 +32,7 @@ export class FormStore {
     updateValue: this.updateValue,
     updateValues: this.updateValues,
     dispatch: this.dispatch,
-    subscribe: this.subscribe,
-    unsubscribe: this.unsubscribe,
+    registerField: this.registerField,
   });
 
   private getFieldsValue = () => this.store;
@@ -54,8 +55,8 @@ export class FormStore {
     this.store = setValue(this.store, namePath, value);
 
     if (this.subscribable) {
-      this.subscribeList.forEach((callback: SubscribeCallback) => {
-        callback(this.store, namePath);
+      this.fieldEntities.forEach(({ onStoreChange }) => {
+        onStoreChange(this.store, namePath);
       });
     } else {
       this.forceRootUpdate();
@@ -66,8 +67,8 @@ export class FormStore {
     this.store = store;
 
     if (this.subscribable) {
-      this.subscribeList.forEach((callback: SubscribeCallback) => {
-        callback(this.store, null);
+      this.fieldEntities.forEach(({ onStoreChange }) => {
+        onStoreChange(this.store, null);
       });
     } else {
       this.forceRootUpdate();
@@ -75,23 +76,30 @@ export class FormStore {
   };
 
   // ========================= Subscription =========================
-  private subscribe = (callback: SubscribeCallback) => {
-    this.subscribeList.push(callback);
-  };
 
-  private unsubscribe = (callback: SubscribeCallback) => {
-    this.subscribeList = this.subscribeList.filter((func) => func !== callback);
+  private registerField = (entity: FieldEntity) => {
+    this.fieldEntities.push(entity);
+
+    return () => {
+      this.fieldEntities = this.fieldEntities.filter((item) => item !== entity);
+    };
   };
+}
+
+interface SubscribeEntity {
+  hooks: {};
 }
 
 function useForm(form?: StateFormContextProps): StateFormContextProps {
   const ref = React.useRef() as any;
-  const [, forceUpdate] = React.useState();
+  const [ , forceUpdate ] = React.useState();
 
   if (!ref.current) {
-    ref.current = form || new FormStore(() => {
-      forceUpdate({});
-    }).getForm();
+    ref.current =
+      form ||
+      new FormStore(() => {
+        forceUpdate({});
+      }).getForm();
   }
 
   return ref.current;

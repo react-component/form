@@ -31,6 +31,8 @@ export default class Demo extends React.Component {
                 <Field name="password2">
                   <Input placeholder="Password 2" />
                 </Field>
+
+                <button type="button">Validate All</button>
               </React.Fragment>
             );
           }}

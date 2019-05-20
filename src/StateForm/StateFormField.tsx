@@ -1,8 +1,13 @@
-// import AsyncValidator from 'async-validator';
 import isEqualWith from 'lodash/isEqualWith';
 import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
-import { defaultGetValueFromEvent, getNameList, getValue, matchUpdateNamePath } from './util';
+import { validateRules } from './utils/validateUtil';
+import {
+  defaultGetValueFromEvent,
+  getNameList,
+  getValue,
+  matchUpdateNamePath,
+} from './utils/valueUtil';
 
 interface ChildProps {
   value?: any;
@@ -11,12 +16,14 @@ interface ChildProps {
   onBlur?: (...args: any[]) => void;
 }
 
-type Rule = {
-  required: boolean;
-  validateTrigger?: string | string[];
-} | {
-  type: string;
-};
+type Rule =
+  | {
+      required: boolean;
+      validateTrigger?: string | string[];
+    }
+  | {
+      type: string;
+    };
 
 interface DiffConfig {
   skipChildProps?: boolean;
@@ -44,6 +51,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   };
 
   private prevValue: any;
+  private cancelRegisterFunc: () => void | null = null;
 
   // ========================== Lazy update component ==========================
   public shouldComponentUpdate(nextProps: StateFormFieldProps) {
@@ -69,18 +77,33 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
-    const { subscribe }: StateFormContextProps = this.context;
-    subscribe(this.onStoreChange);
-    this.prevValue = this.getValue();
+    this.componentDidUpdate({} as any);
   }
 
-  public componentDidUpdate() {
+  public componentDidUpdate(prevProps: StateFormFieldProps) {
+    const { registerField }: StateFormContextProps = this.context;
     this.prevValue = this.getValue();
+
+    // Update register if name changed
+    // TODO: Move to didMount
+    const { name } = this.props;
+
+    if (!isEqualWith(name, prevProps.name)) {
+      const namePath = getNameList(name);
+      this.cancelRegister();
+      this.cancelRegisterFunc = registerField(this);
+    }
   }
+
+  public cancelRegister = () => {
+    if (this.cancelRegisterFunc) {
+      this.cancelRegisterFunc();
+    }
+    this.cancelRegisterFunc = null;
+  };
 
   public componentWillUnmount() {
-    const { unsubscribe }: StateFormContextProps = this.context;
-    unsubscribe(this.onStoreChange);
+    this.cancelRegister();
   }
 
   // ============================= Child Component =============================
@@ -142,22 +165,21 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     const validateTriggerList: string[] = Array.isArray(validateTrigger)
       ? validateTrigger
       : [ validateTrigger! ];
+
     validateTriggerList.forEach((triggerName: string) => {
+      // Wrap additional function of component, so that we can get latest value from store
       const originTrigger = control[triggerName];
       control[triggerName] = (...args: any[]) => {
         if (originTrigger) {
           originTrigger(...args);
         }
-      };
 
-      // Always use latest rules
-      const { rules } = this.props;
-      if (rules) {
-        // rules.forEach((rule) => {
-        //   rule.
-        // });
-        // const validator = new AsyncValidator(rules);
-      }
+        // Always use latest rules
+        const { rules } = this.props;
+        if (rules && rules.length) {
+          validateRules(this.getValue(), rules);
+        }
+      };
     });
 
     return control;
