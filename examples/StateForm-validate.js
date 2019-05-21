@@ -6,26 +6,15 @@ import Input from './components/Input';
 
 const { Field } = StateForm;
 
-const Change = ({ changed }) => <div>{changed ? '123' : 'abc'}</div>;
+const Error = ({ children }) => <div style={{ color: 'red' }}>{children}</div>;
 
 export default class Demo extends React.Component {
-  state = {
-    changed: false,
-  };
+  state = {};
 
   render() {
-    const { changed } = this.state;
     return (
       <div>
         <h3>Validate Form</h3>
-        <button
-          type="button"
-          onClick={() => {
-            this.setState({ changed: !changed });
-          }}
-        >
-          Change String
-        </button>
         <StateForm>
           {(values, form) => {
             const usernameError = form.getFieldError('username');
@@ -43,25 +32,38 @@ export default class Demo extends React.Component {
                     }}
                   />
                 </Field>
-                {usernameError}
+                <Error>{usernameError}</Error>
 
                 <Field name="password" rules={[ { required: true } ]}>
                   <Input placeholder="Password" />
                 </Field>
-                {passwordError}
+                <Error>{passwordError}</Error>
 
-                <Field name="password2" rules={[ { required: true } ]}>
+                <Field
+                  name="password2"
+                  rules={[
+                    { required: true },
+                    {
+                      validator(rule, value, callback, context) {
+                        const { password } = context.getFieldsValue();
+                        if (password !== value) {
+                          callback('Not Same as password1!!!');
+                        }
+                        callback();
+                      },
+                    },
+                  ]}
+                >
                   <Input placeholder="Password 2" />
                 </Field>
-                {password2Error}
+                <Error>{password2Error}</Error>
 
-                <Change changed={changed} />
                 <Field name="renderProps" rules={[ { required: true } ]}>
-                  {(control) => {
+                  {(control, meta) => {
                     return (
                       <div>
-                        <Change changed={changed} />
                         <Input {...control} placeholder="render props" />
+                        <Error>{meta.errors}</Error>
                       </div>
                     );
                   }}

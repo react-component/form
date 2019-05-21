@@ -1,3 +1,4 @@
+import toArray from 'rc-util/lib/Children/toArray';
 import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
 import { defaultGetValueFromEvent, getNamePath, getValue, isSimilar, matchNamePath } from './utils/valueUtil';
@@ -12,6 +13,9 @@ interface ChildProps {
   onBlur?: (...args: any[]) => void;
 }
 
+export interface Meta {
+  errors: string[];
+}
 export interface Rule {
   enum?: any[];
   len?: number;
@@ -22,7 +26,7 @@ export interface Rule {
   required?: boolean;
   transform?: (value: any) => any;
   type?: string;
-  validator?: (rule: Rule, value: any, callback: (error: any) => void) => void;
+  validator?: (rule: Rule, value: any, callback: (error: any) => void, context: StateFormContextProps) => void;
   whitespace?: boolean;
   validateTrigger?: string | string[];
 };
@@ -33,6 +37,7 @@ export interface StateFormFieldProps {
   rules?: Rule[];
   trigger?: string;
   validateTrigger?: string | string[];
+  shouldUpdate?: (prevValues: any, nextValues: any) => boolean;
 }
 
 export interface StateFormFieldState {
@@ -75,20 +80,28 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   // ============================= Child Component =============================
   // Only return validate child node. If invalidate, will do nothing about field.
   public getOnlyChild = (
-    children: React.ReactNode | ((control: ChildProps) => React.ReactNode),
+    children: React.ReactNode | ((control: ChildProps, meta: Meta, context: any) => React.ReactNode),
   ): React.ReactElement | null => {
     // Support render props
     if (typeof children === 'function') {
-      return this.getOnlyChild(children(this.getControlled()));
+      const { name } = this.props;
+      const { getFieldError } = this.context;
+
+      const meta: Meta = {
+        errors: getFieldError(name),
+      };
+      return this.getOnlyChild(
+        children(this.getControlled(), meta, this.context)
+      );
     }
 
     // Filed element only
-    const child = React.Children.only(children);
-    if (!React.isValidElement(child)) {
+    const childList = toArray(children);
+    if (childList.length !== 1 || !React.isValidElement(childList[0])) {
       return null;
     }
 
-    return child;
+    return childList[0];
   };
 
   // ============================== Field Control ==============================
@@ -152,11 +165,11 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   };
 
   // Trigger by store update. Check if need update the component
-  public onStoreChange = (store: any, changedNamePath: Array<string | number> | null) => {
-    const { name } = this.props;
+  public onStoreChange = (prevStore: any, changedNamePath: Array<string | number> | null) => {
+    const { name, shouldUpdate } = this.props;
+    const { getFieldsValue } = this.context;
     const namePath = getNamePath(name);
-    if (matchNamePath(namePath, changedNamePath)) {
-      console.log('NNNN', namePath, changedNamePath);
+    if (matchNamePath(namePath, changedNamePath) || (shouldUpdate && shouldUpdate(prevStore, getFieldsValue()))) {
       this.forceUpdate();
     }
   };

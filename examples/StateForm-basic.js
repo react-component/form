@@ -36,6 +36,16 @@ export default class Demo extends React.Component {
               )}
             </Field>
 
+            <h4>Show additional field when `username` is `111`</h4>
+            <Field name="condition" shouldUpdate={(prev, next) => prev.username !== next.username}>
+              {(control, meta, context) => {
+                const { username } = context.getFieldsValue();
+                return username === '111' ? (
+                  <Input {...control} placeholder="I am secret!" />
+                ) : null;
+              }}
+            </Field>
+
             {list.map((_, index) => (
               <Field name={`field_${index}`}>
                 <Input placeholder={`field_${index}`} />

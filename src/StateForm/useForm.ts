@@ -38,7 +38,6 @@ export class FormStore {
     getFieldsError: this.getFieldsError,
 
     useSubscribe: this.useSubscribe,
-    isFormRender: this.isFormRender,
 
     updateValue: this.updateValue,
     updateValues: this.updateValues,
@@ -51,13 +50,6 @@ export class FormStore {
 
   private useSubscribe = (subscribable: boolean) => {
     this.subscribable = subscribable;
-  };
-
-  private isFormRender = (formRender?: boolean) => {
-    if (formRender !== undefined) {
-      this.formRender = formRender;
-    }
-    return this.formRender;
   };
 
   // ========================= Subscription =========================
@@ -81,11 +73,12 @@ export class FormStore {
 
   private updateValue = (name: NamePath, value: any) => {
     const namePath = getNamePath(name);
+    const prevStore = this.store;
     this.store = setValue(this.store, namePath, value);
 
     if (this.subscribable) {
       this.fieldEntities.forEach(({ onStoreChange }) => {
-        onStoreChange(this.store, namePath);
+        onStoreChange(prevStore, namePath);
       });
     } else {
       this.forceRootUpdate();
@@ -94,13 +87,15 @@ export class FormStore {
 
   // Let all child Field get update.
   private updateValues = (store?: any) => {
+    const prevStore = this.store;
+
     if (store) {
       this.store = store;
     }
 
     if (this.subscribable) {
       this.fieldEntities.forEach(({ onStoreChange }) => {
-        onStoreChange(this.store, null);
+        onStoreChange(prevStore, null);
       });
     } else {
       this.forceRootUpdate();
@@ -130,6 +125,7 @@ export class FormStore {
           getValue(this.store, fieldNamePath),
           field.props.rules,
           options,
+          this.getForm(),
         );
 
         // Wrap promise with field
