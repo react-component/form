@@ -28,7 +28,12 @@ export default class Demo extends React.Component {
               <Input placeholder="nest" />
             </Field>
             <Field name={[ 'renderProps' ]}>
-              {(control) => <Input {...control} placeholder="render props" />}
+              {(control) => (
+                <div>
+                  I am render props
+                  <Input {...control} placeholder="render props" />
+                </div>
+              )}
             </Field>
 
             {list.map((_, index) => (

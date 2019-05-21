@@ -26,7 +26,7 @@ export function matchNamePath(namePath: InternalNamePath, changedNamePath: Inter
 }
 
 // Like `shallowEqual`, but we not check the data which may cause re-render
-export function isSimilar(source: any[], target: any[]) {
+export function isSimilar(source: any, target: any) {
   if (source === target) {
     return true;
   }

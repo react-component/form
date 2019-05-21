@@ -26,6 +26,7 @@ export class FormStore {
   private store: Store = {};
   private fieldEntities: FieldEntity[] = [];
   private errorCache: ErrorCache = new ErrorCache();
+  private formRender: boolean = false;
 
   constructor(forceRootUpdate: () => void) {
     this.forceRootUpdate = forceRootUpdate;
@@ -37,6 +38,8 @@ export class FormStore {
     getFieldsError: this.getFieldsError,
 
     useSubscribe: this.useSubscribe,
+    isFormRender: this.isFormRender,
+
     updateValue: this.updateValue,
     updateValues: this.updateValues,
     dispatch: this.dispatch,
@@ -48,6 +51,13 @@ export class FormStore {
 
   private useSubscribe = (subscribable: boolean) => {
     this.subscribable = subscribable;
+  };
+
+  private isFormRender = (formRender?: boolean) => {
+    if (formRender !== undefined) {
+      this.formRender = formRender;
+    }
+    return this.formRender;
   };
 
   // ========================= Subscription =========================
@@ -179,18 +189,27 @@ export class FormStore {
 }
 
 function useForm(form?: StateFormContextProps): StateFormContextProps {
-  const ref = React.useRef() as any;
+  const formRef = React.useRef() as any;
   const [ , forceUpdate ] = React.useState();
 
-  if (!ref.current) {
-    ref.current =
-      form ||
-      new FormStore(() => {
+  if (!formRef.current) {
+    if (form) {
+      formRef.current = form;
+    } else {
+      let formStore;
+
+      // Create a new FormStore if not provided
+      const forceReRender = () => {
         forceUpdate({});
-      }).getForm();
+      };
+
+      formStore = new FormStore(forceReRender);
+  
+      formRef.current = formStore.getForm();
+    }
   }
 
-  return ref.current;
+  return formRef.current;
 }
 
 export default useForm;

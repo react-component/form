@@ -27,14 +27,9 @@ export interface Rule {
   validateTrigger?: string | string[];
 };
 
-interface DiffConfig {
-  skipChildProps?: boolean;
-}
-
 export interface StateFormFieldProps {
   name: NamePath;
   children?: React.ReactNode | ((control: ChildProps) => React.ReactNode);
-  diffConfig?: DiffConfig;
   rules?: Rule[];
   trigger?: string;
   validateTrigger?: string | string[];
@@ -54,28 +49,6 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
 
   private prevValue: any;
   private cancelRegisterFunc: () => void | null = null;
-
-  // ========================== Lazy update component ==========================
-  public shouldComponentUpdate(nextProps: StateFormFieldProps) {
-    const prevChild = this.getOnlyChild(this.props.children);
-    const nextChild = this.getOnlyChild(nextProps.children);
-
-    if (!prevChild || !nextChild) {
-      return true;
-    }
-
-    // Low cost equal check
-    const { skipChildProps }: DiffConfig = nextProps.diffConfig || {};
-    if (
-      !isSimilar(this.props.name, nextProps.name) || // Check if name changed
-      prevChild.type !== nextChild.type || // Check if child type changed
-      (!skipChildProps && !isSimilar(prevChild.props, nextChild.props)) // Check if child props changed
-    ) {
-      return true;
-    }
-
-    return this.prevValue !== this.getValue(nextProps);
-  }
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {

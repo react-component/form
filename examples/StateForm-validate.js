@@ -1,16 +1,31 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 import StateForm from '../src/StateForm';
 import Input from './components/Input';
 
 const { Field } = StateForm;
 
+const Change = ({ changed }) => <div>{changed ? '123' : 'abc'}</div>;
+
 export default class Demo extends React.Component {
-  state = {};
+  state = {
+    changed: false,
+  };
 
   render() {
+    const { changed } = this.state;
     return (
       <div>
         <h3>Validate Form</h3>
+        <button
+          type="button"
+          onClick={() => {
+            this.setState({ changed: !changed });
+          }}
+        >
+          Change String
+        </button>
         <StateForm>
           {(values, form) => {
             const usernameError = form.getFieldError('username');
@@ -40,11 +55,28 @@ export default class Demo extends React.Component {
                 </Field>
                 {password2Error}
 
+                <Change changed={changed} />
+                <Field name="renderProps" rules={[ { required: true } ]}>
+                  {(control) => {
+                    return (
+                      <div>
+                        <Change changed={changed} />
+                        <Input {...control} placeholder="render props" />
+                      </div>
+                    );
+                  }}
+                </Field>
+
                 <br />
 
-                <button type="button" onClick={() => {
-                  form.validateFields();
-                }}>Validate All</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    form.validateFields();
+                  }}
+                >
+                  Validate All
+                </button>
               </div>
             );
           }}

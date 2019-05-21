@@ -37,7 +37,7 @@ export default class Demo extends React.Component {
                 ) : 'Nothing yet...'}
 
                 <h4>Bad performance of render Field</h4>
-                <Field name="bad" diffConfig={{ skipChildProps: true }}>
+                <Field name="bad">
                   {(control) => {
                     console.log('value:', control.value);
                     return (
