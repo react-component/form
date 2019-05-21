@@ -14,6 +14,7 @@ export default class Demo extends React.Component {
     return (
       <div>
         <h3>Render Props ({list.length} inputs)</h3>
+        <p>Render Props is easy to use but bad performance</p>
         <StateForm>
           {(store) => {
             return (
@@ -36,14 +37,12 @@ export default class Demo extends React.Component {
                   </Field>
                 ) : 'Nothing yet...'}
 
-                <h4>Bad performance of render Field</h4>
                 <Field name="bad">
                   {(control) => {
-                    console.log('value:', control.value);
                     return (
-                      <label>
-                        BAD: <Input {...control} />
-                      </label>
+                      <div>
+                        Field Render Props: <Input {...control} />
+                      </div>
                     );
                   }}
                 </Field>
