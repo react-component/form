@@ -23,6 +23,7 @@ node_modules
 build
 dist
 lib
+es
 coverage
 yarn.lock
 storybook
