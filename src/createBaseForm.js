@@ -167,7 +167,15 @@ function createBaseForm(option = {}, mixins = []) {
 
       getFieldDecorator(name, fieldOption) {
         const props = this.getFieldProps(name, fieldOption);
+        let decoratorInvoked = false;
         return (fieldElem) => {
+          warning(
+            !decoratorInvoked,
+            `Duplicate field names will result ` +
+            `in both fields getting edited together. ` +
+            `Field names must be unique`
+          )
+          decoratorInvoked = true;
           // We should put field in record if it is rendered
           this.renderFields[name] = true;
 
@@ -271,6 +279,12 @@ function createBaseForm(option = {}, mixins = []) {
         }
 
         // This field is rendered, record it
+        warning(
+          !this.renderFields[name],
+          `Duplicate field names will result ` +
+          `in both fields getting edited together. ` +
+          `Field names must be unique`
+        );
         this.renderFields[name] = true;
 
         return inputProps;
