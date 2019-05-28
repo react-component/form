@@ -44,7 +44,7 @@ export default () => {
           </Field>
 
           {list.map((_, index) => (
-            <Field name={`field_${index}`}>
+            <Field key={index} name={`field_${index}`}>
               <Input placeholder={`field_${index}`} />
             </Field>
           ))}

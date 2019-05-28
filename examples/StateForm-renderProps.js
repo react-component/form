@@ -48,7 +48,7 @@ export default class Demo extends React.Component {
                 </Field>
 
                 {list.map((_, index) => (
-                  <Field name={`list_field_${index}`}>
+                  <Field key={index} name={`list_field_${index}`}>
                     <Input placeholder={`list_field_${index}`} />
                   </Field>
                 ))}
