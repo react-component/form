@@ -15,7 +15,7 @@ export default class Demo extends React.Component {
     return (
       <div>
         <h3>Validate Form</h3>
-        <StateForm>
+        <StateForm style={{ padding: 16 }}>
           {(values, form) => {
             const usernameError = form.getFieldError('username');
             const passwordError = form.getFieldError('password');
@@ -23,7 +23,7 @@ export default class Demo extends React.Component {
             console.log('=>', values, form.getFieldsError(), usernameError);
 
             return (
-              <div style={{ padding: 16 }}>
+              <React.Fragment>
                 <Field name="username" rules={[ { required: true } ]}>
                   <Input
                     placeholder="Username"
@@ -62,6 +62,7 @@ export default class Demo extends React.Component {
                   {(control, meta) => {
                     return (
                       <div>
+                        Use Meta:
                         <Input {...control} placeholder="render props" />
                         <Error>{meta.errors}</Error>
                       </div>
@@ -79,7 +80,9 @@ export default class Demo extends React.Component {
                 >
                   Validate All
                 </button>
-              </div>
+
+                <button type="submit">Submit</button>
+              </React.Fragment>
             );
           }}
         </StateForm>

@@ -23,7 +23,7 @@ export interface ValidateOptions {
   force?: boolean;
 }
 
-export type ValidateFields = ((nameList: NamePath[], options?: ValidateOptions) => Promise<any>);
+export type ValidateFields = ((nameList?: NamePath[], options?: ValidateOptions) => Promise<any>);
 
 export interface StateFormContextProps {
   getFieldsValue: () => Store;
@@ -51,6 +51,7 @@ const Context = React.createContext<StateFormContextProps>({
   useSubscribe: warningFunc,
   dispatch: warningFunc,
   validateFields: warningFunc,
+  submit: warningFunc,
 });
 
 export default Context;

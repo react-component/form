@@ -26,4 +26,5 @@ lib
 es
 coverage
 yarn.lock
+package-lock.json
 storybook

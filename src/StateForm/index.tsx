@@ -2,10 +2,14 @@ import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
 import StateFormField from './StateFormField';
 import useForm from './useForm';
+import { Omit } from './utils/typeUtil';
 
-export interface StateFormProps {
+type BaseFormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>;
+
+export interface StateFormProps extends BaseFormProps {
   form?: StateFormContextProps;
   children?: (() => JSX.Element | React.ReactNode) | React.ReactNode;
+  onSubmit?: (values: any) => {};
 }
 
 interface StateForm extends React.FunctionComponent<StateFormProps> {
@@ -13,7 +17,7 @@ interface StateForm extends React.FunctionComponent<StateFormProps> {
   useForm: typeof useForm;
 }
 
-const StateForm: StateForm = ({ form, children }: StateFormProps) => {
+const StateForm: StateForm = ({ form, children, onSubmit, ...restProps }: StateFormProps) => {
   // We customize handle event since Context will makes all the consumer re-render:
   // https://reactjs.org/docs/context.html#contextprovider
   const formInstance = useForm(form);
@@ -29,9 +33,19 @@ const StateForm: StateForm = ({ form, children }: StateFormProps) => {
   formInstance.useSubscribe(!childrenRenderProps);
 
   return (
-    <StateFormContext.Provider value={formInstance}>
-      {childrenNode}
-    </StateFormContext.Provider>
+    <form
+      {...restProps}
+      onSubmit={(event) => {
+        event.preventDefault();
+        formInstance.validateFields().then((values) => {
+          if (onSubmit) {
+            onSubmit(values);
+          }
+        });
+      }}
+    >
+      <StateFormContext.Provider value={formInstance}>{childrenNode}</StateFormContext.Provider>
+    </form>
   );
 };
 
