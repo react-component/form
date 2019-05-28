@@ -7,7 +7,7 @@ const { Field, useForm } = StateForm;
 const list = new Array(0).fill();
 
 export default () => {
-  const form = useForm();
+  const [form] = useForm();
 
   return (
     <div>

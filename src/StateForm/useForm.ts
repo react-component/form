@@ -181,7 +181,7 @@ export class FormStore {
   };
 }
 
-function useForm(form?: StateFormContextProps): StateFormContextProps {
+function useForm(form?: StateFormContextProps): [StateFormContextProps] {
   const formRef = React.useRef() as any;
   const [ , forceUpdate ] = React.useState();
 
@@ -202,7 +202,7 @@ function useForm(form?: StateFormContextProps): StateFormContextProps {
     }
   }
 
-  return formRef.current;
+  return [formRef.current];
 }
 
 export default useForm;

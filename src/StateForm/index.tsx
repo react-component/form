@@ -20,7 +20,7 @@ interface StateForm extends React.FunctionComponent<StateFormProps> {
 const StateForm: StateForm = ({ form, children, onSubmit, ...restProps }: StateFormProps) => {
   // We customize handle event since Context will makes all the consumer re-render:
   // https://reactjs.org/docs/context.html#contextprovider
-  const formInstance = useForm(form);
+  const [formInstance] = useForm(form);
 
   let childrenNode = children;
   const childrenRenderProps = typeof children === 'function';
