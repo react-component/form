@@ -22,10 +22,13 @@ function LabelField({ name, label, children, ...restProps }) {
 
         return (
           <div>
-            <label>
-              {label || name}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ flex: 'none', width: 100 }}>
+                {label || name}
+              </label>
+
               {childNode}
-            </label>
+            </div>
 
             {meta.errors}
           </div>
@@ -43,12 +46,12 @@ export default class Demo extends React.Component {
       <div>
         <h3>State Form ({list.length} inputs)</h3>
         <StateForm>
-          {/* <LabelField name="username">
+          <LabelField name="username">
             <Input placeholder="Username" />
           </LabelField>
           <LabelField name="password">
             <Input placeholder="Password" />
-          </LabelField> */}
+          </LabelField>
           <LabelField name={['path1', 'path2']} label="Nest Path" rules={[ { required: true } ]}>
             <Input placeholder="nest" />
           </LabelField>
