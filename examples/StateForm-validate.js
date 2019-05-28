@@ -6,7 +6,9 @@ import Input from './components/Input';
 
 const { Field } = StateForm;
 
-const Error = ({ children }) => <div style={{ color: 'red' }}>{children}</div>;
+const Error = ({ children }) => (
+  <ul style={{ color: 'red' }}>{children.map((error) => <li>{error}</li>)}</ul>
+);
 
 export default class Demo extends React.Component {
   onSubmit = (event, values) => {
@@ -39,7 +41,18 @@ export default class Demo extends React.Component {
                 </Field>
                 <Error>{usernameError}</Error>
 
-                <Field name="password" rules={[ { required: true } ]}>
+                <Field
+                  name="password"
+                  rules={[
+                    { required: true },
+                    {
+                      validator(_, __, callback) {
+                        form.validateFields([ 'password2' ]);
+                        callback();
+                      },
+                    },
+                  ]}
+                >
                   <Input placeholder="Password" />
                 </Field>
                 <Error>{passwordError}</Error>
@@ -69,6 +82,37 @@ export default class Demo extends React.Component {
                       <div>
                         Use Meta:
                         <Input {...control} placeholder="render props" />
+                        <Error>{meta.errors}</Error>
+                      </div>
+                    );
+                  }}
+                </Field>
+
+                <Field
+                  name="validateTrigger"
+                  validateTrigger={[ 'onSubmit', 'onChange' ]}
+                  rules={[
+                    { required: true, validateTrigger: 'onSubmit' },
+                    {
+                      validator(rule, value, callback) {
+                        if (Number(value).toString() === value) {
+                          callback();
+                        }
+                        callback('Integer number only!');
+                      },
+                      validateTrigger: 'onChange',
+                    },
+                  ]}
+                >
+                  {(control, meta) => {
+                    return (
+                      <div>
+                        Multiple `validateTrigger`:
+                        <ul>
+                          <li>Required check on submit</li>
+                          <li>Number check on change</li>
+                        </ul>
+                        <Input {...control} placeholder="validateTrigger" />
                         <Error>{meta.errors}</Error>
                       </div>
                     );

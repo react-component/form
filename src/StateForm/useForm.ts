@@ -7,8 +7,9 @@ import {
   ValidateFields,
   ValidateOptions,
 } from './StateFormContext';
-import { InternalNamePath, NamePath } from './StateFormField';
+import { InternalNamePath, NamePath, Rule } from './StateFormField';
 import { allPromiseFinish } from './utils/asyncUtil';
+import { toArray } from './utils/typeUtil';
 import { ErrorCache, validateRules } from './utils/validateUtil';
 import { getNamePath, getValue, matchNamePath, setValue, setValues } from './utils/valueUtil';
 
@@ -99,7 +100,7 @@ export class FormStore {
   };
 
   // =========================== Validate ===========================
-  private validateFields: ValidateFields = (nameList: NamePath[], options: ValidateOptions) => {
+  private validateFields: ValidateFields = (nameList?: NamePath[], options?: ValidateOptions) => {
     const namePathList: InternalNamePath[] | undefined = nameList && nameList.map(getNamePath);
 
     // Collect result in promise list
@@ -116,10 +117,22 @@ export class FormStore {
         !namePathList ||
         namePathList.some((namePath) => matchNamePath(fieldNamePath, namePath))
       ) {
+        const { triggerName } = (options || {}) as ValidateOptions;
+        let rules: Rule[] = field.props.rules || [];
+        if (triggerName) {
+          rules = rules.filter(({ validateTrigger }: Rule) => {
+            if (!validateTrigger) {
+              return true;
+            }
+            const triggerList = toArray(validateTrigger);
+            return triggerList.includes(triggerName);
+          });
+        }
+
         const promise = validateRules(
           fieldNamePath,
           getValue(this.store, fieldNamePath),
-          field.props.rules,
+          rules,
           options,
           this.getForm(),
         );

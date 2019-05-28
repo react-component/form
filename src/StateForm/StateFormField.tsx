@@ -1,6 +1,7 @@
-import toArray from 'rc-util/lib/Children/toArray';
+import toChildrenArray from 'rc-util/lib/Children/toArray';
 import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
+import { toArray } from './utils/typeUtil';
 import {
   defaultGetValueFromEvent,
   getNamePath,
@@ -8,6 +9,8 @@ import {
   isSimilar,
   matchNamePath,
 } from './utils/valueUtil';
+
+// TODO: validating, touched, dirty
 
 export type InternalNamePath = Array<string | number>;
 export type NamePath = string | number | InternalNamePath;
@@ -104,7 +107,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     }
 
     // Filed element only
-    const childList = toArray(children);
+    const childList = toChildrenArray(children);
     if (childList.length !== 1 || !React.isValidElement(childList[0])) {
       return { child: null, isFunction: false };
     }
@@ -149,9 +152,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     };
 
     // Add validateTrigger
-    const validateTriggerList: string[] = Array.isArray(validateTrigger)
-      ? validateTrigger
-      : [ validateTrigger! ];
+    const validateTriggerList: string[] = toArray(validateTrigger);
 
     validateTriggerList.forEach((triggerName: string) => {
       // Wrap additional function of component, so that we can get latest value from store
@@ -164,7 +165,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
         // Always use latest rules
         const { rules } = this.props;
         if (rules && rules.length) {
-          validateFields([ namePath ]);
+          validateFields([ namePath ], { triggerName });
         }
       };
     });

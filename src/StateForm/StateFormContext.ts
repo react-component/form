@@ -22,6 +22,7 @@ export interface FieldError {
 
 export interface ValidateOptions {
   force?: boolean;
+  triggerName?: string;
 }
 
 export type ValidateFields = ((nameList?: NamePath[], options?: ValidateOptions) => Promise<any>);

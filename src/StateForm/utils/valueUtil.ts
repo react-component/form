@@ -1,12 +1,17 @@
 import setIn from 'lodash/fp/set';
 import get from 'lodash/get';
 import { InternalNamePath, NamePath } from '../StateFormField';
+import { toArray } from './typeUtil';
 
-export function getNamePath(path: NamePath | null) {
-  if (!path) {
-    return [];
-  }
-  return Array.isArray(path) ? path : [ path ];
+/**
+ * Convert name to internal supported format.
+ * This function should keep since we still thinking if need support like `a.b.c` format.
+ * 'a' => ['a']
+ * 123 => [123]
+ * ['a', 123] => ['a', 123]
+ */
+export function getNamePath(path: NamePath | null): Array<string | number> {
+  return toArray(path);
 }
 
 export function getValue(store: any, namePath: InternalNamePath) {
