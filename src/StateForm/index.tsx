@@ -9,7 +9,7 @@ type BaseFormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>
 export interface StateFormProps extends BaseFormProps {
   form?: StateFormContextProps;
   children?: (() => JSX.Element | React.ReactNode) | React.ReactNode;
-  onSubmit?: (values: any) => {};
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>, values: any) => {};
 }
 
 interface StateForm extends React.FunctionComponent<StateFormProps> {
@@ -37,11 +37,15 @@ const StateForm: StateForm = ({ form, children, onSubmit, ...restProps }: StateF
       {...restProps}
       onSubmit={(event) => {
         event.preventDefault();
-        formInstance.validateFields().then((values) => {
-          if (onSubmit) {
-            onSubmit(values);
-          }
-        });
+        formInstance
+          .validateFields()
+          .then((values) => {
+            if (onSubmit) {
+              onSubmit(event, values);
+            }
+          })
+          // Do nothing about submit catch
+          .catch((e) => e);
       }}
     >
       <StateFormContext.Provider value={formInstance}>{childrenNode}</StateFormContext.Provider>

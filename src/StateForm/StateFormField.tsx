@@ -1,7 +1,13 @@
 import toArray from 'rc-util/lib/Children/toArray';
 import * as React from 'react';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
-import { defaultGetValueFromEvent, getNamePath, getValue, isSimilar, matchNamePath } from './utils/valueUtil';
+import {
+  defaultGetValueFromEvent,
+  getNamePath,
+  getValue,
+  isSimilar,
+  matchNamePath,
+} from './utils/valueUtil';
 
 export type InternalNamePath = Array<string | number>;
 export type NamePath = string | number | InternalNamePath;
@@ -26,10 +32,15 @@ export interface Rule {
   required?: boolean;
   transform?: (value: any) => any;
   type?: string;
-  validator?: (rule: Rule, value: any, callback: (error: any) => void, context: StateFormContextProps) => void;
+  validator?: (
+    rule: Rule,
+    value: any,
+    callback: (error: any) => void,
+    context: StateFormContextProps,
+  ) => void;
   whitespace?: boolean;
   validateTrigger?: string | string[];
-};
+}
 
 export interface StateFormFieldProps {
   name: NamePath;
@@ -52,18 +63,12 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     validateTrigger: 'onChange',
   };
 
-  private prevValue: any;
   private cancelRegisterFunc: () => void | null = null;
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
     const { registerField }: StateFormContextProps = this.context;
     this.cancelRegisterFunc = registerField(this);
-    this.componentDidUpdate({} as any);
-  }
-
-  public componentDidUpdate(prevProps: StateFormFieldProps) {
-    this.prevValue = this.getValue();
   }
 
   public cancelRegister = () => {
@@ -80,8 +85,10 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   // ============================= Child Component =============================
   // Only return validate child node. If invalidate, will do nothing about field.
   public getOnlyChild = (
-    children: React.ReactNode | ((control: ChildProps, meta: Meta, context: any) => React.ReactNode),
-  ): React.ReactElement | null => {
+    children:
+      | React.ReactNode
+      | ((control: ChildProps, meta: Meta, context: any) => React.ReactNode),
+  ): { child: React.ReactElement | null; isFunction: boolean } => {
     // Support render props
     if (typeof children === 'function') {
       const { name } = this.props;
@@ -90,18 +97,19 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
       const meta: Meta = {
         errors: getFieldError(name),
       };
-      return this.getOnlyChild(
-        children(this.getControlled(), meta, this.context)
-      );
+      return {
+        ...this.getOnlyChild(children(this.getControlled(), meta, this.context)),
+        isFunction: true,
+      };
     }
 
     // Filed element only
     const childList = toArray(children);
     if (childList.length !== 1 || !React.isValidElement(childList[0])) {
-      return null;
+      return { child: null, isFunction: false };
     }
 
-    return childList[0];
+    return { child: childList[0], isFunction: false };
   };
 
   // ============================== Field Control ==============================
@@ -165,14 +173,19 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   };
 
   // Trigger by store update. Check if need update the component
-  public onStoreChange = (prevStore: any, changedNamePath: Array<string | number> | null) => {
+  public onStoreChange = (prevStore: any, namePathList: InternalNamePath[] | null) => {
     const { name, shouldUpdate } = this.props;
     const { getFieldsValue } = this.context;
     const values = getFieldsValue();
     const namePath = getNamePath(name);
     const preValue = getValue(prevStore, namePath);
     const curValue = getValue(values, namePath);
-    if (matchNamePath(namePath, changedNamePath) || preValue !== curValue || (shouldUpdate && shouldUpdate(prevStore, values))) {
+    if (
+      (namePathList &&
+        namePathList.some((changedNamePath) => matchNamePath(namePath, changedNamePath))) ||
+      preValue !== curValue ||
+      (shouldUpdate && shouldUpdate(prevStore, values))
+    ) {
       this.forceUpdate();
     }
   };
@@ -180,10 +193,15 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   public render() {
     const { name, children } = this.props;
 
-    const child = this.getOnlyChild(children);
+    const { child, isFunction } = this.getOnlyChild(children);
     const namePath = getNamePath(name);
     if (!child || !namePath.length) {
       return children;
+    }
+
+    // Not need to `cloneElement` since user can handle this in render function self
+    if (isFunction) {
+      return child;
     }
 
     return React.cloneElement(child, this.getControlled(child.props));

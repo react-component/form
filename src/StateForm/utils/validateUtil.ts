@@ -1,6 +1,7 @@
 import AsyncValidator from 'async-validator';
 import { FieldError, StateFormContextProps, ValidateOptions } from '../StateFormContext';
 import { InternalNamePath, Rule } from '../StateFormField';
+import NameMap from './NameMap';
 import { getNamePath, isSimilar, matchNamePath } from './valueUtil';
 
 /**
@@ -55,41 +56,66 @@ export function validateRules(
   return promise;
 }
 
-function includesError(source: FieldError[], target: FieldError[]) {
+function diffErrors(source: FieldError[], target: FieldError[]) {
   const targetFieldErrors = target.filter(({ errors }) => errors.length);
-  return targetFieldErrors.every(({ name, errors }) => {
+  const results: FieldError[] = [];
+
+  targetFieldErrors.forEach((targetError) => {
+    const { name, errors } = targetError;
     if (!errors.length) {
-      return true;
+      return;
     }
 
     const sourceFieldError = source.find(fe => matchNamePath(fe.name, name));
-    return sourceFieldError && isSimilar(sourceFieldError.errors, errors);
+    if (sourceFieldError && !isSimilar(sourceFieldError.errors, errors)) {
+      results.push(targetError);
+    }
   });
+
+  return results;
+}
+
+/**
+ * Convert `NameMap<string[]>` into `[{ name, errors }]` format.
+ */
+function nameMapToErrorList(nameMap: NameMap<string[]>): FieldError[] {
+  return nameMap.map(({ key, value }) => ({
+    name: key,
+    errors: value,
+  }));
 }
 
 export class ErrorCache {
-  private cache: FieldError[] = [];
+  private cache: NameMap<string[]> = new NameMap();
 
-  public updateError = (errors: FieldError[]) => {
-    this.cache = this.cache.filter(({ name }) =>
-      errors.every((fieldError) => !matchNamePath(name, fieldError.name)),
-    );
-
-    this.cache = [ ...this.cache, ...errors ];
+  public updateError = (fieldErrors: FieldError[]) => {
+    this.cache = this.cache.clone();
+    fieldErrors.forEach(({ name, errors }) => {
+      this.cache.set(name, errors);
+    });
   };
 
-  public getFieldsError = (namePathList?: InternalNamePath[]) => {
-    const errors = !namePathList
-      ? this.cache
-      : this.cache.filter(({ name }) => {
+  public getFieldsError = (namePathList?: InternalNamePath[]): FieldError[] => {
+    const fullErrors: FieldError[] = nameMapToErrorList(this.cache);
+
+    return !namePathList
+      ? fullErrors
+      : fullErrors.filter(({ name }) => {
           const errorNamePath = getNamePath(name);
           return namePathList.some((namePath) => matchNamePath(namePath, errorNamePath));
         });
-
-    return errors;
   };
 
-  public isErrorsChange = (errors: FieldError[]) => {
-    return !includesError(this.cache, errors) || !includesError(errors, this.cache);
+  public getDiffErrors = (errors: FieldError[]): FieldError[] => {
+    const originErrors = this.getFieldsError();
+    const diffSourceNames = diffErrors(originErrors, errors).map(({ name }) => name);
+    const diffTargetNames = diffErrors(errors, originErrors).map(({ name }) => name);
+
+    const errorMap = new NameMap<string[]>();
+    [...diffSourceNames, ...diffTargetNames].forEach(namePath => {
+      errorMap.set(namePath, this.cache.get(namePath));
+    });
+
+    return nameMapToErrorList(errorMap);
   };
 }

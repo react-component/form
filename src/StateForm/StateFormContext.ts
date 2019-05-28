@@ -7,7 +7,8 @@ export interface Store {
 }
 
 export interface FieldEntity {
-  onStoreChange: (store: any, namePath: InternalNamePath | null) => void;
+  onStoreChange: (store: any, namePathList: InternalNamePath[] | null) => void;
+  forceUpdate: () => void;
   props: {
     name?: NamePath;
     rules?: Rule[];

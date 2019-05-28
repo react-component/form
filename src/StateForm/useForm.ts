@@ -26,7 +26,6 @@ export class FormStore {
   private store: Store = {};
   private fieldEntities: FieldEntity[] = [];
   private errorCache: ErrorCache = new ErrorCache();
-  private formRender: boolean = false;
 
   constructor(forceRootUpdate: () => void) {
     this.forceRootUpdate = forceRootUpdate;
@@ -70,35 +69,33 @@ export class FormStore {
     }
   };
 
-  private updateValue = (name: NamePath, value: any) => {
-    const namePath = getNamePath(name);
-    const prevStore = this.store;
-    this.store = setValue(this.store, namePath, value);
-
+  private notifyObservers = (prevStore: any, namePathList: InternalNamePath[] | null) => {
     if (this.subscribable) {
       this.fieldEntities.forEach(({ onStoreChange }) => {
-        onStoreChange(prevStore, namePath);
+        onStoreChange(prevStore, namePathList);
       });
     } else {
       this.forceRootUpdate();
     }
   };
 
+  private updateValue = (name: NamePath, value: any) => {
+    const namePath = getNamePath(name);
+    const prevStore = this.store;
+    this.store = setValue(this.store, namePath, value);
+
+    this.notifyObservers(prevStore, [namePath]);
+  };
+
   // Let all child Field get update.
-  private setFieldsValue = (store?: any) => {
+  private setFieldsValue = (store: any) => {
     const prevStore = this.store;
 
     if (store) {
       this.store = setValues(this.store, store);
     }
 
-    if (this.subscribable) {
-      this.fieldEntities.forEach(({ onStoreChange }) => {
-        onStoreChange(prevStore, null);
-      });
-    } else {
-      this.forceRootUpdate();
-    }
+    this.notifyObservers(prevStore, null);
   };
 
   // =========================== Validate ===========================
@@ -155,9 +152,10 @@ export class FormStore {
 
     // Internal catch error to avoid console error log.
     summaryPromise.catch((e) => e).then(() => {
-      // Force update
-      if (this.errorCache.isErrorsChange(prevErrors)) {
-        this.setFieldsValue();
+      // Check if need call field to update
+      const diffErrors = this.errorCache.getDiffErrors(prevErrors);
+      if (diffErrors.length) {
+        this.notifyObservers(this.store, diffErrors.map(({ name }) => name));
       }
     });
 

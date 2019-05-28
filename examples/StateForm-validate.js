@@ -9,18 +9,23 @@ const { Field } = StateForm;
 const Error = ({ children }) => <div style={{ color: 'red' }}>{children}</div>;
 
 export default class Demo extends React.Component {
-  state = {};
+  onSubmit = (event, values) => {
+    console.log('Submit:', values);
+  };
 
   render() {
     return (
       <div>
         <h3>Validate Form</h3>
-        <StateForm style={{ padding: 16 }}>
+        <StateForm style={{ padding: 16 }} onSubmit={this.onSubmit}>
           {(values, form) => {
             const usernameError = form.getFieldError('username');
             const passwordError = form.getFieldError('password');
             const password2Error = form.getFieldError('password2');
-            console.log('=>', values, form.getFieldsError(), usernameError);
+            const errors = form.getFieldsError();
+            if (errors) {
+              console.log('Render with Errors:', values, form.getFieldsError());
+            }
 
             return (
               <React.Fragment>
