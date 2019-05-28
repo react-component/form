@@ -30,8 +30,7 @@ export interface StateFormContextProps {
   getFieldError: (name: NamePath) => string[];
   getFieldsError: (nameList?: NamePath[]) => FieldError[];
   useSubscribe: (subscribable: boolean) => void;
-  updateValue: (name: NamePath, value: any) => void;
-  updateValues: (value: any) => void;
+  setFieldsValue: (value: any) => void;
   dispatch: (action: ReducerAction) => void;
   registerField: (entity: FieldEntity) => (() => void);
   validateFields: ValidateFields;
@@ -46,12 +45,10 @@ const Context = React.createContext<StateFormContextProps>({
   getFieldsValue: warningFunc,
   getFieldError: warningFunc,
   getFieldsError: warningFunc,
-  updateValue: warningFunc,
-  updateValues: warningFunc,
+  setFieldsValue: warningFunc,
   useSubscribe: warningFunc,
   dispatch: warningFunc,
   validateFields: warningFunc,
-  submit: warningFunc,
 });
 
 export default Context;

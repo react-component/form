@@ -168,8 +168,11 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   public onStoreChange = (prevStore: any, changedNamePath: Array<string | number> | null) => {
     const { name, shouldUpdate } = this.props;
     const { getFieldsValue } = this.context;
+    const values = getFieldsValue();
     const namePath = getNamePath(name);
-    if (matchNamePath(namePath, changedNamePath) || (shouldUpdate && shouldUpdate(prevStore, getFieldsValue()))) {
+    const preValue = getValue(prevStore, namePath);
+    const curValue = getValue(values, namePath);
+    if (matchNamePath(namePath, changedNamePath) || preValue !== curValue || (shouldUpdate && shouldUpdate(prevStore, values))) {
       this.forceUpdate();
     }
   };

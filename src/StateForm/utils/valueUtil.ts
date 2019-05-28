@@ -6,7 +6,7 @@ export function getNamePath(path: NamePath | null) {
   if (!path) {
     return [];
   }
-  return Array.isArray(path) ? path : [path];
+  return Array.isArray(path) ? path : [ path ];
 }
 
 export function getValue(store: any, namePath: InternalNamePath) {
@@ -18,9 +18,33 @@ export function setValue(store: any, namePath: InternalNamePath, value: any) {
   return newStore;
 }
 
-export function matchNamePath(namePath: InternalNamePath, changedNamePath: InternalNamePath | null) {
+function isObject(obj: any) {
+  return typeof obj === 'object' && obj !== null;
+}
+
+/**
+ * Copy values into store and return a new values object
+ * ({ a: 1, b: { c: 2 } }, { a: 4, b: { d: 5 } }) => { a: 4, b: { c: 2, d: 5 } }
+ */
+export function setValues(store: any, values: any) {
+  const newStore = { ...store };
+  Object.keys(values).forEach((key) => {
+    const prevValue = newStore[key];
+    const value = values[key];
+
+    // If both are object, we use recursion to set deep value
+    newStore[key] = isObject(prevValue) && isObject(value) ? setValues(prevValue, value) : value;
+  });
+
+  return newStore;
+}
+
+export function matchNamePath(
+  namePath: InternalNamePath,
+  changedNamePath: InternalNamePath | null,
+) {
   if (!changedNamePath) {
-    return true;
+    return false;
   }
   return namePath.every((nameUnit, i) => changedNamePath[i] === nameUnit);
 }
@@ -41,9 +65,9 @@ export function isSimilar(source: any, target: any) {
 
   const sourceKeys = Object.keys(source);
   const targetKeys = Object.keys(target);
-  const keys = new Set([...sourceKeys, ...targetKeys]);
+  const keys = new Set([ ...sourceKeys, ...targetKeys ]);
 
-  return [...keys].every((key) => {
+  return [ ...keys ].every((key) => {
     const sourceValue = source[key];
     const targetValue = target[key];
 

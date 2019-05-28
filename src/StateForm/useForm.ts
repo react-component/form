@@ -10,7 +10,7 @@ import {
 import { InternalNamePath, NamePath } from './StateFormField';
 import { allPromiseFinish } from './utils/asyncUtil';
 import { ErrorCache, validateRules } from './utils/validateUtil';
-import { getNamePath, getValue, matchNamePath, setValue } from './utils/valueUtil';
+import { getNamePath, getValue, matchNamePath, setValue, setValues } from './utils/valueUtil';
 
 interface UpdateAction {
   type: 'updateValue';
@@ -39,8 +39,7 @@ export class FormStore {
 
     useSubscribe: this.useSubscribe,
 
-    updateValue: this.updateValue,
-    updateValues: this.updateValues,
+    setFieldsValue: this.setFieldsValue,
     dispatch: this.dispatch,
     registerField: this.registerField,
     validateFields: this.validateFields,
@@ -86,11 +85,11 @@ export class FormStore {
   };
 
   // Let all child Field get update.
-  private updateValues = (store?: any) => {
+  private setFieldsValue = (store?: any) => {
     const prevStore = this.store;
 
     if (store) {
-      this.store = store;
+      this.store = setValues(this.store, store);
     }
 
     if (this.subscribable) {
@@ -158,7 +157,7 @@ export class FormStore {
     summaryPromise.catch((e) => e).then(() => {
       // Force update
       if (this.errorCache.isErrorsChange(prevErrors)) {
-        this.updateValues();
+        this.setFieldsValue();
       }
     });
 

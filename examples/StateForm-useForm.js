@@ -14,13 +14,7 @@ export default () => {
       <h3>useForm ({list.length} inputs)</h3>
 
       <button type="button" onClick={() => {
-        form.updateValue('username', 'hello');
-      }}>
-        Fill Value
-      </button>
-
-      <button type="button" onClick={() => {
-        form.updateValues({
+        form.setFieldsValue({
           username: 'light',
           password: 'bamboo',
         });
