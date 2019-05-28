@@ -67,7 +67,7 @@ function diffErrors(source: FieldError[], target: FieldError[]) {
     }
 
     const sourceFieldError = source.find(fe => matchNamePath(fe.name, name));
-    if (sourceFieldError && !isSimilar(sourceFieldError.errors, errors)) {
+    if (!sourceFieldError || !isSimilar(sourceFieldError.errors, errors)) {
       results.push(targetError);
     }
   });
