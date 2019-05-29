@@ -205,23 +205,16 @@ export class FormStore {
 
     const summaryPromise = allPromiseFinish(promiseList);
 
-
-    summaryPromise.catch(result => result).then(result => {
-      // Notify fields with rule that validate has finished and need update
-      this.notifyObservers(this.store, result.map(({ name }) => name));
+    // Notify fields with rule that validate has finished and need update
+    summaryPromise.catch((results) => results).then((results) => {
+      this.errorCache.updateError(results);
+      this.notifyObservers(this.store, results.map(({ name }) => name));
     });
 
-    return summaryPromise
-      .then((results: any) => {
-        this.errorCache.updateError(results);
-        return this.store;
-      })
-      .catch((results: any) => {
-        this.errorCache.updateError(results);
-
-        const errorList = results.filter((result: any) => result);
-        return Promise.reject(errorList);
-      });
+    return summaryPromise.then(() => this.store).catch((results: any) => {
+      const errorList = results.filter((result: any) => result);
+      return Promise.reject(errorList);
+    });
   };
 }
 
