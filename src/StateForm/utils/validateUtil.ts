@@ -38,6 +38,7 @@ export function validateRules(
     validator.validate({ [name]: value }, options || {}, (errors: any) => {
       if (!errors) {
         resolve();
+        return;
       }
       reject(
         errors.map((e: any) => {
@@ -54,25 +55,6 @@ export function validateRules(
   promise.catch((e) => e);
 
   return promise;
-}
-
-function diffErrors(source: FieldError[], target: FieldError[]) {
-  const targetFieldErrors = target.filter(({ errors }) => errors.length);
-  const results: FieldError[] = [];
-
-  targetFieldErrors.forEach((targetError) => {
-    const { name, errors } = targetError;
-    if (!errors.length) {
-      return;
-    }
-
-    const sourceFieldError = source.find((fe) => matchNamePath(fe.name, name));
-    if (!sourceFieldError || !isSimilar(sourceFieldError.errors, errors)) {
-      results.push(targetError);
-    }
-  });
-
-  return results;
 }
 
 /**
@@ -104,18 +86,5 @@ export class ErrorCache {
           const errorNamePath = getNamePath(name);
           return containsNamePath(namePathList, errorNamePath);
         });
-  };
-
-  public getDiffErrors = (errors: FieldError[]): FieldError[] => {
-    const originErrors = this.getFieldsError();
-    const diffSourceNames = diffErrors(originErrors, errors).map(({ name }) => name);
-    const diffTargetNames = diffErrors(errors, originErrors).map(({ name }) => name);
-
-    const errorMap = new NameMap<string[]>();
-    [ ...diffSourceNames, ...diffTargetNames ].forEach((namePath) => {
-      errorMap.set(namePath, this.cache.get(namePath));
-    });
-
-    return nameMapToErrorList(errorMap);
   };
 }

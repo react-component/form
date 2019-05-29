@@ -3,16 +3,21 @@ import {
   FieldEntity,
   InternalNamePath,
   NamePath,
-  Rule,
   Store,
   ValidateFields,
   ValidateOptions,
 } from './interface';
 import { StateFormContextProps } from './StateFormContext';
 import { allPromiseFinish } from './utils/asyncUtil';
-import { toArray } from './utils/typeUtil';
-import { ErrorCache, validateRules } from './utils/validateUtil';
-import { containsNamePath, getNamePath, getValue, setValue, setValues } from './utils/valueUtil';
+import { ErrorCache } from './utils/validateUtil';
+import {
+  containsNamePath,
+  getNamePath,
+  getValue,
+  matchNamePath,
+  setValue,
+  setValues,
+} from './utils/valueUtil';
 
 interface UpdateAction {
   type: 'updateValue';
@@ -40,6 +45,7 @@ export class FormStore {
     getFieldsError: this.getFieldsError,
     isFieldsTouched: this.isFieldsTouched,
     isFieldTouched: this.isFieldTouched,
+    isFieldValidating: this.isFieldValidating,
 
     useSubscribe: this.useSubscribe,
     setFieldsValue: this.setFieldsValue,
@@ -104,6 +110,16 @@ export class FormStore {
 
   private isFieldTouched = (name: NamePath) => {
     return this.isFieldsTouched([ name ]);
+  };
+
+  private isFieldValidating = (name: NamePath) => {
+    const namePath: InternalNamePath = getNamePath(name);
+    const field = this.fieldEntities.find((testField) => {
+      const fieldNamePath = getNamePath(testField.props.name);
+      return matchNamePath(fieldNamePath, namePath);
+    });
+
+    return field && field.isFieldValidating();
   };
 
   // ========================= Subscription =========================
@@ -173,25 +189,7 @@ export class FormStore {
       const fieldNamePath = getNamePath(field.props.name);
 
       if (!namePathList || containsNamePath(namePathList, fieldNamePath)) {
-        const { triggerName } = (options || {}) as ValidateOptions;
-        let rules: Rule[] = field.props.rules || [];
-        if (triggerName) {
-          rules = rules.filter(({ validateTrigger }: Rule) => {
-            if (!validateTrigger) {
-              return true;
-            }
-            const triggerList = toArray(validateTrigger);
-            return triggerList.includes(triggerName);
-          });
-        }
-
-        const promise = validateRules(
-          fieldNamePath,
-          getValue(this.store, fieldNamePath),
-          rules,
-          options,
-          this.getForm(),
-        );
+        const promise = field.validateRules(options);
 
         // Wrap promise with field
         promiseList.push(
@@ -205,9 +203,15 @@ export class FormStore {
       }
     });
 
-    const prevErrors = this.errorCache.getFieldsError();
+    const summaryPromise = allPromiseFinish(promiseList);
 
-    const summaryPromise = allPromiseFinish(promiseList)
+
+    summaryPromise.catch(result => result).then(result => {
+      // Notify fields with rule that validate has finished and need update
+      this.notifyObservers(this.store, result.map(({ name }) => name));
+    });
+
+    return summaryPromise
       .then((results: any) => {
         this.errorCache.updateError(results);
         return this.store;
@@ -218,17 +222,6 @@ export class FormStore {
         const errorList = results.filter((result: any) => result);
         return Promise.reject(errorList);
       });
-
-    // Internal catch error to avoid console error log.
-    summaryPromise.catch((e) => e).then(() => {
-      // Check if need call field to update
-      const diffErrors = this.errorCache.getDiffErrors(prevErrors);
-      if (diffErrors.length) {
-        this.notifyObservers(this.store, diffErrors.map(({ name }) => name));
-      }
-    });
-
-    return summaryPromise;
   };
 }
 

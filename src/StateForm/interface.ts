@@ -34,6 +34,8 @@ export interface Rule {
 export interface FieldEntity {
   onStoreChange: (store: any, namePathList: InternalNamePath[] | null) => void;
   isFieldTouched: () => boolean;
+  isFieldValidating: () => boolean;
+  validateRules: (options?: ValidateOptions) => Promise<any>;
   props: {
     name?: NamePath;
     rules?: Rule[];

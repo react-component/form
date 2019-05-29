@@ -10,6 +10,7 @@ export interface StateFormContextProps {
   getFieldsError: (nameList?: NamePath[]) => FieldError[];
   isFieldsTouched: (nameList?: NamePath[]) => boolean;
   isFieldTouched: (name: NamePath) => boolean;
+  isFieldValidating: (name: NamePath) => boolean;
 
   useSubscribe: (subscribable: boolean) => void;
   setFieldsValue: (value: any) => void;
@@ -29,6 +30,7 @@ const Context = React.createContext<StateFormContextProps>({
   getFieldsError: warningFunc,
   isFieldsTouched: warningFunc,
   isFieldTouched: warningFunc,
+  isFieldValidating: warningFunc,
 
   setFieldsValue: warningFunc,
   useSubscribe: warningFunc,

@@ -1,8 +1,9 @@
 import toChildrenArray from 'rc-util/lib/Children/toArray';
 import * as React from 'react';
-import { FieldEntity, InternalNamePath, Meta, NamePath, Rule } from './interface';
+import { FieldEntity, InternalNamePath, Meta, NamePath, Rule, ValidateOptions } from './interface';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
 import { toArray } from './utils/typeUtil';
+import { validateRules } from './utils/validateUtil';
 import {
   containsNamePath,
   defaultGetValueFromEvent,
@@ -33,8 +34,7 @@ export interface StateFormFieldState {
 }
 
 // We use Class instead of Hooks here since it will cost much code by using Hooks.
-class StateFormField extends React.Component<StateFormFieldProps, any>
-  implements FieldEntity {
+class StateFormField extends React.Component<StateFormFieldProps, any> implements FieldEntity {
   public static contextType = StateFormContext;
   public static defaultProps = {
     trigger: 'onChange',
@@ -44,10 +44,11 @@ class StateFormField extends React.Component<StateFormFieldProps, any>
   private cancelRegisterFunc: () => void | null = null;
 
   /**
-   * Touched state should not management in State since it will async update by React.
-   * This makes first render of form can not get correct `touched` value.
+   * Follow state should not management in State since it will async update by React.
+   * This makes first render of form can not get correct state value.
    */
   private touched: boolean = false;
+  private validatePromise: Promise<any> | null = null; // We reuse the promise to check if is `validating`
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
@@ -87,6 +88,42 @@ class StateFormField extends React.Component<StateFormFieldProps, any>
   public isFieldTouched = () => {
     return this.touched;
   };
+
+  public validateRules = (options?: ValidateOptions) => {
+    const { rules, name } = this.props;
+    const { triggerName } = (options || {}) as ValidateOptions;
+    const namePath = getNamePath(name);
+
+    let filteredRules = rules || [];
+    if (triggerName) {
+      filteredRules = filteredRules.filter(({ validateTrigger }: Rule) => {
+        if (!validateTrigger) {
+          return true;
+        }
+        const triggerList = toArray(validateTrigger);
+        return triggerList.includes(triggerName);
+      });
+    }
+
+    const promise = validateRules(
+      namePath,
+      this.getValue(),
+      filteredRules,
+      options,
+      this.context,
+    );
+    this.validatePromise = promise;
+
+    promise.catch(e => e).then(() => {
+      if (this.validatePromise === promise) {
+        this.validatePromise = null;
+      }
+    });
+
+    return promise;
+  };
+
+  public isFieldValidating = () => !!this.validatePromise;
 
   // ============================= Child Component =============================
   // Only return validate child node. If invalidate, will do nothing about field.
@@ -171,6 +208,8 @@ class StateFormField extends React.Component<StateFormFieldProps, any>
         // Always use latest rules
         const { rules } = this.props;
         if (rules && rules.length) {
+          // We dispatch validate to root since it will update related data with other field with same name
+          // TODO: use dispatch instead
           validateFields([ namePath ], { triggerName });
         }
       };

@@ -1,4 +1,4 @@
-import { InternalNamePath } from '../StateFormField';
+import { InternalNamePath } from '../interface';
 import { matchNamePath } from './valueUtil';
 
 interface KV<T> {
