@@ -9,7 +9,7 @@ type BaseFormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>
 export interface StateFormProps extends BaseFormProps {
   form?: StateFormContextProps;
   children?: (() => JSX.Element | React.ReactNode) | React.ReactNode;
-  onSubmit?: (event: React.FormEvent<HTMLFormElement>, values: any) => {};
+  onFinish?: (values: any) => {};
 }
 
 interface StateForm extends React.FunctionComponent<StateFormProps> {
@@ -17,10 +17,10 @@ interface StateForm extends React.FunctionComponent<StateFormProps> {
   useForm: typeof useForm;
 }
 
-const StateForm: StateForm = ({ form, children, onSubmit, ...restProps }: StateFormProps) => {
+const StateForm: StateForm = ({ form, children, onFinish, ...restProps }: StateFormProps) => {
   // We customize handle event since Context will makes all the consumer re-render:
   // https://reactjs.org/docs/context.html#contextprovider
-  const [formInstance] = useForm(form);
+  const [ formInstance ] = useForm(form);
 
   let childrenNode = children;
   const childrenRenderProps = typeof children === 'function';
@@ -37,11 +37,13 @@ const StateForm: StateForm = ({ form, children, onSubmit, ...restProps }: StateF
       {...restProps}
       onSubmit={(event) => {
         event.preventDefault();
+        event.stopPropagation();
+
         formInstance
           .validateFields()
           .then((values) => {
-            if (onSubmit) {
-              onSubmit(event, values);
+            if (onFinish) {
+              onFinish(values);
             }
           })
           // Do nothing about submit catch

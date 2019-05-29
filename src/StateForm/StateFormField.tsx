@@ -1,48 +1,22 @@
 import toChildrenArray from 'rc-util/lib/Children/toArray';
 import * as React from 'react';
+import { InternalNamePath, Meta, NamePath, Rule } from './interface';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
 import { toArray } from './utils/typeUtil';
 import {
   defaultGetValueFromEvent,
   getNamePath,
   getValue,
-  isSimilar,
   matchNamePath,
 } from './utils/valueUtil';
 
 // TODO: validating, touched, dirty
-
-export type InternalNamePath = Array<string | number>;
-export type NamePath = string | number | InternalNamePath;
 
 interface ChildProps {
   value?: any;
   onChange?: (...args: any[]) => void;
   onFocus?: (...args: any[]) => void;
   onBlur?: (...args: any[]) => void;
-}
-
-export interface Meta {
-  errors: string[];
-}
-export interface Rule {
-  enum?: any[];
-  len?: number;
-  max?: number;
-  message?: any;
-  min?: number;
-  pattern?: RegExp;
-  required?: boolean;
-  transform?: (value: any) => any;
-  type?: string;
-  validator?: (
-    rule: Rule,
-    value: any,
-    callback: (error: any) => void,
-    context: StateFormContextProps,
-  ) => void;
-  whitespace?: boolean;
-  validateTrigger?: string | string[];
 }
 
 export interface StateFormFieldProps {

@@ -1,6 +1,6 @@
 import setIn from 'lodash/fp/set';
 import get from 'lodash/get';
-import { InternalNamePath, NamePath } from '../StateFormField';
+import { InternalNamePath, NamePath } from '../interface';
 import { toArray } from './typeUtil';
 
 /**

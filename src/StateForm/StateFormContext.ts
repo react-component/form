@@ -1,34 +1,10 @@
 import * as React from 'react';
-import { InternalNamePath, NamePath, Rule } from './StateFormField';
+import { FieldEntity, FieldError, NamePath, ValidateFields } from './interface';
 import { ReducerAction } from './useForm';
 
-export interface Store {
-  [name: string]: any;
-}
-
-export interface FieldEntity {
-  onStoreChange: (store: any, namePathList: InternalNamePath[] | null) => void;
-  forceUpdate: () => void;
-  props: {
-    name?: NamePath;
-    rules?: Rule[];
-  };
-}
-
-export interface FieldError {
-  name: InternalNamePath;
-  errors: string[];
-}
-
-export interface ValidateOptions {
-  force?: boolean;
-  triggerName?: string;
-}
-
-export type ValidateFields = ((nameList?: NamePath[], options?: ValidateOptions) => Promise<any>);
-
 export interface StateFormContextProps {
-  getFieldsValue: () => Store;
+  getFieldValue: (name: NamePath) => any;
+  getFieldsValue: (nameList?: NamePath[]) => any;
   getFieldError: (name: NamePath) => string[];
   getFieldsError: (nameList?: NamePath[]) => FieldError[];
   useSubscribe: (subscribable: boolean) => void;
@@ -44,6 +20,7 @@ const warningFunc: any = () => {
 
 const Context = React.createContext<StateFormContextProps>({
   registerField: warningFunc,
+  getFieldValue: warningFunc,
   getFieldsValue: warningFunc,
   getFieldError: warningFunc,
   getFieldsError: warningFunc,

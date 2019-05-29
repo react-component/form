@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {
   FieldEntity,
-  FieldError,
-  StateFormContextProps,
+  InternalNamePath,
+  NamePath,
+  Rule,
   Store,
   ValidateFields,
   ValidateOptions,
-} from './StateFormContext';
-import { InternalNamePath, NamePath, Rule } from './StateFormField';
+} from './interface';
+import { StateFormContextProps } from './StateFormContext';
 import { allPromiseFinish } from './utils/asyncUtil';
 import { toArray } from './utils/typeUtil';
 import { ErrorCache, validateRules } from './utils/validateUtil';
@@ -33,6 +34,7 @@ export class FormStore {
   }
 
   public getForm = (): StateFormContextProps => ({
+    getFieldValue: this.getFieldValue,
     getFieldsValue: this.getFieldsValue,
     getFieldError: this.getFieldError,
     getFieldsError: this.getFieldsError,
@@ -45,13 +47,27 @@ export class FormStore {
     validateFields: this.validateFields,
   });
 
-  private getFieldsValue = () => this.store;
+  // ============================ Values ============================
+  private getFieldsValue = (nameList?: NamePath[]) => {
+    if (!nameList) {
+      return this.store;
+    }
 
+    return nameList.map((name: NamePath) => {
+      const namePath: InternalNamePath = getNamePath(name);
+      return getValue(this.store, namePath);
+    });
+  }
+
+  private getFieldValue = (name: NamePath) => {
+    return this.getFieldsValue([name])[0];
+  };
+
+  // ========================= Subscription =========================
   private useSubscribe = (subscribable: boolean) => {
     this.subscribable = subscribable;
   };
 
-  // ========================= Subscription =========================
   private registerField = (entity: FieldEntity) => {
     this.fieldEntities.push(entity);
 
@@ -85,7 +101,7 @@ export class FormStore {
     const prevStore = this.store;
     this.store = setValue(this.store, namePath, value);
 
-    this.notifyObservers(prevStore, [namePath]);
+    this.notifyObservers(prevStore, [ namePath ]);
   };
 
   // Let all child Field get update.
@@ -210,12 +226,12 @@ function useForm(form?: StateFormContextProps): [StateFormContextProps] {
       };
 
       formStore = new FormStore(forceReRender);
-  
+
       formRef.current = formStore.getForm();
     }
   }
 
-  return [formRef.current];
+  return [ formRef.current ];
 }
 
 export default useForm;

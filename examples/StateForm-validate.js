@@ -11,15 +11,15 @@ const Error = ({ children }) => (
 );
 
 export default class Demo extends React.Component {
-  onSubmit = (event, values) => {
-    console.log('Submit:', values);
+  onFinish = (values) => {
+    console.log('Finish:', values);
   };
 
   render() {
     return (
       <div>
         <h3>Validate Form</h3>
-        <StateForm style={{ padding: 16 }} onSubmit={this.onSubmit}>
+        <StateForm style={{ padding: 16 }} onFinish={this.onFinish}>
           {(values, form) => {
             const usernameError = form.getFieldError('username');
             const passwordError = form.getFieldError('password');
