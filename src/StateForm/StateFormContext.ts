@@ -18,6 +18,7 @@ export interface StateFormContextProps {
   isFieldsTouched: (nameList?: NamePath[]) => boolean;
   isFieldTouched: (name: NamePath) => boolean;
   isFieldValidating: (name: NamePath) => boolean;
+  resetFields:() => void;
 
   setFieldsValue: (value: any) => void;
   dispatch: (action: ReducerAction) => void;
@@ -43,6 +44,7 @@ const Context = React.createContext<StateFormContextProps>({
   isFieldsTouched: warningFunc,
   isFieldTouched: warningFunc,
   isFieldValidating: warningFunc,
+  resetFields: warningFunc,
 
   setFieldsValue: warningFunc,
   dispatch: warningFunc,

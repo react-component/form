@@ -47,6 +47,7 @@ export class FormStore {
     isFieldsTouched: this.isFieldsTouched,
     isFieldTouched: this.isFieldTouched,
     isFieldValidating: this.isFieldValidating,
+    resetFields: this.resetFields,
 
     setFieldsValue: this.setFieldsValue,
     dispatch: this.dispatch,
@@ -144,6 +145,14 @@ export class FormStore {
     });
 
     return field && field.isFieldValidating();
+  };
+
+  private resetFields = (nameList?: NamePath[]) => {
+    if (!nameList) {
+      const prevStore = this.store;
+      this.store = setValues(this.store, this.initialValues);
+      this.notifyObservers(prevStore, null);
+    }
   };
 
   // =========================== Observer ===========================
