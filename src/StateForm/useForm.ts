@@ -1,15 +1,16 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   FieldEntity,
   InternalNamePath,
   NamePath,
+  NotifyInfo,
   Store,
   ValidateFields,
   ValidateOptions,
-} from "./interface";
-import { HOOK_MARK, InternalHooks, StateFormContextProps } from "./StateFormContext";
-import { allPromiseFinish } from "./utils/asyncUtil";
-import { ErrorCache } from "./utils/validateUtil";
+} from './interface';
+import { HOOK_MARK, InternalHooks, StateFormContextProps } from './StateFormContext';
+import { allPromiseFinish } from './utils/asyncUtil';
+import { ErrorCache } from './utils/validateUtil';
 import {
   containsNamePath,
   getNamePath,
@@ -17,10 +18,10 @@ import {
   matchNamePath,
   setValue,
   setValues,
-} from "./utils/valueUtil";
+} from './utils/valueUtil';
 
 interface UpdateAction {
-  type: "updateValue";
+  type: 'updateValue';
   namePath: InternalNamePath;
   value: any;
 }
@@ -66,7 +67,7 @@ export class FormStore {
       };
     }
 
-    console.error("`getInternalHooks` is internal usage. Should not call directly.");
+    console.error('`getInternalHooks` is internal usage. Should not call directly.');
     return null;
   };
 
@@ -148,11 +149,22 @@ export class FormStore {
   };
 
   private resetFields = (nameList?: NamePath[]) => {
+    const prevStore = this.store;
     if (!nameList) {
-      const prevStore = this.store;
-      this.store = setValues(this.store, this.initialValues);
-      this.notifyObservers(prevStore, null);
+      this.store = setValues({}, this.initialValues);
+      this.errorCache = new ErrorCache();
+      this.notifyObservers(prevStore, null, { type: 'reset' });
+      return;
     }
+
+    // Reset by `nameList`
+    const namePathList: InternalNamePath[] = nameList.map(getNamePath);
+    namePathList.forEach(namePath => {
+      this.errorCache.resetField(namePath);
+      const initialValue = getValue(this.initialValues, namePath);
+      this.store = setValue(this.store, namePath, initialValue);
+    });
+    this.notifyObservers(prevStore, namePathList, { type: 'reset' });
   };
 
   // =========================== Observer ===========================
@@ -166,17 +178,21 @@ export class FormStore {
 
   private dispatch = (action: ReducerAction) => {
     switch (action.type) {
-      case "updateValue": {
+      case 'updateValue': {
         const { namePath, value } = action;
         this.updateValue(namePath, value);
       }
     }
   };
 
-  private notifyObservers = (prevStore: any, namePathList: InternalNamePath[] | null) => {
+  private notifyObservers = (
+    prevStore: any,
+    namePathList: InternalNamePath[] | null,
+    info: NotifyInfo,
+  ) => {
     if (this.subscribable) {
       this.fieldEntities.forEach(({ onStoreChange }) => {
-        onStoreChange(prevStore, namePathList);
+        onStoreChange(prevStore, namePathList, info);
       });
     } else {
       this.forceRootUpdate();
@@ -188,7 +204,7 @@ export class FormStore {
     const prevStore = this.store;
     this.store = setValue(this.store, namePath, value);
 
-    this.notifyObservers(prevStore, [namePath]);
+    this.notifyObservers(prevStore, [namePath], { type: 'valueUpdate' });
   };
 
   // Let all child Field get update.
@@ -199,7 +215,7 @@ export class FormStore {
       this.store = setValues(this.store, store);
     }
 
-    this.notifyObservers(prevStore, null);
+    this.notifyObservers(prevStore, null, { type: 'valueUpdate' });
   };
 
   // =========================== Validate ===========================
@@ -240,7 +256,7 @@ export class FormStore {
       .catch(results => results)
       .then(results => {
         this.errorCache.updateError(results);
-        this.notifyObservers(this.store, results.map(({ name }) => name));
+        this.notifyObservers(this.store, results.map(({ name }) => name), { type: 'errorUpdate' });
       });
 
     const returnPromise = summaryPromise

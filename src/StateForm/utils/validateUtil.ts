@@ -18,7 +18,7 @@ export function validateRules(
   const name = namePath.join('.');
 
   // Fill rule with context
-  const filledRules: Rule[] = rules.map((currentRule) => {
+  const filledRules: Rule[] = rules.map(currentRule => {
     if (!currentRule.validator) {
       return currentRule;
     }
@@ -52,7 +52,7 @@ export function validateRules(
   });
 
   // Internal catch error to avoid console error log.
-  promise.catch((e) => e);
+  promise.catch(e => e);
 
   return promise;
 }
@@ -86,5 +86,9 @@ export class ErrorCache {
           const errorNamePath = getNamePath(name);
           return containsNamePath(namePathList, errorNamePath);
         });
+  };
+
+  public resetField = (namePath: InternalNamePath) => {
+    this.cache.delete(namePath);
   };
 }

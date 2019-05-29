@@ -1,23 +1,24 @@
-import toChildrenArray from "rc-util/lib/Children/toArray";
-import * as React from "react";
+import toChildrenArray from 'rc-util/lib/Children/toArray';
+import * as React from 'react';
 import {
   FieldEntity,
   InternalNamePath,
   Meta,
   NamePath,
+  NotifyInfo,
   Rule,
   Store,
   ValidateOptions,
-} from "./interface";
-import StateFormContext, { StateFormContextProps } from "./StateFormContext";
-import { toArray } from "./utils/typeUtil";
-import { validateRules } from "./utils/validateUtil";
+} from './interface';
+import StateFormContext, { StateFormContextProps } from './StateFormContext';
+import { toArray } from './utils/typeUtil';
+import { validateRules } from './utils/validateUtil';
 import {
   containsNamePath,
   defaultGetValueFromEvent,
   getNamePath,
   getValue,
-} from "./utils/valueUtil";
+} from './utils/valueUtil';
 
 // TODO: validating, touched, dirty
 
@@ -38,15 +39,20 @@ export interface StateFormFieldProps {
 }
 
 export interface StateFormFieldState {
-  touched: boolean;
+  reset: boolean;
 }
 
 // We use Class instead of Hooks here since it will cost much code by using Hooks.
-class StateFormField extends React.Component<StateFormFieldProps, any> implements FieldEntity {
+class StateFormField extends React.Component<StateFormFieldProps, StateFormFieldState>
+  implements FieldEntity {
   public static contextType = StateFormContext;
   public static defaultProps = {
-    trigger: "onChange",
-    validateTrigger: "onChange",
+    trigger: 'onChange',
+    validateTrigger: 'onChange',
+  };
+
+  public state = {
+    reset: false,
   };
 
   private cancelRegisterFunc: () => void | null = null;
@@ -77,7 +83,11 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
 
   // ========================= Field Entity Interfaces =========================
   // Trigger by store update. Check if need update the component
-  public onStoreChange = (prevStore: any, namePathList: InternalNamePath[] | null) => {
+  public onStoreChange = (
+    prevStore: any,
+    namePathList: InternalNamePath[] | null,
+    info: NotifyInfo,
+  ) => {
     const { name, shouldUpdate } = this.props;
     const { getFieldsValue } = this.context;
     const values = getFieldsValue();
@@ -85,12 +95,36 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
     const prevValue = this.getValue(prevStore);
     const curValue = this.getValue();
 
-    if (
-      (namePathList && containsNamePath(namePathList, namePath)) ||
-      prevValue !== curValue ||
-      (shouldUpdate && shouldUpdate(prevStore, values))
-    ) {
-      this.forceUpdate();
+    switch (info.type) {
+      case 'reset':
+        if (!namePathList || (namePathList && containsNamePath(namePathList, namePath))) {
+          // Clean up state
+          this.touched = false;
+          this.validatePromise = null;
+
+          /**
+           * We update `reset` state twice to clean up current node.
+           * Which helps to reset value without define the type.
+           */
+          this.setState(
+            {
+              reset: true,
+            },
+            () => {
+              this.setState({ reset: false });
+            },
+          );
+        }
+        break;
+
+      default:
+        if (
+          (namePathList && containsNamePath(namePathList, namePath)) ||
+          prevValue !== curValue ||
+          (shouldUpdate && shouldUpdate(prevStore, values))
+        ) {
+          this.forceUpdate();
+        }
     }
   };
 
@@ -138,7 +172,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
       | ((control: ChildProps, meta: Meta, context: any) => React.ReactNode),
   ): { child: React.ReactElement | null; isFunction: boolean } => {
     // Support render props
-    if (typeof children === "function") {
+    if (typeof children === 'function') {
       const { name } = this.props;
       const { getFieldError } = this.context;
 
@@ -185,7 +219,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
     control[trigger!] = (...args: any[]) => {
       const newValue = defaultGetValueFromEvent(...args);
       dispatch({
-        type: "updateValue",
+        type: 'updateValue',
         namePath,
         value: newValue,
       });
@@ -223,6 +257,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
   };
 
   public render() {
+    const { reset } = this.state;
     const { name, children } = this.props;
 
     const { child, isFunction } = this.getOnlyChild(children);
@@ -232,11 +267,16 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
     }
 
     // Not need to `cloneElement` since user can handle this in render function self
-    if (isFunction) {
-      return child;
+    const returnChildNode = isFunction
+      ? child
+      : React.cloneElement(child, this.getControlled(child.props));
+
+    // Force render a new component to reset all the data
+    if (reset) {
+      return React.createElement(() => returnChildNode);
     }
 
-    return React.cloneElement(child, this.getControlled(child.props));
+    return returnChildNode;
   }
 }
 

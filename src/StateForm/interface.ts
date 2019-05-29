@@ -32,7 +32,7 @@ export interface Rule {
 }
 
 export interface FieldEntity {
-  onStoreChange: (store: any, namePathList: InternalNamePath[] | null) => void;
+  onStoreChange: (store: any, namePathList: InternalNamePath[] | null, info: NotifyInfo) => void;
   isFieldTouched: () => boolean;
   isFieldValidating: () => boolean;
   validateRules: (options?: ValidateOptions) => Promise<any>;
@@ -52,4 +52,8 @@ export interface ValidateOptions {
   triggerName?: string;
 }
 
-export type ValidateFields = ((nameList?: NamePath[], options?: ValidateOptions) => Promise<any>);
+export type ValidateFields = (nameList?: NamePath[], options?: ValidateOptions) => Promise<any>;
+
+export interface NotifyInfo {
+  type: 'valueUpdate' | 'errorUpdate' | 'reset';
+}

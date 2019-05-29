@@ -19,7 +19,7 @@ class NameMap<T = any> {
   }
 
   public set(key: InternalNamePath, value: T) {
-    const index = this.list.findIndex((item) => matchNamePath(item.key, key));
+    const index = this.list.findIndex(item => matchNamePath(item.key, key));
     if (index !== -1) {
       this.list[index].value = value;
     } else {
@@ -31,8 +31,12 @@ class NameMap<T = any> {
   }
 
   public get(key: InternalNamePath) {
-    const result = this.list.find((item) => matchNamePath(item.key, key));
+    const result = this.list.find(item => matchNamePath(item.key, key));
     return result && result.value;
+  }
+
+  public delete(key: InternalNamePath) {
+    this.list = this.list.filter(item => !matchNamePath(item.key, key));
   }
 
   public map(callback: (kv: KV<T>) => any) {
