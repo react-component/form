@@ -23,6 +23,10 @@ export function setValue(store: any, namePath: InternalNamePath, value: any) {
   return newStore;
 }
 
+export function containsNamePath(namePathList: InternalNamePath[], namePath: InternalNamePath) {
+  return namePathList && namePathList.some(path => matchNamePath(path, namePath));
+}
+
 function isObject(obj: any) {
   return typeof obj === 'object' && obj !== null;
 }

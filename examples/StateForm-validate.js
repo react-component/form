@@ -10,6 +10,15 @@ const Error = ({ children }) => (
   <ul style={{ color: 'red' }}>{children.map((error) => <li>{error}</li>)}</ul>
 );
 
+const Touched = ({ form, name }) => {
+  const touched = form.isFieldTouched(name);
+  return (
+    <div style={{ color: 'green', position: 'absolute', marginTop: -35, left: 200 }}>
+      {touched ? <span>Touched!</span> : null}
+    </div>
+  );
+}
+
 export default class Demo extends React.Component {
   onFinish = (values) => {
     console.log('Finish:', values);
@@ -39,6 +48,7 @@ export default class Demo extends React.Component {
                     }}
                   />
                 </Field>
+                <Touched form={form} name="username" />
                 <Error>{usernameError}</Error>
 
                 <Field
@@ -55,6 +65,7 @@ export default class Demo extends React.Component {
                 >
                   <Input placeholder="Password" />
                 </Field>
+                <Touched form={form} name="password" />
                 <Error>{passwordError}</Error>
 
                 <Field
@@ -74,6 +85,7 @@ export default class Demo extends React.Component {
                 >
                   <Input placeholder="Password 2" />
                 </Field>
+                <Touched form={form} name="password2" />
                 <Error>{password2Error}</Error>
 
                 <Field name="renderProps" rules={[ { required: true } ]}>
@@ -82,6 +94,7 @@ export default class Demo extends React.Component {
                       <div>
                         Use Meta:
                         <Input {...control} placeholder="render props" />
+                        <Touched form={form} name="renderProps" />
                         <Error>{meta.errors}</Error>
                       </div>
                     );
@@ -113,6 +126,7 @@ export default class Demo extends React.Component {
                           <li>Number check on change</li>
                         </ul>
                         <Input {...control} placeholder="validateTrigger" />
+                        <Touched form={form} name="validateTrigger" />
                         <Error>{meta.errors}</Error>
                       </div>
                     );

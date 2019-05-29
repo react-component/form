@@ -12,7 +12,7 @@ import { StateFormContextProps } from './StateFormContext';
 import { allPromiseFinish } from './utils/asyncUtil';
 import { toArray } from './utils/typeUtil';
 import { ErrorCache, validateRules } from './utils/validateUtil';
-import { getNamePath, getValue, matchNamePath, setValue, setValues } from './utils/valueUtil';
+import { containsNamePath, getNamePath, getValue, setValue, setValues } from './utils/valueUtil';
 
 interface UpdateAction {
   type: 'updateValue';
@@ -38,16 +38,17 @@ export class FormStore {
     getFieldsValue: this.getFieldsValue,
     getFieldError: this.getFieldError,
     getFieldsError: this.getFieldsError,
+    isFieldsTouched: this.isFieldsTouched,
+    isFieldTouched: this.isFieldTouched,
 
     useSubscribe: this.useSubscribe,
-
     setFieldsValue: this.setFieldsValue,
     dispatch: this.dispatch,
     registerField: this.registerField,
     validateFields: this.validateFields,
   });
 
-  // ============================ Values ============================
+  // ============================ Fields ============================
   private getFieldsValue = (nameList?: NamePath[]) => {
     if (!nameList) {
       return this.store;
@@ -57,10 +58,52 @@ export class FormStore {
       const namePath: InternalNamePath = getNamePath(name);
       return getValue(this.store, namePath);
     });
-  }
+  };
 
   private getFieldValue = (name: NamePath) => {
-    return this.getFieldsValue([name])[0];
+    return this.getFieldsValue([ name ])[0];
+  };
+
+  private getFieldsError = (nameList?: NamePath[]) => {
+    if (!nameList) {
+      return this.errorCache.getFieldsError();
+    }
+
+    const namePathList = nameList.map(getNamePath);
+    return this.errorCache.getFieldsError(namePathList);
+  };
+
+  private getFieldError = (name: NamePath): string[] => {
+    const namePath = getNamePath(name);
+    const fieldError = this.getFieldsError([ namePath ])[0];
+    if (fieldError) {
+      return fieldError.errors;
+    }
+    return [];
+  };
+
+  private isFieldsTouched = (nameList?: NamePath[]) => {
+    let namePathList: InternalNamePath[] | null = null;
+    if (nameList) {
+      namePathList = nameList.map(getNamePath);
+    }
+
+    return this.fieldEntities.some((field: FieldEntity) => {
+      // Not provide `nameList` will check all the fields
+      if (!namePathList) {
+        return field.isFieldTouched();
+      }
+
+      const fieldNamePath = getNamePath(field.props.name);
+      if (containsNamePath(namePathList, fieldNamePath)) {
+        return field.isFieldTouched();
+      }
+      return false;
+    });
+  };
+
+  private isFieldTouched = (name: NamePath) => {
+    return this.isFieldsTouched([ name ]);
   };
 
   // ========================= Subscription =========================
@@ -129,10 +172,7 @@ export class FormStore {
 
       const fieldNamePath = getNamePath(field.props.name);
 
-      if (
-        !namePathList ||
-        namePathList.some((namePath) => matchNamePath(fieldNamePath, namePath))
-      ) {
+      if (!namePathList || containsNamePath(namePathList, fieldNamePath)) {
         const { triggerName } = (options || {}) as ValidateOptions;
         let rules: Rule[] = field.props.rules || [];
         if (triggerName) {
@@ -189,24 +229,6 @@ export class FormStore {
     });
 
     return summaryPromise;
-  };
-
-  private getFieldsError = (nameList?: NamePath[]) => {
-    if (!nameList) {
-      return this.errorCache.getFieldsError();
-    }
-
-    const namePathList = nameList.map(getNamePath);
-    return this.errorCache.getFieldsError(namePathList);
-  };
-
-  private getFieldError = (name: NamePath): string[] => {
-    const namePath = getNamePath(name);
-    const fieldError = this.getFieldsError([ namePath ])[0];
-    if (fieldError) {
-      return fieldError.errors;
-    }
-    return [];
   };
 }
 

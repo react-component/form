@@ -1,8 +1,8 @@
 import AsyncValidator from 'async-validator';
-import { FieldError, StateFormContextProps, ValidateOptions } from '../StateFormContext';
-import { InternalNamePath, Rule } from '../StateFormField';
+import { FieldError, InternalNamePath, Rule, ValidateOptions } from '../interface';
+import { StateFormContextProps } from '../StateFormContext';
 import NameMap from './NameMap';
-import { getNamePath, isSimilar, matchNamePath } from './valueUtil';
+import { containsNamePath, getNamePath, isSimilar, matchNamePath } from './valueUtil';
 
 /**
  * We use `async-validator` to validate the value.
@@ -18,7 +18,7 @@ export function validateRules(
   const name = namePath.join('.');
 
   // Fill rule with context
-  const filledRules: Rule[] = rules.map(currentRule => {
+  const filledRules: Rule[] = rules.map((currentRule) => {
     if (!currentRule.validator) {
       return currentRule;
     }
@@ -66,7 +66,7 @@ function diffErrors(source: FieldError[], target: FieldError[]) {
       return;
     }
 
-    const sourceFieldError = source.find(fe => matchNamePath(fe.name, name));
+    const sourceFieldError = source.find((fe) => matchNamePath(fe.name, name));
     if (!sourceFieldError || !isSimilar(sourceFieldError.errors, errors)) {
       results.push(targetError);
     }
@@ -102,7 +102,7 @@ export class ErrorCache {
       ? fullErrors
       : fullErrors.filter(({ name }) => {
           const errorNamePath = getNamePath(name);
-          return namePathList.some((namePath) => matchNamePath(namePath, errorNamePath));
+          return containsNamePath(namePathList, errorNamePath);
         });
   };
 
@@ -112,7 +112,7 @@ export class ErrorCache {
     const diffTargetNames = diffErrors(errors, originErrors).map(({ name }) => name);
 
     const errorMap = new NameMap<string[]>();
-    [...diffSourceNames, ...diffTargetNames].forEach(namePath => {
+    [ ...diffSourceNames, ...diffTargetNames ].forEach((namePath) => {
       errorMap.set(namePath, this.cache.get(namePath));
     });
 

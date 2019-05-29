@@ -1,13 +1,13 @@
 import toChildrenArray from 'rc-util/lib/Children/toArray';
 import * as React from 'react';
-import { InternalNamePath, Meta, NamePath, Rule } from './interface';
+import { FieldEntity, InternalNamePath, Meta, NamePath, Rule } from './interface';
 import StateFormContext, { StateFormContextProps } from './StateFormContext';
 import { toArray } from './utils/typeUtil';
 import {
+  containsNamePath,
   defaultGetValueFromEvent,
   getNamePath,
   getValue,
-  matchNamePath,
 } from './utils/valueUtil';
 
 // TODO: validating, touched, dirty
@@ -29,11 +29,12 @@ export interface StateFormFieldProps {
 }
 
 export interface StateFormFieldState {
-  prevValue: any;
+  touched: boolean;
 }
 
 // We use Class instead of Hooks here since it will cost much code by using Hooks.
-class StateFormField extends React.Component<StateFormFieldProps, any> {
+class StateFormField extends React.Component<StateFormFieldProps, any>
+  implements FieldEntity {
   public static contextType = StateFormContext;
   public static defaultProps = {
     trigger: 'onChange',
@@ -41,6 +42,12 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   };
 
   private cancelRegisterFunc: () => void | null = null;
+
+  /**
+   * Touched state should not management in State since it will async update by React.
+   * This makes first render of form can not get correct `touched` value.
+   */
+  private touched: boolean = false;
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
@@ -58,6 +65,28 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
   public componentWillUnmount() {
     this.cancelRegister();
   }
+
+  // ========================= Field Entity Interfaces =========================
+  // Trigger by store update. Check if need update the component
+  public onStoreChange = (prevStore: any, namePathList: InternalNamePath[] | null) => {
+    const { name, shouldUpdate } = this.props;
+    const { getFieldsValue } = this.context;
+    const values = getFieldsValue();
+    const namePath = getNamePath(name);
+    const preValue = getValue(prevStore, namePath);
+    const curValue = getValue(values, namePath);
+    if (
+      (namePathList && containsNamePath(namePathList, namePath)) ||
+      preValue !== curValue ||
+      (shouldUpdate && shouldUpdate(prevStore, values))
+    ) {
+      this.forceUpdate();
+    }
+  };
+
+  public isFieldTouched = () => {
+    return this.touched;
+  };
 
   // ============================= Child Component =============================
   // Only return validate child node. If invalidate, will do nothing about field.
@@ -120,6 +149,9 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
         value: newValue,
       });
 
+      // Mark as touched
+      this.touched = true;
+
       if (originTriggerFunc) {
         originTriggerFunc(...args);
       }
@@ -145,24 +177,6 @@ class StateFormField extends React.Component<StateFormFieldProps, any> {
     });
 
     return control;
-  };
-
-  // Trigger by store update. Check if need update the component
-  public onStoreChange = (prevStore: any, namePathList: InternalNamePath[] | null) => {
-    const { name, shouldUpdate } = this.props;
-    const { getFieldsValue } = this.context;
-    const values = getFieldsValue();
-    const namePath = getNamePath(name);
-    const preValue = getValue(prevStore, namePath);
-    const curValue = getValue(values, namePath);
-    if (
-      (namePathList &&
-        namePathList.some((changedNamePath) => matchNamePath(namePath, changedNamePath))) ||
-      preValue !== curValue ||
-      (shouldUpdate && shouldUpdate(prevStore, values))
-    ) {
-      this.forceUpdate();
-    }
   };
 
   public render() {
