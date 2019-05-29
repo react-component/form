@@ -54,8 +54,6 @@ function createBaseForm(option = {}, mixins = []) {
         this.renderFields = {};
         this.domFields = {};
 
-        this.elementRendered = {};
-
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue',
           'getFieldValue',
@@ -171,12 +169,11 @@ function createBaseForm(option = {}, mixins = []) {
         const props = this.getFieldProps(name, fieldOption);
         return (fieldElem) => {
           warning(
-            !this.elementRendered[name],
+            !this.renderFields[name],
             `Duplicate field names will result ` +
             `in both fields getting edited together. ` +
             `Field names must be unique`
           )
-          this.elementRendered[name] = true;
           // We should put field in record if it is rendered
           this.renderFields[name] = true;
 
@@ -278,9 +275,6 @@ function createBaseForm(option = {}, mixins = []) {
         if (fieldDataProp) {
           inputProps[fieldDataProp] = this.fieldsStore.getField(name);
         }
-
-        // This field is rendered, record it
-        this.renderFields[name] = true;
 
         return inputProps;
       },
