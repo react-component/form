@@ -59,8 +59,12 @@ export default class Demo extends React.Component {
                   rules={[
                     { required: true },
                     {
-                      validator(_, __, callback) {
-                        form.validateFields([ 'password2' ]);
+                      validator(_, __, callback, context) {
+                        if (context.isFieldTouched('password2')) {
+                          context.validateFields([ 'password2' ]);
+                          callback();
+                          return;
+                        }
                         callback();
                       },
                     },

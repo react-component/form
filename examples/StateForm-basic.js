@@ -13,7 +13,7 @@ export default class Demo extends React.Component {
     return (
       <div>
         <h3>State Form ({list.length} inputs)</h3>
-        <StateForm>
+        <StateForm initialValues={{ path1: { path2: '233' } }}>
           <Field name="username">
             <Input placeholder="Username" />
           </Field>

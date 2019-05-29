@@ -1,15 +1,23 @@
-import toChildrenArray from 'rc-util/lib/Children/toArray';
-import * as React from 'react';
-import { FieldEntity, InternalNamePath, Meta, NamePath, Rule, ValidateOptions } from './interface';
-import StateFormContext, { StateFormContextProps } from './StateFormContext';
-import { toArray } from './utils/typeUtil';
-import { validateRules } from './utils/validateUtil';
+import toChildrenArray from "rc-util/lib/Children/toArray";
+import * as React from "react";
+import {
+  FieldEntity,
+  InternalNamePath,
+  Meta,
+  NamePath,
+  Rule,
+  Store,
+  ValidateOptions,
+} from "./interface";
+import StateFormContext, { StateFormContextProps } from "./StateFormContext";
+import { toArray } from "./utils/typeUtil";
+import { validateRules } from "./utils/validateUtil";
 import {
   containsNamePath,
   defaultGetValueFromEvent,
   getNamePath,
   getValue,
-} from './utils/valueUtil';
+} from "./utils/valueUtil";
 
 // TODO: validating, touched, dirty
 
@@ -37,8 +45,8 @@ export interface StateFormFieldState {
 class StateFormField extends React.Component<StateFormFieldProps, any> implements FieldEntity {
   public static contextType = StateFormContext;
   public static defaultProps = {
-    trigger: 'onChange',
-    validateTrigger: 'onChange',
+    trigger: "onChange",
+    validateTrigger: "onChange",
   };
 
   private cancelRegisterFunc: () => void | null = null;
@@ -74,11 +82,12 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
     const { getFieldsValue } = this.context;
     const values = getFieldsValue();
     const namePath = getNamePath(name);
-    const preValue = getValue(prevStore, namePath);
-    const curValue = getValue(values, namePath);
+    const prevValue = this.getValue(prevStore);
+    const curValue = this.getValue();
+
     if (
       (namePathList && containsNamePath(namePathList, namePath)) ||
-      preValue !== curValue ||
+      prevValue !== curValue ||
       (shouldUpdate && shouldUpdate(prevStore, values))
     ) {
       this.forceUpdate();
@@ -105,20 +114,16 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
       });
     }
 
-    const promise = validateRules(
-      namePath,
-      this.getValue(),
-      filteredRules,
-      options,
-      this.context,
-    );
+    const promise = validateRules(namePath, this.getValue(), filteredRules, options, this.context);
     this.validatePromise = promise;
 
-    promise.catch(e => e).then(() => {
-      if (this.validatePromise === promise) {
-        this.validatePromise = null;
-      }
-    });
+    promise
+      .catch(e => e)
+      .then(() => {
+        if (this.validatePromise === promise) {
+          this.validatePromise = null;
+        }
+      });
 
     return promise;
   };
@@ -133,7 +138,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
       | ((control: ChildProps, meta: Meta, context: any) => React.ReactNode),
   ): { child: React.ReactElement | null; isFunction: boolean } => {
     // Support render props
-    if (typeof children === 'function') {
+    if (typeof children === "function") {
       const { name } = this.props;
       const { getFieldError } = this.context;
 
@@ -156,19 +161,18 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
   };
 
   // ============================== Field Control ==============================
-  public getValue = (props?: StateFormFieldProps) => {
+  public getValue = (store?: Store) => {
+    const { name } = this.props;
     const { getFieldsValue }: StateFormContextProps = this.context;
-    const store = getFieldsValue();
-    const namePath = getNamePath((props || this.props).name);
-    return getValue(store, namePath);
+    const namePath = getNamePath(name);
+    return getValue(store || getFieldsValue(), namePath);
   };
 
   public getControlled = (childProps: ChildProps = {}) => {
     const { name, trigger, validateTrigger } = this.props;
     const namePath = getNamePath(name);
-    const { getFieldsValue, dispatch, validateFields }: StateFormContextProps = this.context;
-    const store = getFieldsValue();
-    const value = getValue(store, namePath);
+    const { dispatch, validateFields }: StateFormContextProps = this.context;
+    const value = this.getValue();
 
     const originTriggerFunc: any = childProps[trigger!];
 
@@ -181,7 +185,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
     control[trigger!] = (...args: any[]) => {
       const newValue = defaultGetValueFromEvent(...args);
       dispatch({
-        type: 'updateValue',
+        type: "updateValue",
         namePath,
         value: newValue,
       });
@@ -210,7 +214,7 @@ class StateFormField extends React.Component<StateFormFieldProps, any> implement
         if (rules && rules.length) {
           // We dispatch validate to root since it will update related data with other field with same name
           // TODO: use dispatch instead
-          validateFields([ namePath ], { triggerName });
+          validateFields([namePath], { triggerName });
         }
       };
     });
