@@ -5,6 +5,8 @@ import { ReducerAction } from './useForm';
 export const HOOK_MARK = 'RC_FORM_INTERNAL_HOOKS';
 
 export interface InternalHooks {
+  dispatch: (action: ReducerAction) => void;
+  registerField: (entity: FieldEntity) => () => void;
   useSubscribe: (subscribable: boolean) => void;
   setInitialValues: (values: Store) => void;
 }
@@ -20,10 +22,7 @@ export interface StateFormContextProps {
   isFieldValidating: (name: NamePath) => boolean;
   resetFields: () => void;
   setFields: (fields: FieldData[]) => void;
-
   setFieldsValue: (value: any) => void;
-  dispatch: (action: ReducerAction) => void;
-  registerField: (entity: FieldEntity) => () => void;
   validateFields: ValidateFields;
 
   /**
@@ -47,11 +46,8 @@ const Context = React.createContext<StateFormContextProps>({
   isFieldValidating: warningFunc,
   resetFields: warningFunc,
   setFields: warningFunc,
-
   setFieldsValue: warningFunc,
-  dispatch: warningFunc,
   validateFields: warningFunc,
-  registerField: warningFunc,
 
   getInternalHooks: warningFunc,
 });

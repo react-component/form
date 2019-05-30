@@ -10,7 +10,7 @@ import {
   Store,
   ValidateOptions,
 } from './interface';
-import StateFormContext, { StateFormContextProps } from './StateFormContext';
+import StateFormContext, { HOOK_MARK, StateFormContextProps } from './StateFormContext';
 import { toArray } from './utils/typeUtil';
 import { validateRules } from './utils/validateUtil';
 import {
@@ -64,7 +64,8 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
-    const { registerField }: StateFormContextProps = this.context;
+    const { getInternalHooks }: StateFormContextProps = this.context;
+    const { registerField } = getInternalHooks(HOOK_MARK);
     this.cancelRegisterFunc = registerField(this);
   }
 
@@ -218,7 +219,8 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
   public getControlled = (childProps: ChildProps = {}) => {
     const { name, trigger, validateTrigger } = this.props;
     const namePath = getNamePath(name);
-    const { dispatch, validateFields }: StateFormContextProps = this.context;
+    const { getInternalHooks, validateFields }: StateFormContextProps = this.context;
+    const { dispatch } = getInternalHooks(HOOK_MARK);
     const value = this.getValue();
 
     const originTriggerFunc: any = childProps[trigger!];

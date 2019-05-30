@@ -52,10 +52,7 @@ export class FormStore {
     isFieldValidating: this.isFieldValidating,
     resetFields: this.resetFields,
     setFields: this.setFields,
-
     setFieldsValue: this.setFieldsValue,
-    dispatch: this.dispatch,
-    registerField: this.registerField,
     validateFields: this.validateFields,
 
     getInternalHooks: this.getInternalHooks,
@@ -65,6 +62,8 @@ export class FormStore {
   private getInternalHooks = (key: string): InternalHooks | null => {
     if (key === HOOK_MARK) {
       return {
+        dispatch: this.dispatch,
+        registerField: this.registerField,
         useSubscribe: this.useSubscribe,
         setInitialValues: this.setInitialValues,
       };
