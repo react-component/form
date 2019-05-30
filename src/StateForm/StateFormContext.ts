@@ -1,8 +1,8 @@
-import * as React from "react";
-import { FieldEntity, FieldError, NamePath, Store, ValidateFields } from "./interface";
-import { ReducerAction } from "./useForm";
+import * as React from 'react';
+import { FieldData, FieldEntity, FieldError, NamePath, Store, ValidateFields } from './interface';
+import { ReducerAction } from './useForm';
 
-export const HOOK_MARK = "RC_FORM_INTERNAL_HOOKS";
+export const HOOK_MARK = 'RC_FORM_INTERNAL_HOOKS';
 
 export interface InternalHooks {
   useSubscribe: (subscribable: boolean) => void;
@@ -18,7 +18,8 @@ export interface StateFormContextProps {
   isFieldsTouched: (nameList?: NamePath[]) => boolean;
   isFieldTouched: (name: NamePath) => boolean;
   isFieldValidating: (name: NamePath) => boolean;
-  resetFields:() => void;
+  resetFields: () => void;
+  setFields: (fields: FieldData[]) => void;
 
   setFieldsValue: (value: any) => void;
   dispatch: (action: ReducerAction) => void;
@@ -33,7 +34,7 @@ export interface StateFormContextProps {
 }
 
 const warningFunc: any = () => {
-  throw new Error("StateForm is not defined.");
+  throw new Error('StateForm is not defined.');
 };
 
 const Context = React.createContext<StateFormContextProps>({
@@ -45,6 +46,7 @@ const Context = React.createContext<StateFormContextProps>({
   isFieldTouched: warningFunc,
   isFieldValidating: warningFunc,
   resetFields: warningFunc,
+  setFields: warningFunc,
 
   setFieldsValue: warningFunc,
   dispatch: warningFunc,

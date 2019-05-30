@@ -20,8 +20,6 @@ import {
   getValue,
 } from './utils/valueUtil';
 
-// TODO: validating, touched, dirty
-
 interface ChildProps {
   value?: any;
   onChange?: (...args: any[]) => void;
@@ -89,7 +87,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
     info: NotifyInfo,
   ) => {
     const { name, shouldUpdate } = this.props;
-    const { getFieldsValue } = this.context;
+    const { getFieldsValue }: StateFormContextProps = this.context;
     const values = getFieldsValue();
     const namePath = getNamePath(name);
     const prevValue = this.getValue(prevStore);
@@ -116,6 +114,19 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
           );
         }
         break;
+
+      case 'setField': {
+        const { data } = info;
+        if ('touched' in data) {
+          this.touched = data.touched;
+        }
+        if ('validating' in data) {
+          this.validatePromise = Promise.resolve();
+        }
+
+        this.forceUpdate();
+        break;
+      }
 
       default:
         if (
@@ -177,6 +188,8 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
       const { getFieldError } = this.context;
 
       const meta: Meta = {
+        touched: this.isFieldTouched(),
+        validating: this.isFieldValidating(),
         errors: getFieldError(name),
       };
       return {

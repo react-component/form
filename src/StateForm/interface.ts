@@ -8,7 +8,17 @@ export interface Store {
 }
 
 export interface Meta {
+  touched: boolean;
+  validating: boolean;
   errors: string[];
+}
+
+/**
+ * Used by `setFields` config
+ */
+export interface FieldData extends Partial<Meta> {
+  name?: NamePath;
+  value?: any;
 }
 
 export interface Rule {
@@ -54,6 +64,11 @@ export interface ValidateOptions {
 
 export type ValidateFields = (nameList?: NamePath[], options?: ValidateOptions) => Promise<any>;
 
-export interface NotifyInfo {
-  type: 'valueUpdate' | 'errorUpdate' | 'reset';
-}
+export type NotifyInfo =
+  | {
+      type: 'valueUpdate' | 'errorUpdate' | 'reset';
+    }
+  | {
+      type: 'setField';
+      data: FieldData;
+    };

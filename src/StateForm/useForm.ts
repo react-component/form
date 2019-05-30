@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
+  FieldData,
   FieldEntity,
+  FieldError,
   InternalNamePath,
   NamePath,
   NotifyInfo,
@@ -49,6 +51,7 @@ export class FormStore {
     isFieldTouched: this.isFieldTouched,
     isFieldValidating: this.isFieldValidating,
     resetFields: this.resetFields,
+    setFields: this.setFields,
 
     setFieldsValue: this.setFieldsValue,
     dispatch: this.dispatch,
@@ -78,6 +81,10 @@ export class FormStore {
   private setInitialValues = (initialValues: Store) => {
     this.initialValues = initialValues || {};
     this.store = setValues({}, initialValues, this.store);
+  };
+
+  private getInitialValue = (namePath: InternalNamePath) => {
+    return getValue(this.initialValues, namePath);
   };
 
   // ============================ Fields ============================
@@ -161,10 +168,32 @@ export class FormStore {
     const namePathList: InternalNamePath[] = nameList.map(getNamePath);
     namePathList.forEach(namePath => {
       this.errorCache.resetField(namePath);
-      const initialValue = getValue(this.initialValues, namePath);
+      const initialValue = this.getInitialValue(namePath);
       this.store = setValue(this.store, namePath, initialValue);
     });
     this.notifyObservers(prevStore, namePathList, { type: 'reset' });
+  };
+
+  private setFields = (fields: FieldData[]) => {
+    const prevStore = this.store;
+    const namePathList: InternalNamePath[] = [];
+
+    fields.forEach((fieldData: FieldData) => {
+      const { name, errors, ...data } = fieldData;
+      const namePath = getNamePath(name);
+
+      // Value
+      if ('value' in data) {
+        this.store = setValue(this.store, namePath, data.value);
+      }
+
+      // Error
+      if (errors) {
+        this.errorCache.updateError([{ name: namePath, errors }]);
+      }
+
+      this.notifyObservers(prevStore, [namePath], { type: 'setField', data: fieldData });
+    });
   };
 
   // =========================== Observer ===========================
@@ -254,7 +283,7 @@ export class FormStore {
     // Notify fields with rule that validate has finished and need update
     summaryPromise
       .catch(results => results)
-      .then(results => {
+      .then((results: FieldError[]) => {
         this.errorCache.updateError(results);
         this.notifyObservers(this.store, results.map(({ name }) => name), { type: 'errorUpdate' });
       });
