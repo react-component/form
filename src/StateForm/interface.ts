@@ -1,4 +1,4 @@
-import { StateFormContextProps } from './StateFormContext';
+import { FormInstance } from './StateFormContext';
 
 export type InternalNamePath = Array<string | number>;
 export type NamePath = string | number | InternalNamePath;
@@ -34,10 +34,12 @@ export interface Rule {
   validator?: (
     rule: Rule,
     value: any,
-    callback: (error: any) => void,
-    context: StateFormContextProps, // TODO: Maybe not good place to export this?
+    callback: (error?: string) => void,
+    context: FormInstance, // TODO: Maybe not good place to export this?
   ) => void;
   whitespace?: boolean;
+
+  /** Customize rule level `validateTrigger`. Must be subset of Field `validateTrigger` */
   validateTrigger?: string | string[];
 }
 
@@ -58,7 +60,6 @@ export interface FieldError {
 }
 
 export interface ValidateOptions {
-  force?: boolean;
   triggerName?: string;
 }
 

@@ -10,7 +10,7 @@ import {
   ValidateFields,
   ValidateOptions,
 } from './interface';
-import { HOOK_MARK, InternalHooks, StateFormContextProps } from './StateFormContext';
+import { FormInstance, HOOK_MARK, InternalHooks } from './StateFormContext';
 import { allPromiseFinish } from './utils/asyncUtil';
 import { ErrorCache } from './utils/validateUtil';
 import {
@@ -42,7 +42,7 @@ export class FormStore {
     this.forceRootUpdate = forceRootUpdate;
   }
 
-  public getForm = (): StateFormContextProps => ({
+  public getForm = (): FormInstance => ({
     getFieldValue: this.getFieldValue,
     getFieldsValue: this.getFieldsValue,
     getFieldError: this.getFieldError,
@@ -301,7 +301,7 @@ export class FormStore {
   };
 }
 
-function useForm(form?: StateFormContextProps): [StateFormContextProps] {
+function useForm(form?: FormInstance): [FormInstance] {
   const formRef = React.useRef() as any;
   const [, forceUpdate] = React.useState();
 

@@ -11,7 +11,7 @@ export interface InternalHooks {
   setInitialValues: (values: Store) => void;
 }
 
-export interface StateFormContextProps {
+export interface FormInstance {
   // Origin Form API
   getFieldValue: (name: NamePath) => any;
   getFieldsValue: (nameList?: NamePath[]) => any;
@@ -22,7 +22,7 @@ export interface StateFormContextProps {
   isFieldValidating: (name: NamePath) => boolean;
   resetFields: () => void;
   setFields: (fields: FieldData[]) => void;
-  setFieldsValue: (value: any) => void;
+  setFieldsValue: (value: Store) => void;
   validateFields: ValidateFields;
 
   /**
@@ -36,7 +36,7 @@ const warningFunc: any = () => {
   throw new Error('StateForm is not defined.');
 };
 
-const Context = React.createContext<StateFormContextProps>({
+const Context = React.createContext<FormInstance>({
   getFieldValue: warningFunc,
   getFieldsValue: warningFunc,
   getFieldError: warningFunc,

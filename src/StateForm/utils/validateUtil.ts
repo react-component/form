@@ -1,6 +1,6 @@
 import AsyncValidator from 'async-validator';
 import { FieldError, InternalNamePath, Rule, ValidateOptions } from '../interface';
-import { StateFormContextProps } from '../StateFormContext';
+import { FormInstance } from '../StateFormContext';
 import NameMap from './NameMap';
 import { containsNamePath, getNamePath, isSimilar, matchNamePath } from './valueUtil';
 
@@ -13,7 +13,7 @@ export function validateRules(
   value: any,
   rules: Rule[],
   options: ValidateOptions,
-  context: StateFormContextProps,
+  context: FormInstance,
 ) {
   const name = namePath.join('.');
 

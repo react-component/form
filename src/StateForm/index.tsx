@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Store } from "./interface";
-import StateFormContext, { HOOK_MARK, StateFormContextProps } from "./StateFormContext";
+import StateFormContext, { FormInstance, HOOK_MARK } from "./StateFormContext";
 import StateFormField from "./StateFormField";
 import useForm from "./useForm";
 import { Omit } from "./utils/typeUtil";
@@ -8,24 +8,19 @@ import { Omit } from "./utils/typeUtil";
 type BaseFormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, "onSubmit">;
 
 export interface StateFormProps extends BaseFormProps {
-  initialValues: Store;
-  form?: StateFormContextProps;
+  initialValues?: Store;
+  form?: FormInstance;
   children?: (() => JSX.Element | React.ReactNode) | React.ReactNode;
-  onFinish?: (values: any) => {};
+  onFinish?: (values: Store) => void;
 }
 
-interface StateForm extends React.FunctionComponent<StateFormProps> {
-  Field: typeof StateFormField;
-  useForm: typeof useForm;
-}
-
-const StateForm: StateForm = ({
+const StateForm: React.FunctionComponent<StateFormProps> = ({
   initialValues,
   form,
   children,
   onFinish,
   ...restProps
-}: StateFormProps) => {
+}: StateFormProps, ref) => {
   // We customize handle event since Context will makes all the consumer re-render:
   // https://reactjs.org/docs/context.html#contextprovider
   const [formInstance] = useForm(form);
@@ -47,6 +42,9 @@ const StateForm: StateForm = ({
   }
   // Not use subscribe when using render props
   useSubscribe(!childrenRenderProps);
+
+  // Pass ref with form instance
+  React.useImperativeHandle(ref, () => (formInstance));
 
   return (
     <form
@@ -71,7 +69,19 @@ const StateForm: StateForm = ({
   );
 };
 
-StateForm.Field = StateFormField;
-StateForm.useForm = useForm;
+const InternalStateForm = React.forwardRef<FormInstance, StateFormProps>(StateForm);
 
-export default StateForm;
+type InternalStateForm = typeof InternalStateForm;
+interface RefStateForm extends InternalStateForm {
+  Field: typeof StateFormField;
+  useForm: typeof useForm;
+}
+
+const RefStateForm: RefStateForm = InternalStateForm as any;
+
+RefStateForm.Field = StateFormField;
+RefStateForm.useForm = useForm;
+
+export { FormInstance };
+
+export default RefStateForm;

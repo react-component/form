@@ -39,7 +39,7 @@ function isObject(obj: any) {
  * Copy values into store and return a new values object
  * ({ a: 1, b: { c: 2 } }, { a: 4, b: { d: 5 } }) => { a: 4, b: { c: 2, d: 5 } }
  */
-function internalSetValues(store: Store, values: Store) {
+function internalSetValues(store: Store, values: Store = {}) {
   const newStore = { ...store };
   Object.keys(values).forEach(key => {
     const prevValue = newStore[key];

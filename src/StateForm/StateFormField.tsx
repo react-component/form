@@ -10,7 +10,7 @@ import {
   Store,
   ValidateOptions,
 } from './interface';
-import StateFormContext, { HOOK_MARK, StateFormContextProps } from './StateFormContext';
+import StateFormContext, { FormInstance, HOOK_MARK } from './StateFormContext';
 import { toArray } from './utils/typeUtil';
 import { validateRules } from './utils/validateUtil';
 import {
@@ -29,8 +29,10 @@ interface ChildProps {
 
 export interface StateFormFieldProps {
   name: NamePath;
-  children?: React.ReactNode | ((control: ChildProps) => React.ReactNode);
+  children?: React.ReactElement | ((control: ChildProps, meta: Meta, form: FormInstance) => React.ReactNode);
   rules?: Rule[];
+  /** Set up `dependencies` field. When dependencies field update and current field is touched, will trigger validate rules. */
+  dependencies?: NamePath[];
   trigger?: string;
   validateTrigger?: string | string[];
   shouldUpdate?: (prevValues: any, nextValues: any) => boolean;
@@ -64,7 +66,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
-    const { getInternalHooks }: StateFormContextProps = this.context;
+    const { getInternalHooks }: FormInstance = this.context;
     const { registerField } = getInternalHooks(HOOK_MARK);
     this.cancelRegisterFunc = registerField(this);
   }
@@ -88,7 +90,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
     info: NotifyInfo,
   ) => {
     const { name, shouldUpdate } = this.props;
-    const { getFieldsValue }: StateFormContextProps = this.context;
+    const { getFieldsValue }: FormInstance = this.context;
     const values = getFieldsValue();
     const namePath = getNamePath(name);
     const prevValue = this.getValue(prevStore);
@@ -211,7 +213,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
   // ============================== Field Control ==============================
   public getValue = (store?: Store) => {
     const { name } = this.props;
-    const { getFieldsValue }: StateFormContextProps = this.context;
+    const { getFieldsValue }: FormInstance = this.context;
     const namePath = getNamePath(name);
     return getValue(store || getFieldsValue(), namePath);
   };
@@ -219,7 +221,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
   public getControlled = (childProps: ChildProps = {}) => {
     const { name, trigger, validateTrigger } = this.props;
     const namePath = getNamePath(name);
-    const { getInternalHooks, validateFields }: StateFormContextProps = this.context;
+    const { getInternalHooks, validateFields }: FormInstance = this.context;
     const { dispatch } = getInternalHooks(HOOK_MARK);
     const value = this.getValue();
 
