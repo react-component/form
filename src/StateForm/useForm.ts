@@ -360,7 +360,7 @@ function useForm(form?: FormInstance): [FormInstance] {
     if (form) {
       formRef.current = form;
     } else {
-      let formStore;
+      let formStore: FormStore;
 
       // Create a new FormStore if not provided
       const forceReRender = () => {

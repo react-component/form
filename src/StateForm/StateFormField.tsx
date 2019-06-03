@@ -18,6 +18,7 @@ import {
   defaultGetValueFromEvent,
   getNamePath,
   getValue,
+  isSimilar,
 } from './utils/valueUtil';
 
 interface ChildProps {
@@ -65,6 +66,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
    */
   private touched: boolean = false;
   private validatePromise: Promise<any> | null = null; // We reuse the promise to check if is `validating`
+  private cachedErrors: string[];
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
@@ -92,7 +94,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
     info: NotifyInfo,
   ) => {
     const { name, shouldUpdate } = this.props;
-    const { getFieldsValue }: FormInstance = this.context;
+    const { getFieldsValue, getFieldError }: FormInstance = this.context;
     const values = getFieldsValue();
     const namePath = getNamePath(name);
     const prevValue = this.getValue(prevStore);
@@ -133,6 +135,14 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
         break;
       }
 
+      case 'errorUpdate': {
+        const errors = getFieldError(namePath);
+        if (!isSimilar(this.cachedErrors, errors)) {
+          this.forceUpdate();
+        }
+        break;
+      }
+
       default:
         if (
           (namePathList && containsNamePath(namePathList, namePath)) ||
@@ -141,6 +151,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
         ) {
           this.forceUpdate();
         }
+        break;
     }
   };
 
@@ -192,10 +203,13 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
       const { name } = this.props;
       const { getFieldError } = this.context;
 
+      // Make error in cache to save perf
+      this.cachedErrors = getFieldError(name);
+
       const meta: Meta = {
         touched: this.isFieldTouched(),
         validating: this.isFieldValidating(),
-        errors: getFieldError(name),
+        errors: this.cachedErrors,
       };
       return {
         ...this.getOnlyChild(children(this.getControlled(), meta, this.context)),
