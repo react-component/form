@@ -1,28 +1,26 @@
-import * as React from "react";
-import { Store } from "./interface";
-import StateFormContext, { FormInstance, HOOK_MARK } from "./StateFormContext";
-import StateFormField from "./StateFormField";
-import useForm from "./useForm";
-import { Omit } from "./utils/typeUtil";
+import * as React from 'react';
+import { FieldData, Store } from './interface';
+import StateFormContext, { FormInstance, HOOK_MARK } from './StateFormContext';
+import StateFormField from './StateFormField';
+import useForm from './useForm';
+import { Omit } from './utils/typeUtil';
 
-type BaseFormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, "onSubmit">;
+type BaseFormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>;
 
 export interface StateFormProps extends BaseFormProps {
   initialValues?: Store;
   form?: FormInstance;
   children?: (() => JSX.Element | React.ReactNode) | React.ReactNode;
+  fields?: FieldData[];
   onValuesChange?: (values: Store) => void;
+  onFieldsChange?: (changedFields: FieldData[], allFields: FieldData[]) => void;
   onFinish?: (values: Store) => void;
 }
 
-const StateForm: React.FunctionComponent<StateFormProps> = ({
-  initialValues,
-  form,
-  children,
-  onValuesChange,
-  onFinish,
-  ...restProps
-}: StateFormProps, ref) => {
+const StateForm: React.FunctionComponent<StateFormProps> = (
+  { initialValues, form, children, onValuesChange, onFinish, ...restProps }: StateFormProps,
+  ref,
+) => {
   // We customize handle event since Context will makes all the consumer re-render:
   // https://reactjs.org/docs/context.html#contextprovider
   const [formInstance] = useForm(form);
@@ -42,7 +40,7 @@ const StateForm: React.FunctionComponent<StateFormProps> = ({
 
   // Prepare children by `children` type
   let childrenNode = children;
-  const childrenRenderProps = typeof children === "function";
+  const childrenRenderProps = typeof children === 'function';
   if (childrenRenderProps) {
     const values = formInstance.getFieldsValue();
     childrenNode = (children as any)(values, formInstance);
@@ -51,7 +49,7 @@ const StateForm: React.FunctionComponent<StateFormProps> = ({
   useSubscribe(!childrenRenderProps);
 
   // Pass ref with form instance
-  React.useImperativeHandle(ref, () => (formInstance));
+  React.useImperativeHandle(ref, () => formInstance);
 
   return (
     <form

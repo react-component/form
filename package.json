@@ -77,7 +77,7 @@
     "react-redux": "^4.4.10",
     "react-router": "^3.0.0",
     "react-test-renderer": "^16.1.1",
-    "redux": "^3.0.4"
+    "redux": "^3.7.2"
   },
   "pre-commit": [
     "lint"

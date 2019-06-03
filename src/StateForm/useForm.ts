@@ -245,6 +245,12 @@ export class FormStore {
     // Notify dependencies children with parent update
     const childrenFields = this.getDependencyChildrenFields(namePath);
     this.validateFields(childrenFields);
+
+    // trigger callback function
+    const { onValuesChange } = this.callbacks;
+    if (onValuesChange) {
+      onValuesChange(this.store);
+    }
   };
 
   // Let all child Field get update.
