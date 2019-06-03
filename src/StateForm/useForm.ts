@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Callbacks,
   FieldData,
   FieldEntity,
   FieldError,
@@ -38,6 +39,7 @@ export class FormStore {
   private fieldEntities: FieldEntity[] = [];
   private errorCache: ErrorCache = new ErrorCache();
   private initialValues: Store = {};
+  private callbacks: Callbacks = {};
 
   constructor(forceRootUpdate: () => void) {
     this.forceRootUpdate = forceRootUpdate;
@@ -67,6 +69,7 @@ export class FormStore {
         registerField: this.registerField,
         useSubscribe: this.useSubscribe,
         setInitialValues: this.setInitialValues,
+        setCallbacks: this.setCallbacks,
       };
     }
 
@@ -85,6 +88,10 @@ export class FormStore {
 
   private getInitialValue = (namePath: InternalNamePath) => {
     return getValue(this.initialValues, namePath);
+  };
+
+  private setCallbacks = (callbacks: Callbacks) => {
+    this.callbacks = callbacks;
   };
 
   // ============================ Fields ============================

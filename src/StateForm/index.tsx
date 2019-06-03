@@ -11,6 +11,7 @@ export interface StateFormProps extends BaseFormProps {
   initialValues?: Store;
   form?: FormInstance;
   children?: (() => JSX.Element | React.ReactNode) | React.ReactNode;
+  onValuesChange?: (values: Store) => void;
   onFinish?: (values: Store) => void;
 }
 
@@ -18,13 +19,19 @@ const StateForm: React.FunctionComponent<StateFormProps> = ({
   initialValues,
   form,
   children,
+  onValuesChange,
   onFinish,
   ...restProps
 }: StateFormProps, ref) => {
   // We customize handle event since Context will makes all the consumer re-render:
   // https://reactjs.org/docs/context.html#contextprovider
   const [formInstance] = useForm(form);
-  const { useSubscribe, setInitialValues } = formInstance.getInternalHooks(HOOK_MARK);
+  const { useSubscribe, setInitialValues, setCallbacks } = formInstance.getInternalHooks(HOOK_MARK);
+
+  // Pass props callback to store
+  setCallbacks({
+    onValuesChange,
+  });
 
   // Initial store value when first mount
   const mountRef = React.useRef(null);

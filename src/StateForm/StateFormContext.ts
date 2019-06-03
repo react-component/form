@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { FieldData, FieldEntity, FieldError, NamePath, Store, ValidateFields } from './interface';
+import {
+  Callbacks,
+  FieldData,
+  FieldEntity,
+  FieldError,
+  NamePath,
+  Store,
+  ValidateFields,
+} from './interface';
 import { ReducerAction } from './useForm';
 
 export const HOOK_MARK = 'RC_FORM_INTERNAL_HOOKS';
@@ -9,6 +17,7 @@ export interface InternalHooks {
   registerField: (entity: FieldEntity) => () => void;
   useSubscribe: (subscribable: boolean) => void;
   setInitialValues: (values: Store) => void;
+  setCallbacks: (callbacks: Callbacks) => void;
 }
 
 export interface FormInstance {

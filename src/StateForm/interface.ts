@@ -74,3 +74,7 @@ export type NotifyInfo =
       type: 'setField';
       data: FieldData;
     };
+
+export interface Callbacks {
+  onValuesChange?: (values: Store) => void;
+}

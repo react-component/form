@@ -3,40 +3,9 @@
 import React from 'react';
 import StateForm from '../src/StateForm';
 import Input from './components/Input';
-
-const { Field } = StateForm;
+import LabelField from './components/LabelField';
 
 const list = new Array(1111).fill();
-
-function LabelField({ name, label, children, ...restProps }) {
-  return (
-    <Field name={name} {...restProps}>
-      {(control, meta) => {
-        let childNode;
-
-        if (typeof children === 'function') {
-          childNode = children(control, meta);
-        } else {
-          childNode = React.cloneElement(children, { ...control });
-        }
-
-        return (
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ flex: 'none', width: 100 }}>
-                {label || name}
-              </label>
-
-              {childNode}
-            </div>
-
-            {meta.errors}
-          </div>
-        );
-      }}
-    </Field>
-  );
-}
 
 export default class Demo extends React.Component {
   state = {};
