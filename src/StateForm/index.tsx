@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FieldData, Store } from './interface';
+import { Callbacks, FieldData, Store } from './interface';
 import StateFormContext, { FormInstance, HOOK_MARK } from './StateFormContext';
 import StateFormField from './StateFormField';
 import useForm from './useForm';
@@ -12,13 +12,22 @@ export interface StateFormProps extends BaseFormProps {
   form?: FormInstance;
   children?: (() => JSX.Element | React.ReactNode) | React.ReactNode;
   fields?: FieldData[];
-  onValuesChange?: (values: Store) => void;
-  onFieldsChange?: (changedFields: FieldData[], allFields: FieldData[]) => void;
+  onValuesChange?: Callbacks['onValuesChange'];
+  onFieldsChange?: Callbacks['onFieldsChange'];
   onFinish?: (values: Store) => void;
 }
 
 const StateForm: React.FunctionComponent<StateFormProps> = (
-  { initialValues, form, children, onValuesChange, onFinish, ...restProps }: StateFormProps,
+  {
+    initialValues,
+    fields,
+    form,
+    children,
+    onValuesChange,
+    onFieldsChange,
+    onFinish,
+    ...restProps
+  }: StateFormProps,
   ref,
 ) => {
   // We customize handle event since Context will makes all the consumer re-render:
@@ -29,6 +38,7 @@ const StateForm: React.FunctionComponent<StateFormProps> = (
   // Pass props callback to store
   setCallbacks({
     onValuesChange,
+    onFieldsChange,
   });
 
   // Initial store value when first mount
@@ -50,6 +60,14 @@ const StateForm: React.FunctionComponent<StateFormProps> = (
 
   // Pass ref with form instance
   React.useImperativeHandle(ref, () => formInstance);
+
+  // Listen if fields provided. We use ref to save prev data here to avoid additional render
+  const prevFieldsRef = React.useRef<FieldData[] | undefined>();
+  if (prevFieldsRef.current !== fields) {
+    formInstance.setFields(fields || []);
+  }
+  prevFieldsRef.current = fields;
+
 
   return (
     <form

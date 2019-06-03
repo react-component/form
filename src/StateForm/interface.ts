@@ -17,7 +17,7 @@ export interface Meta {
  * Used by `setFields` config
  */
 export interface FieldData extends Partial<Meta> {
-  name?: NamePath;
+  name: NamePath;
   value?: any;
 }
 
@@ -48,6 +48,7 @@ export interface FieldEntity {
   isFieldTouched: () => boolean;
   isFieldValidating: () => boolean;
   validateRules: (options?: ValidateOptions) => Promise<any>;
+  getMeta: () => Meta;
   props: {
     name?: NamePath;
     rules?: Rule[];
@@ -77,4 +78,5 @@ export type NotifyInfo =
 
 export interface Callbacks {
   onValuesChange?: (values: Store) => void;
+  onFieldsChange?: (changedFields: FieldData[], allFields: FieldData[]) => void;
 }

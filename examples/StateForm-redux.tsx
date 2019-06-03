@@ -7,13 +7,10 @@ import StateForm from '../src/StateForm';
 import Input from './components/Input';
 import LabelField from './components/LabelField';
 
-function formReducer(fields = {}, action: any) {
+function formReducer(fields = [], action: any) {
   switch (action.type) {
     case 'updateFields':
-      return {
-        ...fields,
-        ...action.fields,
-      };
+      return [...action.fields];
     default:
       return fields;
   }
@@ -28,15 +25,32 @@ let App: any = ({ dispatch, fields }) => {
     <StateForm
       fields={fields}
       onValuesChange={values => {
-        console.log('changed!', values);
+        console.log('Value Change:', values);
       }}
       onFieldsChange={(changedFields, allFields) => {
-        dispatch();
+        console.log('Field Change:', changedFields, allFields);
+        dispatch({
+          type: 'updateFields',
+          fields: allFields,
+        });
       }}
     >
+      <h3>Redux Form</h3>
+      <p>It's no need to put data into redux store. But you can still do this.</p>
+
       <LabelField name="field">
         <Input />
       </LabelField>
+
+      <button onClick={() => {
+        dispatch({
+          type: 'updateFields',
+          fields: [{
+            name: 'field',
+            value: 'redux it!',
+          }],
+        });
+      }}>dispatch to change</button>
     </StateForm>
   );
 };

@@ -66,7 +66,8 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
    */
   private touched: boolean = false;
   private validatePromise: Promise<any> | null = null; // We reuse the promise to check if is `validating`
-  private cachedErrors: string[];
+  private prevErrors: string[];
+  private prevValidating: boolean;
 
   // ============================== Subscriptions ==============================
   public componentDidMount() {
@@ -128,7 +129,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
           this.touched = data.touched;
         }
         if ('validating' in data) {
-          this.validatePromise = Promise.resolve();
+          this.validatePromise = data.validating ? Promise.resolve() : null;
         }
 
         this.forceUpdate();
@@ -137,7 +138,9 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
 
       case 'errorUpdate': {
         const errors = getFieldError(namePath);
-        if (!isSimilar(this.cachedErrors, errors)) {
+        const validating = this.isFieldValidating();
+
+        if (this.prevValidating !== validating || !isSimilar(this.prevErrors, errors)) {
           this.forceUpdate();
         }
         break;
@@ -192,6 +195,21 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
   public isFieldValidating = () => !!this.validatePromise;
 
   // ============================= Child Component =============================
+  public getMeta = (): Meta => {
+    const { getFieldError } = this.context;
+    // Make error & validating in cache to save perf
+    this.prevValidating = this.isFieldValidating();
+    this.prevErrors = getFieldError(name);
+
+    const meta: Meta = {
+      touched: this.isFieldTouched(),
+      validating: this.prevValidating,
+      errors: this.prevErrors,
+    };
+
+    return meta;
+  };
+
   // Only return validate child node. If invalidate, will do nothing about field.
   public getOnlyChild = (
     children:
@@ -200,17 +218,8 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
   ): { child: React.ReactElement | null; isFunction: boolean } => {
     // Support render props
     if (typeof children === 'function') {
-      const { name } = this.props;
-      const { getFieldError } = this.context;
+      const meta = this.getMeta();
 
-      // Make error in cache to save perf
-      this.cachedErrors = getFieldError(name);
-
-      const meta: Meta = {
-        touched: this.isFieldTouched(),
-        validating: this.isFieldValidating(),
-        errors: this.cachedErrors,
-      };
       return {
         ...this.getOnlyChild(children(this.getControlled(), meta, this.context)),
         isFunction: true,

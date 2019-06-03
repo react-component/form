@@ -101,13 +101,13 @@ export class FormStore {
     }
 
     return nameList.map((name: NamePath) => {
-      const namePath: InternalNamePath = getNamePath(name);
-      return getValue(this.store, namePath);
+      return this.getFieldValue(name);
     });
   };
 
   private getFieldValue = (name: NamePath) => {
-    return this.getFieldsValue([name])[0];
+    const namePath: InternalNamePath = getNamePath(name);
+    return getValue(this.store, namePath);
   };
 
   private getFieldsError = (nameList?: NamePath[]) => {
@@ -183,7 +183,6 @@ export class FormStore {
 
   private setFields = (fields: FieldData[]) => {
     const prevStore = this.store;
-    const namePathList: InternalNamePath[] = [];
 
     fields.forEach((fieldData: FieldData) => {
       const { name, errors, ...data } = fieldData;
@@ -201,6 +200,22 @@ export class FormStore {
 
       this.notifyObservers(prevStore, [namePath], { type: 'setField', data: fieldData });
     });
+  };
+
+  private getFields = (): FieldData[] => {
+    const fields: FieldData[] = this.fieldEntities.map(
+      (field: FieldEntity): FieldData => {
+        const namePath = getNamePath(field.props.name);
+        const meta = field.getMeta();
+        return {
+          ...meta,
+          name: namePath,
+          value: this.getFieldValue(namePath),
+        };
+      },
+    );
+
+    return fields;
   };
 
   // =========================== Observer ===========================
@@ -247,9 +262,17 @@ export class FormStore {
     this.validateFields(childrenFields);
 
     // trigger callback function
-    const { onValuesChange } = this.callbacks;
+    const { onValuesChange, onFieldsChange } = this.callbacks;
+
     if (onValuesChange) {
       onValuesChange(this.store);
+    }
+    if (onFieldsChange) {
+      const fields = this.getFields();
+      const changedField = fields.find(({ name: fieldName }) => {
+        return matchNamePath(fieldName as any, namePath);
+      });
+      onFieldsChange([changedField], fields);
     }
   };
 
@@ -341,6 +364,7 @@ export class FormStore {
       .catch(results => results)
       .then((results: FieldError[]) => {
         this.errorCache.updateError(results);
+        console.log('>????', results);
         this.notifyObservers(this.store, results.map(({ name }) => name), { type: 'errorUpdate' });
       });
 
