@@ -35,6 +35,17 @@ class NameMap<T = any> {
     return result && result.value;
   }
 
+  public update(key: InternalNamePath, updater: (origin: T) => T | null) {
+    const origin = this.get(key);
+    const next = updater(origin);
+
+    if (!next) {
+      this.delete(key);
+    } else {
+      this.set(key, next);
+    }
+  }
+
   public delete(key: InternalNamePath) {
     this.list = this.list.filter(item => !matchNamePath(item.key, key));
   }

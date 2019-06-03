@@ -12,6 +12,7 @@ import {
 } from './interface';
 import { FormInstance, HOOK_MARK, InternalHooks } from './StateFormContext';
 import { allPromiseFinish } from './utils/asyncUtil';
+import NameMap from './utils/NameMap';
 import { ErrorCache } from './utils/validateUtil';
 import {
   containsNamePath,
@@ -233,6 +234,10 @@ export class FormStore {
     this.store = setValue(this.store, namePath, value);
 
     this.notifyObservers(prevStore, [namePath], { type: 'valueUpdate' });
+
+    // Notify dependencies children with parent update
+    const childrenFields = this.getDependencyChildrenFields(namePath);
+    this.validateFields(childrenFields);
   };
 
   // Let all child Field get update.
@@ -244,6 +249,45 @@ export class FormStore {
     }
 
     this.notifyObservers(prevStore, null, { type: 'valueUpdate' });
+  };
+
+  private getDependencyChildrenFields = (rootNamePath: InternalNamePath): InternalNamePath[] => {
+    const children: Set<FieldEntity> = new Set();
+    const childrenFields: InternalNamePath[] = [];
+
+    const dependencies2fields: NameMap<Set<FieldEntity>> = new NameMap();
+
+    // Generate maps
+    // TODO: Use cache to save perf if user report with this
+    this.fieldEntities.forEach(field => {
+      const { dependencies } = field.props;
+      (dependencies || []).forEach(dependency => {
+        const dependencyNamePath = getNamePath(dependency);
+        dependencies2fields.update(dependencyNamePath, (fields = new Set()) => {
+          fields.add(field);
+          return fields;
+        });
+      });
+    });
+
+    const fillChildren = (namePath: InternalNamePath) => {
+      const fields = dependencies2fields.get(namePath) || new Set();
+      fields.forEach(field => {
+        if (!children.has(field)) {
+          children.add(field);
+
+          if (field.isFieldTouched()) {
+            const fieldNamePath = getNamePath(field.props.name);
+            childrenFields.push(fieldNamePath);
+            fillChildren(fieldNamePath);
+          }
+        }
+      });
+    };
+
+    fillChildren(rootNamePath);
+
+    return childrenFields;
   };
 
   // =========================== Validate ===========================

@@ -29,7 +29,9 @@ interface ChildProps {
 
 export interface StateFormFieldProps {
   name: NamePath;
-  children?: React.ReactElement | ((control: ChildProps, meta: Meta, form: FormInstance) => React.ReactNode);
+  children?:
+    | React.ReactElement
+    | ((control: ChildProps, meta: Meta, form: FormInstance) => React.ReactNode);
   rules?: Rule[];
   /** Set up `dependencies` field. When dependencies field update and current field is touched, will trigger validate rules. */
   dependencies?: NamePath[];

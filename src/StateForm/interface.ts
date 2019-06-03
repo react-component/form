@@ -51,6 +51,7 @@ export interface FieldEntity {
   props: {
     name?: NamePath;
     rules?: Rule[];
+    dependencies?: NamePath[];
   };
 }
 
