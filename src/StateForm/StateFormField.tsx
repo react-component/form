@@ -29,7 +29,7 @@ interface ChildProps {
 }
 
 export interface StateFormFieldProps {
-  name: NamePath;
+  name?: NamePath;
   children?:
     | React.ReactElement
     | ((control: ChildProps, meta: Meta, form: FormInstance) => React.ReactNode);
@@ -320,8 +320,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
     const { children } = this.props;
 
     const { child, isFunction } = this.getOnlyChild(children);
-    const namePath = this.getNamePath();
-    if (!child || !namePath.length) {
+    if (!child) {
       return children;
     }
 

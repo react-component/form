@@ -4,12 +4,12 @@ import Input from './components/Input';
 
 const { Field } = StateForm;
 
-const list = new Array(1111).fill();
+const list = new Array(1111).fill(() => null);
 
 export default class Demo extends React.Component {
-  state = {};
+  public state = {};
 
-  render() {
+  public render() {
     return (
       <div>
         <h3>State Form ({list.length} inputs)</h3>
@@ -23,11 +23,11 @@ export default class Demo extends React.Component {
           <Field name="username">
             <Input placeholder="Shadow of Username" />
           </Field>
-          <Field name={[ 'path1', 'path2' ]}>
+          <Field name={['path1', 'path2']}>
             <Input placeholder="nest" />
           </Field>
-          <Field name={[ 'renderProps' ]}>
-            {(control) => (
+          <Field name={['renderProps']}>
+            {control => (
               <div>
                 I am render props
                 <Input {...control} placeholder="render props" />
@@ -36,12 +36,10 @@ export default class Demo extends React.Component {
           </Field>
 
           <h4>Show additional field when `username` is `111`</h4>
-          <Field name="condition" shouldUpdate={(prev, next) => prev.username !== next.username}>
+          <Field shouldUpdate={(prev, next) => prev.username !== next.username}>
             {(control, meta, context) => {
               const { username } = context.getFieldsValue();
-              return username === '111' ? (
-                <Input {...control} placeholder="I am secret!" />
-              ) : null;
+              return username === '111' ? <Input {...control} placeholder="I am secret!" /> : null;
             }}
           </Field>
 

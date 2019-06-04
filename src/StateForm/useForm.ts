@@ -97,6 +97,18 @@ export class FormStore {
   };
 
   // ============================ Fields ============================
+  /**
+   * Get registered field entities.
+   * @param pure Only return field which has a `name`. Default: false
+   */
+  private getFieldEntities = (pure: boolean = false) => {
+    if (!pure) {
+      return this.fieldEntities;
+    }
+
+    return this.fieldEntities.filter(field => field.getNamePath().length);
+  };
+
   private getFieldsValue = (nameList?: NamePath[]) => {
     if (!nameList) {
       return this.store;
@@ -136,7 +148,7 @@ export class FormStore {
       namePathList = nameList.map(getNamePath);
     }
 
-    return this.fieldEntities.some((field: FieldEntity) => {
+    return this.getFieldEntities().some((field: FieldEntity) => {
       // Not provide `nameList` will check all the fields
       if (!namePathList) {
         return field.isFieldTouched();
@@ -156,7 +168,7 @@ export class FormStore {
 
   private isFieldValidating = (name: NamePath) => {
     const namePath: InternalNamePath = getNamePath(name);
-    const field = this.fieldEntities.find(testField => {
+    const field = this.getFieldEntities().find(testField => {
       const fieldNamePath = testField.getNamePath();
       return matchNamePath(fieldNamePath, namePath);
     });
@@ -208,7 +220,7 @@ export class FormStore {
     let fields: FieldData[];
 
     if (!namePathList) {
-      this.fieldEntities.map(
+      this.getFieldEntities(true).map(
         (field: FieldEntity): FieldData => {
           const namePath = field.getNamePath();
           const meta = field.getMeta();
@@ -221,7 +233,7 @@ export class FormStore {
       );
     } else {
       const cache: NameMap<FieldEntity> = new NameMap();
-      this.fieldEntities.forEach(field => {
+      this.getFieldEntities().forEach(field => {
         const namePath = field.getNamePath();
         cache.set(namePath, field);
       });
@@ -263,7 +275,7 @@ export class FormStore {
     info: NotifyInfo,
   ) => {
     if (this.subscribable) {
-      this.fieldEntities.forEach(({ onStoreChange }) => {
+      this.getFieldEntities().forEach(({ onStoreChange }) => {
         onStoreChange(prevStore, namePathList, info);
       });
     } else {
@@ -310,9 +322,11 @@ export class FormStore {
 
     const dependencies2fields: NameMap<Set<FieldEntity>> = new NameMap();
 
-    // Generate maps
-    // TODO: Use cache to save perf if user report with this
-    this.fieldEntities.forEach(field => {
+    /**
+     * Generate maps
+     * Can use cache to save perf if user report performance issue with this
+     */
+    this.getFieldEntities().forEach(field => {
       const { dependencies } = field.props;
       (dependencies || []).forEach(dependency => {
         const dependencyNamePath = getNamePath(dependency);
@@ -362,7 +376,7 @@ export class FormStore {
     // Collect result in promise list
     const promiseList: Array<Promise<any>> = [];
 
-    this.fieldEntities.forEach((field: FieldEntity) => {
+    this.getFieldEntities().forEach((field: FieldEntity) => {
       if (!field.props.rules || !field.props.rules.length) {
         return;
       }
