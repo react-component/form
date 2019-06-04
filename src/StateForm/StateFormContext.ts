@@ -20,6 +20,7 @@ export interface InternalHooks {
   useSubscribe: (subscribable: boolean) => void;
   setInitialValues: (values: Store) => void;
   setCallbacks: (callbacks: Callbacks) => void;
+  getFields: (namePathList?: InternalNamePath[]) => FieldData[];
 }
 
 export interface FormInstance {

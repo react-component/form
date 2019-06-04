@@ -1,7 +1,7 @@
-import setIn from "lodash/fp/set";
-import get from "lodash/get";
-import { InternalNamePath, NamePath, Store } from "../interface";
-import { toArray } from "./typeUtil";
+import setIn from 'lodash/fp/set';
+import get from 'lodash/get';
+import { InternalNamePath, NamePath, Store } from '../interface';
+import { toArray } from './typeUtil';
 
 /**
  * Convert name to internal supported format.
@@ -42,7 +42,7 @@ export function containsNamePath(namePathList: InternalNamePath[], namePath: Int
 }
 
 function isObject(obj: any) {
-  return typeof obj === "object" && obj !== null;
+  return typeof obj === 'object' && obj !== null;
 }
 
 /**
@@ -51,7 +51,7 @@ function isObject(obj: any) {
  */
 function internalSetValues(store: Store | any[], values: Store | any[] = {}) {
   const isArray: boolean = Array.isArray(store);
-  const newStore = isArray ? [...store as any] : { ...store };
+  const newStore = isArray ? [...(store as any)] : { ...store };
   Object.keys(values).forEach(key => {
     const prevValue = newStore[key];
     const value = values[key];
@@ -75,7 +75,7 @@ export function matchNamePath(
   namePath: InternalNamePath,
   changedNamePath: InternalNamePath | null,
 ) {
-  if (!changedNamePath) {
+  if (!namePath || !changedNamePath || namePath.length !== changedNamePath.length) {
     return false;
   }
   return namePath.every((nameUnit, i) => changedNamePath[i] === nameUnit);
@@ -91,7 +91,7 @@ export function isSimilar(source: any, target: any) {
     return false;
   }
 
-  if (!source || !target || typeof source !== "object" || typeof target !== "object") {
+  if (!source || !target || typeof source !== 'object' || typeof target !== 'object') {
     return false;
   }
 
@@ -103,7 +103,7 @@ export function isSimilar(source: any, target: any) {
     const sourceValue = source[key];
     const targetValue = target[key];
 
-    if (typeof sourceValue === "function" && typeof targetValue === "function") {
+    if (typeof sourceValue === 'function' && typeof targetValue === 'function') {
       return true;
     }
     return sourceValue === targetValue;
@@ -113,7 +113,7 @@ export function isSimilar(source: any, target: any) {
 export function defaultGetValueFromEvent(...args: any[]) {
   const arg = args[0];
 
-  if (arg && arg.target && "value" in arg.target) {
+  if (arg && arg.target && 'value' in arg.target) {
     return arg.target.value;
   }
 

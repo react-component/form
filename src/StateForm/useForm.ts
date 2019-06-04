@@ -71,6 +71,7 @@ export class FormStore {
         useSubscribe: this.useSubscribe,
         setInitialValues: this.setInitialValues,
         setCallbacks: this.setCallbacks,
+        getFields: this.getFields,
       };
     }
 
@@ -141,7 +142,7 @@ export class FormStore {
         return field.isFieldTouched();
       }
 
-      const fieldNamePath = getNamePath(field.props.name);
+      const fieldNamePath = field.getNamePath();
       if (containsNamePath(namePathList, fieldNamePath)) {
         return field.isFieldTouched();
       }
@@ -156,7 +157,7 @@ export class FormStore {
   private isFieldValidating = (name: NamePath) => {
     const namePath: InternalNamePath = getNamePath(name);
     const field = this.fieldEntities.find(testField => {
-      const fieldNamePath = getNamePath(testField.props.name);
+      const fieldNamePath = testField.getNamePath();
       return matchNamePath(fieldNamePath, namePath);
     });
 
@@ -203,18 +204,37 @@ export class FormStore {
     });
   };
 
-  private getFields = (): FieldData[] => {
-    const fields: FieldData[] = this.fieldEntities.map(
-      (field: FieldEntity): FieldData => {
-        const namePath = getNamePath(field.props.name);
-        const meta = field.getMeta();
+  private getFields = (namePathList?: InternalNamePath[]): FieldData[] => {
+    let fields: FieldData[];
+
+    if (!namePathList) {
+      this.fieldEntities.map(
+        (field: FieldEntity): FieldData => {
+          const namePath = field.getNamePath();
+          const meta = field.getMeta();
+          return {
+            ...meta,
+            name: namePath,
+            value: this.getFieldValue(namePath),
+          };
+        },
+      );
+    } else {
+      const cache: NameMap<FieldEntity> = new NameMap();
+      this.fieldEntities.forEach(field => {
+        const namePath = field.getNamePath();
+        cache.set(namePath, field);
+      });
+
+      fields = namePathList.map(namePath => {
+        const field = cache.get(namePath);
         return {
-          ...meta,
           name: namePath,
+          ...field.getMeta(),
           value: this.getFieldValue(namePath),
         };
-      },
-    );
+      });
+    }
 
     return fields;
   };
@@ -310,7 +330,7 @@ export class FormStore {
           children.add(field);
 
           if (field.isFieldTouched()) {
-            const fieldNamePath = getNamePath(field.props.name);
+            const fieldNamePath = field.getNamePath();
             childrenFields.push(fieldNamePath);
             fillChildren(fieldNamePath);
           }
@@ -347,7 +367,7 @@ export class FormStore {
         return;
       }
 
-      const fieldNamePath = getNamePath(field.props.name);
+      const fieldNamePath = field.getNamePath();
 
       if (!namePathList || containsNamePath(namePathList, fieldNamePath)) {
         const promise = field.validateRules(options);

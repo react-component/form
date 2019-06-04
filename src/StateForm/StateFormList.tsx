@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { InternalNamePath, NamePath } from './interface';
-import StateFormContext, { FormInstance } from './StateFormContext';
+import StateFormContext, { FormInstance, HOOK_MARK } from './StateFormContext';
 import StateFormField from './StateFormField';
-import { getNamePath } from './utils/valueUtil';
+import { getNamePath, setValue } from './utils/valueUtil';
 
 interface StateFormListField {
   name: number;
@@ -10,7 +10,7 @@ interface StateFormListField {
 
 interface StateFormListOperations {
   add: () => void;
-  remove: () => void;
+  remove: (index: number) => void;
 }
 
 interface StateFormListProps {
@@ -48,16 +48,37 @@ const StateFormList: React.FunctionComponent<StateFormListProps> = ({ name, chil
         return (
           <StateFormContext.Provider value={{ ...context, prefixName }}>
             <StateFormField name={[]} shouldUpdate={shouldUpdate}>
-              {({ value = [], onChange }: StateFormListRenderProps, _, { getFieldValue }) => {
-                console.warn('render value:', value);
+              {({ value = [], onChange }: StateFormListRenderProps) => {
+                const { getInternalHooks, getFieldValue, setFieldsValue, setFields } = context;
+
+                /**
+                 * Always get latest value in case user update fields by `form` api.
+                 */
                 const operations: StateFormListOperations = {
                   add: () => {
-                    // Always get latest value in case user update fields by `form` api.
                     const newValue = getFieldValue(prefixName) || [];
                     onChange([...newValue, undefined]);
                   },
-                  remove: () => {
-                    // TODO: handle this
+                  remove: (index: number) => {
+                    const { getFields } = getInternalHooks(HOOK_MARK);
+                    const newValue = getFieldValue(prefixName) || [];
+                    const namePathList: InternalNamePath[] = newValue.map((__, i) => [
+                      ...prefixName,
+                      i,
+                    ]);
+
+                    const fields = getFields(namePathList)
+                      .filter((__, i) => i !== index)
+                      .map((fieldData, i) => ({
+                        ...fieldData,
+                        name: [...prefixName, i],
+                      }));
+
+                    const nextValue = [...newValue];
+                    nextValue.splice(index, 1);
+
+                    setFieldsValue(setValue({}, prefixName, []));
+                    setFields(fields);
                   },
                 };
 

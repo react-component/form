@@ -77,6 +77,21 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
     return [...prefixName, ...getNamePath(name)];
   };
 
+  public refresh = () => {
+    /**
+     * We update `reset` state twice to clean up current node.
+     * Which helps to reset value without define the type.
+     */
+    this.setState(
+      {
+        reset: true,
+      },
+      () => {
+        this.setState({ reset: false });
+      },
+    );
+  };
+
   // ============================== Subscriptions ==============================
   public componentDidMount() {
     const { getInternalHooks }: FormInstance = this.context;
@@ -116,18 +131,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
           this.touched = false;
           this.validatePromise = null;
 
-          /**
-           * We update `reset` state twice to clean up current node.
-           * Which helps to reset value without define the type.
-           */
-          this.setState(
-            {
-              reset: true,
-            },
-            () => {
-              this.setState({ reset: false });
-            },
-          );
+          this.refresh();
         }
         break;
 
@@ -141,7 +145,7 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
             this.validatePromise = data.validating ? Promise.resolve() : null;
           }
 
-          this.forceUpdate();
+          this.refresh();
         }
         break;
       }

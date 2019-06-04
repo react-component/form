@@ -53,6 +53,16 @@ class NameMap<T = any> {
   public map(callback: (kv: KV<T>) => any) {
     return this.list.map(callback);
   }
+
+  public toJSON(): { [name: string]: T } {
+    const json: any = {};
+    this.map(({ key, value }) => {
+      json[key.join('.')] = value;
+      return null;
+    });
+
+     return json;
+  }
 }
 
 export default NameMap;

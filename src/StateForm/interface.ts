@@ -49,6 +49,7 @@ export interface FieldEntity {
   isFieldValidating: () => boolean;
   validateRules: (options?: ValidateOptions) => Promise<any>;
   getMeta: () => Meta;
+  getNamePath: () => InternalNamePath;
   props: {
     name?: NamePath;
     rules?: Rule[];
