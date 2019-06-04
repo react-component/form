@@ -124,15 +124,17 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
         break;
 
       case 'setField': {
-        const { data } = info;
-        if ('touched' in data) {
-          this.touched = data.touched;
-        }
-        if ('validating' in data) {
-          this.validatePromise = data.validating ? Promise.resolve() : null;
-        }
+        if (namePathList && containsNamePath(namePathList, namePath)) {
+          const { data } = info;
+          if ('touched' in data) {
+            this.touched = data.touched;
+          }
+          if ('validating' in data) {
+            this.validatePromise = data.validating ? Promise.resolve() : null;
+          }
 
-        this.forceUpdate();
+          this.forceUpdate();
+        }
         break;
       }
 

@@ -16,6 +16,7 @@ import { allPromiseFinish } from './utils/asyncUtil';
 import NameMap from './utils/NameMap';
 import { ErrorCache } from './utils/validateUtil';
 import {
+  cloneByNamePathList,
   containsNamePath,
   getNamePath,
   getValue,
@@ -262,18 +263,14 @@ export class FormStore {
     this.validateFields(childrenFields);
 
     // trigger callback function
-    const { onValuesChange, onFieldsChange } = this.callbacks;
+    const { onValuesChange } = this.callbacks;
 
     if (onValuesChange) {
-      onValuesChange(this.store);
+      const changedValues = cloneByNamePathList(this.store, [namePath]);
+      onValuesChange(changedValues, this.store);
     }
-    if (onFieldsChange) {
-      const fields = this.getFields();
-      const changedField = fields.find(({ name: fieldName }) => {
-        return matchNamePath(fieldName as any, namePath);
-      });
-      onFieldsChange([changedField], fields);
-    }
+
+    this.triggerOnFieldsChange([namePath]);
   };
 
   // Let all child Field get update.
@@ -326,6 +323,18 @@ export class FormStore {
     return childrenFields;
   };
 
+  private triggerOnFieldsChange = (namePathList: InternalNamePath[]) => {
+    const { onFieldsChange } = this.callbacks;
+
+    if (onFieldsChange) {
+      const fields = this.getFields();
+      const changedFields = fields.filter(({ name: fieldName }) => {
+        return containsNamePath(namePathList, fieldName as any);
+      });
+      onFieldsChange(changedFields, fields);
+    }
+  };
+
   // =========================== Validate ===========================
   private validateFields: ValidateFields = (nameList?: NamePath[], options?: ValidateOptions) => {
     const namePathList: InternalNamePath[] | undefined = nameList && nameList.map(getNamePath);
@@ -363,8 +372,11 @@ export class FormStore {
     summaryPromise
       .catch(results => results)
       .then((results: FieldError[]) => {
+        const resultNamePathList: InternalNamePath[] = results.map(({ name }) => name);
+
         this.errorCache.updateError(results);
-        this.notifyObservers(this.store, results.map(({ name }) => name), { type: 'errorUpdate' });
+        this.notifyObservers(this.store, resultNamePathList, { type: 'errorUpdate' });
+        this.triggerOnFieldsChange(resultNamePathList);
       });
 
     const returnPromise = summaryPromise

@@ -77,6 +77,6 @@ export type NotifyInfo =
     };
 
 export interface Callbacks {
-  onValuesChange?: (values: Store) => void;
+  onValuesChange?: (changedValues: Store, values: Store) => void;
   onFieldsChange?: (changedFields: FieldData[], allFields: FieldData[]) => void;
 }

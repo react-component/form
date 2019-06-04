@@ -24,8 +24,8 @@ let App: any = ({ dispatch, fields }) => {
   return (
     <StateForm
       fields={fields}
-      onValuesChange={values => {
-        console.log('Value Change:', values);
+      onValuesChange={(changedValues, allValues) => {
+        console.log('Value Change:', changedValues, allValues);
       }}
       onFieldsChange={(changedFields, allFields) => {
         console.log('Field Change:', changedFields, allFields);
@@ -42,15 +42,27 @@ let App: any = ({ dispatch, fields }) => {
         <Input />
       </LabelField>
 
-      <button onClick={() => {
-        dispatch({
-          type: 'updateFields',
-          fields: [{
-            name: 'field',
-            value: 'redux it!',
-          }],
-        });
-      }}>dispatch to change</button>
+      <LabelField name="required" placeholder="required" rules={[{ required: true }]}>
+        <Input />
+      </LabelField>
+
+      <button
+        onClick={() => {
+          dispatch({
+            type: 'updateFields',
+            fields: [
+              {
+                name: 'field',
+                value: 'redux it!',
+                touched: true,
+                validating: true,
+              },
+            ],
+          });
+        }}
+      >
+        dispatch to change
+      </button>
     </StateForm>
   );
 };
