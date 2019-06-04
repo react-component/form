@@ -196,10 +196,11 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
 
   // ============================= Child Component =============================
   public getMeta = (): Meta => {
+    const { name } = this.props;
     const { getFieldError } = this.context;
     // Make error & validating in cache to save perf
     this.prevValidating = this.isFieldValidating();
-    this.prevErrors = getFieldError(name);
+    this.prevErrors = getFieldError(getNamePath(name));
 
     const meta: Meta = {
       touched: this.isFieldTouched(),

@@ -364,7 +364,6 @@ export class FormStore {
       .catch(results => results)
       .then((results: FieldError[]) => {
         this.errorCache.updateError(results);
-        console.log('>????', results);
         this.notifyObservers(this.store, results.map(({ name }) => name), { type: 'errorUpdate' });
       });
 
