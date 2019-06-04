@@ -47,6 +47,7 @@ let App: any = ({ dispatch, fields }) => {
       </LabelField>
 
       <button
+        type="button"
         onClick={() => {
           dispatch({
             type: 'updateFields',
@@ -54,8 +55,15 @@ let App: any = ({ dispatch, fields }) => {
               {
                 name: 'field',
                 value: 'redux it!',
-                touched: true,
+                touched: false,
                 validating: true,
+              },
+              {
+                name: 'required',
+                value: 'HAS VALUE',
+                touched: false,
+                validating: false,
+                errors: ['Have a good time!'],
               },
             ],
           });
