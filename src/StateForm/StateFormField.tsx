@@ -38,7 +38,7 @@ export interface StateFormFieldProps {
   dependencies?: NamePath[];
   trigger?: string;
   validateTrigger?: string | string[];
-  shouldUpdate?: (prevValues: any, nextValues: any) => boolean;
+  shouldUpdate?: (prevValues: any, nextValues: any, info: { source?: string }) => boolean;
 }
 
 export interface StateFormFieldState {
@@ -69,6 +69,14 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
   private prevErrors: string[];
   private prevValidating: boolean;
 
+  // ================================== Utils ==================================
+  public getNamePath = (): InternalNamePath => {
+    const { name } = this.props;
+    const { prefixName = [] }: FormInstance = this.context;
+
+    return [...prefixName, ...getNamePath(name)];
+  };
+
   // ============================== Subscriptions ==============================
   public componentDidMount() {
     const { getInternalHooks }: FormInstance = this.context;
@@ -94,10 +102,10 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
     namePathList: InternalNamePath[] | null,
     info: NotifyInfo,
   ) => {
-    const { name, shouldUpdate } = this.props;
+    const { shouldUpdate } = this.props;
     const { getFieldsValue, getFieldError }: FormInstance = this.context;
     const values = getFieldsValue();
-    const namePath = getNamePath(name);
+    const namePath = this.getNamePath();
     const prevValue = this.getValue(prevStore);
     const curValue = this.getValue();
 
@@ -149,10 +157,14 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
       }
 
       default:
+        /**
+         * - If `namePath` exists in `namePathList`, means it's related value and should update.
+         * - If `shouldUpdate` provided, use customize logic to update the field
+         *   - else to check if value changed
+         */
         if (
           (namePathList && containsNamePath(namePathList, namePath)) ||
-          prevValue !== curValue ||
-          (shouldUpdate && shouldUpdate(prevStore, values))
+          (shouldUpdate ? shouldUpdate(prevStore, values, info) : prevValue !== curValue)
         ) {
           this.forceUpdate();
         }
@@ -165,9 +177,9 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
   };
 
   public validateRules = (options?: ValidateOptions) => {
-    const { rules, name } = this.props;
+    const { rules } = this.props;
     const { triggerName } = (options || {}) as ValidateOptions;
-    const namePath = getNamePath(name);
+    const namePath = this.getNamePath();
 
     let filteredRules = rules || [];
     if (triggerName) {
@@ -198,11 +210,10 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
 
   // ============================= Child Component =============================
   public getMeta = (): Meta => {
-    const { name } = this.props;
     const { getFieldError } = this.context;
     // Make error & validating in cache to save perf
     this.prevValidating = this.isFieldValidating();
-    this.prevErrors = getFieldError(getNamePath(name));
+    this.prevErrors = getFieldError(this.getNamePath());
 
     const meta: Meta = {
       touched: this.isFieldTouched(),
@@ -240,15 +251,14 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
 
   // ============================== Field Control ==============================
   public getValue = (store?: Store) => {
-    const { name } = this.props;
     const { getFieldsValue }: FormInstance = this.context;
-    const namePath = getNamePath(name);
+    const namePath = this.getNamePath();
     return getValue(store || getFieldsValue(), namePath);
   };
 
   public getControlled = (childProps: ChildProps = {}) => {
-    const { name, trigger, validateTrigger } = this.props;
-    const namePath = getNamePath(name);
+    const { trigger, validateTrigger } = this.props;
+    const namePath = this.getNamePath();
     const { getInternalHooks, validateFields }: FormInstance = this.context;
     const { dispatch } = getInternalHooks(HOOK_MARK);
     const value = this.getValue();
@@ -303,10 +313,10 @@ class StateFormField extends React.Component<StateFormFieldProps, StateFormField
 
   public render() {
     const { reset } = this.state;
-    const { name, children } = this.props;
+    const { children } = this.props;
 
     const { child, isFunction } = this.getOnlyChild(children);
-    const namePath = getNamePath(name);
+    const namePath = this.getNamePath();
     if (!child || !namePath.length) {
       return children;
     }

@@ -256,7 +256,7 @@ export class FormStore {
     const prevStore = this.store;
     this.store = setValue(this.store, namePath, value);
 
-    this.notifyObservers(prevStore, [namePath], { type: 'valueUpdate' });
+    this.notifyObservers(prevStore, [namePath], { type: 'valueUpdate', source: 'internal' });
 
     // Notify dependencies children with parent update
     const childrenFields = this.getDependencyChildrenFields(namePath);

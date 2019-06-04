@@ -4,9 +4,11 @@ import {
   FieldData,
   FieldEntity,
   FieldError,
+  InternalNamePath,
   NamePath,
   Store,
   ValidateFields,
+  
 } from './interface';
 import { ReducerAction } from './useForm';
 
@@ -33,6 +35,11 @@ export interface FormInstance {
   setFields: (fields: FieldData[]) => void;
   setFieldsValue: (value: Store) => void;
   validateFields: ValidateFields;
+
+  /**
+   * Passed by field context props
+   */
+  prefixName?: InternalNamePath;
 
   /**
    * Form component should register some content into store.

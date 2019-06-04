@@ -49,14 +49,16 @@ function isObject(obj: any) {
  * Copy values into store and return a new values object
  * ({ a: 1, b: { c: 2 } }, { a: 4, b: { d: 5 } }) => { a: 4, b: { c: 2, d: 5 } }
  */
-function internalSetValues(store: Store, values: Store = {}) {
-  const newStore = { ...store };
+function internalSetValues(store: Store | any[], values: Store | any[] = {}) {
+  const isArray: boolean = Array.isArray(store);
+  const newStore = isArray ? [...store as any] : { ...store };
   Object.keys(values).forEach(key => {
     const prevValue = newStore[key];
     const value = values[key];
 
-    // If both are object, we use recursion to set deep value
-    newStore[key] = isObject(prevValue) && isObject(value) ? setValues(prevValue, value) : value;
+    // If both are object (but target is not array), we use recursion to set deep value
+    const recursive = isObject(prevValue) && isObject(value) && !Array.isArray(value);
+    newStore[key] = recursive ? internalSetValues(prevValue, value) : value;
   });
 
   return newStore;

@@ -70,6 +70,7 @@ export type ValidateFields = (nameList?: NamePath[], options?: ValidateOptions) 
 export type NotifyInfo =
   | {
       type: 'valueUpdate' | 'errorUpdate' | 'reset';
+      source?: 'internal' | 'external';
     }
   | {
       type: 'setField';

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Callbacks, FieldData, Store } from './interface';
 import StateFormContext, { FormInstance, HOOK_MARK } from './StateFormContext';
 import StateFormField from './StateFormField';
+import StateFormList from './StateFormList';
 import useForm from './useForm';
 import { Omit } from './utils/typeUtil';
 
@@ -97,12 +98,14 @@ const InternalStateForm = React.forwardRef<FormInstance, StateFormProps>(StateFo
 type InternalStateForm = typeof InternalStateForm;
 interface RefStateForm extends InternalStateForm {
   Field: typeof StateFormField;
+  List: typeof StateFormList;
   useForm: typeof useForm;
 }
 
 const RefStateForm: RefStateForm = InternalStateForm as any;
 
 RefStateForm.Field = StateFormField;
+RefStateForm.List = StateFormList;
 RefStateForm.useForm = useForm;
 
 export { FormInstance };
