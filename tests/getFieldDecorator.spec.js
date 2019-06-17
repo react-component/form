@@ -190,3 +190,53 @@ describe('dynamic', () => {
     expect(form.getFieldError('title')).toEqual(['Title should be 3+ characters']);
   });
 });
+
+describe('Duplicate field names', () => {
+  class Test extends React.Component {
+    constructor(props) {
+      super(props);
+      this.nameDecorator = this.props.form.getFieldDecorator('title');
+    }
+
+    render() {
+      const { renderDuplicates, form } = this.props;
+      const { getFieldDecorator } = form;
+      return (
+        <div>
+          { getFieldDecorator('title')(<input />) }
+          {
+            renderDuplicates &&
+            <React.Fragment>
+              { this.nameDecorator(<input />) }
+              { getFieldDecorator('title')(<input />) }
+            </React.Fragment>
+          }
+        </div>
+      );
+    }
+  }
+
+  Test = createForm({
+    withRef: true,
+  })(Test);
+
+  let container;
+  const spy = jest.spyOn(global.console, 'error');
+
+  it('Warn on duplicate field names', () => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+    ReactDOM.render(<Test renderDuplicates />, container);
+    expect(spy).toHaveBeenCalled();
+    ReactDOM.unmountComponentAtNode(container);
+    document.body.removeChild(container);
+    spy.mockClear();
+  });
+
+  it('Do not warn if no duplicate field names', () => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+    ReactDOM.render(<Test />, container);
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
+});
