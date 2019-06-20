@@ -28,6 +28,11 @@ class Test extends React.Component {
         })(
           <MyInput />
         )}
+        {getFieldDecorator('url_array1.123', {
+          rules: [{ required: true, message: 'Additional test' }],
+        })(
+          <MyInput />
+        )}
       </div>
     );
   }
@@ -63,6 +68,9 @@ describe('validate array type', () => {
           field: 'url_array.0',
           message: 'url_array.0 is not a valid url',
         },
+      ]);
+      expect(errors.url_array1['123'].errors).toEqual([
+        { message: 'Additional test', field: 'url_array1.123' },
       ]);
       done();
     });

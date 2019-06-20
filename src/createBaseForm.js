@@ -473,7 +473,7 @@ function createBaseForm(option = {}, mixins = []) {
 
                 // Exist if match the field name
                 const restPath = errorFieldName.slice(ruleFieldName.length + 1);
-                if (/\d+/.test(restPath)) {
+                if (/^\d+$/.test(restPath)) {
                   fieldName = ruleFieldName;
                   return true;
                 }
