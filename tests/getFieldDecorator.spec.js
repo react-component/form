@@ -204,6 +204,7 @@ describe('Duplicate field names', () => {
       return (
         <div>
           { getFieldDecorator('title')(<input />) }
+          { getFieldDecorator('title') }
           {
             renderDuplicates &&
             <React.Fragment>
