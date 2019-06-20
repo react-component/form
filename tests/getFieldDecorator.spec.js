@@ -201,10 +201,10 @@ describe('Duplicate field names', () => {
     render() {
       const { renderDuplicates, form } = this.props;
       const { getFieldDecorator } = form;
+      getFieldDecorator('title');
       return (
         <div>
           { getFieldDecorator('title')(<input />) }
-          { getFieldDecorator('title') }
           {
             renderDuplicates &&
             <React.Fragment>
