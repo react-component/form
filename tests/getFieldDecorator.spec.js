@@ -228,7 +228,12 @@ describe('Duplicate field names', () => {
     container = document.createElement('div');
     document.body.appendChild(container);
     ReactDOM.render(<Test renderDuplicates />, container);
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(
+      `Warning: ` +
+      `Duplicate field names will result ` +
+      `in both fields getting edited together. ` +
+      `Field names must be unique`
+    );
     ReactDOM.unmountComponentAtNode(container);
     document.body.removeChild(container);
     spy.mockClear();
