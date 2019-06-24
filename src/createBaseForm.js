@@ -382,6 +382,7 @@ function createBaseForm(option = {}, mixins = []) {
           removedList.forEach(this.clearField);
         }
         this.renderFields = {};
+        this.elementRendered = {};
       },
 
       clearField(name) {

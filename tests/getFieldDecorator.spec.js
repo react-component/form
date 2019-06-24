@@ -192,34 +192,26 @@ describe('dynamic', () => {
 });
 
 describe('Duplicate field names', () => {
-  class Test extends React.Component {
-    constructor(props) {
-      super(props);
-      this.nameDecorator = this.props.form.getFieldDecorator('title');
-    }
-
-    render() {
-      const { renderDuplicates, form } = this.props;
-      const { getFieldDecorator } = form;
-      getFieldDecorator('title');
-      return (
-        <div>
-          { getFieldDecorator('title')(<input />) }
-          {
-            renderDuplicates &&
-            <React.Fragment>
-              { this.nameDecorator(<input />) }
-              { getFieldDecorator('title')(<input />) }
-            </React.Fragment>
-          }
-        </div>
-      );
-    }
+  const TestComponent = (props) => {
+    const { renderDuplicates, form } = props;
+    const { getFieldDecorator } = form;
+    getFieldDecorator('title');
+    return (
+      <div>
+        { getFieldDecorator('title')(<input />) }
+        {
+          renderDuplicates &&
+          <React.Fragment>
+            { getFieldDecorator('title')(<input />) }
+          </React.Fragment>
+        }
+      </div>
+    );
   }
 
-  Test = createForm({
+  const Test = createForm({
     withRef: true,
-  })(Test);
+  })(TestComponent);
 
   let container;
   const spy = jest.spyOn(global.console, 'error');
