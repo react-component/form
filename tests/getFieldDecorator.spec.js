@@ -192,21 +192,24 @@ describe('dynamic', () => {
 });
 
 describe('Duplicate field names', () => {
-  const TestComponent = (props) => {
-    const { renderDuplicates, form } = props;
-    const { getFieldDecorator } = form;
-    getFieldDecorator('title');
-    return (
-      <div>
-        { getFieldDecorator('title')(<input />) }
-        {
-          renderDuplicates &&
-          <React.Fragment>
-            { getFieldDecorator('title')(<input />) }
-          </React.Fragment>
-        }
-      </div>
-    );
+  class TestComponent extends React.PureComponent {
+    render() {
+      const { renderDuplicates, form } = this.props;
+      const { getFieldDecorator } = form;
+
+      getFieldDecorator('title');
+      return (
+        <div>
+          { getFieldDecorator('title')(<input />) }
+          {
+            renderDuplicates &&
+            <React.Fragment>
+              { getFieldDecorator('title')(<input />) }
+            </React.Fragment>
+          }
+        </div>
+      );
+    }
   }
 
   const Test = createForm({
@@ -235,6 +238,17 @@ describe('Duplicate field names', () => {
     container = document.createElement('div');
     document.body.appendChild(container);
     ReactDOM.render(<Test />, container);
+    expect(spy).toHaveBeenCalledTimes(0);
+    spy.mockClear();
+  });
+
+  it('Do not warn on re-render', () => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+    const renderSpy = jest.spyOn(Test.prototype, 'render');
+    const component = ReactDOM.render(<Test />, container);
+    component.forceUpdate();
+    expect(renderSpy).toHaveBeenCalledTimes(2);
     expect(spy).toHaveBeenCalledTimes(0);
   });
 });
