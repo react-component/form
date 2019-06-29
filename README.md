@@ -136,7 +136,7 @@ export createForm()(Form);
 | option.validateMessages | Preseted messages of [async-validator](https://github.com/yiminghe/async-validator) | Object | {} |
 | option.onFieldsChange | Called when field changed, you can dispatch fields to redux store. | (props, changed, all): void | NOOP |
 | option.onValuesChange | Called when value changed. | (props, changed, all): void | NOOP |
-| option.mapProps | Get new props transfered to WrappedComponent. | (props): Object | props => props |
+| option.mapProps | Get new props transferred to WrappedComponent. | (props): Object | props => props |
 | option.mapPropsToFields | Convert value from props to fields. Used for read fields from redux store. | (props): Object | NOOP |
 | option.fieldNameProp | Where to store the `name` argument of `getFieldProps`. | String | - |
 | option.fieldMetaProp | Where to store the meta data of `getFieldProps`. | String | - |
