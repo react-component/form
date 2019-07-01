@@ -1971,8 +1971,6 @@ function createBaseForm() {
         this.renderFields = {};
         this.domFields = {};
 
-        this.elementRendered = {};
-
         // HACK: https://github.com/ant-design/ant-design/issues/6406
         ['getFieldsValue', 'getFieldValue', 'setFieldsInitialValue', 'getFieldsError', 'getFieldError', 'isFieldValidating', 'isFieldsValidating', 'isFieldsTouched', 'isFieldTouched'].forEach(function (key) {
           _this[key] = function () {
@@ -2082,8 +2080,6 @@ function createBaseForm() {
 
         var props = this.getFieldProps(name, fieldOption);
         return function (fieldElem) {
-          __WEBPACK_IMPORTED_MODULE_7_warning___default()(!_this2.elementRendered[name], 'Duplicate field names will result ' + 'in both fields getting edited together. ' + 'Field names must be unique');
-          _this2.elementRendered[name] = true;
           // We should put field in record if it is rendered
           _this2.renderFields[name] = true;
 
@@ -2260,7 +2256,6 @@ function createBaseForm() {
           removedList.forEach(this.clearField);
         }
         this.renderFields = {};
-        this.elementRendered = {};
       },
       clearField: function clearField(name) {
         this.fieldsStore.clearField(name);
