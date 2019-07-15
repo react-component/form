@@ -34,7 +34,7 @@ class FieldsStore {
     return flattenFields(
       fields,
       path => validFieldsName.indexOf(path) >= 0,
-      'You cannot set a form field before rendering a field associated with the value.'
+      'You cannot set a form field before rendering a field associated with the value.Or you may passed the property that dont match any field.'
     );
   }
 
