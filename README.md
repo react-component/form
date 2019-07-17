@@ -265,7 +265,7 @@ Set fields by kv object. each field can contain errors and value member.
 Validate and get fields value by fieldNames.
 
 options is the same as validate method of [async-validator](https://github.com/yiminghe/async-validator).
-And add `force` and `scroll`. `scroll` is the same as [dom-scroll-into-view's function parameter `config`](https://github.com/yiminghe/dom-scroll-into-view#function-parameter).
+And add `force`.
 
 #### options.force: Boolean
 
@@ -314,7 +314,7 @@ createDOMForm enhancement, support props.form.validateFieldsAndScroll
 
 ### validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: (errors, values) => void)
 
-props.form.validateFields enhancement, support scroll to the first invalid form field
+props.form.validateFields enhancement, support scroll to the first invalid form field,  `scroll` is the same as [dom-scroll-into-view's function parameter `config`](https://github.com/yiminghe/dom-scroll-into-view#function-parameter).
 
 #### options.container: HTMLElement
 
