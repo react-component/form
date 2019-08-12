@@ -189,11 +189,11 @@ This input's unique name.
 | option.initialValue | Initial value of current component. | any | - |
 | option.normalize | Return normalized value. | (value, prev, all): Object | - |
 | option.trigger | Event which is listened to collect form data. | String | 'onChange' |
-| option.validateTrigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
+| option.validateTrigger | Event which is listened to validate. Set to false to only validate when call props.validateFields. | String|String[]|Boolean | 'onChange' |
 | option.rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
 | option.validateFirst | Whether stop validate on first rule of error for this field. | boolean | false |
 | option.validate | | Object[] | - |
-| option.validate[n].trigger | Event which is listened to validate. Set to falsy to only validate when call props.validateFields. | String|String[] | 'onChange' |
+| option.validate[n].trigger | Event which is listened to validate. Set to false to only validate when call props.validateFields. | String|String[]|Boolean | 'onChange' |
 | option.validate[n].rules | Validator rules. see: [async-validator](https://github.com/yiminghe/async-validator) | Object[] | - |
 | option.hidden | Ignore current field while validating or gettting fields | boolean | false |
 | option.preserve | Whether to preserve the value. That will remain the value when the field be unmounted and be mounted again | boolean | false |
