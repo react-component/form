@@ -16,20 +16,6 @@ jobs:
         run: |
           yarn
           yarn lint
-        env:
-          CI: true
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 10.x
-        uses: actions/setup-node@v1
-        with:
-          version: 10.x
-      - name: run test
-        run: |
-          yarn
           yarn test
         env:
           CI: true
