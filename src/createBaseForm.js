@@ -573,7 +573,7 @@ function createBaseForm(option = {}, mixins = []) {
           }, callback);
         });
         pending.catch((e) => {
-          // eslint-disabled-next-line no-console
+          // eslint-disable-next-line no-console
           if (console.error && process.env.NODE_ENV !== 'production') {
             console.error(e);
           }
