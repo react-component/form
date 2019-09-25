@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Simulate } from 'react-dom/test-utils';
 import async from 'async';
-import createDOMForm from '../src/createDOMForm';
+import createForm from '../src/createForm';
 
 class Test extends React.Component {
   check = (rule, value, callback) => {
@@ -32,7 +32,7 @@ class Test extends React.Component {
   }
 }
 
-Test = createDOMForm({
+Test = createForm({
   withRef: true,
 })(Test);
 
@@ -112,17 +112,6 @@ describe('Async Validation', () => {
     form.getFieldInstance('async').value = '1';
     Simulate.change(form.getFieldInstance('async'));
     return form.validateFields()
-      .then(values => {
-        expect(values.normal).toBe(undefined);
-        expect(values.async).toBe('1');
-        done();
-      });
-  });
-
-  it('promise validateFieldsAndScroll works for ok', (done) => {
-    form.getFieldInstance('async').value = '1';
-    Simulate.change(form.getFieldInstance('async'));
-    return form.validateFieldsAndScroll()
       .then(values => {
         expect(values.normal).toBe(undefined);
         expect(values.async).toBe('1');
