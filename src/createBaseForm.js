@@ -537,7 +537,8 @@ function createBaseForm(option = {}, mixins = []) {
             callback = (errors, values) => {
               if (oldCb) {
                 oldCb(errors, values);
-              } else if (errors) {
+              }
+              if (errors) {
                 reject({ errors, values });
               } else {
                 resolve(values);
@@ -572,7 +573,9 @@ function createBaseForm(option = {}, mixins = []) {
           }, callback);
         });
         pending.catch((e) => {
+          // eslint-disable-next-line no-console
           if (console.error && process.env.NODE_ENV !== 'production') {
+            // eslint-disable-next-line no-console
             console.error(e);
           }
           return e;
