@@ -3,6 +3,7 @@
 
 import React from 'react';
 import createReactClass from 'create-react-class';
+import unsafeLifecyclesPolyfill from 'rc-util/lib/unsafeLifecyclesPolyfill';
 import AsyncValidator from 'async-validator';
 import warning from 'warning';
 import get from 'lodash/get';
@@ -55,7 +56,8 @@ function createBaseForm(option = {}, mixins = []) {
         this.domFields = {};
 
         // HACK: https://github.com/ant-design/ant-design/issues/6406
-        ['getFieldsValue',
+        [
+          'getFieldsValue',
           'getFieldValue',
           'setFieldsInitialValue',
           'getFieldsError',
@@ -638,7 +640,7 @@ function createBaseForm(option = {}, mixins = []) {
       },
     });
 
-    return argumentContainer(Form, WrappedComponent);
+    return argumentContainer(unsafeLifecyclesPolyfill(Form), WrappedComponent);
   };
 }
 
