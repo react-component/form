@@ -56,7 +56,8 @@ function createBaseForm(option = {}, mixins = []) {
         this.domFields = {};
 
         // HACK: https://github.com/ant-design/ant-design/issues/6406
-        ['getFieldsValue',
+        [
+          'getFieldsValue',
           'getFieldValue',
           'setFieldsInitialValue',
           'getFieldsError',
