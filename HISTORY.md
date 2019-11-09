@@ -1,6 +1,10 @@
 # History
 ----
 
+## 2.4.10 / 2019-11-09
+
+- There should not be any lifecycle warning now!
+
 ## 2.4.0 / 2018-12-21
 
 - Field option add `preserve` to enable you keep value even if field removed.
