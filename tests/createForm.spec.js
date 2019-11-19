@@ -305,3 +305,19 @@ describe('mapPropsToFields', () => {
     expect(form.getFieldValue('field2')).toBe(undefined);
   });
 });
+
+describe('getFieldProps', () => {
+  it('use initialValue when value does not exist', () => {
+    const Form = createForm({ withRef: true })(class extends React.Component {
+      render() {
+        return <div />;
+      }
+    });
+    const wrapper = mount(<Form />);
+    const form = wrapper.ref('wrappedComponent').props.form;
+    form.getFieldProps('field', {
+      initialValue: 'initial',
+    });
+    expect(form.getFieldProps('field').value).toBe('initial');
+  });
+});
