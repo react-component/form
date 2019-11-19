@@ -65,13 +65,14 @@ function createBaseForm(option = {}, mixins = []) {
           'isFieldValidating',
           'isFieldsValidating',
           'isFieldsTouched',
-          'isFieldTouched'].forEach(key => {
+          'isFieldTouched',
+        ].forEach(key => {
           this[key] = (...args) => {
             if (process.env.NODE_ENV !== 'production') {
               warning(
                 false,
                 'you should not use `ref` on enhanced form, please use `wrappedComponentRef`. ' +
-                      'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
+                  'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140',
               );
             }
             return this.fieldsStore[key](...args);
@@ -104,25 +105,35 @@ function createBaseForm(option = {}, mixins = []) {
         } else if (fieldMeta.originalProps && fieldMeta.originalProps[action]) {
           fieldMeta.originalProps[action](...args);
         }
-        const value = fieldMeta.getValueFromEvent ?
-          fieldMeta.getValueFromEvent(...args) :
-          getValueFromEvent(...args);
+        const value = fieldMeta.getValueFromEvent
+          ? fieldMeta.getValueFromEvent(...args)
+          : getValueFromEvent(...args);
         if (onValuesChange && value !== this.fieldsStore.getFieldValue(name)) {
           const valuesAll = this.fieldsStore.getAllValues();
           const valuesAllSet = {};
           valuesAll[name] = value;
-          Object.keys(valuesAll).forEach(key => set(valuesAllSet, key, valuesAll[key]));
-          onValuesChange({
-            [formPropName]: this.getForm(),
-            ...this.props
-          }, set({}, name, value), valuesAllSet);
+          Object.keys(valuesAll).forEach(key =>
+            set(valuesAllSet, key, valuesAll[key]),
+          );
+          onValuesChange(
+            {
+              [formPropName]: this.getForm(),
+              ...this.props,
+            },
+            set({}, name, value),
+            valuesAllSet,
+          );
         }
         const field = this.fieldsStore.getField(name);
-        return ({ name, field: { ...field, value, touched: true }, fieldMeta });
+        return { name, field: { ...field, value, touched: true }, fieldMeta };
       },
 
       onCollect(name_, action, ...args) {
-        const { name, field, fieldMeta } = this.onCollectCommon(name_, action, args);
+        const { name, field, fieldMeta } = this.onCollectCommon(
+          name_,
+          action,
+          args,
+        );
         const { validate } = fieldMeta;
 
         this.fieldsStore.setFieldsAsDirty();
@@ -169,7 +180,7 @@ function createBaseForm(option = {}, mixins = []) {
 
       getFieldDecorator(name, fieldOption) {
         const props = this.getFieldProps(name, fieldOption);
-        return (fieldElem) => {
+        return fieldElem => {
           // We should put field in record if it is rendered
           this.renderFields[name] = true;
 
@@ -180,16 +191,17 @@ function createBaseForm(option = {}, mixins = []) {
             warning(
               !(valuePropName in originalProps),
               `\`getFieldDecorator\` will override \`${valuePropName}\`, ` +
-              `so please don't set \`${valuePropName}\` directly ` +
-              `and use \`setFieldsValue\` to set it.`
+                `so please don't set \`${valuePropName}\` directly ` +
+                `and use \`setFieldsValue\` to set it.`,
             );
-            const defaultValuePropName =
-              `default${valuePropName[0].toUpperCase()}${valuePropName.slice(1)}`;
+            const defaultValuePropName = `default${valuePropName[0].toUpperCase()}${valuePropName.slice(
+              1,
+            )}`;
             warning(
               !(defaultValuePropName in originalProps),
               `\`${defaultValuePropName}\` is invalid ` +
-              `for \`getFieldDecorator\` will set \`${valuePropName}\`,` +
-              ` please use \`option.initialValue\` instead.`
+                `for \`getFieldDecorator\` will set \`${valuePropName}\`,` +
+                ` please use \`option.initialValue\` instead.`,
             );
           }
           fieldMeta.originalProps = originalProps;
@@ -208,11 +220,11 @@ function createBaseForm(option = {}, mixins = []) {
         if (process.env.NODE_ENV !== 'production') {
           warning(
             this.fieldsStore.isValidNestedFieldName(name),
-            `One field name cannot be part of another, e.g. \`a\` and \`a.b\`. Check field: ${name}`
+            `One field name cannot be part of another, e.g. \`a\` and \`a.b\`. Check field: ${name}`,
           );
           warning(
             !('exclusive' in usersFieldOption),
-            '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.'
+            '`option.exclusive` of `getFieldProps`|`getFieldDecorator` had been remove.',
           );
         }
 
@@ -246,16 +258,28 @@ function createBaseForm(option = {}, mixins = []) {
           inputProps[fieldNameProp] = formName ? `${formName}_${name}` : name;
         }
 
-        const validateRules = normalizeValidateRules(validate, rules, validateTrigger);
+        const validateRules = normalizeValidateRules(
+          validate,
+          rules,
+          validateTrigger,
+        );
         const validateTriggers = getValidateTriggers(validateRules);
-        validateTriggers.forEach((action) => {
+        validateTriggers.forEach(action => {
           if (inputProps[action]) return;
-          inputProps[action] = this.getCacheBind(name, action, this.onCollectValidate);
+          inputProps[action] = this.getCacheBind(
+            name,
+            action,
+            this.onCollectValidate,
+          );
         });
 
         // make sure that the value will be collect
         if (trigger && validateTriggers.indexOf(trigger) === -1) {
-          inputProps[trigger] = this.getCacheBind(name, trigger, this.onCollect);
+          inputProps[trigger] = this.getCacheBind(
+            name,
+            trigger,
+            this.onCollect,
+          );
         }
 
         const meta = {
@@ -283,22 +307,32 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       getRules(fieldMeta, action) {
-        const actionRules = fieldMeta.validate.filter((item) => {
-          return !action || item.trigger.indexOf(action) >= 0;
-        }).map((item) => item.rules);
+        const actionRules = fieldMeta.validate
+          .filter(item => {
+            return !action || item.trigger.indexOf(action) >= 0;
+          })
+          .map(item => item.rules);
         return flattenArray(actionRules);
       },
 
       setFields(maybeNestedFields, callback) {
-        const fields = this.fieldsStore.flattenRegisteredFields(maybeNestedFields);
+        const fields = this.fieldsStore.flattenRegisteredFields(
+          maybeNestedFields,
+        );
         this.fieldsStore.setFields(fields);
         if (onFieldsChange) {
-          const changedFields = Object.keys(fields)
-            .reduce((acc, name) => set(acc, name, this.fieldsStore.getField(name)), {});
-          onFieldsChange({
-            [formPropName]: this.getForm(),
-            ...this.props
-          }, changedFields, this.fieldsStore.getNestedAllFields());
+          const changedFields = Object.keys(fields).reduce(
+            (acc, name) => set(acc, name, this.fieldsStore.getField(name)),
+            {},
+          );
+          onFieldsChange(
+            {
+              [formPropName]: this.getForm(),
+              ...this.props,
+            },
+            changedFields,
+            this.fieldsStore.getNestedAllFields(),
+          );
         }
         this.forceUpdate(callback);
       },
@@ -312,7 +346,7 @@ function createBaseForm(option = {}, mixins = []) {
             warning(
               isRegistered,
               'Cannot use `setFieldsValue` until ' +
-                'you use `getFieldDecorator` or `getFieldProps` to register it.'
+                'you use `getFieldDecorator` or `getFieldProps` to register it.',
             );
           }
           if (isRegistered) {
@@ -326,10 +360,14 @@ function createBaseForm(option = {}, mixins = []) {
         this.setFields(newFields, callback);
         if (onValuesChange) {
           const allValues = this.fieldsStore.getAllValues();
-          onValuesChange({
-            [formPropName]: this.getForm(),
-            ...this.props
-          }, changedValues, allValues);
+          onValuesChange(
+            {
+              [formPropName]: this.getForm(),
+              ...this.props,
+            },
+            changedValues,
+            allValues,
+          );
         }
       },
 
@@ -369,7 +407,11 @@ function createBaseForm(option = {}, mixins = []) {
         const fieldList = this.fieldsStore.getAllFieldsName();
         const removedList = fieldList.filter(field => {
           const fieldMeta = this.fieldsStore.getFieldMeta(field);
-          return (!this.renderFields[field] && !this.domFields[field] && !fieldMeta.preserve);
+          return (
+            !this.renderFields[field] &&
+            !this.domFields[field] &&
+            !fieldMeta.preserve
+          );
         });
         if (removedList.length) {
           removedList.forEach(this.clearField);
@@ -401,21 +443,24 @@ function createBaseForm(option = {}, mixins = []) {
           this.fieldsStore.setFields({
             [name]: this.clearedFieldMetaCache[name].field,
           });
-          this.fieldsStore.setFieldMeta(name, this.clearedFieldMetaCache[name].meta);
+          this.fieldsStore.setFieldMeta(
+            name,
+            this.clearedFieldMetaCache[name].meta,
+          );
           delete this.clearedFieldMetaCache[name];
         }
       },
 
-      validateFieldsInternal(fields, {
-        fieldNames,
-        action,
-        options = {},
-      }, callback) {
+      validateFieldsInternal(
+        fields,
+        { fieldNames, action, options = {} },
+        callback,
+      ) {
         const allRules = {};
         const allValues = {};
         const allFields = {};
         const alreadyErrors = {};
-        fields.forEach((field) => {
+        fields.forEach(field => {
           const name = field.name;
           if (options.force !== true && field.dirty === false) {
             if (field.errors) {
@@ -436,30 +481,32 @@ function createBaseForm(option = {}, mixins = []) {
         });
         this.setFields(allFields);
         // in case normalize
-        Object.keys(allValues).forEach((f) => {
+        Object.keys(allValues).forEach(f => {
           allValues[f] = this.fieldsStore.getFieldValue(f);
         });
         if (callback && isEmptyObject(allFields)) {
-          callback(isEmptyObject(alreadyErrors) ? null : alreadyErrors,
-            this.fieldsStore.getFieldsValue(fieldNames));
+          callback(
+            isEmptyObject(alreadyErrors) ? null : alreadyErrors,
+            this.fieldsStore.getFieldsValue(fieldNames),
+          );
           return;
         }
         const validator = new AsyncValidator(allRules);
         if (validateMessages) {
           validator.messages(validateMessages);
         }
-        validator.validate(allValues, options, (errors) => {
+        validator.validate(allValues, options, errors => {
           const errorsGroup = {
             ...alreadyErrors,
           };
           if (errors && errors.length) {
-            errors.forEach((e) => {
+            errors.forEach(e => {
               const errorFieldName = e.field;
               let fieldName = errorFieldName;
 
               // Handle using array validation rule.
               // ref: https://github.com/ant-design/ant-design/issues/14275
-              Object.keys(allRules).some((ruleFieldName) => {
+              Object.keys(allRules).some(ruleFieldName => {
                 const rules = allRules[ruleFieldName] || [];
 
                 // Exist if match rule
@@ -469,7 +516,10 @@ function createBaseForm(option = {}, mixins = []) {
                 }
 
                 // Skip if not match array type
-                if (rules.every(({ type }) => type !== 'array') && errorFieldName.indexOf(ruleFieldName) !== 0) {
+                if (
+                  rules.every(({ type }) => type !== 'array') ||
+                  errorFieldName.indexOf(`${ruleFieldName}.`) !== 0
+                ) {
                   return false;
                 }
 
@@ -493,11 +543,11 @@ function createBaseForm(option = {}, mixins = []) {
           }
           const expired = [];
           const nowAllFields = {};
-          Object.keys(allRules).forEach((name) => {
+          Object.keys(allRules).forEach(name => {
             const fieldErrors = get(errorsGroup, name);
             const nowField = this.fieldsStore.getField(name);
             // avoid concurrency problems
-            if (!eq(nowField.value,allValues[name])) {
+            if (!eq(nowField.value, allValues[name])) {
               expired.push({
                 name,
               });
@@ -513,10 +563,12 @@ function createBaseForm(option = {}, mixins = []) {
           if (callback) {
             if (expired.length) {
               expired.forEach(({ name }) => {
-                const fieldErrors = [{
-                  message: `${name} need to revalidate`,
-                  field: name,
-                }];
+                const fieldErrors = [
+                  {
+                    message: `${name} need to revalidate`,
+                    field: name,
+                  },
+                ];
                 set(errorsGroup, name, {
                   expired: true,
                   errors: fieldErrors,
@@ -524,8 +576,10 @@ function createBaseForm(option = {}, mixins = []) {
               });
             }
 
-            callback(isEmptyObject(errorsGroup) ? null : errorsGroup,
-              this.fieldsStore.getFieldsValue(fieldNames));
+            callback(
+              isEmptyObject(errorsGroup) ? null : errorsGroup,
+              this.fieldsStore.getFieldsValue(fieldNames),
+            );
           }
         });
       },
@@ -547,14 +601,15 @@ function createBaseForm(option = {}, mixins = []) {
               }
             };
           }
-          const fieldNames = names ?
-            this.fieldsStore.getValidFieldsFullName(names) :
-            this.fieldsStore.getValidFieldsName();
+          const fieldNames = names
+            ? this.fieldsStore.getValidFieldsFullName(names)
+            : this.fieldsStore.getValidFieldsName();
           const fields = fieldNames
             .filter(name => {
               const fieldMeta = this.fieldsStore.getFieldMeta(name);
               return hasRules(fieldMeta.validate);
-            }).map((name) => {
+            })
+            .map(name => {
               const field = this.fieldsStore.getField(name);
               field.value = this.fieldsStore.getFieldValue(name);
               return field;
@@ -564,17 +619,21 @@ function createBaseForm(option = {}, mixins = []) {
             return;
           }
           if (!('firstFields' in options)) {
-            options.firstFields = fieldNames.filter((name) => {
+            options.firstFields = fieldNames.filter(name => {
               const fieldMeta = this.fieldsStore.getFieldMeta(name);
               return !!fieldMeta.validateFirst;
             });
           }
-          this.validateFieldsInternal(fields, {
-            fieldNames,
-            options,
-          }, callback);
+          this.validateFieldsInternal(
+            fields,
+            {
+              fieldNames,
+              options,
+            },
+            callback,
+          );
         });
-        pending.catch((e) => {
+        pending.catch(e => {
           // eslint-disable-next-line no-console
           if (console.error && process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
@@ -586,22 +645,28 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       isSubmitting() {
-        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+        if (
+          process.env.NODE_ENV !== 'production' &&
+          process.env.NODE_ENV !== 'test'
+        ) {
           warning(
             false,
             '`isSubmitting` is deprecated. ' +
-              'Actually, it\'s more convenient to handle submitting status by yourself.'
+              "Actually, it's more convenient to handle submitting status by yourself.",
           );
         }
         return this.state.submitting;
       },
 
       submit(callback) {
-        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+        if (
+          process.env.NODE_ENV !== 'production' &&
+          process.env.NODE_ENV !== 'test'
+        ) {
           warning(
             false,
             '`submit` is deprecated. ' +
-              'Actually, it\'s more convenient to handle submitting status by yourself.'
+              "Actually, it's more convenient to handle submitting status by yourself.",
           );
         }
         const fn = () => {
@@ -621,11 +686,14 @@ function createBaseForm(option = {}, mixins = []) {
           [formPropName]: this.getForm(),
         };
         if (withRef) {
-          if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+          if (
+            process.env.NODE_ENV !== 'production' &&
+            process.env.NODE_ENV !== 'test'
+          ) {
             warning(
               false,
               '`withRef` is deprecated, please use `wrappedComponentRef` instead. ' +
-                'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140'
+                'See: https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140',
             );
           }
           formProps.ref = 'wrappedComponent';
@@ -636,7 +704,7 @@ function createBaseForm(option = {}, mixins = []) {
           ...formProps,
           ...restProps,
         });
-        return <WrappedComponent {...props}/>;
+        return <WrappedComponent {...props} />;
       },
     });
 
