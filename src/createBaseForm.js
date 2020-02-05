@@ -635,9 +635,9 @@ function createBaseForm(option = {}, mixins = []) {
         });
         pending.catch(e => {
           // eslint-disable-next-line no-console
-          if (console.error && process.env.NODE_ENV !== 'production') {
+          if (console.warning && process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
-            console.error(e);
+            console.warning(e);
           }
           return e;
         });
