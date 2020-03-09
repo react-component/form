@@ -61,7 +61,7 @@
     }
   },
   "devDependencies": {
-    "antd": "3.x",
+    "antd": "4.x",
     "async": "^3.0.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
