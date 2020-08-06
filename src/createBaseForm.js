@@ -374,7 +374,7 @@ function createBaseForm(option = {}, mixins = []) {
       saveRef(name, _, component) {
         if (!component) {
           const fieldMeta = this.fieldsStore.getFieldMeta(name);
-          if (!fieldMeta.preserve) {
+          if (Object.keys(fieldMeta).length && !fieldMeta.preserve) {
             // after destroy, delete data
             this.clearedFieldMetaCache[name] = {
               field: this.fieldsStore.getField(name),
