@@ -552,7 +552,7 @@ function createBaseForm(option = {}, mixins = []) {
                 name,
               });
             } else {
-              nowField.errors = fieldErrors && fieldErrors.errors;
+              nowField.errors = fieldErrors;
               nowField.value = allValues[name];
               nowField.validating = false;
               nowField.dirty = false;
