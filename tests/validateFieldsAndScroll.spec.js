@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable react/prop-types, react/no-render-return-value */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Simulate } from 'react-dom/test-utils'
