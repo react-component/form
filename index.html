@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-form@2.4.11 - React High Order Form Component</title>
+  <title>rc-form@2.4.12-alpha.0 - React High Order Form Component</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-form@2.4.11</h1>
+  <h1>rc-form@2.4.12-alpha.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -1083,7 +1083,7 @@ this.formRef // =&gt; The instance of Form</span></code></pre></div><h2>(Wrapped
 <h3>setFields(obj: Object)<a id="user-content-setfields(obj:-object)" name="setfields(obj:-object)" class="anchor" aria-hidden="true" href="#setfields(obj:-object)"><span class="octicon octicon-link"></span></a></h3><p>Set fields by kv object. each field can contain errors and value member.</p>
 <h3>validateFields([fieldNames: String[]], [options: Object], callback: (errors, values) =&gt; void)<a id="user-content-validatefields([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" name="validatefields([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" class="anchor" aria-hidden="true" href="#validatefields([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)"><span class="octicon octicon-link"></span></a></h3><p>Validate and get fields value by fieldNames.</p>
 <p>options is the same as validate method of <a href="https://github.com/yiminghe/async-validator" title="null">async-validator</a>.
-And add <code>force</code> and <code>scroll</code>. <code>scroll</code> is the same as <a href="https://github.com/yiminghe/dom-scroll-into-view#function-parameter" title="null">dom-scroll-into-view&#39;s function parameter <code>config</code></a>.</p>
+And add <code>force</code>.</p>
 <h4>options.force: Boolean<a id="user-content-options.force:-boolean" name="options.force:-boolean" class="anchor" aria-hidden="true" href="#options.force:-boolean"><span class="octicon octicon-link"></span></a></h4><p>Defaults to false. Whether to validate fields which have been validated(caused by validateTrigger).</p>
 <h3>getFieldsError(names): Object{ [name]: String[] }<a id="user-content-getfieldserror(names):-object{-[name]:-string[]-}" name="getfieldserror(names):-object{-[name]:-string[]-}" class="anchor" aria-hidden="true" href="#getfieldserror(names):-object{-[name]:-string[]-}"><span class="octicon octicon-link"></span></a></h3><p>Get inputs&#39; validate errors.</p>
 <h3>getFieldError(name): String[]<a id="user-content-getfielderror(name):-string[]" name="getfielderror(name):-string[]" class="anchor" aria-hidden="true" href="#getfielderror(name):-string[]"><span class="octicon octicon-link"></span></a></h3><p>Get input&#39;s validate errors.</p>
@@ -1095,7 +1095,7 @@ And add <code>force</code> and <code>scroll</code>. <code>scroll</code> is the s
 <h3>isSubmitting(): Bool (Deprecated)<a id="user-content-issubmitting():-bool-(deprecated)" name="issubmitting():-bool-(deprecated)" class="anchor" aria-hidden="true" href="#issubmitting():-bool-(deprecated)"><span class="octicon octicon-link"></span></a></h3><p>Whether the form is submitting.</p>
 <h3>submit(callback: Function) (Deprecated)<a id="user-content-submit(callback:-function)-(deprecated)" name="submit(callback:-function)-(deprecated)" class="anchor" aria-hidden="true" href="#submit(callback:-function)-(deprecated)"><span class="octicon octicon-link"></span></a></h3><p>Cause isSubmitting to return true, after callback called, isSubmitting return false.</p>
 <h2>rc-form/lib/createDOMForm(option): Function<a id="user-content-rc-form/lib/createdomform(option):-function" name="rc-form/lib/createdomform(option):-function" class="anchor" aria-hidden="true" href="#rc-form/lib/createdomform(option):-function"><span class="octicon octicon-link"></span></a></h2><p>createDOMForm enhancement, support props.form.validateFieldsAndScroll</p>
-<h3>validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: (errors, values) =&gt; void)<a id="user-content-validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" name="validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" class="anchor" aria-hidden="true" href="#validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)"><span class="octicon octicon-link"></span></a></h3><p>props.form.validateFields enhancement, support scroll to the first invalid form field</p>
+<h3>validateFieldsAndScroll([fieldNames: String[]], [options: Object], callback: (errors, values) =&gt; void)<a id="user-content-validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" name="validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)" class="anchor" aria-hidden="true" href="#validatefieldsandscroll([fieldnames:-string[]],-[options:-object],-callback:-(errors,-values)-=&gt;-void)"><span class="octicon octicon-link"></span></a></h3><p>props.form.validateFields enhancement, support scroll to the first invalid form field,  <code>scroll</code> is the same as <a href="https://github.com/yiminghe/dom-scroll-into-view#function-parameter" title="null">dom-scroll-into-view&#39;s function parameter <code>config</code></a>.</p>
 <h4>options.container: HTMLElement<a id="user-content-options.container:-htmlelement" name="options.container:-htmlelement" class="anchor" aria-hidden="true" href="#options.container:-htmlelement"><span class="octicon octicon-link"></span></a></h4><p>Defaults to first scrollable container of form field(until document).</p>
 <h2>Notes<a id="user-content-notes" name="notes" class="anchor" aria-hidden="true" href="#notes"><span class="octicon octicon-link"></span></a></h2><ul>
 <li><p>Do not use stateless function component inside Form component: <a href="https://github.com/facebook/react/pull/6534" title="null">https://github.com/facebook/react/pull/6534</a></p>
