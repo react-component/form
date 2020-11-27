@@ -1,5 +1,6 @@
 import hoistStatics from 'hoist-non-react-statics';
 import warning from 'warning';
+import { isMemo } from 'react-is';
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'WrappedComponent';
@@ -151,4 +152,25 @@ export function hasRules(validate) {
 
 export function startsWith(str, prefix) {
   return str.lastIndexOf(prefix, 0) === 0;
+}
+
+export function supportRef(nodeOrComponent) {
+  const type = isMemo(nodeOrComponent)
+    ? nodeOrComponent.type.type
+    : nodeOrComponent.type;
+
+  // Function component node
+  if (typeof type === 'function' && !(type.prototype && type.prototype.render)) {
+    return false;
+  }
+
+  // Class component
+  if (
+    typeof nodeOrComponent === 'function' &&
+    !(nodeOrComponent.prototype && nodeOrComponent.prototype.render)
+  ) {
+    return false;
+  }
+
+  return true;
 }

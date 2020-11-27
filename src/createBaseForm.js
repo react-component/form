@@ -20,7 +20,9 @@ import {
   getParams,
   isEmptyObject,
   flattenArray,
+  supportRef
 } from './utils';
+import FieldElemWrapper from './FieldElemWrapper';
 
 const DEFAULT_TRIGGER = 'onChange';
 
@@ -206,10 +208,17 @@ function createBaseForm(option = {}, mixins = []) {
           }
           fieldMeta.originalProps = originalProps;
           fieldMeta.ref = fieldElem.ref;
-          return React.cloneElement(fieldElem, {
+          const decoratedFieldElem = React.cloneElement(fieldElem, {
             ...props,
             ...this.fieldsStore.getFieldValuePropValue(fieldMeta),
           });
+          return supportRef(fieldElem) ? (
+            decoratedFieldElem
+          ) : (
+            <FieldElemWrapper name={name} form={this}>
+              {decoratedFieldElem}
+            </FieldElemWrapper>
+          );
         };
       },
 
