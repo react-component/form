@@ -594,8 +594,8 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       validateFields(ns, opt, cb) {
+		    const { names, options } = getParams(ns, opt, cb);
         const pending = new Promise((resolve, reject) => {
-          const { names, options } = getParams(ns, opt, cb);
           let { callback } = getParams(ns, opt, cb);
           if (!callback || typeof callback === 'function') {
             const oldCb = callback;
@@ -644,9 +644,9 @@ function createBaseForm(option = {}, mixins = []) {
         });
         pending.catch(e => {
           // eslint-disable-next-line no-console
-          if (console.error && process.env.NODE_ENV !== 'production') {
+          if (console.warn && process.env.NODE_ENV !== 'production' && !options.suppressWarning) {
             // eslint-disable-next-line no-console
-            console.error(e);
+            console.warn(e);
           }
           return e;
         });
