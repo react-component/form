@@ -93,7 +93,7 @@ export function getValueFromEvent(e) {
     return e;
   }
   const { target } = e;
-  return target.type === 'checkbox' ? target.checked : target.value;
+  return target.type === 'checkbox' || target.type === 'radio' ? target.checked : target.value;
 }
 
 export function getErrorStrs(errors) {
