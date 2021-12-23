@@ -347,7 +347,7 @@ function createBaseForm(option = {}, mixins = []) {
       },
 
       setFieldsValue(changedValues, callback) {
-        const { fieldsMeta } = this.fieldsStore;
+        const { fieldsMeta, fields } = this.fieldsStore;
         const values = this.fieldsStore.flattenRegisteredFields(changedValues);
         const newFields = Object.keys(values).reduce((acc, name) => {
           const isRegistered = fieldsMeta[name];
@@ -361,7 +361,8 @@ function createBaseForm(option = {}, mixins = []) {
           if (isRegistered) {
             const value = values[name];
             acc[name] = {
-              value,
+              ...fields,
+              value
             };
           }
           return acc;
