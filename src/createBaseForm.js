@@ -360,8 +360,9 @@ function createBaseForm(option = {}, mixins = []) {
           }
           if (isRegistered) {
             const value = values[name];
+            const newField = fields[name]
             acc[name] = {
-              ...fields,
+              ...newField,
               value
             };
           }
